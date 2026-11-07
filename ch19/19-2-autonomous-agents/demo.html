@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>19.2 Autonomous Agent Patterns — Coding Demo – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/19-2-autonomous-agents/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7835d1f0ca29b4e891ee73374c94434a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/index.html">บทที่ 19 Agent Design Patterns</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">คำนำ</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">บทที่ 19 Agent Design Patterns</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-2-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">19.2 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-2-autonomous-agents/demo.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">0. Setup</a></li>
+  <li><a href="#tool-registry" id="toc-tool-registry" class="nav-link" data-scroll-target="#tool-registry">0.1 Tool registry</a></li>
+  <li><a href="#part-1-react-loop-19.2.1" id="toc-part-1-react-loop-19.2.1" class="nav-link" data-scroll-target="#part-1-react-loop-19.2.1">Part 1 — ReAct loop (§19.2.1)</a></li>
+  <li><a href="#part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2" id="toc-part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2" class="nav-link" data-scroll-target="#part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2">Part 2 — Planning agent: Plan-and-Execute + adaptive replanning (§19.2.2, §18.5.2)</a>
+  <ul class="collapse">
+  <li><a href="#executor-adaptive-replanning" id="toc-executor-adaptive-replanning" class="nav-link" data-scroll-target="#executor-adaptive-replanning">Executor + adaptive replanning</a></li>
+  </ul></li>
+  <li><a href="#part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3" id="toc-part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3" class="nav-link" data-scroll-target="#part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3">Part 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)</a></li>
+  <li><a href="#part-4-tool-use-patterns-19.2.4" id="toc-part-4-tool-use-patterns-19.2.4" class="nav-link" data-scroll-target="#part-4-tool-use-patterns-19.2.4">Part 4 — Tool-use patterns (§19.2.4)</a>
+  <ul class="collapse">
+  <li><a href="#single-turn-tool-เดยว-llm-call-2-ครง" id="toc-single-turn-tool-เดยว-llm-call-2-ครง" class="nav-link" data-scroll-target="#single-turn-tool-เดยว-llm-call-2-ครง">4.1 Single-turn — tool เดียว, LLM call 2 ครั้ง</a></li>
+  <li><a href="#multi-tool-parallel-tool-อสระตอกน-รนพรอมกน" id="toc-multi-tool-parallel-tool-อสระตอกน-รนพรอมกน" class="nav-link" data-scroll-target="#multi-tool-parallel-tool-อสระตอกน-รนพรอมกน">4.2 Multi-tool (parallel) — tool อิสระต่อกัน รันพร้อมกัน</a></li>
+  <li><a href="#nested-agent-as-tool" id="toc-nested-agent-as-tool" class="nav-link" data-scroll-target="#nested-agent-as-tool">4.3 Nested (agent-as-tool)</a></li>
+  <li><a href="#fallback-graceful-degradation" id="toc-fallback-graceful-degradation" class="nav-link" data-scroll-target="#fallback-graceful-degradation">4.4 Fallback (graceful degradation)</a></li>
+  </ul></li>
+  <li><a href="#สรป" id="toc-สรป" class="nav-link" data-scroll-target="#สรป">สรุป</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/index.html">บทที่ 19 Agent Design Patterns</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Notebook นี้เขียน <strong>agent harness ขึ้นเองตั้งแต่ศูนย์</strong> (ไม่ใช้ framework) เพื่อให้เห็นกลไกของแต่ละ pattern ในตำรา</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Pattern</th>
+<th>ตำรา</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>ReAct loop</td>
+<td>§19.2.1, §18.5.1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Planning agent (DAG + adaptive replanning)</td>
+<td>§19.2.2, §18.5.2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Reflexion (reflection memory)</td>
+<td>§19.2.3</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Tool-use patterns: parallel, sequential, nested, fallback</td>
+<td>§19.2.4</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>อ้างอิง: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em> (arXiv:2606.24937), CC BY-SA 4.0 Notebook นี้เผยแพร่ภายใต้ CC BY-SA 4.0</p>
+</blockquote>
+<p><strong>Model:</strong> Gemma 4 26B (open weights) ผ่าน <a href="https://openrouter.ai">OpenRouter</a> — เปลี่ยนเป็น model อื่นบน OpenRouter ได้ด้วยการแก้ <code>MODEL</code> บรรทัดเดียว</p>
+<p><strong>สิ่งที่ต้องมี:</strong> OpenRouter API key - บน Colab: เพิ่มใน 🔑 <em>Secrets</em> ชื่อ <code>OPENROUTER_API_KEY</code> (หรือ <code>COURSE_OPENROUTER_API_KEY</code> ถ้ามีชื่อแรกของ project อื่นอยู่แล้ว) - บนเครื่องตัวเอง: ใส่ในไฟล์ <code>.env</code> บรรทัด <code>OPENROUTER_API_KEY=...</code></p>
+<p>⚠️ <strong>ข้อมูลใน tools ทั้งหมดเป็นข้อมูลจำลอง (simulated)</strong> เพื่อให้ผลลัพธ์คาดเดาได้และไม่เสียค่าใช้จ่ายเรียก API ภายนอก — สิ่งที่เป็นของจริงคือการตัดสินใจของ LLM</p>
+<div id="c3432d8d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:39.764736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:39.764596Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:21:40.517893Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:21:40.517266Z&quot;}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"openai&gt;=1.50"</span> python<span class="op">-</span>dotenv pydantic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">0. Setup</h2>
+<p>เราห่อการเรียก LLM ไว้ใน <code>ask_llm()</code> ฟังก์ชันเดียว ทุก pattern ด้านล่างใช้ฟังก์ชันนี้</p>
+<ul>
+<li>OpenRouter ใช้ API แบบ <strong>OpenAI-compatible</strong> จึงใช้ <code>openai</code> SDK ได้เลย</li>
+<li><code>reasoning</code> — Gemma 4 ส่งความคิด (reasoning) กลับมาด้วย เราใช้เป็น <strong>scratchpad (Thought)</strong> ของ ReAct</li>
+<li><code>require_parameters</code> — บังคับให้ OpenRouter ส่ง request ไปเฉพาะ provider ที่รองรับ tools และ JSON schema</li>
+<li>ทุก call บันทึกจำนวน token และค่าใช้จ่ายไว้ใน <code>USAGE</code></li>
+</ul>
+<div id="65695806" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:40.519758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:40.519619Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:21:40.824070Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:21:40.823660Z&quot;}}" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, json, time</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ThreadPoolExecutor</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:  <span class="co"># Google Colab Secrets</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name <span class="kw">in</span> (<span class="st">"COURSE_OPENROUTER_API_KEY"</span>, <span class="st">"OPENROUTER_API_KEY"</span>):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> userdata.get(name)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv, find_dotenv   <span class="co"># local: .env file</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    load_dotenv(find_dotenv(usecwd<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ.get(<span class="st">"COURSE_OPENROUTER_API_KEY"</span>) <span class="kw">or</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>load_key())</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span>   <span class="co"># ลองเปลี่ยนเป็น model อื่นบน OpenRouter ได้</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>EXTRA <span class="op">=</span> {<span class="st">"provider"</span>: {<span class="st">"require_parameters"</span>: <span class="va">True</span>}, <span class="st">"reasoning"</span>: {<span class="st">"effort"</span>: <span class="st">"medium"</span>}}</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>USAGE <span class="op">=</span> {<span class="st">"llm_calls"</span>: <span class="dv">0</span>, <span class="st">"input_tokens"</span>: <span class="dv">0</span>, <span class="st">"output_tokens"</span>: <span class="dv">0</span>, <span class="st">"cost_usd"</span>: <span class="fl">0.0</span>}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_llm(messages, tools<span class="op">=</span><span class="va">None</span>, system<span class="op">=</span><span class="va">None</span>, response_format<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> system:</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        messages <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: system}] <span class="op">+</span> messages</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    kwargs <span class="op">=</span> <span class="bu">dict</span>(model<span class="op">=</span>MODEL, messages<span class="op">=</span>messages, extra_body<span class="op">=</span>EXTRA)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tools:</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        kwargs[<span class="st">"tools"</span>] <span class="op">=</span> tools</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response_format:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        kwargs[<span class="st">"response_format"</span>] <span class="op">=</span> response_format</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> client.chat.completions.create(<span class="op">**</span>kwargs)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    USAGE[<span class="st">"llm_calls"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    USAGE[<span class="st">"input_tokens"</span>] <span class="op">+=</span> resp.usage.prompt_tokens</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    USAGE[<span class="st">"output_tokens"</span>] <span class="op">+=</span> resp.usage.completion_tokens</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    USAGE[<span class="st">"cost_usd"</span>] <span class="op">+=</span> <span class="bu">getattr</span>(resp.usage, <span class="st">"cost"</span>, <span class="dv">0</span>) <span class="kw">or</span> <span class="dv">0</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.choices[<span class="dv">0</span>].message</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ready:"</span>, MODEL)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ready: google/gemma-4-26b-a4b-it</code></pre>
+</div>
+</div>
+</section>
+<section id="tool-registry" class="level2">
+<h2 class="anchored" data-anchor-id="tool-registry">0.1 Tool registry</h2>
+<p>Tool แต่ละตัวคือ Python function + JSON schema ที่บอก model ว่าเรียกอย่างไร ตำราเน้นว่า <strong>“Provide good tools”</strong> (§19.3) — description ชัดเจนและ schema เข้มงวด (<code>additionalProperties: False</code>) ช่วยให้ model เลือกใช้ tool ถูกต้อง</p>
+<div id="3eff9288" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:40.825348Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:40.825272Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:21:40.829799Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:21:40.829360Z&quot;}}" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>TOOLS <span class="op">=</span> {}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tool(description, properties, required<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Decorator: ลงทะเบียน function เป็น tool พร้อม schema"""</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrap(fn):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        TOOLS[fn.<span class="va">__name__</span>] <span class="op">=</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fn"</span>: fn,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"schema"</span>: {<span class="st">"type"</span>: <span class="st">"function"</span>, <span class="st">"function"</span>: {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"name"</span>: fn.<span class="va">__name__</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"description"</span>: description,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"parameters"</span>: {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"properties"</span>: properties,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"required"</span>: required <span class="kw">or</span> <span class="bu">list</span>(properties),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"additionalProperties"</span>: <span class="va">False</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            }},</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> fn</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrap</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> schemas(names):</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [TOOLS[n][<span class="st">"schema"</span>] <span class="cf">for</span> n <span class="kw">in</span> names]</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- simulated paper corpus (ข้อมูลจำลองเพื่อการสอน) ----</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>CORE <span class="op">=</span> [</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P1"</span>, <span class="st">"title"</span>: <span class="st">"Crossformer"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>, <span class="st">"note"</span>: <span class="st">"cross-dimension dependency, two-stage attention"</span>},</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P2"</span>, <span class="st">"title"</span>: <span class="st">"TimesFM"</span>, <span class="st">"year"</span>: <span class="dv">2024</span>, <span class="st">"note"</span>: <span class="st">"decoder-only foundation model for forecasting"</span>},</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P3"</span>, <span class="st">"title"</span>: <span class="st">"Chronos"</span>, <span class="st">"year"</span>: <span class="dv">2024</span>, <span class="st">"note"</span>: <span class="st">"tokenizes time series values for a T5-style language model"</span>},</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>ADJACENT <span class="op">=</span> [</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P4"</span>, <span class="st">"title"</span>: <span class="st">"PatchTST"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>, <span class="st">"note"</span>: <span class="st">"patching + channel independence"</span>},</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P5"</span>, <span class="st">"title"</span>: <span class="st">"iTransformer"</span>, <span class="st">"year"</span>: <span class="dv">2024</span>, <span class="st">"note"</span>: <span class="st">"inverted attention over variates instead of time steps"</span>},</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"id"</span>: <span class="st">"P6"</span>, <span class="st">"title"</span>: <span class="st">"Moirai"</span>, <span class="st">"year"</span>: <span class="dv">2024</span>, <span class="st">"note"</span>: <span class="st">"universal forecasting transformer, any-variate attention"</span>},</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>STATE <span class="op">=</span> {<span class="st">"papers_found"</span>: [], <span class="st">"search_calls"</span>: <span class="dv">0</span>}</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co"># จำลองสถานการณ์ในตำรา: การค้นหาครั้งแรกเจอแค่ 3 ฉบับ ครั้งถัดไป (ค้นแบบกว้างขึ้น) จึงเจอเพิ่ม</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Search academic papers on a topic. Returns a JSON list of {id, title, year}."</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"query"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_papers(query):</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    STATE[<span class="st">"search_calls"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    hits <span class="op">=</span> CORE <span class="cf">if</span> STATE[<span class="st">"search_calls"</span>] <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> CORE <span class="op">+</span> ADJACENT</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    STATE[<span class="st">"papers_found"</span>] <span class="op">=</span> hits</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.dumps([{k: p[k] <span class="cf">for</span> k <span class="kw">in</span> (<span class="st">"id"</span>, <span class="st">"title"</span>, <span class="st">"year"</span>)} <span class="cf">for</span> p <span class="kw">in</span> hits])</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Read papers by id (e.g. 'P1') and return their key methods."</span>,</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"paper_ids"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}})</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_papers(paper_ids):</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    allp <span class="op">=</span> {p[<span class="st">"id"</span>]: p <span class="cf">for</span> p <span class="kw">in</span> CORE <span class="op">+</span> ADJACENT}</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    unknown <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> paper_ids <span class="cf">if</span> i <span class="kw">not</span> <span class="kw">in</span> allp]</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> unknown:   <span class="co"># error ที่ชัดเจนช่วยให้ model แก้ตัวเองได้ (Provide good tools, §19.3)</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Error: unknown paper ids </span><span class="sc">{</span>unknown<span class="sc">}</span><span class="ss">. Use the ids returned by search_papers, e.g. 'P1'."</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.dumps([{<span class="st">"title"</span>: allp[i][<span class="st">"title"</span>], <span class="st">"key_method"</span>: allp[i][<span class="st">"note"</span>]} <span class="cf">for</span> i <span class="kw">in</span> paper_ids])</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Evaluate an arithmetic expression, e.g. '(3+4)*2'."</span>, {<span class="st">"expression"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculator(expression):</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">set</span>(expression) <span class="op">&lt;=</span> <span class="bu">set</span>(<span class="st">"0123456789+-*/(). "</span>):</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Error: only numbers and + - * / ( ) are allowed"</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">eval</span>(expression))</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"tools:"</span>, <span class="bu">list</span>(TOOLS))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tools: ['search_papers', 'read_papers', 'calculator']</code></pre>
+</div>
+</div>
+</section>
+<section id="part-1-react-loop-19.2.1" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-react-loop-19.2.1">Part 1 — ReAct loop (§19.2.1)</h2>
+<p><span class="math display">\[\text{Thought}_t \rightarrow \text{Action}_t \rightarrow \text{Observation}_t \rightarrow \text{Thought}_{t+1} \rightarrow \cdots\]</span></p>
+<p>ตำราระบุ 4 สิ่งที่ harness ต้องมี — ดูคอมเมนต์ ①–④ ในโค้ด</p>
+<ol type="1">
+<li><strong>Scratchpad</strong> — Thought ถูก log แต่ไม่แสดงให้ผู้ใช้</li>
+<li><strong>Tool parsing</strong> — ดึง tool call ที่มีโครงสร้างจาก output</li>
+<li><strong>Max iterations</strong> — จำกัดจำนวนรอบเสมอ (10–25)</li>
+<li><strong>Termination</strong> — จบเมื่อไม่มี tool call แล้ว</li>
+</ol>
+<div id="72417a0c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:40.830992Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:40.830929Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:21:40.834650Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:21:40.834279Z&quot;}}" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_tool(call):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Execute one tool call -&gt; tool message (error ก็ต้องส่งกลับ ห้ามทิ้ง)"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        args <span class="op">=</span> json.loads(call.function.arguments <span class="kw">or</span> <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> TOOLS[call.function.name][<span class="st">"fn"</span>](<span class="op">**</span>args)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> <span class="ss">f"Error: </span><span class="sc">{</span><span class="bu">type</span>(e)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"role"</span>: <span class="st">"tool"</span>, <span class="st">"tool_call_id"</span>: call.<span class="bu">id</span>, <span class="st">"content"</span>: <span class="bu">str</span>(out)}</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> react_agent(task, tool_names, system<span class="op">=</span><span class="va">None</span>, max_iterations<span class="op">=</span><span class="dv">10</span>, verbose<span class="op">=</span><span class="va">True</span>, indent<span class="op">=</span><span class="st">""</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    messages <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: task}]</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_iterations <span class="op">+</span> <span class="dv">1</span>):               <span class="co"># ③ max iterations</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        msg <span class="op">=</span> ask_llm(messages, tools<span class="op">=</span>schemas(tool_names), system<span class="op">=</span>system)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        thought <span class="op">=</span> <span class="bu">getattr</span>(msg, <span class="st">"reasoning"</span>, <span class="va">None</span>)          <span class="co"># ① scratchpad (log only)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> verbose <span class="kw">and</span> thought:</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>indent<span class="sc">}</span><span class="ss">💭 [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span><span class="st">' '</span><span class="sc">.</span>join(thought.split())[:<span class="dv">300</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        calls <span class="op">=</span> msg.tool_calls <span class="kw">or</span> []                       <span class="co"># ② tool parsing</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> calls:                                      <span class="co"># ④ termination</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> msg.content</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        messages.append({<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: msg.content <span class="kw">or</span> <span class="st">""</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"tool_calls"</span>: [c.model_dump() <span class="cf">for</span> c <span class="kw">in</span> calls]})</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> calls:</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> verbose:</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>indent<span class="sc">}</span><span class="ss">🔧 [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>c<span class="sc">.</span>function<span class="sc">.</span>name<span class="sc">}</span><span class="ss">(</span><span class="sc">{</span>c<span class="sc">.</span>function<span class="sc">.</span>arguments<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># หลาย tool call ใน response เดียว -&gt; รันพร้อมกัน</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        t0 <span class="op">=</span> time.time()</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> ThreadPoolExecutor() <span class="im">as</span> pool:</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            results <span class="op">=</span> <span class="bu">list</span>(pool.<span class="bu">map</span>(run_tool, calls))</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> verbose <span class="kw">and</span> <span class="bu">len</span>(calls) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>indent<span class="sc">}</span><span class="ss">⏱️ [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span><span class="bu">len</span>(calls)<span class="sc">}</span><span class="ss"> tools ran in parallel: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.1f}</span><span class="ss">s"</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> r <span class="kw">in</span> results:</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> verbose:</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>indent<span class="sc">}</span><span class="ss">👀 [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>r[<span class="st">'content'</span>][:<span class="dv">200</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        messages.extend(results)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"⚠️ Stopped: reached max_iterations"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="2188c9f1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:40.835662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:40.835593Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:21:58.497522Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:21:58.496620Z&quot;}}" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>answer <span class="op">=</span> react_agent(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Find transformer models for time-series forecasting from 2023-2025, "</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"read them, and tell me in 3 bullet points how they differ."</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    tool_names<span class="op">=</span>[<span class="st">"search_papers"</span>, <span class="st">"read_papers"</span>],</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">✅ FINAL ANSWER</span><span class="ch">\n</span><span class="st">"</span>, answer)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(USAGE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>💭 [1] The user wants to find transformer-based models for time-series forecasting published between 2023 and 2025. Then, I need to read these papers to identify their key methods. Finally, I must summarize how they differ in exactly 3 bullet points. Step 1: Search for papers. Query: "transformer models ti
+🔧 [1] search_papers({"query": "transformer models time-series forecasting 2023 2024 2025"})
+👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}]
+💭 [2] The user wants a comparison of transformer models for time-series forecasting from 2023-2025 in 3 bullet points. I have found three papers: 1. P1: Crossformer (2023) 2. P2: TimesFM (2024) 3. P3: Chronos (2024) I need to read these papers to understand their methods and then summarize the differences
+🔧 [2] read_papers({"paper_ids": ["P1", "P2", "P3"]})
+👀 [2] [{"title": "Crossformer", "key_method": "cross-dimension dependency, two-stage attention"}, {"title": "TimesFM", "key_method": "decoder-only foundation model for forecasting"}, {"title": "Chronos", "k
+💭 [3] The user wants to know how three specific transformer models for time-series forecasting (Crossformer, TimesFM, and Chronos) differ, presented in 3 bullet points. * Model 1 (Crossformer): Focuses on cross-dimension dependency and uses a two-stage attention mechanism. * Model 2 (TimesFM): A decoder-o
+
+✅ FINAL ANSWER
+ Based on the research from 2023–2024, here is how these three transformer-based models differ:
+
+* **Architectural Design:** **Crossformer** utilizes a specialized two-stage attention mechanism to capture dependencies across different dimensions (variables), whereas **TimesFM** is built as a decoder-only foundation model, and **Chronos** adapts the T5-style encoder-decoder architecture typically used in natural language processing.
+* **Data Representation:** **Chronos** uniquely treats time-series forecasting as a language task by tokenizing continuous numerical values into discrete tokens, while the others focus on modeling temporal and multi-dimensional patterns directly without converting them into a "language" format.
+* **Core Objective:** **Crossformer** focuses on capturing complex cross-dimension dependencies in multivariate data; **TimesFM** is designed as a large-scale foundation model for zero-shot forecasting; and **Chronos** focuses on leveraging the scaling laws and pre-training capabilities of language models for time-series data.
+{'llm_calls': 3, 'input_tokens': 872, 'output_tokens': 1220, 'cost_usd': 0.00047584}</code></pre>
+</div>
+</div>
+<p><strong>สังเกต:</strong> model ตัดสินใจเองว่าจะ <code>search_papers</code> ก่อน แล้วค่อย <code>read_papers</code> ด้วย id ที่ได้ — นี่คือ <strong>sequential tool use</strong> (§19.2.4) ที่เกิดขึ้นเองใน ReAct loop</p>
+</section>
+<section id="part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2">Part 2 — Planning agent: Plan-and-Execute + adaptive replanning (§19.2.2, §18.5.2)</h2>
+<p><span class="math display">\[\text{Plan} = \text{Planner}(q), \qquad \text{Result} = \prod_{i=1}^{|\text{Plan}|} \text{Executor}(\text{Plan}[i], \text{context}_i)\]</span></p>
+<p>ขั้นตอน: 1. <strong>Planning phase</strong> — LLM call เดียว สร้าง plan เป็น DAG (แต่ละ step มี <code>deps</code>) 2. <strong>Execution phase</strong> — รันเฉพาะ step ที่ <code>deps</code> เสร็จหมดแล้ว แต่ละ step ใช้ <strong>ReAct agent จาก Part 1</strong> (pattern ประกอบกันได้!) 3. <strong>Plan revision</strong> — ถ้าผลลัพธ์ไม่เป็นไปตามคาด ให้ replan จากสถานะปัจจุบัน</p>
+<p>เราใช้ <strong>structured output</strong> (JSON schema) ให้ plan เป็น JSON ตามโครงสร้างที่กำหนดเสมอ แล้ว validate ซ้ำด้วย Pydantic — ตรงกับหลัก <em>“Use structured outputs”</em> (§19.3)</p>
+<div id="ce4b62d8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:21:58.502822Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:21:58.502523Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:22:26.919319Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:22:26.918283Z&quot;}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Step(BaseModel):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span>: <span class="bu">int</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    task: <span class="bu">str</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    tool: <span class="bu">str</span>          <span class="co"># "search_papers" | "read_papers" | "none"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    deps: <span class="bu">list</span>[<span class="bu">int</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Plan(BaseModel):</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    steps: <span class="bu">list</span>[Step]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># JSON schema ที่ส่งให้ model — บังคับให้ตอบเป็น plan ที่มีโครงสร้างเสมอ</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>PLAN_FORMAT <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"json_schema"</span>, <span class="st">"json_schema"</span>: {<span class="st">"name"</span>: <span class="st">"plan"</span>, <span class="st">"strict"</span>: <span class="va">True</span>, <span class="st">"schema"</span>: {</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"steps"</span>],</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"properties"</span>: {<span class="st">"steps"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: {</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"id"</span>, <span class="st">"task"</span>, <span class="st">"tool"</span>, <span class="st">"deps"</span>],</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"properties"</span>: {</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"id"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>},</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"task"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"tool"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: [<span class="st">"search_papers"</span>, <span class="st">"read_papers"</span>, <span class="st">"none"</span>]},</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"deps"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>}},</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        }}}}}}}</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_plan(prompt):</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    msg <span class="op">=</span> ask_llm([{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}], system<span class="op">=</span>PLANNER_SYSTEM, response_format<span class="op">=</span>PLAN_FORMAT)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> validate_dag(Plan.model_validate_json(msg.content))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>PLANNER_SYSTEM <span class="op">=</span> (</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"You are a planner. Break the user's request into 4-7 steps forming a DAG.</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Each step has: id, task, tool (search_papers | read_papers | none), and deps.</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"deps = ids of the earlier steps whose OUTPUT this step needs. Rules:</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"- Only the first step(s) may have empty deps.</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"- A step that reads, writes or reviews something must depend on the step that produced it.</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"- Two steps that do not need each other's output must not depend on each other "</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"(so they can run in parallel)."</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> validate_dag(plan):</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""ตรวจว่า deps อ้างถึง step ที่มีอยู่ และไม่มี cycle"""</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> {s.<span class="bu">id</span> <span class="cf">for</span> s <span class="kw">in</span> plan.steps}</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> plan.steps:</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>        missing <span class="op">=</span> <span class="bu">set</span>(s.deps) <span class="op">-</span> ids</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="kw">not</span> missing, <span class="ss">f"step </span><span class="sc">{</span>s<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss"> depends on unknown steps </span><span class="sc">{</span>missing<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    done, remaining <span class="op">=</span> <span class="bu">set</span>(), {s.<span class="bu">id</span>: <span class="bu">set</span>(s.deps) <span class="cf">for</span> s <span class="kw">in</span> plan.steps}</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> remaining:</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>        ready <span class="op">=</span> [i <span class="cf">for</span> i, d <span class="kw">in</span> remaining.items() <span class="cf">if</span> d <span class="op">&lt;=</span> done]</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ready, <span class="ss">f"cycle detected among steps </span><span class="sc">{</span><span class="bu">sorted</span>(remaining)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> ready:</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>            done.add(i)<span class="op">;</span> remaining.pop(i)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> plan</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_plan(plan, results<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> results <span class="kw">or</span> {}</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> plan.steps:</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>        mark <span class="op">=</span> <span class="st">"✅"</span> <span class="cf">if</span> s.<span class="bu">id</span> <span class="kw">in</span> results <span class="cf">else</span> <span class="st">"⬜"</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>mark<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>s<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss">. </span><span class="sc">{</span>s<span class="sc">.</span>task<span class="sc">}</span><span class="ss">  [tool=</span><span class="sc">{</span>s<span class="sc">.</span>tool<span class="sc">}</span><span class="ss">, deps=</span><span class="sc">{</span>s<span class="sc">.</span>deps<span class="sc">}</span><span class="ss">]"</span>)</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>request <span class="op">=</span> <span class="st">"Write a 2-page report comparing transformer architectures for time-series forecasting."</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>plan <span class="op">=</span> ask_plan(request)</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"📋 PLAN"</span>)<span class="op">;</span> show_plan(plan)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>📋 PLAN
+  ⬜ 1. Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)  [tool=search_papers, deps=[]]
+  ⬜ 2. Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques  [tool=read_papers, deps=[1]]
+  ⬜ 3. Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))  [tool=read_papers, deps=[1]]
+  ⬜ 4. Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs  [tool=none, deps=[2, 3]]
+  ⬜ 5. Synthesize all findings into a structured 2-page report comparing the models  [tool=none, deps=[4]]</code></pre>
+</div>
+</div>
+<section id="executor-adaptive-replanning" class="level3">
+<h3 class="anchored" data-anchor-id="executor-adaptive-replanning">Executor + adaptive replanning</h3>
+<p>กลยุทธ์ที่ใช้คือ <strong>Adaptive</strong> (ตาราง 19.1) — replan เฉพาะเมื่อ step ไม่ผ่านเงื่อนไข</p>
+<p>เงื่อนไขในตัวอย่าง: รายงานเปรียบเทียบต้องมี paper <strong>อย่างน้อย 5 ฉบับ</strong> ถ้าค้นเจอน้อยกว่านั้น → replan</p>
+<div id="bfc107d7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:22:26.923481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:22:26.923219Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:25:14.367094Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:25:14.365602Z&quot;}}" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>MIN_PAPERS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_step(step):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""คืนเหตุผลที่ต้อง replan หรือ None ถ้าผ่าน"""</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> step.tool <span class="op">==</span> <span class="st">"search_papers"</span> <span class="kw">and</span> <span class="bu">len</span>(STATE[<span class="st">"papers_found"</span>]) <span class="op">&lt;</span> MIN_PAPERS:</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="ss">f"Step </span><span class="sc">{</span>step<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss"> found only </span><span class="sc">{</span><span class="bu">len</span>(STATE[<span class="st">'papers_found'</span>])<span class="sc">}</span><span class="ss"> papers; "</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                <span class="ss">f"the report needs at least </span><span class="sc">{</span>MIN_PAPERS<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replan(request, plan, results, reason):</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    done <span class="op">=</span> {i: results[i][:<span class="dv">300</span>] <span class="cf">for</span> i <span class="kw">in</span> results}</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> (</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"REPLAN. Original request: </span><span class="sc">{</span>request<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Current plan: </span><span class="sc">{</span>plan<span class="sc">.</span>model_dump_json()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Completed step outputs: </span><span class="sc">{</span>json<span class="sc">.</span>dumps(done, ensure_ascii<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Problem: </span><span class="sc">{</span>reason<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Return the full revised plan. Keep completed steps with the same ids and tasks. "</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Add new step(s) with new ids to fix the problem and update deps of later steps."</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_plan(prompt)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_step(step, plan, results):</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> {d: results[d] <span class="cf">for</span> d <span class="kw">in</span> step.deps}</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    task <span class="op">=</span> (<span class="ss">f"Overall goal: </span><span class="sc">{</span>request<span class="sc">}</span><span class="ch">\n</span><span class="ss">Your step: </span><span class="sc">{</span>step<span class="sc">.</span>task<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Outputs of prerequisite steps: </span><span class="sc">{</span>json<span class="sc">.</span>dumps(context, ensure_ascii<span class="op">=</span><span class="va">False</span>)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Do only this step. Be concise (under 200 words). "</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Keep any ids from tool results (e.g. paper ids like P1) in your output "</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>            <span class="st">"so that later steps can use them."</span>)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    tools <span class="op">=</span> [step.tool] <span class="cf">if</span> step.tool <span class="kw">in</span> TOOLS <span class="cf">else</span> []</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> tools:</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> react_agent(task, tools, max_iterations<span class="op">=</span><span class="dv">6</span>, indent<span class="op">=</span><span class="st">"      "</span>)</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm([{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: task}]).content</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> execute_plan(request, plan, max_replans<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    results, replans <span class="op">=</span> {}, <span class="dv">0</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">len</span>(results) <span class="op">&lt;</span> <span class="bu">len</span>(plan.steps):</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        ready <span class="op">=</span> [s <span class="cf">for</span> s <span class="kw">in</span> plan.steps</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>                 <span class="cf">if</span> s.<span class="bu">id</span> <span class="kw">not</span> <span class="kw">in</span> results <span class="kw">and</span> <span class="bu">all</span>(d <span class="kw">in</span> results <span class="cf">for</span> d <span class="kw">in</span> s.deps)]</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">▶️  ready to run: </span><span class="sc">{</span>[s.<span class="bu">id</span> <span class="cf">for</span> s <span class="kw">in</span> ready]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> step <span class="kw">in</span> ready:</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"   ⚙️  step </span><span class="sc">{</span>step<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>step<span class="sc">.</span>task<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>            out <span class="op">=</span> run_step(step, plan, results)</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>            reason <span class="op">=</span> check_step(step)</span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> reason <span class="kw">and</span> replans <span class="op">&lt;</span> max_replans:</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"   ⚠️  </span><span class="sc">{</span>reason<span class="sc">}</span><span class="ss"> → REPLAN"</span>)</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>                results[step.<span class="bu">id</span>] <span class="op">=</span> out</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>                plan <span class="op">=</span> replan(request, plan, results, reason)</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>                replans <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="st">"📋 REVISED PLAN"</span>)<span class="op">;</span> show_plan(plan, results)</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span>                      <span class="co"># คำนวณ ready ใหม่จาก plan ใหม่</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>            results[step.<span class="bu">id</span>] <span class="op">=</span> out</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> plan, results</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>STATE.update(papers_found<span class="op">=</span>[], search_calls<span class="op">=</span><span class="dv">0</span>)   <span class="co"># เริ่มฐานข้อมูลจำลองใหม่</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>final_plan, results <span class="op">=</span> execute_plan(request, plan)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📄 FINAL OUTPUT (last step)</span><span class="ch">\n</span><span class="st">"</span>, results[final_plan.steps[<span class="op">-</span><span class="dv">1</span>].<span class="bu">id</span>])</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(USAGE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+▶️  ready to run: [1]
+   ⚙️  step 1: Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)
+      💭 [1] The user wants to search for seminal and recent transformer-based time-series forecasting architectures. I should use the `search_papers` tool to find papers related to transformer-based time-series forecasting. I'll search for terms like "transformer architecture time-series forecasting", "Informer
+      🔧 [1] search_papers({"query": "transformer architectures for time-series forecasting Informer Autoformer PatchTST FEDformer"})
+      👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}]
+      💭 [2] The user wants me to search for seminal and recent transformer-based time-series forecasting architectures. I have performed the search using `search_papers`. The results are: - P1: Crossformer (2023) - P2: TimesFM (2024) - P3: Chronos (2024) Wait, the initial prompt mentioned Informer, Autoformer, 
+   ⚠️  Step 1 found only 3 papers; the report needs at least 5. → REPLAN
+📋 REVISED PLAN
+  ✅ 1. Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)  [tool=search_papers, deps=[]]
+  ⬜ 2. Search for additional specific models (Informer, Autoformer, PatchTST, FEDformer) to expand the paper list to at least 5 papers  [tool=search_papers, deps=[]]
+  ⬜ 3. Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques  [tool=read_papers, deps=[1, 2]]
+  ⬜ 4. Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))  [tool=read_papers, deps=[1, 2]]
+  ⬜ 5. Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs  [tool=none, deps=[3, 4]]
+  ⬜ 6. Synthesize all findings into a structured 2-page report comparing the models  [tool=none, deps=[5]]
+
+▶️  ready to run: [2]
+   ⚙️  step 2: Search for additional specific models (Informer, Autoformer, PatchTST, FEDformer) to expand the paper list to at least 5 papers
+      💭 [1] The user wants to search for specific transformer models used in time-series forecasting: Informer, Autoformer, PatchTST, and FEDformer. The goal is to expand a paper list to at least 5 papers. Plan: 1. Use `search_papers` to find papers for "Informer time-series forecasting", "Autoformer time-serie
+      🔧 [1] search_papers({"query": "Informer time-series forecasting"})
+      🔧 [1] search_papers({"query": "Autoformer time-series forecasting"})
+      🔧 [1] search_papers({"query": "PatchTST time-series forecasting"})
+      🔧 [1] search_papers({"query": "FEDformer time-series forecasting"})
+      ⏱️ [1] 4 tools ran in parallel: 0.0s
+      👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}, {"id": "P4", "title": "PatchTST", "year": 2023}, {"
+      👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}, {"id": "P4", "title": "PatchTST", "year": 2023}, {"
+      👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}, {"id": "P4", "title": "PatchTST", "year": 2023}, {"
+      👀 [1] [{"id": "P1", "title": "Crossformer", "year": 2023}, {"id": "P2", "title": "TimesFM", "year": 2024}, {"id": "P3", "title": "Chronos", "year": 2024}, {"id": "P4", "title": "PatchTST", "year": 2023}, {"
+      💭 [2] The user wants to expand a list of papers for a report on transformer architectures for time-series forecasting. I have searched for: - Informer - Autoformer - PatchTST - FEDformer The tool results returned a list of papers: P1: Crossformer (2023) P2: TimesFM (2024) P3: Chronos (2024) P4: PatchTST (
+
+▶️  ready to run: [3, 4]
+   ⚙️  step 3: Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques
+      💭 [1] The user wants me to perform a specific step in a larger task: writing a 2-page report comparing transformer architectures for time-series forecasting. The current step is: "Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniqu
+      🔧 [1] read_papers({"paper_ids": ["P1", "P2", "P3", "P4", "P5", "P6"]})
+      👀 [1] [{"title": "Crossformer", "key_method": "cross-dimension dependency, two-stage attention"}, {"title": "TimesFM", "key_method": "decoder-only foundation model for forecasting"}, {"title": "Chronos", "k
+      💭 [2] The user wants me to extract detailed architectural mechanisms from the provided papers (P1-P6) based on the tool output. Key findings from the tool: - P1 (Crossformer): cross-dimension dependency, two-stage attention. - P2 (TimesFM): decoder-only foundation model. - P3 (Chronos): value tokenization
+   ⚙️  step 4: Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))
+      💭 [1] * Goal: Write a 2-page report comparing transformer architectures for time-series forecasting. * Current Step: Read and extract empirical performance metrics (MSE, MAE, etc.) and computational complexity data (e.g., $O(L \log L)$ vs $O(L^2)$) for the identified papers. * Papers to investigate: P1 (C
+      🔧 [1] read_papers({"paper_ids": ["P1", "P2", "P3", "P4", "P5", "P6"]})
+      👀 [1] [{"title": "Crossformer", "key_method": "cross-dimension dependency, two-stage attention"}, {"title": "TimesFM", "key_method": "decoder-only foundation model for forecasting"}, {"title": "Chronos", "k
+      💭 [2] The user wants me to extract empirical performance metrics (MSE, MAE, etc.) and computational complexity (e.g., $O(L \log L)$ vs $O(L^2)$) for the identified papers: P1 (Crossformer), P2 (TimesFM), P3 (Chronos), P4 (PatchTST), P5 (iTransformer), and P6 (Moirai). Looking at the tool output: - P1: Cro
+
+▶️  ready to run: [5]
+   ⚙️  step 5: Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs
+
+▶️  ready to run: [6]
+   ⚙️  step 6: Synthesize all findings into a structured 2-page report comparing the models
+
+📄 FINAL OUTPUT (last step)
+ **Comparative Report: Transformer Architectures for Time-Series Forecasting**
+
+**Structural Paradigms**
+* **Temporal &amp; Cross-Dimensional Dependency:** **P4 (PatchTST)** utilizes patching to enhance local context and efficiency, while **P1 (Crossformer)** employs a two-stage mechanism to capture complex dependencies.
+* **Multivariate-Centric:** These models prioritize inter-variate relationships. **P5 (iTransformer)** inverts traditional attention to operate over variates instead of time steps, whereas **P6 (Moirai)** utilizes any-variate attention for universal forecasting.
+* **Language Modeling:** This paradigm treats forecasting as a sequence modeling task. **P3 (Chronos)** employs a T5-style architecture via value tokenization, while **P2 (TimesFM)** utilizes a decoder-only foundation model structure.
+
+**Efficiency and Generalization Trade-offs**
+A clear divergence exists between specialized and foundation-based approaches. Specialized architectures (**P1, P4, P5, P6**) offer higher computational efficiency by optimizing for specific temporal or variate dimensions. Conversely, foundation models (**P2, P3**) prioritize zero-shot generalization and cross-domain robustness, typically at the cost of increased computational complexity and memory requirements compared to task-specific models.
+{'llm_calls': 15, 'input_tokens': 5631, 'output_tokens': 14573, 'cost_usd': 0.004667070000000001}</code></pre>
+</div>
+</div>
+<p><strong>สังเกต:</strong> - step ที่ <code>deps</code> เหมือนกัน (เช่น ทำตาราง กับ เขียนบทนำ) จะ “ready” พร้อมกัน — ใน production รันขนานได้ - เมื่อค้นเจอ paper แค่ 3 ฉบับ harness ตรวจพบและสั่ง <strong>replan</strong> — planner เพิ่ม step ค้นหาให้กว้างขึ้น แล้วจึงพบ PatchTST, iTransformer — เหมือนตัวอย่างในตำรา - ค่าใช้จ่ายของ planning agent สูงกว่า ReAct หลายเท่า (ดู <code>USAGE</code>) — ตรงกับตาราง 19.3 - แต่ละ step เห็นเฉพาะ output ของ step ใน <code>deps</code> — ถ้า step ก่อนหน้าไม่ส่งข้อมูลสำคัญ (เช่น paper id) ต่อมา step ถัดไปจะทำงานไม่ได้ นี่คือเรื่อง <strong>state management</strong> ของ harness (§18.6) - <em>“The plan is a living document”</em> — plan ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้</p>
+</section>
+</section>
+<section id="part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3" class="level2">
+<h2 class="anchored" data-anchor-id="part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3">Part 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)</h2>
+<ol type="1">
+<li>Agent พยายามทำงาน (เขียนฟังก์ชัน)</li>
+<li>Evaluator ตรวจ (รัน unit tests ที่ <strong>agent มองไม่เห็นล่วงหน้า</strong>)</li>
+<li>ถ้าล้มเหลว agent เขียน <strong>reflection</strong> เป็นภาษาธรรมชาติ เก็บใน <code>reflection_memory</code></li>
+<li>รอบถัดไป reflection ทั้งหมดถูกใส่ใน prompt → เรียนรู้ข้ามรอบ <strong>โดยไม่อัปเดต weight</strong></li>
+</ol>
+<p>⚠️ <code>exec()</code> รันโค้ดที่ model สร้าง — ใช้ได้ใน notebook เพื่อการสอน แต่ production ต้องรันใน sandbox เสมอ</p>
+<div id="97220570" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:25:14.371359Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:25:14.370680Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:23.254644Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:23.252797Z&quot;}}" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>SPEC <span class="op">=</span> (<span class="st">"Write a Python function `parse_duration(s: str) -&gt; float` that converts a duration "</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">"string like '1h30m' into minutes (e.g. '1h30m' -&gt; 90). Return only the code in one "</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"```python block, no explanation."</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>HIDDEN_TESTS <span class="op">=</span> [            <span class="co"># evaluator's tests — agent ไม่เห็น</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"1h30m"</span>, <span class="dv">90</span>), (<span class="st">"2h"</span>, <span class="dv">120</span>), (<span class="st">"45m"</span>, <span class="dv">45</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"90s"</span>, <span class="fl">1.5</span>),           <span class="co"># seconds</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"1H 15M"</span>, <span class="dv">75</span>),         <span class="co"># uppercase + spaces</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"1.5h"</span>, <span class="dv">90</span>),           <span class="co"># decimals</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"1d"</span>, <span class="dv">1440</span>),           <span class="co"># days</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"abc"</span>, <span class="pp">ValueError</span>),    <span class="co"># invalid input must raise ValueError</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"10"</span>, <span class="pp">ValueError</span>),     <span class="co"># number without unit is ambiguous -&gt; ValueError</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_code(text):</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text.split(<span class="st">"```python"</span>)[<span class="op">-</span><span class="dv">1</span>].split(<span class="st">"```"</span>)[<span class="dv">0</span>] <span class="cf">if</span> <span class="st">"```"</span> <span class="kw">in</span> text <span class="cf">else</span> text</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(code_str):</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    ns <span class="op">=</span> {}</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">exec</span>(code_str, ns)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        fn <span class="op">=</span> ns[<span class="st">"parse_duration"</span>]</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="ss">f"code does not run: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    failures <span class="op">=</span> []</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> inp, want <span class="kw">in</span> HIDDEN_TESTS:</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        expects_error <span class="op">=</span> <span class="bu">isinstance</span>(want, <span class="bu">type</span>) <span class="kw">and</span> <span class="bu">issubclass</span>(want, <span class="pp">Exception</span>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>            got <span class="op">=</span> fn(inp)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> expects_error:</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>                failures.append(<span class="ss">f"parse_duration(</span><span class="sc">{</span>inp<span class="sc">!r}</span><span class="ss">) returned </span><span class="sc">{</span>got<span class="sc">}</span><span class="ss">, expected </span><span class="sc">{</span>want<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">abs</span>(got <span class="op">-</span> want) <span class="op">&gt;</span> <span class="fl">1e-9</span>:</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>                failures.append(<span class="ss">f"parse_duration(</span><span class="sc">{</span>inp<span class="sc">!r}</span><span class="ss">) returned </span><span class="sc">{</span>got<span class="sc">}</span><span class="ss">, expected </span><span class="sc">{</span>want<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> (expects_error <span class="kw">and</span> <span class="bu">isinstance</span>(e, want)):</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>                failures.append(<span class="ss">f"parse_duration(</span><span class="sc">{</span>inp<span class="sc">!r}</span><span class="ss">) raised </span><span class="sc">{</span><span class="bu">type</span>(e)<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> failures</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reflexion(max_attempts<span class="op">=</span><span class="dv">4</span>):</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    reflection_memory <span class="op">=</span> []</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_attempts <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>        prompt <span class="op">=</span> SPEC</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> reflection_memory:</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>            prompt <span class="op">+=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">Lessons from your previous failed attempts:</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="op">\</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"- </span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> r <span class="kw">in</span> reflection_memory)</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>        code_str <span class="op">=</span> extract_code(ask_llm([{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}]).content)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>        failures <span class="op">=</span> evaluate(code_str)</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">🧪 attempt </span><span class="sc">{</span>attempt<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(HIDDEN_TESTS) <span class="op">-</span> <span class="bu">len</span>(failures)<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(HIDDEN_TESTS)<span class="sc">}</span><span class="ss"> tests passed"</span>)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> failures:</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"✅ all tests passed"</span>)</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> attempt <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="st">"   (ผ่านตั้งแต่รอบแรก — ลองเพิ่ม HIDDEN_TESTS ที่ยากขึ้นเพื่อดู reflection)"</span>)</span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> code_str, reflection_memory</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> f <span class="kw">in</span> failures:</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"   ❌"</span>, f)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>        reflection <span class="op">=</span> ask_llm([{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>:</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"Your code:</span><span class="ch">\n</span><span class="sc">{</span>code_str<span class="sc">}</span><span class="ch">\n</span><span class="ss">Failed tests:</span><span class="ch">\n</span><span class="ss">"</span> <span class="op">+</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(failures) <span class="op">+</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>            <span class="st">"</span><span class="ch">\n</span><span class="st">In ONE sentence, write a lesson for your next attempt (start with 'I failed because')."</span>}]).content.strip()</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>        reflection_memory.append(reflection)</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"   📝 reflection:"</span>, reflection)</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> code_str, reflection_memory</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>final_code, memory <span class="op">=</span> reflexion()</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">REFLECTION MEMORY:"</span>, <span class="op">*</span>memory, sep<span class="op">=</span><span class="st">"</span><span class="ch">\n</span><span class="st">- "</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+🧪 attempt 1: 3/9 tests passed
+   ❌ parse_duration('90s') returned 0.0, expected 1.5
+   ❌ parse_duration('1H 15M') returned 0.0, expected 75
+   ❌ parse_duration('1.5h') returned 300.0, expected 90
+   ❌ parse_duration('1d') returned 0.0, expected 1440
+   ❌ parse_duration('abc') returned 0.0, expected ValueError
+   ❌ parse_duration('10') returned 0.0, expected ValueError
+   📝 reflection: I failed because my regex only captured integers and lowercase 'h' or 'm', failing to handle decimals, case-insensitivity, additional units like 's' and 'd', and the requirement to raise a ValueError for invalid inputs.
+
+🧪 attempt 2: 8/9 tests passed
+   ❌ parse_duration('1H 15M') raised ValueError: Invalid duration format: '1h 15m'
+   📝 reflection: I failed because my strict validation logic compared the reconstructed string against the original input without accounting for optional whitespace between the duration components.
+
+🧪 attempt 3: 9/9 tests passed
+✅ all tests passed
+
+REFLECTION MEMORY:
+- I failed because my regex only captured integers and lowercase 'h' or 'm', failing to handle decimals, case-insensitivity, additional units like 's' and 'd', and the requirement to raise a ValueError for invalid inputs.
+- I failed because my strict validation logic compared the reconstructed string against the original input without accounting for optional whitespace between the duration components.</code></pre>
+</div>
+</div>
+</section>
+<section id="part-4-tool-use-patterns-19.2.4" class="level2">
+<h2 class="anchored" data-anchor-id="part-4-tool-use-patterns-19.2.4">Part 4 — Tool-use patterns (§19.2.4)</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>ดูที่ไหนใน notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single-turn</td>
+<td>4.1</td>
+</tr>
+<tr class="even">
+<td>Multi-tool (parallel)</td>
+<td>4.2</td>
+</tr>
+<tr class="odd">
+<td>Sequential (pipeline)</td>
+<td>Part 1 (search → read)</td>
+</tr>
+<tr class="even">
+<td>Nested (agent-as-tool)</td>
+<td>4.3</td>
+</tr>
+<tr class="odd">
+<td>Fallback</td>
+<td>4.4</td>
+</tr>
+</tbody>
+</table>
+<section id="single-turn-tool-เดยว-llm-call-2-ครง" class="level3">
+<h3 class="anchored" data-anchor-id="single-turn-tool-เดยว-llm-call-2-ครง">4.1 Single-turn — tool เดียว, LLM call 2 ครั้ง</h3>
+<div id="4b48c36f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:29:23.260481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:29:23.260195Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:28.229654Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:28.228219Z&quot;}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>before <span class="op">=</span> USAGE[<span class="st">"llm_calls"</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(react_agent(<span class="st">"What is (17 * 23) + 9? Use the calculator."</span>, [<span class="st">"calculator"</span>]))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"LLM calls:"</span>, USAGE[<span class="st">"llm_calls"</span>] <span class="op">-</span> before)   <span class="co"># คาดว่า = 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>💭 [1] The user wants to calculate the result of the expression (17 * 23) + 9. I should use the calculator tool for this. 1. **Identify the expression:** (17 * 23) + 9 2. **Formulate the tool call:** `calculator(expression="(17 * 23) + 9")`
+🔧 [1] calculator({"expression": "(17 * 23) + 9"})
+👀 [1] 400
+(17 * 23) + 9 = 400
+LLM calls: 2</code></pre>
+</div>
+</div>
+</section>
+<section id="multi-tool-parallel-tool-อสระตอกน-รนพรอมกน" class="level3">
+<h3 class="anchored" data-anchor-id="multi-tool-parallel-tool-อสระตอกน-รนพรอมกน">4.2 Multi-tool (parallel) — tool อิสระต่อกัน รันพร้อมกัน</h3>
+<p>แต่ละ tool จำลอง latency 1.5 วินาที ถ้ารันทีละตัวจะใช้ ~4.5 วินาที แต่ <code>react_agent</code> รันพร้อมกันด้วย <code>ThreadPoolExecutor</code> → <strong>Latency = max(individual calls)</strong> แทนที่จะเป็นผลรวม</p>
+<div id="dd37e5c2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:29:28.236747Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:29:28.236288Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:37.319118Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:37.317625Z&quot;}}" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slow(value):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">1.5</span>)<span class="op">;</span> <span class="cf">return</span> value</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Get the latest stock price for a ticker."</span>, {<span class="st">"ticker"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_stock_price(ticker):</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> slow(json.dumps({<span class="st">"ticker"</span>: ticker, <span class="st">"price_usd"</span>: <span class="fl">187.4</span>}))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Get today's weather for a city."</span>, {<span class="st">"city"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_weather(city):</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> slow(json.dumps({<span class="st">"city"</span>: city, <span class="st">"forecast"</span>: <span class="st">"rain, 29°C"</span>}, ensure_ascii<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Get today's calendar events."</span>, {<span class="st">"date"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_calendar(date):</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> slow(json.dumps([{<span class="st">"time"</span>: <span class="st">"14:00"</span>, <span class="st">"event"</span>: <span class="st">"Thesis meeting"</span>}]))</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>today <span class="op">=</span> datetime.date.today().isoformat()</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(react_agent(<span class="ss">f"Today is </span><span class="sc">{</span>today<span class="sc">}</span><span class="ss">. Give me a morning brief: AAPL stock price, Bangkok weather, "</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"and my calendar for today. Fetch all three at once."</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                  [<span class="st">"get_stock_price"</span>, <span class="st">"get_weather"</span>, <span class="st">"get_calendar"</span>]))</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ถ้ารันทีละตัวจะใช้ ~4.5s (3 × 1.5s)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>💭 [1] The user wants a morning brief consisting of three pieces of information: 1. AAPL stock price. 2. Weather in Bangkok. 3. Calendar events for today (2026-11-05). I need to call three different functions: - `get_stock_price(ticker='AAPL')` - `get_weather(city='Bangkok')` - `get_calendar(date='2026-11-
+🔧 [1] get_stock_price({"ticker": "AAPL"})
+🔧 [1] get_weather({"city": "Bangkok"})
+🔧 [1] get_calendar({"date": "2026-11-05"})
+⏱️ [1] 3 tools ran in parallel: 1.5s
+👀 [1] {"ticker": "AAPL", "price_usd": 187.4}
+👀 [1] {"city": "Bangkok", "forecast": "rain, 29°C"}
+👀 [1] [{"time": "14:00", "event": "Thesis meeting"}]
+Good morning! Here is your brief for Thursday, November 5, 2026:
+
+*   **Stock Update:** AAPL is currently trading at **$187.40**.
+*   **Bangkok Weather:** Expect **rain** today with a high of **29°C**.
+*   **Your Schedule:** You have one event on your calendar: **Thesis meeting** at **14:00**.
+
+Have a great day!
+ถ้ารันทีละตัวจะใช้ ~4.5s (3 × 1.5s)</code></pre>
+</div>
+</div>
+</section>
+<section id="nested-agent-as-tool" class="level3">
+<h3 class="anchored" data-anchor-id="nested-agent-as-tool">4.3 Nested (agent-as-tool)</h3>
+<p>Parent agent เห็น sub-agent เป็นแค่ tool ตัวหนึ่ง (black box) แต่ข้างในคือ ReAct agent อีกตัวที่มี system prompt และ tool ของตัวเอง</p>
+<div id="5bba4365" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:29:37.322881Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:29:37.322511Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:52.692941Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:52.691740Z&quot;}}" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="at">@tool</span>(<span class="st">"Delegate a math word problem to a specialist math agent. Returns the worked answer."</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"problem"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}})</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_math_agent(problem):</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"      ↳ 🤖 math sub-agent started"</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> react_agent(problem, [<span class="st">"calculator"</span>],</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                       system<span class="op">=</span><span class="st">"You are a careful math agent. Always use the calculator for arithmetic."</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                       indent<span class="op">=</span><span class="st">"      "</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(react_agent(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A class has 3 sections of 42 students. Each student needs 2 notebooks costing 18.5 baht each. "</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"How much do all notebooks cost? Delegate the math."</span>, [<span class="st">"ask_math_agent"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>💭 [1] The user wants to calculate the total cost of notebooks for a class. The class has 3 sections of 42 students each. Each student needs 2 notebooks. Each notebook costs 18.5 baht. 1. Calculate total students: 3 sections * 42 students/section = 126 students. 2. Calculate total notebooks: 126 students *
+🔧 [1] ask_math_agent({"problem": "A class has 3 sections of 42 students. Each student needs 2 notebooks costing 18.5 baht each. How much do all notebooks cost?"})
+      ↳ 🤖 math sub-agent started
+      💭 [1] The objective is to calculate the total cost of notebooks for all students in the class. * Number of sections: 3 * Number of students per section: 42 * Notebooks per student: 2 * Cost per notebook: 18.5 baht * Step 1: Find the total number of students. * Total students = (Number of sections) * (Stud
+👀 [1] To find the total cost of all the notebooks, we can follow these steps:
+
+1.  **Find the total number of students:**
+    3 sections × 42 students per section = 126 students
+
+2.  **Find the total number
+The total cost for all the notebooks is 4,662 baht.
+
+Here is the breakdown of the calculation:
+1.  **Total students:** 3 sections × 42 students = 126 students
+2.  **Total notebooks:** 126 students × 2 notebooks = 252 notebooks
+3.  **Total cost:** 252 notebooks × 18.5 baht = 4,662 baht</code></pre>
+</div>
+</div>
+</section>
+<section id="fallback-graceful-degradation" class="level3">
+<h3 class="anchored" data-anchor-id="fallback-graceful-degradation">4.4 Fallback (graceful degradation)</h3>
+<p>Harness ลอง tool ตามลำดับความสำคัญ — <strong>model ไม่ต้องรู้เรื่อง fallback เลย</strong> (§19.2.4, หลัก <em>“Plan for failure”</em> §19.3)</p>
+<div id="1d80d2e1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:29:52.697004Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:29:52.696676Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:52.705720Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:52.704859Z&quot;}}" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> primary_search(q):  <span class="cf">raise</span> <span class="pp">TimeoutError</span>(<span class="st">"primary API timed out"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> backup_search(q):   <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"429 rate limited"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cached_search(q):   <span class="cf">return</span> json.dumps([{<span class="st">"title"</span>: <span class="st">"PatchTST"</span>, <span class="st">"source"</span>: <span class="st">"cache (2 days old)"</span>}])</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_with_fallback(query):</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, fn <span class="kw">in</span> [(<span class="st">"primary"</span>, primary_search), (<span class="st">"backup"</span>, backup_search), (<span class="st">"cache"</span>, cached_search)]:</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> fn(query)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"   ✅ </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> succeeded"</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"   ❌ </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Search is currently unavailable."</span>   <span class="co"># สุดท้าย: แจ้ง model ตรงๆ</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(search_with_fallback(<span class="st">"time-series transformer"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ❌ primary failed: primary API timed out
+   ❌ backup failed: 429 rate limited
+   ✅ cache succeeded
+[{"title": "PatchTST", "source": "cache (2 days old)"}]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="สรป" class="level2">
+<h2 class="anchored" data-anchor-id="สรป">สรุป</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>LLM calls ในตำรา (ตาราง 19.3)</th>
+<th>ในโค้ดนี้</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ReAct</td>
+<td>3–25</td>
+<td><code>react_agent()</code></td>
+</tr>
+<tr class="even">
+<td>Planning agent</td>
+<td>5–50+</td>
+<td><code>execute_plan()</code> (ใช้ ReAct ในแต่ละ step)</td>
+</tr>
+<tr class="odd">
+<td>Reflection</td>
+<td>+50% overhead</td>
+<td><code>reflexion()</code></td>
+</tr>
+</tbody>
+</table>
+<p>ดูจำนวน LLM calls และ tokens ที่ใช้จริงทั้งหมดได้จาก <code>USAGE</code> ด้านล่าง</p>
+<div id="d923faf3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-11-05T16:29:52.707461Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-11-05T16:29:52.707341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-11-05T16:29:52.709936Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-11-05T16:29:52.709402Z&quot;}}" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(USAGE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'llm_calls': 27, 'input_tokens': 7945, 'output_tokens': 30258, 'cost_usd': 0.00967257}</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch19/19-2-autonomous-agents/index.html" class="pagination-link" aria-label="19.2 Autonomous Agent Patterns">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">19.2 Autonomous Agent Patterns</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
