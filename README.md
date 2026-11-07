@@ -2,6 +2,8 @@
 
 Notebook ประกอบคลิป YouTube ชุด *Agentic AI ภาษาไทย* อิงจากตำรา *The Hitchhiker's Guide to Agentic AI* (Haggai Roitman, CC BY-SA 4.0)
 
+📖 **อ่านเนื้อหาบทเรียนออนไลน์:** https://vru-ai-swu.github.io/agentic-ai-students/
+
 แต่ละ lab มี 2 ไฟล์
 
 - **✏️ Starter** — โค้ดส่วนใหญ่เตรียมไว้แล้ว ดูคลิปแล้วเติมเฉพาะจุด `✏️ TODO` ทุกจุดบอกเวลาในคลิปที่อธิบายโค้ดตรงนั้น
