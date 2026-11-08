@@ -1002,6 +1002,33 @@ Here is the breakdown of the calculation:
 </section>
 
 </main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

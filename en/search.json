@@ -1,0 +1,275 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "",
+    "text": "Preface\nThese learning modules adapt the textbook The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems (Roitman 2026). The videos are narrated in Thai with English subtitles; this English edition of the reading pages is for learners who prefer English.\nEach module has three parts that go together:",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html",
+    "href": "ch19/19-1-workflow-patterns/index.html",
+    "title": "EP04 Workflow Patterns",
+    "section": "",
+    "text": "Learning objectives\nAfter this module you will be able to",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#learning-objectives",
+    "href": "ch19/19-1-workflow-patterns/index.html#learning-objectives",
+    "title": "EP04 Workflow Patterns",
+    "section": "",
+    "text": "Explain how a workflow differs from an agent, and say when a workflow is enough\nDesign a prompt chain with validation gates between steps\nBuild a router that classifies once, then hands off to a specialist handler\nCall an LLM in parallel with sectioning and voting, and merge the results in code\nExplain how orchestrator-workers differs from parallelization\nBuild an evaluator-optimizer loop with a threshold and a retry budget",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#workflow-or-agent",
+    "href": "ch19/19-1-workflow-patterns/index.html#workflow-or-agent",
+    "title": "EP04 Workflow Patterns",
+    "section": "Workflow or agent",
+    "text": "Workflow or agent\nThe first thing chapter 19 stresses is that not every task needs an agent (Roitman 2026, sec. 19.1). In a workflow, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an agent, the LLM decides what to do next — like handing it the steering wheel.\n\n\n\nTable 1.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need dynamic routing or open-ended exploration\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nMove to an agent only when the task genuinely needs dynamic routing or open-ended exploration. The running example in this module is the Cogito Learn teaching assistant: we already know student questions come in only a few kinds, so a workflow is enough.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
+    "href": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
+    "title": "EP04 Workflow Patterns",
+    "section": "1. Prompt Chaining",
+    "text": "1. Prompt Chaining\nSplit a big task into a fixed sequence of LLM calls; the output of one step is the context of the next. Between steps, validation gates catch errors early — like quality checks between stations on a factory conveyor belt. A gate can be an LLM or plain code.\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;is it an abstract?\"}\n  G0 --&gt; S1[\"step 1&lt;br/&gt;extract key points\"]\n  S1 --&gt; G1{\"gate (code)&lt;br/&gt;exactly 3 points?\"}\n  G1 --&gt; S2[\"step 2&lt;br/&gt;write Thai summary\"]\n  S2 --&gt; G2{\"gate (code)&lt;br/&gt;≤ 5 lines?\"}\n  G2 --&gt; O[\"✅ summary\"]\n\n\n\n\nFigure 1.1: The Lab 1 chain: abstract → key points → Thai summary; if any gate fails, the chain stops\n\n\n\n\n\nEach step can use a different prompt, model or temperature, and every intermediate result can be inspected. It fits tasks that are already a sequence of steps: content generation, data transformation, multi-stage analysis.\n\nIn Lab 1: the abstract passes every gate, an exam-room notice is stopped at the first gate, and when the summary is limited to two lines, the code gate stops it midway.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#routing",
+    "href": "ch19/19-1-workflow-patterns/index.html#routing",
+    "title": "EP04 Workflow Patterns",
+    "section": "2. Routing",
+    "text": "2. Routing\nA classifier (an LLM or a traditional model) looks at the input first, then sends it to a specialist handler — like hospital triage: one check, then the right department.\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ student question\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"theory-explaining prompt\"]\n  C -- code_error --&gt; A2[\"code-running tool&lt;br/&gt;+ explain the real error\"]\n  C -- admin --&gt; A3[\"small, cheap model&lt;br/&gt;+ course info\"]\n\n\n\n\nFigure 1.2: The Lab 2 router: classify once, then each kind gets the prompt, tool or model that suits it\n\n\n\n\n\nRouting fits when there are clearly distinct kinds of input and each needs a different prompt, tool or model. The textbook’s examples are customer-support triage and multi-modal input handling.\n\nIn Lab 2: all six questions land in the right place, including a trick question that contains the word “error” but is really a concept question.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#parallelization",
+    "href": "ch19/19-1-workflow-patterns/index.html#parallelization",
+    "title": "EP04 Workflow Patterns",
+    "section": "3. Parallelization",
+    "text": "3. Parallelization\nCall the LLM several times at once and let our code merge the results. The textbook describes two kinds:\n\nSectioning (fan-out): split the work into independent parts — e.g. review code for security, performance and style at the same time — then merge, deduplicate and rank by severity. Like three teachers each marking a different section of an exam at the same time.\nVoting: send the same prompt N times with different seeds or temperatures, then pick an answer by majority vote, a reward model, or an LLM judge.\n\nIf the calls take \\(t_1, \\dots, t_n\\), the parallel run takes about as long as the slowest call, not the sum:\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{1.1}\\]\n\nIn Lab 3: three reviews one at a time took 3.9 s; all at once took 1.6 s, as Equation 1.1 predicts. Voting five times gave “low” four times. (Your numbers will vary with server speed.)",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
+    "href": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
+    "title": "EP04 Workflow Patterns",
+    "section": "4. Orchestrator-Workers",
+    "text": "4. Orchestrator-Workers\nNow the LLM decides how to split the work. The orchestrator analyses the task and writes a plan of subtasks; workers, which may use different prompts or tools, do each subtask; a synthesizer merges the results into one answer — like a head chef who reads the order before deciding how to split the work among the cooks.\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(writes a JSON plan)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 one answer\"]\n\n\n\n\nFigure 1.3: Orchestrator-workers: how many subtasks, and of which kind, comes from the model, not the code\n\n\n\n\n\nUnlike parallelization, the split is not hard-coded. The textbook recommends it for open-ended tasks where the number and kind of subtasks can’t be known in advance, such as “refactor this codebase”.\n\nIn Lab 4: the exact same code, two goals, two different plans — the first goal got four subtasks; the question about AI hints got two, and paper P2 wasn’t used at all.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
+    "href": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
+    "title": "EP04 Workflow Patterns",
+    "section": "5. Evaluator-Optimizer",
+    "text": "5. Evaluator-Optimizer\nA feedback loop between two models: a generator produces work, an evaluator scores it against explicit criteria. Below the threshold, the evaluator’s critique is appended to the generator’s context and it tries again — until the work passes or the retry budget runs out. Like a writer and an editor.\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;translate into Thai\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;meaning · terms · fluency\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ pass\"]\n  Ev -- \"below\" --&gt; B{\"budget&lt;br/&gt;left?\"}\n  B -- yes --&gt; C[\"append critique&lt;br/&gt;to context\"] --&gt; Gen\n  B -- no --&gt; L[\"return last draft\"]\n\n\n\n\nFigure 1.4: The Lab 5 evaluator-optimizer loop, with a threshold and a retry budget\n\n\n\n\n\nIt fits tasks with clear quality criteria — code that must pass tests, writing that must follow a style guide, translation that must keep the meaning — and it improves results without training the model.\n\nIn Lab 5: the first draft scored 6/10 because technical terms were translated into Thai; after the critique went into the context, round two scored 10/10 — even though the generator never saw the glossary.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#the-five-patterns-side-by-side",
+    "href": "ch19/19-1-workflow-patterns/index.html#the-five-patterns-side-by-side",
+    "title": "EP04 Workflow Patterns",
+    "section": "The five patterns side by side",
+    "text": "The five patterns side by side\n\n\n\nTable 1.2: The five workflow patterns\n\n\n\n\n\n\n\n\n\n\n\nPattern\nWho sets the path\nLLM calls per input\nFits\n\n\n\n\nPrompt chaining\nCode (fixed order)\nOne per step\nTasks that are a sequence of steps\n\n\nRouting\nCode + classifier\n1 + handler\nClearly distinct kinds of input\n\n\nParallelization\nCode (fixed split)\nN at once\nIndependent parts, or several opinions\n\n\nOrchestrator-workers\nLLM plans, code runs\n1 + subtasks + 1\nOpen-ended tasks that can’t be split in advance\n\n\nEvaluator-optimizer\nCode (loop + budget)\n2 per round\nTasks with clear quality criteria\n\n\n\n\n\n\nAll five run the LLM on a path the system defines, so they stay predictable, testable and affordable — and they compose: a router can hand off to a chain, or one step of a chain can be an evaluator-optimizer. The last two already give the model more say, which is the bridge to autonomous agents in EP05.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#lab",
+    "href": "ch19/19-1-workflow-patterns/index.html#lab",
+    "title": "EP04 Workflow Patterns",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nTable 1.3: EP04 notebooks (English). Every lab is standalone; installation and API key setup are in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nThe data in the code (abstracts, questions, reviewed code) is simulated for teaching; every model output shown in the videos is from a real run.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#review-questions",
+    "href": "ch19/19-1-workflow-patterns/index.html#review-questions",
+    "title": "EP04 Workflow Patterns",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhy is a workflow enough for the teaching assistant that answers student questions?\nIn Figure 1.1, what kind of error would reach the summary if there were no gate after step 1?\nWhy does the classifier in Figure 1.2 answer with an enum at temperature 0?\nFrom Equation 1.1, how would adding a fourth reviewer change the parallel time?\nHow does orchestrator-workers differ from sectioning?\nIn Figure 1.4, what happens with a threshold of 10 and a budget of 1?",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#references",
+    "href": "ch19/19-1-workflow-patterns/index.html#references",
+    "title": "EP04 Workflow Patterns",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html",
+    "href": "ch19/19-2-autonomous-agents/index.html",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "",
+    "text": "Learning objectives\nAfter this module you will be able to",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#learning-objectives",
+    "href": "ch19/19-2-autonomous-agents/index.html#learning-objectives",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "",
+    "text": "Explain the difference between a workflow and an autonomous agent\nExplain the ReAct loop and the four things its harness must have\nDesign a plan as a DAG and choose a suitable replanning strategy\nExplain how Reflexion lets an agent learn across attempts without training\nChoose a tool-use pattern for a task, and write the code for each pattern",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#from-workflow-to-agent",
+    "href": "ch19/19-2-autonomous-agents/index.html#from-workflow-to-agent",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "From workflow to agent",
+    "text": "From workflow to agent\nIn EP04 (§19.1) we studied workflow patterns, where the program — not the model — sets the order of work. The autonomous agent patterns in this section let the LLM control the execution flow itself: which tool to call, when, and when to stop (Roitman 2026, sec. 19.2).\n\n\n\nTable 2.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need flexible decisions\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nThe textbook recommends an agent only when the task genuinely needs dynamic routing or open-ended exploration.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#react-reason-act",
+    "href": "ch19/19-2-autonomous-agents/index.html#react-reason-act",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "ReAct (Reason + Act)",
+    "text": "ReAct (Reason + Act)\nReAct is the basic pattern behind almost every agent. The LLM alternates between a Thought (what to do), an Action (call a tool) and an Observation (read the result), looping until it has a final answer.\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{2.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"no tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nFigure 2.1: The ReAct loop: the agent alternates between thinking and acting until a stop condition\n\n\n\n\n\nThe harness around the ReAct loop (Figure 2.1) needs four things:\n\nScratchpad — Thought steps are logged but not shown to the user\nTool parsing — structured tool calls are extracted from the model’s output\nMax iterations — always cap the number of loops (typically 10–25)\nTermination — stop when the model emits a special action such as final_answer, or makes no tool call\n\n\nIn the coding demo: react_agent() has comments ①–④ matching these four.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#planning-agents",
+    "href": "ch19/19-2-autonomous-agents/index.html#planning-agents",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Planning Agents",
+    "text": "Planning Agents\nReAct decides one step at a time, which can wander on long tasks. A planning agent first builds an explicit plan, then executes it and revises it along the way. Chapter 18 calls this Plan-and-Execute, with three phases: planning, execution (possibly with a cheaper model) and plan revision.\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{2.2}\\]\n\nExample: a report comparing transformers for time series\nThe user asks: “Write a 2-page report comparing transformer architectures for time-series forecasting.” The planner writes a 6-step plan; each step lists in deps the steps that must finish first, so the plan is a DAG (Directed Acyclic Graph), as in Figure 2.2.\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nFigure 2.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each other, so they can run in parallel\n\n\n\n\n\nThe harness tracks dependencies and executes only the steps whose prerequisites are all done.\n\n\nAdaptive replanning\nAfter step 1, the search finds only 3 relevant papers, so the agent replans: it adds a sub-step that widens the search to neighbouring work (e.g. PatchTST, iTransformer), then continues from step 2 with more material.\n\n\n\n\n\n\nNoteKey insight\n\n\n\nA plan is a living document — it gives structure, but adapts to what the agent observes.\n\n\n\n\n\nTable 2.2: Planning strategies (adapted from Table 19.1)\n\n\n\n\n\n\n\n\n\n\nStrategy\nWhen it replans\nCharacter\n\n\n\n\nPlan-then-Execute\nNever\nSimple, but brittle to surprises\n\n\nAdaptive\nWhen a step fails\nModerate cost\n\n\nContinuous\nEvery step\nExpensive but robust\n\n\nHierarchical\nWhen a sub-plan finishes\nFixed top-level plan, dynamic sub-plans\n\n\n\n\n\n\n\nIn the coding demo: Part 2 uses the Adaptive strategy and calls react_agent() to execute each step — patterns compose.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#reflection-and-self-critique",
+    "href": "ch19/19-2-autonomous-agents/index.html#reflection-and-self-critique",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Reflection and Self-Critique",
+    "text": "Reflection and Self-Critique\nAn agent stops to evaluate its own path at three levels:\n\nOutput validation — “Is this right? Did I miss anything?”\nTrajectory review — look back over the last k steps for mistakes or waste\nStrategy revision — “Am I solving the right problem?”\n\n\nReflexion\nReflexion keeps a reflection memory. After each failure, the agent writes a lesson in natural language (e.g. “I failed because I didn’t check the edge case”) and puts these lessons in the next attempt’s prompt — so it learns across episodes without updating any weights.\n\nIn the coding demo: Part 3 has the agent write parse_duration(), checked by unit tests the agent can’t see in advance.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#tool-use-patterns",
+    "href": "ch19/19-2-autonomous-agents/index.html#tool-use-patterns",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Tool-Use Patterns",
+    "text": "Tool-Use Patterns\n\n\n\nTable 2.3: Tool invocation patterns (adapted from Table 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nDescription\nExample\n\n\n\n\nSingle-turn\nOne tool call per response (2 LLM calls)\nSimple Q&A with search\n\n\nMulti-tool\nSeveral tool calls at once in one response\nsearch + calculate + format\n\n\nSequential\nOne tool’s output is the next tool’s input\nsearch → read → extract\n\n\nNested\nA tool call runs another agent\na code agent calls a test runner\n\n\nFallback\nIf the main tool fails, try a backup\nAPI → scrape → cache\n\n\n\n\n\n\nThings to remember:\n\nMulti-tool cuts latency a lot, but the tools must be independent, and all tool results go back in a single message\nSequential: the harness must manage the growing context, and may need to summarize along the way\nNested: the parent agent sees the sub-agent as a black-box function\nFallback is handled in the harness; the model doesn’t need to know",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#which-pattern-to-choose",
+    "href": "ch19/19-2-autonomous-agents/index.html#which-pattern-to-choose",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Which pattern to choose",
+    "text": "Which pattern to choose\n\n\n\nTable 2.4: Choosing a pattern (adapted from Table 19.3)\n\n\n\n\n\n\n\n\n\n\n\nPattern\nComplexity\nLLM calls\nFits\n\n\n\n\nReAct\nMedium\n3–25 (loop)\nGeneral tool use, exploration\n\n\nPlanning agent\nHigh\n5–50+\nLong, multi-step tasks\n\n\nReflection\nHigh\n+50% overhead\nTasks often wrong on the first try\n\n\n\n\n\n\nStart with the simplest pattern and move up only when the simpler one genuinely isn’t enough — and patterns compose.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#lab",
+    "href": "ch19/19-2-autonomous-agents/index.html#lab",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nTable 2.5: EP05 notebooks (English)\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — ReAct Loop\nColab\nColab\n\n\nLab 2 — Planning Agent\nColab\nColab\n\n\nLab 3 — Reflexion\nColab\nColab\n\n\nLab 4 — Tool-Use Patterns\nColab\nColab\n\n\nLab 5 (bonus) — From scratch to LangGraph\nColab\nColab",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#review-questions",
+    "href": "ch19/19-2-autonomous-agents/index.html#review-questions",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhy does the textbook recommend starting with a workflow before an agent?\nWhat goes wrong in a ReAct loop with no max iterations?\nIn Figure 2.2, which steps can run in parallel, and why?\nHow does Reflexion differ from fine-tuning a model?\nWhy can’t the multi-tool pattern be used for a tool that needs another tool’s result?",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html#references",
+    "href": "ch19/19-2-autonomous-agents/index.html#references",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+    ]
+  }
+]
