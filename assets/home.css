@@ -6,7 +6,15 @@
 /* Hero */
 .course-home .hero { padding: 2.2rem 1.6rem 1.8rem; margin: .5rem 0 1.8rem; border-radius: 18px;
   background: linear-gradient(135deg, #eaf3fd 0%, #f6f1ff 100%); border: 1px solid var(--home-line); }
-.course-home .hero .eyebrow { font-size: .85rem; letter-spacing: .04em; color: var(--home-muted); margin: 0 0 .4rem; }
+/* Channel pill: says the lectures are videos on the Cogito-Space YouTube channel */
+.course-home .hero .channel-pill { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .15rem .5rem;
+  padding: .35rem .85rem .35rem .4rem; margin: 0 0 .9rem; border-radius: 14px; background: #fff;
+  border: 1px solid #f3c7c7; color: var(--home-ink); text-decoration: none; font-size: .92rem; }
+.course-home .hero .channel-pill:hover { border-color: #ff0033; box-shadow: 0 2px 8px rgba(255, 0, 51, .12); }
+.course-home .hero .channel-pill strong { color: #c4001f; }
+.course-home .hero .yt-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.9rem; height: 1.3rem;
+  border-radius: 6px; background: #ff0033; color: #fff; font-size: .7rem; }
+.course-home .hero .yt-sub { color: var(--home-muted); font-size: .85rem; }
 .course-home .hero .hero-title { display: block; font-size: clamp(1.9rem, 4.5vw, 2.7rem); font-weight: 600; line-height: 1.2;
   color: var(--home-ink); margin: 0 0 .7rem; border: 0; }
 .course-home .hero .lead { font-size: 1.08rem; color: #3b4652; max-width: 46rem; margin-bottom: 1.2rem; }
