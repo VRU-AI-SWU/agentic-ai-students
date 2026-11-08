@@ -69,3 +69,9 @@
 /* The page heading ("หน้าแรก"/"Home") names the page in the sidebar; the hero replaces it on the page. */
 .course-home main section.level1 > h1 { display: none; }
 .course-home .stat p, .course-home .card-item p:last-child { margin-bottom: 0; }
+/* Instructor: byline in the hero + a card near the end */
+.course-home .hero .byline { display: block; font-size: .95rem; color: #3b4652; margin: -.4rem 0 1.1rem; }
+.course-home .instructor { padding: 1rem 1.2rem; margin: .6rem 0 1.6rem; border: 1px solid var(--home-line);
+  border-left: 4px solid var(--home-accent); border-radius: 12px; background: #fff; }
+.course-home .instructor p { margin: 0; color: #3b4652; }
+.course-home .instructor p:first-child { font-size: 1.1rem; color: var(--home-ink); margin-bottom: .35rem; }
