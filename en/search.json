@@ -4,9 +4,49 @@
     "href": "index.html",
     "title": "Agentic AI: From Foundations to Systems",
     "section": "",
-    "text": "Preface\nThese learning modules adapt the textbook The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems (Roitman 2026). The videos are narrated in Thai with English subtitles; this English edition of the reading pages is for learners who prefer English.\nEach module has three parts that go together:",
+    "text": "Home",
     "crumbs": [
-      "Preface"
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#how-each-episode-works",
+    "href": "index.html#how-each-episode-works",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "How each episode works",
+    "text": "How each episode works\n\n\n🎬\nTheory video — hand-drawn animation that explains the idea and the reasoning behind it before any code\n\n\n💻\n2–5 labs — the code typed line by line in Jupyter, with a ✏️ starter notebook (fill in the TODOs) and a ✅ solution\n\n\n📖\nRecap + reading page — a closing recap video, and a page on this site with diagrams, real lab output and review questions\n\n\nVideos are narrated in Thai — turn on CC → English · every lab has an English notebook · watch in playlist order and the next video plays automatically",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#capstone-research-assistant-agent",
+    "href": "index.html#capstone-research-assistant-agent",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "Capstone: Research Assistant Agent",
+    "text": "Capstone: Research Assistant Agent\nThe whole series grows one project: an agent that searches and reads research papers and writes a report. Each module gives it one new capability.\n\nEP05 · tool-use + ReAct ✓ → M2 · harness → M3 · RAG → M4 · memory → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-path",
+    "href": "index.html#learning-path",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "Learning path",
+    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP01\nHow LLMs work (for agent builders) coming soon how tokens, the context window and temperature affect an agent · ch1 · ≈30 min\n\n\nEP02\nPrompts, structured output and hallucination coming soon why agents need a JSON schema · ch1, §19.3 · ≈30 min\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent coming soon the five challenges of agents, and a map of the series · ch15 · ≈12 min\n\n\nEP04\nWorkflow Patterns ready chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 labs\n\n\nEP05\nAutonomous Agent Patterns ready ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign principles + choosing a pattern coming soon cost versus quality, and a decision matrix · §19.3–19.4 · ≈20 min\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-need",
+    "href": "index.html#what-you-need",
+    "title": "Agentic AI: From Foundations to Systems",
+    "section": "What you need",
+    "text": "What you need\n\n\n🐍\nBasic Python — you can read and change functions, lists and dicts; no machine-learning background needed\n\n\n🔑\nAn OpenRouter API key — the labs use Gemma 4 26B (open weights); one notebook run costs a few cents at most. Setup is in the README\n\n\n🌐\nA browser — open the notebooks in Google Colab; nothing to install\n\n\n\n\n\n\n\n\nNoteAbout the content and license\n\n\n\nThis series is not a copy of the textbook: each episode answers one question or teaches one skill, and may draw on several chapters. Its core is Part V of the textbook (chapters 15–26); RL, alignment and reasoning training (Parts II–III) are not part of this series.\nThe original textbook is released under CC BY-SA 4.0, so this adaptation is released under CC BY-SA 4.0 as well.",
+    "crumbs": [
+      "Home"
     ]
   },
   {
@@ -16,7 +56,7 @@
     "section": "References",
     "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
-      "Preface"
+      "Home"
     ]
   },
   {

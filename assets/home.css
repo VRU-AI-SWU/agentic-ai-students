@@ -1,0 +1,71 @@
+/* Course home page (index.qmd, Thai + English). Everything is scoped to body.course-home. */
+.course-home #title-block-header { display: none; }
+.course-home main { --home-accent: #2780e3; --home-ink: #1f2933; --home-muted: #5f6b7a; --home-line: #e3e8ee;
+                    --home-soft: #f5f8fc; --home-live: #1b8a5a; --home-live-bg: #e6f5ee; }
+
+/* Hero */
+.course-home .hero { padding: 2.2rem 1.6rem 1.8rem; margin: .5rem 0 1.8rem; border-radius: 18px;
+  background: linear-gradient(135deg, #eaf3fd 0%, #f6f1ff 100%); border: 1px solid var(--home-line); }
+.course-home .hero .eyebrow { font-size: .85rem; letter-spacing: .04em; color: var(--home-muted); margin: 0 0 .4rem; }
+.course-home .hero .hero-title { display: block; font-size: clamp(1.9rem, 4.5vw, 2.7rem); font-weight: 600; line-height: 1.2;
+  color: var(--home-ink); margin: 0 0 .7rem; border: 0; }
+.course-home .hero .lead { font-size: 1.08rem; color: #3b4652; max-width: 46rem; margin-bottom: 1.2rem; }
+.course-home .hero .cta a { display: inline-block; margin: 0 .45rem .5rem 0; padding: .5rem 1rem; border-radius: 999px;
+  text-decoration: none; font-weight: 600; font-size: .95rem; border: 1px solid var(--home-accent); }
+.course-home .hero .cta a:first-child { background: var(--home-accent); color: #fff; }
+.course-home .hero .cta a:not(:first-child) { background: #fff; color: var(--home-accent); }
+.course-home .hero .cta a:hover { filter: brightness(.95); }
+
+/* Stats */
+.course-home .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7rem; margin: 0 0 2rem; }
+.course-home .stat { padding: .8rem .9rem; border: 1px solid var(--home-line); border-radius: 12px; background: #fff; }
+.course-home .stat strong { display: block; font-size: 1.5rem; color: var(--home-ink); line-height: 1.2; }
+.course-home .stat span { font-size: .85rem; color: var(--home-muted); }
+
+/* Generic card grids */
+.course-home .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin: .6rem 0 1.6rem; }
+.course-home .card-item { padding: 1rem 1.1rem; border: 1px solid var(--home-line); border-radius: 12px; background: #fff; }
+.course-home .card-item p { margin: 0; color: #3b4652; font-size: .95rem; }
+.course-home .card-item p:first-child { font-size: 1.6rem; margin-bottom: .3rem; }
+.course-home .card-item p strong { color: var(--home-ink); }
+
+/* Capstone path */
+.course-home .capstone { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: .6rem 0 .4rem; }
+.course-home .capstone .step { padding: .35rem .7rem; border-radius: 999px; background: var(--home-soft);
+  border: 1px solid var(--home-line); font-size: .88rem; white-space: nowrap; }
+.course-home .capstone .step.done { background: var(--home-live-bg); border-color: #b7e2cc; color: var(--home-live); font-weight: 600; }
+.course-home .capstone .arrow { color: #a0aab5; }
+
+/* Modules + episodes */
+.course-home .modules { display: grid; grid-template-columns: repeat(2, 1fr); gap: .9rem; margin: .8rem 0 1rem; }
+.course-home .module { border: 1px solid var(--home-line); border-radius: 14px; padding: .9rem 1rem .6rem; background: #fff; }
+.course-home .module.has-live { border-color: #9fd3b9; box-shadow: 0 0 0 3px #e6f5ee; }
+.course-home .module-head { margin: 0 0 .5rem; }
+.course-home .module-head p { margin: 0; }
+.course-home .mtag { display: inline-block; min-width: 2.3rem; text-align: center; padding: .05rem .45rem; margin-right: .35rem;
+  border-radius: 6px; background: var(--home-ink); color: #fff; font-size: .8rem; font-weight: 600; }
+.course-home .module-head strong { color: var(--home-ink); }
+.course-home .module-head .mgoal { display: block; font-size: .85rem; color: var(--home-muted); margin-top: .2rem; }
+.course-home .ep { display: flex; gap: .6rem; align-items: baseline; padding: .45rem 0; border-top: 1px dashed var(--home-line); }
+.course-home .ep p { margin: 0; flex: 1; font-size: .95rem; }
+.course-home .ep p:first-child { flex: 0 0 2.8rem; }
+.course-home .ep .epno { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--home-muted); font-size: .85rem; min-width: 2.6rem; }
+.course-home .ep .epmeta { display: block; font-size: .8rem; color: var(--home-muted); }
+.course-home .ep.live .epno { color: var(--home-live); }
+.course-home .ep.live a { font-weight: 600; }
+.course-home .badge-live, .course-home .badge-soon { font-size: .72rem; padding: .08rem .5rem; border-radius: 999px; white-space: nowrap; margin-left: .3rem; }
+.course-home .badge-live { background: var(--home-live-bg); color: var(--home-live); font-weight: 600; }
+.course-home .badge-soon { background: #f1f3f5; color: #7a8591; }
+.course-home .ep:not(.live) p { color: #4a5561; }
+
+@media (max-width: 900px) {
+  .course-home .modules { grid-template-columns: 1fr; }
+  .course-home .cards { grid-template-columns: 1fr; }
+  .course-home .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .course-home .hero { padding: 1.5rem 1.1rem 1.2rem; }
+}
+/* The page heading ("หน้าแรก"/"Home") names the page in the sidebar; the hero replaces it on the page. */
+.course-home main section.level1 > h1 { display: none; }
+.course-home .stat p, .course-home .card-item p:last-child { margin-bottom: 0; }

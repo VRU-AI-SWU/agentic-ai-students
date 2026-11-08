@@ -4,9 +4,49 @@
     "href": "index.html",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "",
-    "text": "คำนำ\nLearning modules ชุดนี้ดัดแปลงและเรียบเรียงเป็นภาษาไทยจากตำรา The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems (Roitman 2026) ใช้คำทับศัพท์ภาษาอังกฤษสำหรับ technical terms\nแต่ละ module ประกอบด้วย 3 ส่วนที่สอดคล้องกัน",
+    "text": "หน้าแรก",
     "crumbs": [
-      "คำนำ"
+      "หน้าแรก"
+    ]
+  },
+  {
+    "objectID": "index.html#แตละตอนเรยนอยางไร",
+    "href": "index.html#แตละตอนเรยนอยางไร",
+    "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
+    "section": "แต่ละตอนเรียนอย่างไร",
+    "text": "แต่ละตอนเรียนอย่างไร\n\n\n🎬\nวิดีโอทฤษฎี — animation วาดมือ อธิบายแนวคิดและเหตุผลเบื้องหลังก่อนลงมือเขียนโค้ด\n\n\n💻\nLab 2–5 ตัว — พิมพ์โค้ดทีละบรรทัดใน Jupyter พร้อม notebook ✏️ starter (เติมเฉพาะ TODO) และ ✅ เฉลย\n\n\n📖\nสรุป + หน้าอ่าน — วิดีโอสรุปท้ายตอน และหน้าเว็บนี้ที่มีแผนภาพ ผลลัพธ์จริงจาก lab และคำถามทบทวน\n\n\nทุกคลิปมี subtitle ไทยและอังกฤษ · notebook ทุก lab มีฉบับภาษาอังกฤษ · ดูเรียงตาม playlist คลิปถัดไปจะเล่นต่อให้อัตโนมัติ",
+    "crumbs": [
+      "หน้าแรก"
+    ]
+  },
+  {
+    "objectID": "index.html#capstone-research-assistant-agent",
+    "href": "index.html#capstone-research-assistant-agent",
+    "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
+    "section": "Capstone: Research Assistant Agent",
+    "text": "Capstone: Research Assistant Agent\nทั้งซีรีส์สร้างโปรเจกต์เดียวกันต่อเนื่อง คือ agent ผู้ช่วยค้นคว้างานวิจัยที่ค้นหาและอ่าน paper แล้วเขียนรายงานให้ แต่ละ module เพิ่มความสามารถให้มันหนึ่งอย่าง\n\nEP05 · tool-use + ReAct ✓ → M2 · harness → M3 · RAG → M4 · memory → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
+    "crumbs": [
+      "หน้าแรก"
+    ]
+  },
+  {
+    "objectID": "index.html#เสนทางการเรยน",
+    "href": "index.html#เสนทางการเรยน",
+    "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
+    "section": "เส้นทางการเรียน",
+    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) เร็วๆ นี้ token, context window, temperature กระทบ agent อย่างไร · ch1 · ≈30 นาที\n\n\nEP02\nPrompt, structured output และ hallucination เร็วๆ นี้ ทำไม agent ต้องการ JSON schema · ch1, §19.3 · ≈30 นาที\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent เร็วๆ นี้ 5 ความท้าทายของ agent และแผนที่ทั้งซีรีส์ · ch15 · ≈12 นาที\n\n\nEP04\nWorkflow Patterns พร้อมเรียน chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 lab\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nหลักออกแบบ + เลือก pattern เร็วๆ นี้ ต้นทุนเทียบคุณภาพ และ decision matrix · §19.3–19.4 · ≈20 นาที\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext window management เร็วๆ นี้ sliding window, summarization เมื่อบทสนทนายาวเกิน context · §18.1–18.3\n\n\nEP08\nTools, state และ error handling เร็วๆ นี้ retry, guardrail, checkpoint · §18.4, 18.6–18.8\n\n\nEP09\nสร้าง production harness เร็วๆ นี้ รวมทุกอย่างเป็น harness ของ research agent · §18.10\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG พื้นฐาน เร็วๆ นี้ chunking และ retrieval บน paper · §16.1–16.4\n\n\nEP11\nAdvanced & Agentic RAG เร็วๆ นี้ agent ตัดสินใจเองว่าจะค้นอะไร เมื่อไร และวัดผล RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
+    "crumbs": [
+      "หน้าแรก"
+    ]
+  },
+  {
+    "objectID": "index.html#สงทตองม",
+    "href": "index.html#สงทตองม",
+    "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
+    "section": "สิ่งที่ต้องมี",
+    "text": "สิ่งที่ต้องมี\n\n\n🐍\nPython พื้นฐาน — อ่านและแก้ function, list, dict ได้ ไม่ต้องมีพื้น machine learning\n\n\n🔑\nOpenRouter API key — lab ใช้ Gemma 4 26B (open weights) รัน notebook หนึ่งรอบใช้เงินไม่ถึงหนึ่งบาท วิธีตั้งค่าอยู่ใน README\n\n\n🌐\nBrowser — เปิด notebook ใน Google Colab ได้เลย ไม่ต้องติดตั้งอะไรบนเครื่อง\n\n\n\n\n\n\n\n\nหมายเหตุเกี่ยวกับเนื้อหาและ license\n\n\n\nซีรีส์นี้ไม่ใช่สำเนาตำรา แต่ละตอนตอบคำถามหรือให้ทักษะหนึ่งอย่าง และอาจดึงเนื้อหาข้ามบท แกนหลักคือ Part V ของตำรา (บทที่ 15–26) ส่วน RL, alignment และ reasoning training (Part II–III) ไม่อยู่ในซีรีส์นี้\nตำราต้นฉบับเผยแพร่ภายใต้ CC BY-SA 4.0 งานดัดแปลงนี้จึงเผยแพร่ภายใต้ CC BY-SA 4.0 เช่นกัน ใช้คำทับศัพท์ภาษาอังกฤษสำหรับ technical terms",
+    "crumbs": [
+      "หน้าแรก"
     ]
   },
   {
@@ -16,7 +56,7 @@
     "section": "เอกสารอ้างอิง",
     "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
-      "คำนำ"
+      "หน้าแรก"
     ]
   },
   {
