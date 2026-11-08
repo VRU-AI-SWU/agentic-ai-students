@@ -20,201 +20,333 @@
     ]
   },
   {
-    "objectID": "ch19/19-2-autonomous-agents/index.html",
-    "href": "ch19/19-2-autonomous-agents/index.html",
-    "title": "19.2 Autonomous Agent Patterns",
+    "objectID": "ch19/19-1-workflow-patterns/index.html",
+    "href": "ch19/19-1-workflow-patterns/index.html",
+    "title": "EP04 Workflow Patterns",
     "section": "",
     "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบ module นี้ ผู้เรียนจะสามารถ",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#วตถประสงคการเรยนร",
+    "href": "ch19/19-1-workflow-patterns/index.html#วตถประสงคการเรยนร",
+    "title": "EP04 Workflow Patterns",
+    "section": "",
+    "text": "อธิบายความแตกต่างระหว่าง workflow และ agent และบอกได้ว่าเมื่อไร workflow ก็เพียงพอ\nออกแบบ prompt chain ที่มี validation gate ระหว่างขั้น\nสร้าง router ที่ classify ครั้งเดียวแล้วส่งงานต่อให้ handler เฉพาะทาง\nเรียก LLM พร้อมกันแบบ sectioning และ voting แล้วรวมผลด้วยโค้ด\nอธิบายว่า orchestrator-workers ต่างจาก parallelization อย่างไร\nสร้าง evaluator-optimizer loop ที่มี threshold และ retry budget",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#workflow-หรอ-agent",
+    "href": "ch19/19-1-workflow-patterns/index.html#workflow-หรอ-agent",
+    "title": "EP04 Workflow Patterns",
+    "section": "Workflow หรือ agent",
+    "text": "Workflow หรือ agent\nตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า ไม่ใช่ทุกงานที่ต้องใช้ agent (Roitman 2026, หมวด 19.1) ใน workflow ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน agent ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ\n\n\n\nตารางที่ 1.1: Workflow เทียบกับ agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิด\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nขยับไปใช้ agent เมื่องานต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิดจริงๆ เท่านั้น ตัวอย่างตลอด module นี้คือ ผู้ช่วยอาจารย์ของ Cogito Learn ซึ่งเรารู้อยู่แล้วว่าคำถามมีไม่กี่ประเภท workflow จึงเพียงพอ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
+    "href": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
+    "title": "EP04 Workflow Patterns",
+    "section": "1. Prompt Chaining",
+    "text": "1. Prompt Chaining\nแบ่งงานใหญ่เป็นลำดับ LLM call ที่ตายตัว ผลลัพธ์ของขั้นหนึ่งเป็น context ของขั้นถัดไป และระหว่างขั้นมี validation gate คอยจับข้อผิดพลาดตั้งแต่เนิ่นๆ เหมือนจุดตรวจคุณภาพบนสายพานโรงงาน gate จะใช้ LLM ตรวจ หรือเขียนโค้ดตรวจธรรมดาก็ได้\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;เป็น abstract ไหม\"}\n  G0 --&gt; S1[\"ขั้น 1&lt;br/&gt;ดึงประเด็นหลัก\"]\n  S1 --&gt; G1{\"gate (โค้ด)&lt;br/&gt;ครบ 3 ข้อไหม\"}\n  G1 --&gt; S2[\"ขั้น 2&lt;br/&gt;สรุปภาษาไทย\"]\n  S2 --&gt; G2{\"gate (โค้ด)&lt;br/&gt;ไม่เกิน 5 บรรทัด\"}\n  G2 --&gt; O[\"✅ สรุป\"]\n\n\n\n\nรูปที่ 1.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที\n\n\n\n\n\nข้อดีคือแต่ละขั้นใช้ prompt, model หรือ temperature ต่างกันได้ และเปิดดูผลระหว่างทางได้ทุกขั้น เหมาะกับงานที่เป็นลำดับขั้นอยู่แล้ว เช่น สร้างเนื้อหา แปลงข้อมูล หรือวิเคราะห์หลายขั้น\n\nใน Lab 1: abstract ผ่านครบทุกด่าน ประกาศห้องสอบถูก gate แรกหยุดไว้ และเมื่อตั้งให้สรุปได้แค่สองบรรทัด gate ที่เป็นโค้ดก็หยุดผลลัพธ์ไว้กลางทาง",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#routing",
+    "href": "ch19/19-1-workflow-patterns/index.html#routing",
+    "title": "EP04 Workflow Patterns",
+    "section": "2. Routing",
+    "text": "2. Routing\nClassifier (LLM หรือ model แบบดั้งเดิม) ดู input ก่อน แล้วส่งไปยัง handler เฉพาะทาง เหมือนจุดคัดกรองในโรงพยาบาลที่ถามอาการครั้งเดียวแล้วส่งไปแผนกที่ถูก\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ คำถามนักศึกษา\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"prompt อธิบายทฤษฎี\"]\n  C -- code_error --&gt; A2[\"tool รันโค้ด&lt;br/&gt;+ อธิบาย error จริง\"]\n  C -- admin --&gt; A3[\"model ตัวเล็ก ราคาถูก&lt;br/&gt;+ ข้อมูลรายวิชา\"]\n\n\n\n\nรูปที่ 1.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน\n\n\n\n\n\nRouting เหมาะเมื่องานมีหลายประเภทที่ชัดเจน และแต่ละประเภทต้องการ prompt, tool หรือ model ต่างกัน ตัวอย่างในตำราคือการคัดกรองงาน customer support และการรับ input หลายรูปแบบ\n\nใน Lab 2: คำถามทั้งหกข้อไปถูกที่ รวมถึงข้อหลอกที่มีคำว่า error แต่จริงๆ เป็นคำถามแนวคิด",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#parallelization",
+    "href": "ch19/19-1-workflow-patterns/index.html#parallelization",
+    "title": "EP04 Workflow Patterns",
+    "section": "3. Parallelization",
+    "text": "3. Parallelization\nเรียก LLM หลายครั้งพร้อมกัน แล้วให้โค้ดของเรารวมผล ตำราแบ่งเป็นสองแบบ\n\nSectioning (fan-out) แบ่งงานเป็นส่วนที่ไม่ทับกัน เช่น review โค้ดสามด้าน security / performance / style พร้อมกัน แล้วรวมผล ตัดซ้ำ และเรียงตามความรุนแรง เหมือนครูสามคนตรวจข้อสอบคนละตอนในเวลาเดียวกัน\nVoting ส่ง prompt เดียวกัน N ครั้งด้วย seed หรือ temperature ต่างกัน แล้วเลือกคำตอบด้วยเสียงข้างมาก, reward model หรือ LLM-as-judge\n\nถ้า call แต่ละครั้งใช้เวลา \\(t_1, \\dots, t_n\\) เวลารวมของแบบพร้อมกันใกล้กับ call ที่ช้าที่สุด ไม่ใช่ผลรวม\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{1.1}\\]\n\nใน Lab 3: review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม สมการ 1.1 ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
+    "href": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
+    "title": "EP04 Workflow Patterns",
+    "section": "4. Orchestrator-Workers",
+    "text": "4. Orchestrator-Workers\nคราวนี้ LLM เป็นผู้ตัดสินใจว่าจะแบ่งงานอย่างไร orchestrator วิเคราะห์โจทย์ สร้างแผนเป็นงานย่อย ส่งให้ worker ที่อาจใช้ prompt หรือ tool ต่างกัน แล้ว synthesizer รวมผลเป็นคำตอบเดียว เหมือนหัวหน้าเชฟที่ต้องดูออร์เดอร์ก่อนถึงจะรู้ว่าต้องแบ่งงานให้ลูกมือกี่คน\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(เขียนแผนเป็น JSON)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 คำตอบเดียว\"]\n\n\n\n\nรูปที่ 1.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด\n\n\n\n\n\nความต่างจาก parallelization คือวิธีแบ่งงานไม่ได้ตายตัวในโค้ด ตำราบอกว่าเหมาะกับงานปลายเปิดที่ไม่รู้ล่วงหน้าว่าจะมีงานย่อยกี่ชิ้น เช่น “refactor this codebase”\n\nใน Lab 4: โค้ดเดียวกันทุกบรรทัด แต่สอง goal ได้แผนต่างกัน goal แรกได้สี่งานย่อย ส่วนคำถามเรื่อง AI hints ได้สองงานย่อยและไม่ใช้ paper P2 เลย",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
+    "href": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
+    "title": "EP04 Workflow Patterns",
+    "section": "5. Evaluator-Optimizer",
+    "text": "5. Evaluator-Optimizer\nFeedback loop ของสอง model: generator สร้างผลงาน evaluator ให้คะแนนตามเกณฑ์ที่เขียนไว้ชัดเจน ถ้ายังไม่ถึง threshold คำวิจารณ์ (critique) จะถูกต่อเข้า context ของ generator แล้ววนใหม่ จนผ่านหรือจน retry budget หมด เหมือนนักเขียนกับบรรณาธิการ\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;แปลเป็นภาษาไทย\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;ความหมาย · ศัพท์ · ความลื่นไหล\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ ผ่าน\"]\n  Ev -- \"ยังไม่ผ่าน\" --&gt; B{\"budget&lt;br/&gt;เหลือไหม\"}\n  B -- เหลือ --&gt; C[\"ต่อ critique&lt;br/&gt;เข้า context\"] --&gt; Gen\n  B -- หมด --&gt; L[\"คืนร่างสุดท้าย\"]\n\n\n\n\nรูปที่ 1.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget\n\n\n\n\n\nเหมาะกับงานที่มีเกณฑ์คุณภาพชัดเจน เช่น โค้ดที่ต้องผ่าน test งานเขียนที่ต้องตรง style guide หรืองานแปลที่ต้องรักษาความหมาย และทั้งหมดนี้ทำได้ โดยไม่ต้อง train model\n\nใน Lab 5: ร่างแรกได้ 6/10 เพราะแปลศัพท์เทคนิคเป็นภาษาไทย พอต่อ critique เข้าไป รอบที่สองได้ 10/10 ทั้งที่ generator ไม่เคยเห็น glossary",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#หา-pattern-เทยบกน",
+    "href": "ch19/19-1-workflow-patterns/index.html#หา-pattern-เทยบกน",
+    "title": "EP04 Workflow Patterns",
+    "section": "ห้า pattern เทียบกัน",
+    "text": "ห้า pattern เทียบกัน\n\n\n\nตารางที่ 1.2: สรุปห้า workflow pattern\n\n\n\n\n\n\n\n\n\n\n\nPattern\nใครกำหนดเส้นทาง\nLLM calls ต่อ input\nเหมาะกับ\n\n\n\n\nPrompt chaining\nโค้ด (ลำดับตายตัว)\nเท่าจำนวนขั้น\nงานเป็นลำดับขั้น\n\n\nRouting\nโค้ด + classifier\n1 + handler\ninput หลายประเภทที่ชัดเจน\n\n\nParallelization\nโค้ด (แบ่งตายตัว)\nN พร้อมกัน\nงานแยกเป็นส่วนอิสระ หรืออยากได้หลายเสียง\n\n\nOrchestrator-workers\nLLM วางแผน โค้ดรัน\n1 + งานย่อย + 1\nงานปลายเปิดที่แบ่งล่วงหน้าไม่ได้\n\n\nEvaluator-optimizer\nโค้ด (loop + budget)\n2 ต่อรอบ\nงานที่มีเกณฑ์คุณภาพชัดเจน\n\n\n\n\n\n\nทั้งห้าแบบใช้ LLM บนเส้นทางที่ระบบกำหนดไว้ จึงคาดเดาได้ ทดสอบได้ และคุมต้นทุนได้ และประกอบกันได้ เช่น router ส่งงานต่อให้ chain หรือขั้นหนึ่งของ chain เป็น evaluator-optimizer สองแบบหลังเริ่มให้ model มีส่วนตัดสินใจมากขึ้น ซึ่งเป็นสะพานไปสู่ autonomous agent ใน EP05",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#lab",
+    "href": "ch19/19-1-workflow-patterns/index.html#lab",
+    "title": "EP04 Workflow Patterns",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 1.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nข้อมูลในโค้ด (abstract, คำถาม, โค้ดที่ตรวจ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#คำถามทบทวน",
+    "href": "ch19/19-1-workflow-patterns/index.html#คำถามทบทวน",
+    "title": "EP04 Workflow Patterns",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent\nใน รูปที่ 1.1 ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป\nทำไม classifier ใน รูปที่ 1.2 จึงตอบเป็น enum ด้วย temperature 0\nจาก สมการ 1.1 ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร\nOrchestrator-workers ต่างจาก sectioning ตรงไหน\nถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน รูปที่ 1.4 จะเกิดอะไรขึ้น",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-1-workflow-patterns/index.html#เอกสารอางอง",
+    "href": "ch19/19-1-workflow-patterns/index.html#เอกสารอางอง",
+    "title": "EP04 Workflow Patterns",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/19-2-autonomous-agents/index.html",
+    "href": "ch19/19-2-autonomous-agents/index.html",
+    "title": "EP05 Autonomous Agent Patterns",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบ module นี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#วตถประสงคการเรยนร",
     "href": "ch19/19-2-autonomous-agents/index.html#วตถประสงคการเรยนร",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "",
     "text": "อธิบายความแตกต่างระหว่าง workflow และ autonomous agent\nอธิบาย ReAct loop และองค์ประกอบที่ harness ต้องมี 4 อย่าง\nออกแบบ plan แบบ DAG และเลือกกลยุทธ์ replanning ที่เหมาะสม\nอธิบายกลไก Reflexion ที่ทำให้ agent เรียนรู้ข้ามรอบโดยไม่ต้อง train\nเลือก tool-use pattern ที่เหมาะกับงาน และเขียนโค้ดแต่ละ pattern ได้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#จาก-workflow-ส-agent",
     "href": "ch19/19-2-autonomous-agents/index.html#จาก-workflow-ส-agent",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "จาก Workflow สู่ Agent",
-    "text": "จาก Workflow สู่ Agent\nใน §19.1 เราเรียน workflow pattern ซึ่งโปรแกรม (ไม่ใช่ model) เป็นผู้กำหนดลำดับการทำงาน ส่วน autonomous agent pattern ใน section นี้ ให้ LLM เป็นผู้ควบคุม execution flow เอง ว่าจะเรียก tool ใด เมื่อใด และจะหยุดเมื่อใด (Roitman 2026, หมวด 19.2)\n\n\n\nตารางที่ 1.1: Workflow เทียบกับ agent\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องตัดสินใจแบบยืดหยุ่น\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nตำราแนะนำให้ใช้ agent เฉพาะเมื่องานต้องการ dynamic routing หรือการสำรวจแบบปลายเปิดจริงๆ เท่านั้น",
+    "text": "จาก Workflow สู่ Agent\nใน EP04 (§19.1) เราเรียน workflow pattern ซึ่งโปรแกรม (ไม่ใช่ model) เป็นผู้กำหนดลำดับการทำงาน ส่วน autonomous agent pattern ใน section นี้ ให้ LLM เป็นผู้ควบคุม execution flow เอง ว่าจะเรียก tool ใด เมื่อใด และจะหยุดเมื่อใด (Roitman 2026, หมวด 19.2)\n\n\n\nตารางที่ 2.1: Workflow เทียบกับ agent\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องตัดสินใจแบบยืดหยุ่น\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nตำราแนะนำให้ใช้ agent เฉพาะเมื่องานต้องการ dynamic routing หรือการสำรวจแบบปลายเปิดจริงๆ เท่านั้น",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#react-reason-act",
     "href": "ch19/19-2-autonomous-agents/index.html#react-reason-act",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "ReAct (Reason + Act)",
-    "text": "ReAct (Reason + Act)\nReAct เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง Thought (คิดว่าจะทำอะไร), Action (เรียก tool) และ Observation (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{1.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"ไม่มี tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nรูปที่ 1.1: ReAct loop: agent สลับระหว่างการคิดและการกระทำจนกว่าจะถึงเงื่อนไขจบ\n\n\n\n\n\nHarness ที่ครอบ ReAct loop (รูปที่ 1.1) ต้องมี 4 องค์ประกอบ\n\nScratchpad — ขั้น Thought ถูกบันทึกไว้ แต่ไม่แสดงให้ผู้ใช้\nTool parsing — ดึง tool call ที่มีโครงสร้างออกจาก output ของ model\nMax iterations — จำกัดจำนวนรอบเสมอ (โดยทั่วไป 10–25 รอบ)\nTermination — จบเมื่อ model ส่ง action พิเศษ เช่น final_answer หรือเมื่อไม่มี tool call\n\n\nใน notebook: ฟังก์ชัน react_agent() มีคอมเมนต์ ①–④ ตรงกับ 4 ข้อนี้",
+    "text": "ReAct (Reason + Act)\nReAct เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง Thought (คิดว่าจะทำอะไร), Action (เรียก tool) และ Observation (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{2.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"ไม่มี tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nรูปที่ 2.1: ReAct loop: agent สลับระหว่างการคิดและการกระทำจนกว่าจะถึงเงื่อนไขจบ\n\n\n\n\n\nHarness ที่ครอบ ReAct loop (รูปที่ 2.1) ต้องมี 4 องค์ประกอบ\n\nScratchpad — ขั้น Thought ถูกบันทึกไว้ แต่ไม่แสดงให้ผู้ใช้\nTool parsing — ดึง tool call ที่มีโครงสร้างออกจาก output ของ model\nMax iterations — จำกัดจำนวนรอบเสมอ (โดยทั่วไป 10–25 รอบ)\nTermination — จบเมื่อ model ส่ง action พิเศษ เช่น final_answer หรือเมื่อไม่มี tool call\n\n\nใน notebook: ฟังก์ชัน react_agent() มีคอมเมนต์ ①–④ ตรงกับ 4 ข้อนี้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#planning-agents",
     "href": "ch19/19-2-autonomous-agents/index.html#planning-agents",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "Planning Agents",
-    "text": "Planning Agents\nReAct ตัดสินใจทีละก้าว ซึ่งอาจหลงทางในงานยาว planning agent จึงสร้าง plan ที่ชัดเจนก่อนลงมือ และแก้ plan ระหว่างทางได้ บทที่ 18 เรียกแนวทางนี้ว่า Plan-and-Execute ซึ่งมี 3 ช่วง คือ planning phase, execution phase (อาจใช้ model ที่ถูกกว่า) และ plan revision\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{1.2}\\]\n\nตัวอย่าง: รายงานเปรียบเทียบ transformer สำหรับ time-series\nผู้ใช้สั่ง “Write a 2-page report comparing transformer architectures for time-series forecasting.” Planner สร้าง plan 6 ขั้น แต่ละขั้นมี deps ระบุขั้นที่ต้องเสร็จก่อน ทำให้ plan เป็น DAG (Directed Acyclic Graph) ดัง รูปที่ 1.2\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nรูปที่ 1.2: Plan แบบ DAG ขั้น 3 และ 4 รอขั้น 2 แต่ไม่รอกันเอง จึงรันพร้อมกันได้\n\n\n\n\n\nHarness ติดตาม dependency และ execute เฉพาะขั้นที่ขั้นก่อนหน้าเสร็จครบแล้ว\n\n\nAdaptive replanning\nหลังขั้นที่ 1 การค้นหาพบ paper ที่เกี่ยวข้องเพียง 3 ฉบับ agent จึง replan โดยเพิ่ม sub-step ขยายการค้นหาไปยังโดเมนใกล้เคียง (เช่น PatchTST, iTransformer) แล้วทำต่อจากขั้นที่ 2 ด้วยข้อมูลที่มากขึ้น\n\n\n\n\n\n\nหมายเหตุKey insight\n\n\n\nPlan คือ living document — ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้\n\n\n\n\n\nตารางที่ 1.2: กลยุทธ์ planning (ดัดแปลงจากตาราง 19.1)\n\n\n\n\n\n\n\n\n\n\nกลยุทธ์\nReplan เมื่อใด\nลักษณะ\n\n\n\n\nPlan-then-Execute\nไม่ replan\nเรียบง่าย แต่เปราะบางต่อผลลัพธ์ที่ไม่คาดคิด\n\n\nAdaptive\nเมื่อขั้นตอนล้มเหลว\nต้นทุนปานกลาง\n\n\nContinuous\nทุกขั้น\nแพงแต่ทนทาน\n\n\nHierarchical\nเมื่อ sub-plan เสร็จ\nplan ระดับบนคงที่ sub-plan สร้างแบบ dynamic\n\n\n\n\n\n\n\nใน notebook: Part 2 ใช้กลยุทธ์ Adaptive และใช้ react_agent() ใน execute แต่ละขั้น — แสดงว่า pattern ประกอบกันได้",
+    "text": "Planning Agents\nReAct ตัดสินใจทีละก้าว ซึ่งอาจหลงทางในงานยาว planning agent จึงสร้าง plan ที่ชัดเจนก่อนลงมือ และแก้ plan ระหว่างทางได้ บทที่ 18 เรียกแนวทางนี้ว่า Plan-and-Execute ซึ่งมี 3 ช่วง คือ planning phase, execution phase (อาจใช้ model ที่ถูกกว่า) และ plan revision\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{2.2}\\]\n\nตัวอย่าง: รายงานเปรียบเทียบ transformer สำหรับ time-series\nผู้ใช้สั่ง “Write a 2-page report comparing transformer architectures for time-series forecasting.” Planner สร้าง plan 6 ขั้น แต่ละขั้นมี deps ระบุขั้นที่ต้องเสร็จก่อน ทำให้ plan เป็น DAG (Directed Acyclic Graph) ดัง รูปที่ 2.2\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nรูปที่ 2.2: Plan แบบ DAG ขั้น 3 และ 4 รอขั้น 2 แต่ไม่รอกันเอง จึงรันพร้อมกันได้\n\n\n\n\n\nHarness ติดตาม dependency และ execute เฉพาะขั้นที่ขั้นก่อนหน้าเสร็จครบแล้ว\n\n\nAdaptive replanning\nหลังขั้นที่ 1 การค้นหาพบ paper ที่เกี่ยวข้องเพียง 3 ฉบับ agent จึง replan โดยเพิ่ม sub-step ขยายการค้นหาไปยังโดเมนใกล้เคียง (เช่น PatchTST, iTransformer) แล้วทำต่อจากขั้นที่ 2 ด้วยข้อมูลที่มากขึ้น\n\n\n\n\n\n\nหมายเหตุKey insight\n\n\n\nPlan คือ living document — ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้\n\n\n\n\n\nตารางที่ 2.2: กลยุทธ์ planning (ดัดแปลงจากตาราง 19.1)\n\n\n\n\n\n\n\n\n\n\nกลยุทธ์\nReplan เมื่อใด\nลักษณะ\n\n\n\n\nPlan-then-Execute\nไม่ replan\nเรียบง่าย แต่เปราะบางต่อผลลัพธ์ที่ไม่คาดคิด\n\n\nAdaptive\nเมื่อขั้นตอนล้มเหลว\nต้นทุนปานกลาง\n\n\nContinuous\nทุกขั้น\nแพงแต่ทนทาน\n\n\nHierarchical\nเมื่อ sub-plan เสร็จ\nplan ระดับบนคงที่ sub-plan สร้างแบบ dynamic\n\n\n\n\n\n\n\nใน notebook: Part 2 ใช้กลยุทธ์ Adaptive และใช้ react_agent() ใน execute แต่ละขั้น — แสดงว่า pattern ประกอบกันได้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#reflection-และ-self-critique",
     "href": "ch19/19-2-autonomous-agents/index.html#reflection-และ-self-critique",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "Reflection และ Self-Critique",
     "text": "Reflection และ Self-Critique\nAgent หยุดประเมินเส้นทางของตัวเองใน 3 ระดับ\n\nOutput validation — “ถูกไหม ลืมอะไรไหม”\nTrajectory review — ย้อนดู k ขั้นล่าสุด หาข้อผิดพลาดหรือความสิ้นเปลือง\nStrategy revision — “เรากำลังแก้ปัญหาถูกข้ออยู่หรือเปล่า”\n\n\nReflexion\nReflexion เก็บ reflection memory ไว้ หลังทำพลาดแต่ละครั้ง agent เขียนบทเรียนเป็นภาษาธรรมชาติ (เช่น “พลาดเพราะไม่ได้เช็ค edge case”) แล้วใส่บทเรียนเหล่านี้ใน prompt รอบถัดไป ทำให้เรียนรู้ข้าม episode ได้ โดยไม่ต้องอัปเดต weight\n\nใน notebook: Part 3 ให้ agent เขียน parse_duration() แล้วตรวจด้วย unit tests ที่ agent มองไม่เห็นล่วงหน้า",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#tool-use-patterns",
     "href": "ch19/19-2-autonomous-agents/index.html#tool-use-patterns",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "Tool-Use Patterns",
-    "text": "Tool-Use Patterns\n\n\n\nตารางที่ 1.3: Tool invocation patterns (ดัดแปลงจากตาราง 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nคำอธิบาย\nตัวอย่าง\n\n\n\n\nSingle-turn\ntool call เดียวต่อ response (LLM 2 calls)\nQ&A ง่ายๆ ด้วย search\n\n\nMulti-tool\nหลาย tool call พร้อมกันใน response เดียว\nsearch + calculate + format\n\n\nSequential\noutput ของ tool หนึ่งเป็น input ของอีกตัว\nsearch → read → extract\n\n\nNested\ntool call เรียก agent อีกตัว\ncode agent เรียก test runner\n\n\nFallback\ntool หลักล้มเหลว ลองตัวสำรอง\nAPI → scrape → cache\n\n\n\n\n\n\nข้อควรจำ\n\nMulti-tool ลด latency ได้มาก แต่ tool ต้อง เป็นอิสระต่อกัน และต้องส่ง tool result ทั้งหมดกลับใน message เดียว\nSequential harness ต้องดูแล context ที่โตขึ้น และอาจต้องสรุปผลระหว่างทาง\nNested parent agent มองเห็น sub-agent เป็น black-box function\nFallback จัดการที่ระดับ harness model ไม่จำเป็นต้องรู้",
+    "text": "Tool-Use Patterns\n\n\n\nตารางที่ 2.3: Tool invocation patterns (ดัดแปลงจากตาราง 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nคำอธิบาย\nตัวอย่าง\n\n\n\n\nSingle-turn\ntool call เดียวต่อ response (LLM 2 calls)\nQ&A ง่ายๆ ด้วย search\n\n\nMulti-tool\nหลาย tool call พร้อมกันใน response เดียว\nsearch + calculate + format\n\n\nSequential\noutput ของ tool หนึ่งเป็น input ของอีกตัว\nsearch → read → extract\n\n\nNested\ntool call เรียก agent อีกตัว\ncode agent เรียก test runner\n\n\nFallback\ntool หลักล้มเหลว ลองตัวสำรอง\nAPI → scrape → cache\n\n\n\n\n\n\nข้อควรจำ\n\nMulti-tool ลด latency ได้มาก แต่ tool ต้อง เป็นอิสระต่อกัน และต้องส่ง tool result ทั้งหมดกลับใน message เดียว\nSequential harness ต้องดูแล context ที่โตขึ้น และอาจต้องสรุปผลระหว่างทาง\nNested parent agent มองเห็น sub-agent เป็น black-box function\nFallback จัดการที่ระดับ harness model ไม่จำเป็นต้องรู้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#เลอก-pattern-ไหนด",
     "href": "ch19/19-2-autonomous-agents/index.html#เลอก-pattern-ไหนด",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "เลือก pattern ไหนดี",
-    "text": "เลือก pattern ไหนดี\n\n\n\nตารางที่ 1.4: เลือก pattern (ดัดแปลงจากตาราง 19.3)\n\n\n\n\n\nPattern\nความซับซ้อน\nLLM calls\nเหมาะกับ\n\n\n\n\nReAct\nกลาง\n3–25 (loop)\ntool-use ทั่วไป การสำรวจ\n\n\nPlanning agent\nสูง\n5–50+\nงานยาว หลายขั้นตอน\n\n\nReflection\nสูง\n+50% overhead\nงานที่ครั้งแรกมักพลาด\n\n\n\n\n\n\nเริ่มจาก pattern ที่ง่ายที่สุด แล้วขยับขึ้นเมื่อ pattern ที่ง่ายกว่าใช้ไม่ได้จริงเท่านั้น และ pattern ต่างๆ ประกอบกันได้",
+    "text": "เลือก pattern ไหนดี\n\n\n\nตารางที่ 2.4: เลือก pattern (ดัดแปลงจากตาราง 19.3)\n\n\n\n\n\nPattern\nความซับซ้อน\nLLM calls\nเหมาะกับ\n\n\n\n\nReAct\nกลาง\n3–25 (loop)\ntool-use ทั่วไป การสำรวจ\n\n\nPlanning agent\nสูง\n5–50+\nงานยาว หลายขั้นตอน\n\n\nReflection\nสูง\n+50% overhead\nงานที่ครั้งแรกมักพลาด\n\n\n\n\n\n\nเริ่มจาก pattern ที่ง่ายที่สุด แล้วขยับขึ้นเมื่อ pattern ที่ง่ายกว่าใช้ไม่ได้จริงเท่านั้น และ pattern ต่างๆ ประกอบกันได้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#คำถามทบทวน",
     "href": "ch19/19-2-autonomous-agents/index.html#คำถามทบทวน",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "คำถามทบทวน",
-    "text": "คำถามทบทวน\n\nทำไมตำราจึงแนะนำให้เริ่มจาก workflow ก่อน agent\nถ้าไม่มี max iterations ใน ReAct loop จะเกิดปัญหาอะไร\nจาก รูปที่ 1.2 ขั้นใดบ้างที่รันพร้อมกันได้ เพราะอะไร\nReflexion ต่างจากการ fine-tune model อย่างไร\nทำไม multi-tool pattern จึงใช้ไม่ได้กับ tool ที่ต้องใช้ผลของอีก tool",
+    "text": "คำถามทบทวน\n\nทำไมตำราจึงแนะนำให้เริ่มจาก workflow ก่อน agent\nถ้าไม่มี max iterations ใน ReAct loop จะเกิดปัญหาอะไร\nจาก รูปที่ 2.2 ขั้นใดบ้างที่รันพร้อมกันได้ เพราะอะไร\nReflexion ต่างจากการ fine-tune model อย่างไร\nทำไม multi-tool pattern จึงใช้ไม่ได้กับ tool ที่ต้องใช้ผลของอีก tool",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/index.html#เอกสารอางอง",
     "href": "ch19/19-2-autonomous-agents/index.html#เอกสารอางอง",
-    "title": "19.2 Autonomous Agent Patterns",
+    "title": "EP05 Autonomous Agent Patterns",
     "section": "เอกสารอ้างอิง",
     "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html",
     "href": "ch19/19-2-autonomous-agents/demo.html",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "",
     "text": "0. Setup\nNotebook นี้เขียน agent harness ขึ้นเองตั้งแต่ศูนย์ (ไม่ใช้ framework) เพื่อให้เห็นกลไกของแต่ละ pattern ในตำรา\nModel: Gemma 4 26B (open weights) ผ่าน OpenRouter — เปลี่ยนเป็น model อื่นบน OpenRouter ได้ด้วยการแก้ MODEL บรรทัดเดียว\nสิ่งที่ต้องมี: OpenRouter API key - บน Colab: เพิ่มใน 🔑 Secrets ชื่อ OPENROUTER_API_KEY (หรือ COURSE_OPENROUTER_API_KEY ถ้ามีชื่อแรกของ project อื่นอยู่แล้ว) - บนเครื่องตัวเอง: ใส่ในไฟล์ .env บรรทัด OPENROUTER_API_KEY=...\n⚠️ ข้อมูลใน tools ทั้งหมดเป็นข้อมูลจำลอง (simulated) เพื่อให้ผลลัพธ์คาดเดาได้และไม่เสียค่าใช้จ่ายเรียก API ภายนอก — สิ่งที่เป็นของจริงคือการตัดสินใจของ LLM\nเราห่อการเรียก LLM ไว้ใน ask_llm() ฟังก์ชันเดียว ทุก pattern ด้านล่างใช้ฟังก์ชันนี้\nimport os, json, time\nfrom concurrent.futures import ThreadPoolExecutor\nfrom openai import OpenAI\n\ndef load_key():\n    try:  # Google Colab Secrets\n        from google.colab import userdata\n        for name in (\"COURSE_OPENROUTER_API_KEY\", \"OPENROUTER_API_KEY\"):\n            try:\n                return userdata.get(name)\n            except Exception:\n                pass\n    except ImportError:\n        pass\n    from dotenv import load_dotenv, find_dotenv   # local: .env file\n    load_dotenv(find_dotenv(usecwd=True))\n    return os.environ.get(\"COURSE_OPENROUTER_API_KEY\") or os.environ[\"OPENROUTER_API_KEY\"]\n\nclient = OpenAI(base_url=\"https://openrouter.ai/api/v1\", api_key=load_key())\nMODEL = \"google/gemma-4-26b-a4b-it\"   # ลองเปลี่ยนเป็น model อื่นบน OpenRouter ได้\nEXTRA = {\"provider\": {\"require_parameters\": True}, \"reasoning\": {\"effort\": \"medium\"}}\n\nUSAGE = {\"llm_calls\": 0, \"input_tokens\": 0, \"output_tokens\": 0, \"cost_usd\": 0.0}\n\ndef ask_llm(messages, tools=None, system=None, response_format=None):\n    if system:\n        messages = [{\"role\": \"system\", \"content\": system}] + messages\n    kwargs = dict(model=MODEL, messages=messages, extra_body=EXTRA)\n    if tools:\n        kwargs[\"tools\"] = tools\n    if response_format:\n        kwargs[\"response_format\"] = response_format\n    resp = client.chat.completions.create(**kwargs)\n    USAGE[\"llm_calls\"] += 1\n    USAGE[\"input_tokens\"] += resp.usage.prompt_tokens\n    USAGE[\"output_tokens\"] += resp.usage.completion_tokens\n    USAGE[\"cost_usd\"] += getattr(resp.usage, \"cost\", 0) or 0\n    return resp.choices[0].message\n\nprint(\"ready:\", MODEL)\n\nready: google/gemma-4-26b-a4b-it",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#setup",
     "href": "ch19/19-2-autonomous-agents/demo.html#setup",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "",
     "text": "OpenRouter ใช้ API แบบ OpenAI-compatible จึงใช้ openai SDK ได้เลย\nreasoning — Gemma 4 ส่งความคิด (reasoning) กลับมาด้วย เราใช้เป็น scratchpad (Thought) ของ ReAct\nrequire_parameters — บังคับให้ OpenRouter ส่ง request ไปเฉพาะ provider ที่รองรับ tools และ JSON schema\nทุก call บันทึกจำนวน token และค่าใช้จ่ายไว้ใน USAGE",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#tool-registry",
     "href": "ch19/19-2-autonomous-agents/demo.html#tool-registry",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "0.1 Tool registry",
     "text": "0.1 Tool registry\nTool แต่ละตัวคือ Python function + JSON schema ที่บอก model ว่าเรียกอย่างไร ตำราเน้นว่า “Provide good tools” (§19.3) — description ชัดเจนและ schema เข้มงวด (additionalProperties: False) ช่วยให้ model เลือกใช้ tool ถูกต้อง\n\nTOOLS = {}\n\ndef tool(description, properties, required=None):\n    \"\"\"Decorator: ลงทะเบียน function เป็น tool พร้อม schema\"\"\"\n    def wrap(fn):\n        TOOLS[fn.__name__] = {\n            \"fn\": fn,\n            \"schema\": {\"type\": \"function\", \"function\": {\n                \"name\": fn.__name__,\n                \"description\": description,\n                \"parameters\": {\n                    \"type\": \"object\",\n                    \"properties\": properties,\n                    \"required\": required or list(properties),\n                    \"additionalProperties\": False,\n                },\n            }},\n        }\n        return fn\n    return wrap\n\ndef schemas(names):\n    return [TOOLS[n][\"schema\"] for n in names]\n\n# ---- simulated paper corpus (ข้อมูลจำลองเพื่อการสอน) ----\nCORE = [\n    {\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023, \"note\": \"cross-dimension dependency, two-stage attention\"},\n    {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024, \"note\": \"decoder-only foundation model for forecasting\"},\n    {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024, \"note\": \"tokenizes time series values for a T5-style language model\"},\n]\nADJACENT = [\n    {\"id\": \"P4\", \"title\": \"PatchTST\", \"year\": 2023, \"note\": \"patching + channel independence\"},\n    {\"id\": \"P5\", \"title\": \"iTransformer\", \"year\": 2024, \"note\": \"inverted attention over variates instead of time steps\"},\n    {\"id\": \"P6\", \"title\": \"Moirai\", \"year\": 2024, \"note\": \"universal forecasting transformer, any-variate attention\"},\n]\nSTATE = {\"papers_found\": [], \"search_calls\": 0}\n\n# จำลองสถานการณ์ในตำรา: การค้นหาครั้งแรกเจอแค่ 3 ฉบับ ครั้งถัดไป (ค้นแบบกว้างขึ้น) จึงเจอเพิ่ม\n@tool(\"Search academic papers on a topic. Returns a JSON list of {id, title, year}.\",\n      {\"query\": {\"type\": \"string\"}})\ndef search_papers(query):\n    STATE[\"search_calls\"] += 1\n    hits = CORE if STATE[\"search_calls\"] == 1 else CORE + ADJACENT\n    STATE[\"papers_found\"] = hits\n    return json.dumps([{k: p[k] for k in (\"id\", \"title\", \"year\")} for p in hits])\n\n@tool(\"Read papers by id (e.g. 'P1') and return their key methods.\",\n      {\"paper_ids\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}})\ndef read_papers(paper_ids):\n    allp = {p[\"id\"]: p for p in CORE + ADJACENT}\n    unknown = [i for i in paper_ids if i not in allp]\n    if unknown:   # error ที่ชัดเจนช่วยให้ model แก้ตัวเองได้ (Provide good tools, §19.3)\n        return f\"Error: unknown paper ids {unknown}. Use the ids returned by search_papers, e.g. 'P1'.\"\n    return json.dumps([{\"title\": allp[i][\"title\"], \"key_method\": allp[i][\"note\"]} for i in paper_ids])\n\n@tool(\"Evaluate an arithmetic expression, e.g. '(3+4)*2'.\", {\"expression\": {\"type\": \"string\"}})\ndef calculator(expression):\n    if not set(expression) &lt;= set(\"0123456789+-*/(). \"):\n        return \"Error: only numbers and + - * / ( ) are allowed\"\n    return str(eval(expression))\n\nprint(\"tools:\", list(TOOLS))\n\ntools: ['search_papers', 'read_papers', 'calculator']",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#part-1-react-loop-19.2.1",
     "href": "ch19/19-2-autonomous-agents/demo.html#part-1-react-loop-19.2.1",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "Part 1 — ReAct loop (§19.2.1)",
     "text": "Part 1 — ReAct loop (§19.2.1)\n\\[\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\\]\nตำราระบุ 4 สิ่งที่ harness ต้องมี — ดูคอมเมนต์ ①–④ ในโค้ด\n\nScratchpad — Thought ถูก log แต่ไม่แสดงให้ผู้ใช้\nTool parsing — ดึง tool call ที่มีโครงสร้างจาก output\nMax iterations — จำกัดจำนวนรอบเสมอ (10–25)\nTermination — จบเมื่อไม่มี tool call แล้ว\n\n\ndef run_tool(call):\n    \"Execute one tool call -&gt; tool message (error ก็ต้องส่งกลับ ห้ามทิ้ง)\"\n    try:\n        args = json.loads(call.function.arguments or \"{}\")\n        out = TOOLS[call.function.name][\"fn\"](**args)\n    except Exception as e:\n        out = f\"Error: {type(e).__name__}: {e}\"\n    return {\"role\": \"tool\", \"tool_call_id\": call.id, \"content\": str(out)}\n\ndef react_agent(task, tool_names, system=None, max_iterations=10, verbose=True, indent=\"\"):\n    messages = [{\"role\": \"user\", \"content\": task}]\n    for i in range(1, max_iterations + 1):               # ③ max iterations\n        msg = ask_llm(messages, tools=schemas(tool_names), system=system)\n        thought = getattr(msg, \"reasoning\", None)          # ① scratchpad (log only)\n        if verbose and thought:\n            print(f\"{indent}💭 [{i}] {' '.join(thought.split())[:300]}\")\n\n        calls = msg.tool_calls or []                       # ② tool parsing\n        if not calls:                                      # ④ termination\n            return msg.content\n        messages.append({\"role\": \"assistant\", \"content\": msg.content or \"\",\n                         \"tool_calls\": [c.model_dump() for c in calls]})\n        for c in calls:\n            if verbose:\n                print(f\"{indent}🔧 [{i}] {c.function.name}({c.function.arguments})\")\n        # หลาย tool call ใน response เดียว -&gt; รันพร้อมกัน\n        t0 = time.time()\n        with ThreadPoolExecutor() as pool:\n            results = list(pool.map(run_tool, calls))\n        if verbose and len(calls) &gt; 1:\n            print(f\"{indent}⏱️ [{i}] {len(calls)} tools ran in parallel: {time.time() - t0:.1f}s\")\n        for r in results:\n            if verbose:\n                print(f\"{indent}👀 [{i}] {r['content'][:200]}\")\n        messages.extend(results)\n    return \"⚠️ Stopped: reached max_iterations\"\n\n\nanswer = react_agent(\n    \"Find transformer models for time-series forecasting from 2023-2025, \"\n    \"read them, and tell me in 3 bullet points how they differ.\",\n    tool_names=[\"search_papers\", \"read_papers\"],\n)\nprint(\"\\n✅ FINAL ANSWER\\n\", answer)\nprint(USAGE)\n\n💭 [1] The user wants to find transformer-based models for time-series forecasting published between 2023 and 2025. Then, I need to read these papers to identify their key methods. Finally, I must summarize how they differ in exactly 3 bullet points. Step 1: Search for papers. Query: \"transformer models ti\n🔧 [1] search_papers({\"query\": \"transformer models time-series forecasting 2023 2024 2025\"})\n👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}]\n💭 [2] The user wants a comparison of transformer models for time-series forecasting from 2023-2025 in 3 bullet points. I have found three papers: 1. P1: Crossformer (2023) 2. P2: TimesFM (2024) 3. P3: Chronos (2024) I need to read these papers to understand their methods and then summarize the differences\n🔧 [2] read_papers({\"paper_ids\": [\"P1\", \"P2\", \"P3\"]})\n👀 [2] [{\"title\": \"Crossformer\", \"key_method\": \"cross-dimension dependency, two-stage attention\"}, {\"title\": \"TimesFM\", \"key_method\": \"decoder-only foundation model for forecasting\"}, {\"title\": \"Chronos\", \"k\n💭 [3] The user wants to know how three specific transformer models for time-series forecasting (Crossformer, TimesFM, and Chronos) differ, presented in 3 bullet points. * Model 1 (Crossformer): Focuses on cross-dimension dependency and uses a two-stage attention mechanism. * Model 2 (TimesFM): A decoder-o\n\n✅ FINAL ANSWER\n Based on the research from 2023–2024, here is how these three transformer-based models differ:\n\n* **Architectural Design:** **Crossformer** utilizes a specialized two-stage attention mechanism to capture dependencies across different dimensions (variables), whereas **TimesFM** is built as a decoder-only foundation model, and **Chronos** adapts the T5-style encoder-decoder architecture typically used in natural language processing.\n* **Data Representation:** **Chronos** uniquely treats time-series forecasting as a language task by tokenizing continuous numerical values into discrete tokens, while the others focus on modeling temporal and multi-dimensional patterns directly without converting them into a \"language\" format.\n* **Core Objective:** **Crossformer** focuses on capturing complex cross-dimension dependencies in multivariate data; **TimesFM** is designed as a large-scale foundation model for zero-shot forecasting; and **Chronos** focuses on leveraging the scaling laws and pre-training capabilities of language models for time-series data.\n{'llm_calls': 3, 'input_tokens': 872, 'output_tokens': 1220, 'cost_usd': 0.00047584}\n\n\nสังเกต: model ตัดสินใจเองว่าจะ search_papers ก่อน แล้วค่อย read_papers ด้วย id ที่ได้ — นี่คือ sequential tool use (§19.2.4) ที่เกิดขึ้นเองใน ReAct loop",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2",
     "href": "ch19/19-2-autonomous-agents/demo.html#part-2-planning-agent-plan-and-execute-adaptive-replanning-19.2.2-18.5.2",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "Part 2 — Planning agent: Plan-and-Execute + adaptive replanning (§19.2.2, §18.5.2)",
     "text": "Part 2 — Planning agent: Plan-and-Execute + adaptive replanning (§19.2.2, §18.5.2)\n\\[\\text{Plan} = \\text{Planner}(q), \\qquad \\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\\]\nขั้นตอน: 1. Planning phase — LLM call เดียว สร้าง plan เป็น DAG (แต่ละ step มี deps) 2. Execution phase — รันเฉพาะ step ที่ deps เสร็จหมดแล้ว แต่ละ step ใช้ ReAct agent จาก Part 1 (pattern ประกอบกันได้!) 3. Plan revision — ถ้าผลลัพธ์ไม่เป็นไปตามคาด ให้ replan จากสถานะปัจจุบัน\nเราใช้ structured output (JSON schema) ให้ plan เป็น JSON ตามโครงสร้างที่กำหนดเสมอ แล้ว validate ซ้ำด้วย Pydantic — ตรงกับหลัก “Use structured outputs” (§19.3)\n\nfrom pydantic import BaseModel\n\nclass Step(BaseModel):\n    id: int\n    task: str\n    tool: str          # \"search_papers\" | \"read_papers\" | \"none\"\n    deps: list[int]\n\nclass Plan(BaseModel):\n    steps: list[Step]\n\n# JSON schema ที่ส่งให้ model — บังคับให้ตอบเป็น plan ที่มีโครงสร้างเสมอ\nPLAN_FORMAT = {\"type\": \"json_schema\", \"json_schema\": {\"name\": \"plan\", \"strict\": True, \"schema\": {\n    \"type\": \"object\", \"additionalProperties\": False, \"required\": [\"steps\"],\n    \"properties\": {\"steps\": {\"type\": \"array\", \"items\": {\n        \"type\": \"object\", \"additionalProperties\": False, \"required\": [\"id\", \"task\", \"tool\", \"deps\"],\n        \"properties\": {\n            \"id\": {\"type\": \"integer\"},\n            \"task\": {\"type\": \"string\"},\n            \"tool\": {\"type\": \"string\", \"enum\": [\"search_papers\", \"read_papers\", \"none\"]},\n            \"deps\": {\"type\": \"array\", \"items\": {\"type\": \"integer\"}},\n        }}}}}}}\n\ndef ask_plan(prompt):\n    msg = ask_llm([{\"role\": \"user\", \"content\": prompt}], system=PLANNER_SYSTEM, response_format=PLAN_FORMAT)\n    return validate_dag(Plan.model_validate_json(msg.content))\n\nPLANNER_SYSTEM = (\n    \"You are a planner. Break the user's request into 4-7 steps forming a DAG.\\n\"\n    \"Each step has: id, task, tool (search_papers | read_papers | none), and deps.\\n\"\n    \"deps = ids of the earlier steps whose OUTPUT this step needs. Rules:\\n\"\n    \"- Only the first step(s) may have empty deps.\\n\"\n    \"- A step that reads, writes or reviews something must depend on the step that produced it.\\n\"\n    \"- Two steps that do not need each other's output must not depend on each other \"\n    \"(so they can run in parallel).\"\n)\n\ndef validate_dag(plan):\n    \"\"\"ตรวจว่า deps อ้างถึง step ที่มีอยู่ และไม่มี cycle\"\"\"\n    ids = {s.id for s in plan.steps}\n    for s in plan.steps:\n        missing = set(s.deps) - ids\n        assert not missing, f\"step {s.id} depends on unknown steps {missing}\"\n    done, remaining = set(), {s.id: set(s.deps) for s in plan.steps}\n    while remaining:\n        ready = [i for i, d in remaining.items() if d &lt;= done]\n        assert ready, f\"cycle detected among steps {sorted(remaining)}\"\n        for i in ready:\n            done.add(i); remaining.pop(i)\n    return plan\n\ndef show_plan(plan, results=None):\n    results = results or {}\n    for s in plan.steps:\n        mark = \"✅\" if s.id in results else \"⬜\"\n        print(f\"  {mark} {s.id}. {s.task}  [tool={s.tool}, deps={s.deps}]\")\n\nrequest = \"Write a 2-page report comparing transformer architectures for time-series forecasting.\"\nplan = ask_plan(request)\nprint(\"📋 PLAN\"); show_plan(plan)\n\n📋 PLAN\n  ⬜ 1. Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)  [tool=search_papers, deps=[]]\n  ⬜ 2. Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques  [tool=read_papers, deps=[1]]\n  ⬜ 3. Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))  [tool=read_papers, deps=[1]]\n  ⬜ 4. Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs  [tool=none, deps=[2, 3]]\n  ⬜ 5. Synthesize all findings into a structured 2-page report comparing the models  [tool=none, deps=[4]]\n\n\n\nExecutor + adaptive replanning\nกลยุทธ์ที่ใช้คือ Adaptive (ตาราง 19.1) — replan เฉพาะเมื่อ step ไม่ผ่านเงื่อนไข\nเงื่อนไขในตัวอย่าง: รายงานเปรียบเทียบต้องมี paper อย่างน้อย 5 ฉบับ ถ้าค้นเจอน้อยกว่านั้น → replan\n\nMIN_PAPERS = 5\n\ndef check_step(step):\n    \"\"\"คืนเหตุผลที่ต้อง replan หรือ None ถ้าผ่าน\"\"\"\n    if step.tool == \"search_papers\" and len(STATE[\"papers_found\"]) &lt; MIN_PAPERS:\n        return (f\"Step {step.id} found only {len(STATE['papers_found'])} papers; \"\n                f\"the report needs at least {MIN_PAPERS}.\")\n    return None\n\ndef replan(request, plan, results, reason):\n    done = {i: results[i][:300] for i in results}\n    prompt = (\n        f\"REPLAN. Original request: {request}\\n\"\n        f\"Current plan: {plan.model_dump_json()}\\n\"\n        f\"Completed step outputs: {json.dumps(done, ensure_ascii=False)}\\n\"\n        f\"Problem: {reason}\\n\"\n        \"Return the full revised plan. Keep completed steps with the same ids and tasks. \"\n        \"Add new step(s) with new ids to fix the problem and update deps of later steps.\"\n    )\n    return ask_plan(prompt)\n\ndef run_step(step, plan, results):\n    context = {d: results[d] for d in step.deps}\n    task = (f\"Overall goal: {request}\\nYour step: {step.task}\\n\"\n            f\"Outputs of prerequisite steps: {json.dumps(context, ensure_ascii=False)}\\n\"\n            \"Do only this step. Be concise (under 200 words). \"\n            \"Keep any ids from tool results (e.g. paper ids like P1) in your output \"\n            \"so that later steps can use them.\")\n    tools = [step.tool] if step.tool in TOOLS else []\n    if tools:\n        return react_agent(task, tools, max_iterations=6, indent=\"      \")\n    return ask_llm([{\"role\": \"user\", \"content\": task}]).content\n\ndef execute_plan(request, plan, max_replans=2):\n    results, replans = {}, 0\n    while len(results) &lt; len(plan.steps):\n        ready = [s for s in plan.steps\n                 if s.id not in results and all(d in results for d in s.deps)]\n        print(f\"\\n▶️  ready to run: {[s.id for s in ready]}\")\n        for step in ready:\n            print(f\"   ⚙️  step {step.id}: {step.task}\")\n            out = run_step(step, plan, results)\n            reason = check_step(step)\n            if reason and replans &lt; max_replans:\n                print(f\"   ⚠️  {reason} → REPLAN\")\n                results[step.id] = out\n                plan = replan(request, plan, results, reason)\n                replans += 1\n                print(\"📋 REVISED PLAN\"); show_plan(plan, results)\n                break                      # คำนวณ ready ใหม่จาก plan ใหม่\n            results[step.id] = out\n    return plan, results\n\nSTATE.update(papers_found=[], search_calls=0)   # เริ่มฐานข้อมูลจำลองใหม่\nfinal_plan, results = execute_plan(request, plan)\nprint(\"\\n📄 FINAL OUTPUT (last step)\\n\", results[final_plan.steps[-1].id])\nprint(USAGE)\n\n\n▶️  ready to run: [1]\n   ⚙️  step 1: Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)\n      💭 [1] The user wants to search for seminal and recent transformer-based time-series forecasting architectures. I should use the `search_papers` tool to find papers related to transformer-based time-series forecasting. I'll search for terms like \"transformer architecture time-series forecasting\", \"Informer\n      🔧 [1] search_papers({\"query\": \"transformer architectures for time-series forecasting Informer Autoformer PatchTST FEDformer\"})\n      👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}]\n      💭 [2] The user wants me to search for seminal and recent transformer-based time-series forecasting architectures. I have performed the search using `search_papers`. The results are: - P1: Crossformer (2023) - P2: TimesFM (2024) - P3: Chronos (2024) Wait, the initial prompt mentioned Informer, Autoformer, \n   ⚠️  Step 1 found only 3 papers; the report needs at least 5. → REPLAN\n📋 REVISED PLAN\n  ✅ 1. Search for seminal and recent transformer-based time-series forecasting architectures (e.g., Informer, Autoformer, PatchTST, FEDformer, etc.)  [tool=search_papers, deps=[]]\n  ⬜ 2. Search for additional specific models (Informer, Autoformer, PatchTST, FEDformer) to expand the paper list to at least 5 papers  [tool=search_papers, deps=[]]\n  ⬜ 3. Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques  [tool=read_papers, deps=[1, 2]]\n  ⬜ 4. Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))  [tool=read_papers, deps=[1, 2]]\n  ⬜ 5. Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs  [tool=none, deps=[3, 4]]\n  ⬜ 6. Synthesize all findings into a structured 2-page report comparing the models  [tool=none, deps=[5]]\n\n▶️  ready to run: [2]\n   ⚙️  step 2: Search for additional specific models (Informer, Autoformer, PatchTST, FEDformer) to expand the paper list to at least 5 papers\n      💭 [1] The user wants to search for specific transformer models used in time-series forecasting: Informer, Autoformer, PatchTST, and FEDformer. The goal is to expand a paper list to at least 5 papers. Plan: 1. Use `search_papers` to find papers for \"Informer time-series forecasting\", \"Autoformer time-serie\n      🔧 [1] search_papers({\"query\": \"Informer time-series forecasting\"})\n      🔧 [1] search_papers({\"query\": \"Autoformer time-series forecasting\"})\n      🔧 [1] search_papers({\"query\": \"PatchTST time-series forecasting\"})\n      🔧 [1] search_papers({\"query\": \"FEDformer time-series forecasting\"})\n      ⏱️ [1] 4 tools ran in parallel: 0.0s\n      👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}, {\"id\": \"P4\", \"title\": \"PatchTST\", \"year\": 2023}, {\"\n      👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}, {\"id\": \"P4\", \"title\": \"PatchTST\", \"year\": 2023}, {\"\n      👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}, {\"id\": \"P4\", \"title\": \"PatchTST\", \"year\": 2023}, {\"\n      👀 [1] [{\"id\": \"P1\", \"title\": \"Crossformer\", \"year\": 2023}, {\"id\": \"P2\", \"title\": \"TimesFM\", \"year\": 2024}, {\"id\": \"P3\", \"title\": \"Chronos\", \"year\": 2024}, {\"id\": \"P4\", \"title\": \"PatchTST\", \"year\": 2023}, {\"\n      💭 [2] The user wants to expand a list of papers for a report on transformer architectures for time-series forecasting. I have searched for: - Informer - Autoformer - PatchTST - FEDformer The tool results returned a list of papers: P1: Crossformer (2023) P2: TimesFM (2024) P3: Chronos (2024) P4: PatchTST (\n\n▶️  ready to run: [3, 4]\n   ⚙️  step 3: Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniques\n      💭 [1] The user wants me to perform a specific step in a larger task: writing a 2-page report comparing transformer architectures for time-series forecasting. The current step is: \"Read and extract detailed architectural mechanisms, such as attention types, frequency domain components, or patching techniqu\n      🔧 [1] read_papers({\"paper_ids\": [\"P1\", \"P2\", \"P3\", \"P4\", \"P5\", \"P6\"]})\n      👀 [1] [{\"title\": \"Crossformer\", \"key_method\": \"cross-dimension dependency, two-stage attention\"}, {\"title\": \"TimesFM\", \"key_method\": \"decoder-only foundation model for forecasting\"}, {\"title\": \"Chronos\", \"k\n      💭 [2] The user wants me to extract detailed architectural mechanisms from the provided papers (P1-P6) based on the tool output. Key findings from the tool: - P1 (Crossformer): cross-dimension dependency, two-stage attention. - P2 (TimesFM): decoder-only foundation model. - P3 (Chronos): value tokenization\n   ⚙️  step 4: Read and extract empirical performance metrics and computational complexity data (e.g., MSE, MAE, O(L log L) vs O(L^2))\n      💭 [1] * Goal: Write a 2-page report comparing transformer architectures for time-series forecasting. * Current Step: Read and extract empirical performance metrics (MSE, MAE, etc.) and computational complexity data (e.g., $O(L \\log L)$ vs $O(L^2)$) for the identified papers. * Papers to investigate: P1 (C\n      🔧 [1] read_papers({\"paper_ids\": [\"P1\", \"P2\", \"P3\", \"P4\", \"P5\", \"P6\"]})\n      👀 [1] [{\"title\": \"Crossformer\", \"key_method\": \"cross-dimension dependency, two-stage attention\"}, {\"title\": \"TimesFM\", \"key_method\": \"decoder-only foundation model for forecasting\"}, {\"title\": \"Chronos\", \"k\n      💭 [2] The user wants me to extract empirical performance metrics (MSE, MAE, etc.) and computational complexity (e.g., $O(L \\log L)$ vs $O(L^2)$) for the identified papers: P1 (Crossformer), P2 (TimesFM), P3 (Chronos), P4 (PatchTST), P5 (iTransformer), and P6 (Moirai). Looking at the tool output: - P1: Cro\n\n▶️  ready to run: [5]\n   ⚙️  step 5: Perform a comparative analysis of the identified architectures, focusing on their structural differences and efficiency trade-offs\n\n▶️  ready to run: [6]\n   ⚙️  step 6: Synthesize all findings into a structured 2-page report comparing the models\n\n📄 FINAL OUTPUT (last step)\n **Comparative Report: Transformer Architectures for Time-Series Forecasting**\n\n**Structural Paradigms**\n* **Temporal & Cross-Dimensional Dependency:** **P4 (PatchTST)** utilizes patching to enhance local context and efficiency, while **P1 (Crossformer)** employs a two-stage mechanism to capture complex dependencies.\n* **Multivariate-Centric:** These models prioritize inter-variate relationships. **P5 (iTransformer)** inverts traditional attention to operate over variates instead of time steps, whereas **P6 (Moirai)** utilizes any-variate attention for universal forecasting.\n* **Language Modeling:** This paradigm treats forecasting as a sequence modeling task. **P3 (Chronos)** employs a T5-style architecture via value tokenization, while **P2 (TimesFM)** utilizes a decoder-only foundation model structure.\n\n**Efficiency and Generalization Trade-offs**\nA clear divergence exists between specialized and foundation-based approaches. Specialized architectures (**P1, P4, P5, P6**) offer higher computational efficiency by optimizing for specific temporal or variate dimensions. Conversely, foundation models (**P2, P3**) prioritize zero-shot generalization and cross-domain robustness, typically at the cost of increased computational complexity and memory requirements compared to task-specific models.\n{'llm_calls': 15, 'input_tokens': 5631, 'output_tokens': 14573, 'cost_usd': 0.004667070000000001}\n\n\nสังเกต: - step ที่ deps เหมือนกัน (เช่น ทำตาราง กับ เขียนบทนำ) จะ “ready” พร้อมกัน — ใน production รันขนานได้ - เมื่อค้นเจอ paper แค่ 3 ฉบับ harness ตรวจพบและสั่ง replan — planner เพิ่ม step ค้นหาให้กว้างขึ้น แล้วจึงพบ PatchTST, iTransformer — เหมือนตัวอย่างในตำรา - ค่าใช้จ่ายของ planning agent สูงกว่า ReAct หลายเท่า (ดู USAGE) — ตรงกับตาราง 19.3 - แต่ละ step เห็นเฉพาะ output ของ step ใน deps — ถ้า step ก่อนหน้าไม่ส่งข้อมูลสำคัญ (เช่น paper id) ต่อมา step ถัดไปจะทำงานไม่ได้ นี่คือเรื่อง state management ของ harness (§18.6) - “The plan is a living document” — plan ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3",
     "href": "ch19/19-2-autonomous-agents/demo.html#part-3-reflexion-เรยนรจากความผดพลาดโดยไมตอง-train-19.2.3",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "Part 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)",
     "text": "Part 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)\n\nAgent พยายามทำงาน (เขียนฟังก์ชัน)\nEvaluator ตรวจ (รัน unit tests ที่ agent มองไม่เห็นล่วงหน้า)\nถ้าล้มเหลว agent เขียน reflection เป็นภาษาธรรมชาติ เก็บใน reflection_memory\nรอบถัดไป reflection ทั้งหมดถูกใส่ใน prompt → เรียนรู้ข้ามรอบ โดยไม่อัปเดต weight\n\n⚠️ exec() รันโค้ดที่ model สร้าง — ใช้ได้ใน notebook เพื่อการสอน แต่ production ต้องรันใน sandbox เสมอ\n\nSPEC = (\"Write a Python function `parse_duration(s: str) -&gt; float` that converts a duration \"\n        \"string like '1h30m' into minutes (e.g. '1h30m' -&gt; 90). Return only the code in one \"\n        \"```python block, no explanation.\")\n\nHIDDEN_TESTS = [            # evaluator's tests — agent ไม่เห็น\n    (\"1h30m\", 90), (\"2h\", 120), (\"45m\", 45),\n    (\"90s\", 1.5),           # seconds\n    (\"1H 15M\", 75),         # uppercase + spaces\n    (\"1.5h\", 90),           # decimals\n    (\"1d\", 1440),           # days\n    (\"abc\", ValueError),    # invalid input must raise ValueError\n    (\"10\", ValueError),     # number without unit is ambiguous -&gt; ValueError\n]\n\ndef extract_code(text):\n    return text.split(\"```python\")[-1].split(\"```\")[0] if \"```\" in text else text\n\ndef evaluate(code_str):\n    ns = {}\n    try:\n        exec(code_str, ns)\n        fn = ns[\"parse_duration\"]\n    except Exception as e:\n        return [f\"code does not run: {e}\"]\n    failures = []\n    for inp, want in HIDDEN_TESTS:\n        expects_error = isinstance(want, type) and issubclass(want, Exception)\n        try:\n            got = fn(inp)\n            if expects_error:\n                failures.append(f\"parse_duration({inp!r}) returned {got}, expected {want.__name__}\")\n            elif abs(got - want) &gt; 1e-9:\n                failures.append(f\"parse_duration({inp!r}) returned {got}, expected {want}\")\n        except Exception as e:\n            if not (expects_error and isinstance(e, want)):\n                failures.append(f\"parse_duration({inp!r}) raised {type(e).__name__}: {e}\")\n    return failures\n\ndef reflexion(max_attempts=4):\n    reflection_memory = []\n    for attempt in range(1, max_attempts + 1):\n        prompt = SPEC\n        if reflection_memory:\n            prompt += \"\\n\\nLessons from your previous failed attempts:\\n\" + \\\n                      \"\\n\".join(f\"- {r}\" for r in reflection_memory)\n        code_str = extract_code(ask_llm([{\"role\": \"user\", \"content\": prompt}]).content)\n        failures = evaluate(code_str)\n        print(f\"\\n🧪 attempt {attempt}: {len(HIDDEN_TESTS) - len(failures)}/{len(HIDDEN_TESTS)} tests passed\")\n        if not failures:\n            print(\"✅ all tests passed\")\n            if attempt == 1:\n                print(\"   (ผ่านตั้งแต่รอบแรก — ลองเพิ่ม HIDDEN_TESTS ที่ยากขึ้นเพื่อดู reflection)\")\n            return code_str, reflection_memory\n        for f in failures:\n            print(\"   ❌\", f)\n        reflection = ask_llm([{\"role\": \"user\", \"content\":\n            f\"Your code:\\n{code_str}\\nFailed tests:\\n\" + \"\\n\".join(failures) +\n            \"\\nIn ONE sentence, write a lesson for your next attempt (start with 'I failed because').\"}]).content.strip()\n        reflection_memory.append(reflection)\n        print(\"   📝 reflection:\", reflection)\n    return code_str, reflection_memory\n\nfinal_code, memory = reflexion()\nprint(\"\\nREFLECTION MEMORY:\", *memory, sep=\"\\n- \")\n\n\n🧪 attempt 1: 3/9 tests passed\n   ❌ parse_duration('90s') returned 0.0, expected 1.5\n   ❌ parse_duration('1H 15M') returned 0.0, expected 75\n   ❌ parse_duration('1.5h') returned 300.0, expected 90\n   ❌ parse_duration('1d') returned 0.0, expected 1440\n   ❌ parse_duration('abc') returned 0.0, expected ValueError\n   ❌ parse_duration('10') returned 0.0, expected ValueError\n   📝 reflection: I failed because my regex only captured integers and lowercase 'h' or 'm', failing to handle decimals, case-insensitivity, additional units like 's' and 'd', and the requirement to raise a ValueError for invalid inputs.\n\n🧪 attempt 2: 8/9 tests passed\n   ❌ parse_duration('1H 15M') raised ValueError: Invalid duration format: '1h 15m'\n   📝 reflection: I failed because my strict validation logic compared the reconstructed string against the original input without accounting for optional whitespace between the duration components.\n\n🧪 attempt 3: 9/9 tests passed\n✅ all tests passed\n\nREFLECTION MEMORY:\n- I failed because my regex only captured integers and lowercase 'h' or 'm', failing to handle decimals, case-insensitivity, additional units like 's' and 'd', and the requirement to raise a ValueError for invalid inputs.\n- I failed because my strict validation logic compared the reconstructed string against the original input without accounting for optional whitespace between the duration components.",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#part-4-tool-use-patterns-19.2.4",
     "href": "ch19/19-2-autonomous-agents/demo.html#part-4-tool-use-patterns-19.2.4",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "Part 4 — Tool-use patterns (§19.2.4)",
     "text": "Part 4 — Tool-use patterns (§19.2.4)\n\n\n\nPattern\nดูที่ไหนใน notebook\n\n\n\n\nSingle-turn\n4.1\n\n\nMulti-tool (parallel)\n4.2\n\n\nSequential (pipeline)\nPart 1 (search → read)\n\n\nNested (agent-as-tool)\n4.3\n\n\nFallback\n4.4\n\n\n\n\n4.1 Single-turn — tool เดียว, LLM call 2 ครั้ง\n\nbefore = USAGE[\"llm_calls\"]\nprint(react_agent(\"What is (17 * 23) + 9? Use the calculator.\", [\"calculator\"]))\nprint(\"LLM calls:\", USAGE[\"llm_calls\"] - before)   # คาดว่า = 2\n\n💭 [1] The user wants to calculate the result of the expression (17 * 23) + 9. I should use the calculator tool for this. 1. **Identify the expression:** (17 * 23) + 9 2. **Formulate the tool call:** `calculator(expression=\"(17 * 23) + 9\")`\n🔧 [1] calculator({\"expression\": \"(17 * 23) + 9\"})\n👀 [1] 400\n(17 * 23) + 9 = 400\nLLM calls: 2\n\n\n\n\n4.2 Multi-tool (parallel) — tool อิสระต่อกัน รันพร้อมกัน\nแต่ละ tool จำลอง latency 1.5 วินาที ถ้ารันทีละตัวจะใช้ ~4.5 วินาที แต่ react_agent รันพร้อมกันด้วย ThreadPoolExecutor → Latency = max(individual calls) แทนที่จะเป็นผลรวม\n\ndef slow(value):\n    time.sleep(1.5); return value\n\n@tool(\"Get the latest stock price for a ticker.\", {\"ticker\": {\"type\": \"string\"}})\ndef get_stock_price(ticker):\n    return slow(json.dumps({\"ticker\": ticker, \"price_usd\": 187.4}))\n\n@tool(\"Get today's weather for a city.\", {\"city\": {\"type\": \"string\"}})\ndef get_weather(city):\n    return slow(json.dumps({\"city\": city, \"forecast\": \"rain, 29°C\"}, ensure_ascii=False))\n\n@tool(\"Get today's calendar events.\", {\"date\": {\"type\": \"string\"}})\ndef get_calendar(date):\n    return slow(json.dumps([{\"time\": \"14:00\", \"event\": \"Thesis meeting\"}]))\n\nimport datetime\ntoday = datetime.date.today().isoformat()\nprint(react_agent(f\"Today is {today}. Give me a morning brief: AAPL stock price, Bangkok weather, \"\n                  \"and my calendar for today. Fetch all three at once.\",\n                  [\"get_stock_price\", \"get_weather\", \"get_calendar\"]))\nprint(\"ถ้ารันทีละตัวจะใช้ ~4.5s (3 × 1.5s)\")\n\n💭 [1] The user wants a morning brief consisting of three pieces of information: 1. AAPL stock price. 2. Weather in Bangkok. 3. Calendar events for today (2026-11-05). I need to call three different functions: - `get_stock_price(ticker='AAPL')` - `get_weather(city='Bangkok')` - `get_calendar(date='2026-11-\n🔧 [1] get_stock_price({\"ticker\": \"AAPL\"})\n🔧 [1] get_weather({\"city\": \"Bangkok\"})\n🔧 [1] get_calendar({\"date\": \"2026-11-05\"})\n⏱️ [1] 3 tools ran in parallel: 1.5s\n👀 [1] {\"ticker\": \"AAPL\", \"price_usd\": 187.4}\n👀 [1] {\"city\": \"Bangkok\", \"forecast\": \"rain, 29°C\"}\n👀 [1] [{\"time\": \"14:00\", \"event\": \"Thesis meeting\"}]\nGood morning! Here is your brief for Thursday, November 5, 2026:\n\n*   **Stock Update:** AAPL is currently trading at **$187.40**.\n*   **Bangkok Weather:** Expect **rain** today with a high of **29°C**.\n*   **Your Schedule:** You have one event on your calendar: **Thesis meeting** at **14:00**.\n\nHave a great day!\nถ้ารันทีละตัวจะใช้ ~4.5s (3 × 1.5s)\n\n\n\n\n4.3 Nested (agent-as-tool)\nParent agent เห็น sub-agent เป็นแค่ tool ตัวหนึ่ง (black box) แต่ข้างในคือ ReAct agent อีกตัวที่มี system prompt และ tool ของตัวเอง\n\n@tool(\"Delegate a math word problem to a specialist math agent. Returns the worked answer.\",\n      {\"problem\": {\"type\": \"string\"}})\ndef ask_math_agent(problem):\n    print(\"      ↳ 🤖 math sub-agent started\")\n    return react_agent(problem, [\"calculator\"],\n                       system=\"You are a careful math agent. Always use the calculator for arithmetic.\",\n                       indent=\"      \")\n\nprint(react_agent(\n    \"A class has 3 sections of 42 students. Each student needs 2 notebooks costing 18.5 baht each. \"\n    \"How much do all notebooks cost? Delegate the math.\", [\"ask_math_agent\"]))\n\n💭 [1] The user wants to calculate the total cost of notebooks for a class. The class has 3 sections of 42 students each. Each student needs 2 notebooks. Each notebook costs 18.5 baht. 1. Calculate total students: 3 sections * 42 students/section = 126 students. 2. Calculate total notebooks: 126 students *\n🔧 [1] ask_math_agent({\"problem\": \"A class has 3 sections of 42 students. Each student needs 2 notebooks costing 18.5 baht each. How much do all notebooks cost?\"})\n      ↳ 🤖 math sub-agent started\n      💭 [1] The objective is to calculate the total cost of notebooks for all students in the class. * Number of sections: 3 * Number of students per section: 42 * Notebooks per student: 2 * Cost per notebook: 18.5 baht * Step 1: Find the total number of students. * Total students = (Number of sections) * (Stud\n👀 [1] To find the total cost of all the notebooks, we can follow these steps:\n\n1.  **Find the total number of students:**\n    3 sections × 42 students per section = 126 students\n\n2.  **Find the total number\nThe total cost for all the notebooks is 4,662 baht.\n\nHere is the breakdown of the calculation:\n1.  **Total students:** 3 sections × 42 students = 126 students\n2.  **Total notebooks:** 126 students × 2 notebooks = 252 notebooks\n3.  **Total cost:** 252 notebooks × 18.5 baht = 4,662 baht\n\n\n\n\n4.4 Fallback (graceful degradation)\nHarness ลอง tool ตามลำดับความสำคัญ — model ไม่ต้องรู้เรื่อง fallback เลย (§19.2.4, หลัก “Plan for failure” §19.3)\n\ndef primary_search(q):  raise TimeoutError(\"primary API timed out\")\ndef backup_search(q):   raise RuntimeError(\"429 rate limited\")\ndef cached_search(q):   return json.dumps([{\"title\": \"PatchTST\", \"source\": \"cache (2 days old)\"}])\n\ndef search_with_fallback(query):\n    for name, fn in [(\"primary\", primary_search), (\"backup\", backup_search), (\"cache\", cached_search)]:\n        try:\n            result = fn(query)\n            print(f\"   ✅ {name} succeeded\")\n            return result\n        except Exception as e:\n            print(f\"   ❌ {name} failed: {e}\")\n    return \"Search is currently unavailable.\"   # สุดท้าย: แจ้ง model ตรงๆ\n\nprint(search_with_fallback(\"time-series transformer\"))\n\n   ❌ primary failed: primary API timed out\n   ❌ backup failed: 429 rate limited\n   ✅ cache succeeded\n[{\"title\": \"PatchTST\", \"source\": \"cache (2 days old)\"}]",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   },
   {
     "objectID": "ch19/19-2-autonomous-agents/demo.html#สรป",
     "href": "ch19/19-2-autonomous-agents/demo.html#สรป",
-    "title": "19.2 Autonomous Agent Patterns — Coding Demo",
+    "title": "EP05 Autonomous Agent Patterns — Coding Demo (§19.2)",
     "section": "สรุป",
     "text": "สรุป\n\n\n\nPattern\nLLM calls ในตำรา (ตาราง 19.3)\nในโค้ดนี้\n\n\n\n\nReAct\n3–25\nreact_agent()\n\n\nPlanning agent\n5–50+\nexecute_plan() (ใช้ ReAct ในแต่ละ step)\n\n\nReflection\n+50% overhead\nreflexion()\n\n\n\nดูจำนวน LLM calls และ tokens ที่ใช้จริงทั้งหมดได้จาก USAGE ด้านล่าง\n\nprint(USAGE)\n\n{'llm_calls': 27, 'input_tokens': 7945, 'output_tokens': 30258, 'cost_usd': 0.00967257}",
     "crumbs": [
-      "บทที่ 19 Agent Design Patterns",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>19.2 Autonomous Agent Patterns — Coding Demo</span>"
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span>"
     ]
   }
 ]

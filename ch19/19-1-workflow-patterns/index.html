@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP04 Workflow Patterns – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/19-2-autonomous-agents/index.html" rel="next">
+<link href="../../index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7835d1f0ca29b4e891ee73374c94434a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html"><span class="chapter-title">EP04 Workflow Patterns</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">คำนำ</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-2-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-2-autonomous-agents/demo.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#วตถประสงคการเรยนร" id="toc-วตถประสงคการเรยนร" class="nav-link active" data-scroll-target="#วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</a></li>
+  <li><a href="#workflow-หรอ-agent" id="toc-workflow-หรอ-agent" class="nav-link" data-scroll-target="#workflow-หรอ-agent">Workflow หรือ agent</a></li>
+  <li><a href="#prompt-chaining" id="toc-prompt-chaining" class="nav-link" data-scroll-target="#prompt-chaining">1. Prompt Chaining</a></li>
+  <li><a href="#routing" id="toc-routing" class="nav-link" data-scroll-target="#routing">2. Routing</a></li>
+  <li><a href="#parallelization" id="toc-parallelization" class="nav-link" data-scroll-target="#parallelization">3. Parallelization</a></li>
+  <li><a href="#orchestrator-workers" id="toc-orchestrator-workers" class="nav-link" data-scroll-target="#orchestrator-workers">4. Orchestrator-Workers</a></li>
+  <li><a href="#evaluator-optimizer" id="toc-evaluator-optimizer" class="nav-link" data-scroll-target="#evaluator-optimizer">5. Evaluator-Optimizer</a></li>
+  <li><a href="#หา-pattern-เทยบกน" id="toc-หา-pattern-เทยบกน" class="nav-link" data-scroll-target="#หา-pattern-เทยบกน">ห้า pattern เทียบกัน</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html"><span class="chapter-title">EP04 Workflow Patterns</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP04 Workflow Patterns</span></h1>
+<p class="subtitle lead">§19.1 · Prompt Chaining · Routing · Parallelization · Orchestrator-Workers · Evaluator-Optimizer</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>🎬 วิดีโอและ notebook ประกอบ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>วิดีโอ:</strong> ทฤษฎี (≈10 นาที) → Lab 1–5 (11–16 นาที) → สรุป (≈5 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
+<li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
+<li><strong>Model ใน lab:</strong> Gemma 4 26B (open weights) ผ่าน OpenRouter รัน notebook หนึ่งรอบไม่ถึงหนึ่งสตางค์ ต้องมี OpenRouter API key</li>
+</ul>
+</div>
+</div>
+<section id="วตถประสงคการเรยนร" class="level2">
+<h2 class="anchored" data-anchor-id="วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</h2>
+<p>เมื่อจบ module นี้ ผู้เรียนจะสามารถ</p>
+<ol type="1">
+<li>อธิบายความแตกต่างระหว่าง <em>workflow</em> และ <em>agent</em> และบอกได้ว่าเมื่อไร workflow ก็เพียงพอ</li>
+<li>ออกแบบ prompt chain ที่มี validation gate ระหว่างขั้น</li>
+<li>สร้าง router ที่ classify ครั้งเดียวแล้วส่งงานต่อให้ handler เฉพาะทาง</li>
+<li>เรียก LLM พร้อมกันแบบ sectioning และ voting แล้วรวมผลด้วยโค้ด</li>
+<li>อธิบายว่า orchestrator-workers ต่างจาก parallelization อย่างไร</li>
+<li>สร้าง evaluator-optimizer loop ที่มี threshold และ retry budget</li>
+</ol>
+</section>
+<section id="workflow-หรอ-agent" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-หรอ-agent">Workflow หรือ agent</h2>
+<p>ตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า <strong>ไม่ใช่ทุกงานที่ต้องใช้ agent</strong> <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 19.1</a>)</span> ใน <em>workflow</em> ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน <em>agent</em> ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ</p>
+<div id="tbl-workflow-agent" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.1: Workflow เทียบกับ agent
+</figcaption>
+<div aria-describedby="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Workflow</th>
+<th>Agent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ใครตัดสินใจขั้นถัดไป</td>
+<td>ระบบ (โค้ดของเรา)</td>
+<td>LLM</td>
+</tr>
+<tr class="even">
+<td>ความคาดเดาได้</td>
+<td>สูง ทดสอบง่าย</td>
+<td>ต่ำกว่า</td>
+</tr>
+<tr class="odd">
+<td>ต้นทุน</td>
+<td>ต่ำกว่า</td>
+<td>สูงกว่า</td>
+</tr>
+<tr class="even">
+<td>เหมาะกับ</td>
+<td>งานที่รู้โครงสร้างล่วงหน้า</td>
+<td>งานที่ต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิด</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">สำคัญ</span>เริ่มจาก workflow ก่อนเสมอ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ขยับไปใช้ agent เมื่องานต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิดจริงๆ เท่านั้น ตัวอย่างตลอด module นี้คือ <strong>ผู้ช่วยอาจารย์ของ Cogito Learn</strong> ซึ่งเรารู้อยู่แล้วว่าคำถามมีไม่กี่ประเภท workflow จึงเพียงพอ</p>
+</div>
+</div>
+</section>
+<section id="prompt-chaining" class="level2">
+<h2 class="anchored" data-anchor-id="prompt-chaining">1. Prompt Chaining</h2>
+<p>แบ่งงานใหญ่เป็นลำดับ LLM call ที่ตายตัว ผลลัพธ์ของขั้นหนึ่งเป็น context ของขั้นถัดไป และระหว่างขั้นมี <strong>validation gate</strong> คอยจับข้อผิดพลาดตั้งแต่เนิ่นๆ เหมือนจุดตรวจคุณภาพบนสายพานโรงงาน gate จะใช้ LLM ตรวจ หรือเขียนโค้ดตรวจธรรมดาก็ได้</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-chain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-chain">flowchart LR
+  I["📄 abstract"] --&gt; G0{"gate (LLM)&lt;br/&gt;เป็น abstract ไหม"}
+  G0 --&gt; S1["ขั้น 1&lt;br/&gt;ดึงประเด็นหลัก"]
+  S1 --&gt; G1{"gate (โค้ด)&lt;br/&gt;ครบ 3 ข้อไหม"}
+  G1 --&gt; S2["ขั้น 2&lt;br/&gt;สรุปภาษาไทย"]
+  S2 --&gt; G2{"gate (โค้ด)&lt;br/&gt;ไม่เกิน 5 บรรทัด"}
+  G2 --&gt; O["✅ สรุป"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>ข้อดีคือแต่ละขั้นใช้ prompt, model หรือ temperature ต่างกันได้ และเปิดดูผลระหว่างทางได้ทุกขั้น เหมาะกับงานที่เป็นลำดับขั้นอยู่แล้ว เช่น สร้างเนื้อหา แปลงข้อมูล หรือวิเคราะห์หลายขั้น</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> abstract ผ่านครบทุกด่าน ประกาศห้องสอบถูก gate แรกหยุดไว้ และเมื่อตั้งให้สรุปได้แค่สองบรรทัด gate ที่เป็นโค้ดก็หยุดผลลัพธ์ไว้กลางทาง</p>
+</blockquote>
+</section>
+<section id="routing" class="level2">
+<h2 class="anchored" data-anchor-id="routing">2. Routing</h2>
+<p><strong>Classifier</strong> (LLM หรือ model แบบดั้งเดิม) ดู input ก่อน แล้วส่งไปยัง <strong>handler เฉพาะทาง</strong> เหมือนจุดคัดกรองในโรงพยาบาลที่ถามอาการครั้งเดียวแล้วส่งไปแผนกที่ถูก</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-route" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-route-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-route">flowchart LR
+  Q["❓ คำถามนักศึกษา"] --&gt; C{"classifier&lt;br/&gt;(JSON, enum, temperature 0)"}
+  C -- concept --&gt; A1["prompt อธิบายทฤษฎี"]
+  C -- code_error --&gt; A2["tool รันโค้ด&lt;br/&gt;+ อธิบาย error จริง"]
+  C -- admin --&gt; A3["model ตัวเล็ก ราคาถูก&lt;br/&gt;+ ข้อมูลรายวิชา"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-route-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Routing เหมาะเมื่องานมีหลายประเภทที่ชัดเจน และแต่ละประเภทต้องการ prompt, tool หรือ model ต่างกัน ตัวอย่างในตำราคือการคัดกรองงาน customer support และการรับ input หลายรูปแบบ</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 2:</strong> คำถามทั้งหกข้อไปถูกที่ รวมถึงข้อหลอกที่มีคำว่า error แต่จริงๆ เป็นคำถามแนวคิด</p>
+</blockquote>
+</section>
+<section id="parallelization" class="level2">
+<h2 class="anchored" data-anchor-id="parallelization">3. Parallelization</h2>
+<p>เรียก LLM หลายครั้งพร้อมกัน แล้วให้โค้ดของเรารวมผล ตำราแบ่งเป็นสองแบบ</p>
+<ul>
+<li><strong>Sectioning (fan-out)</strong> แบ่งงานเป็นส่วนที่ไม่ทับกัน เช่น review โค้ดสามด้าน security / performance / style พร้อมกัน แล้วรวมผล ตัดซ้ำ และเรียงตามความรุนแรง เหมือนครูสามคนตรวจข้อสอบคนละตอนในเวลาเดียวกัน</li>
+<li><strong>Voting</strong> ส่ง prompt เดียวกัน <em>N</em> ครั้งด้วย seed หรือ temperature ต่างกัน แล้วเลือกคำตอบด้วยเสียงข้างมาก, reward model หรือ LLM-as-judge</li>
+</ul>
+<p>ถ้า call แต่ละครั้งใช้เวลา <span class="math inline">\(t_1, \dots, t_n\)</span> เวลารวมของแบบพร้อมกันใกล้กับ call ที่ช้าที่สุด ไม่ใช่ผลรวม</p>
+<p><span id="eq-parallel"><span class="math display">\[
+T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_i t_i
+\tag{1.1}\]</span></span></p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 3:</strong> review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>1.1</span></a> ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)</p>
+</blockquote>
+</section>
+<section id="orchestrator-workers" class="level2">
+<h2 class="anchored" data-anchor-id="orchestrator-workers">4. Orchestrator-Workers</h2>
+<p>คราวนี้ <strong>LLM เป็นผู้ตัดสินใจว่าจะแบ่งงานอย่างไร</strong> orchestrator วิเคราะห์โจทย์ สร้างแผนเป็นงานย่อย ส่งให้ worker ที่อาจใช้ prompt หรือ tool ต่างกัน แล้ว synthesizer รวมผลเป็นคำตอบเดียว เหมือนหัวหน้าเชฟที่ต้องดูออร์เดอร์ก่อนถึงจะรู้ว่าต้องแบ่งงานให้ลูกมือกี่คน</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-orch" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-orch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-orch">flowchart LR
+  G["🎯 goal"] --&gt; O["orchestrator&lt;br/&gt;(เขียนแผนเป็น JSON)"]
+  O --&gt; W1["worker: summarize"]
+  O --&gt; W2["worker: extract"]
+  O --&gt; W3["worker: compare"]
+  W1 --&gt; S["synthesizer"]
+  W2 --&gt; S
+  W3 --&gt; S
+  S --&gt; R["📝 คำตอบเดียว"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-orch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>ความต่างจาก parallelization คือวิธีแบ่งงานไม่ได้ตายตัวในโค้ด ตำราบอกว่าเหมาะกับงานปลายเปิดที่ไม่รู้ล่วงหน้าว่าจะมีงานย่อยกี่ชิ้น เช่น “refactor this codebase”</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 4:</strong> โค้ดเดียวกันทุกบรรทัด แต่สอง goal ได้แผนต่างกัน goal แรกได้สี่งานย่อย ส่วนคำถามเรื่อง AI hints ได้สองงานย่อยและไม่ใช้ paper P2 เลย</p>
+</blockquote>
+</section>
+<section id="evaluator-optimizer" class="level2">
+<h2 class="anchored" data-anchor-id="evaluator-optimizer">5. Evaluator-Optimizer</h2>
+<p>Feedback loop ของสอง model: <strong>generator</strong> สร้างผลงาน <strong>evaluator</strong> ให้คะแนนตามเกณฑ์ที่เขียนไว้ชัดเจน ถ้ายังไม่ถึง <strong>threshold</strong> คำวิจารณ์ (critique) จะถูกต่อเข้า context ของ generator แล้ววนใหม่ จนผ่านหรือจน <strong>retry budget</strong> หมด เหมือนนักเขียนกับบรรณาธิการ</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-eval" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-eval">flowchart LR
+  T["📄 abstract"] --&gt; Gen["generator&lt;br/&gt;แปลเป็นภาษาไทย"]
+  Gen --&gt; Ev{"evaluator&lt;br/&gt;ความหมาย · ศัพท์ · ความลื่นไหล"}
+  Ev -- "≥ threshold" --&gt; OK["✅ ผ่าน"]
+  Ev -- "ยังไม่ผ่าน" --&gt; B{"budget&lt;br/&gt;เหลือไหม"}
+  B -- เหลือ --&gt; C["ต่อ critique&lt;br/&gt;เข้า context"] --&gt; Gen
+  B -- หมด --&gt; L["คืนร่างสุดท้าย"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>เหมาะกับงานที่มีเกณฑ์คุณภาพชัดเจน เช่น โค้ดที่ต้องผ่าน test งานเขียนที่ต้องตรง style guide หรืองานแปลที่ต้องรักษาความหมาย และทั้งหมดนี้ทำได้ <strong>โดยไม่ต้อง train model</strong></p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 5:</strong> ร่างแรกได้ 6/10 เพราะแปลศัพท์เทคนิคเป็นภาษาไทย พอต่อ critique เข้าไป รอบที่สองได้ 10/10 ทั้งที่ generator ไม่เคยเห็น glossary</p>
+</blockquote>
+</section>
+<section id="หา-pattern-เทยบกน" class="level2">
+<h2 class="anchored" data-anchor-id="หา-pattern-เทยบกน">ห้า pattern เทียบกัน</h2>
+<div id="tbl-patterns" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.2: สรุปห้า workflow pattern
+</figcaption>
+<div aria-describedby="tbl-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>ใครกำหนดเส้นทาง</th>
+<th>LLM calls ต่อ input</th>
+<th>เหมาะกับ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prompt chaining</td>
+<td>โค้ด (ลำดับตายตัว)</td>
+<td>เท่าจำนวนขั้น</td>
+<td>งานเป็นลำดับขั้น</td>
+</tr>
+<tr class="even">
+<td>Routing</td>
+<td>โค้ด + classifier</td>
+<td>1 + handler</td>
+<td>input หลายประเภทที่ชัดเจน</td>
+</tr>
+<tr class="odd">
+<td>Parallelization</td>
+<td>โค้ด (แบ่งตายตัว)</td>
+<td>N พร้อมกัน</td>
+<td>งานแยกเป็นส่วนอิสระ หรืออยากได้หลายเสียง</td>
+</tr>
+<tr class="even">
+<td>Orchestrator-workers</td>
+<td>LLM วางแผน โค้ดรัน</td>
+<td>1 + งานย่อย + 1</td>
+<td>งานปลายเปิดที่แบ่งล่วงหน้าไม่ได้</td>
+</tr>
+<tr class="odd">
+<td>Evaluator-optimizer</td>
+<td>โค้ด (loop + budget)</td>
+<td>2 ต่อรอบ</td>
+<td>งานที่มีเกณฑ์คุณภาพชัดเจน</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>ทั้งห้าแบบใช้ LLM บนเส้นทางที่ระบบกำหนดไว้ จึงคาดเดาได้ ทดสอบได้ และคุมต้นทุนได้ และประกอบกันได้ เช่น router ส่งงานต่อให้ chain หรือขั้นหนึ่งของ chain เป็น evaluator-optimizer สองแบบหลังเริ่มให้ model มีส่วนตัดสินใจมากขึ้น ซึ่งเป็นสะพานไปสู่ autonomous agent ใน EP05</p>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ เฉลย</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — Prompt Chaining</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab1-chaining.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab1-chaining.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — Routing</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab2-routing.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab2-routing.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 3 — Parallelization</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab3-parallel.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab3-parallel.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 4 — Orchestrator-Workers</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab4-orchestrator.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab4-orchestrator.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 5 — Evaluator-Optimizer</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab5-evaluator.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/19-1-lab5-evaluator.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>ข้อมูลในโค้ด (abstract, คำถาม, โค้ดที่ตรวจ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง</p>
+</section>
+<section id="คำถามทบทวน" class="level2">
+<h2 class="anchored" data-anchor-id="คำถามทบทวน">คำถามทบทวน</h2>
+<ol type="1">
+<li>ทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent</li>
+<li>ใน <a href="#fig-chain" class="quarto-xref">รูปที่&nbsp;<span>1.1</span></a> ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป</li>
+<li>ทำไม classifier ใน <a href="#fig-route" class="quarto-xref">รูปที่&nbsp;<span>1.2</span></a> จึงตอบเป็น <code>enum</code> ด้วย temperature 0</li>
+<li>จาก <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>1.1</span></a> ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร</li>
+<li>Orchestrator-workers ต่างจาก sectioning ตรงไหน</li>
+<li>ถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน <a href="#fig-eval" class="quarto-xref">รูปที่&nbsp;<span>1.4</span></a> จะเกิดอะไรขึ้น</li>
+</ol>
+</section>
+<section id="เอกสารอางอง" class="level2">
+<h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../index.html" class="pagination-link" aria-label="คำนำ">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">คำนำ</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch19/19-2-autonomous-agents/index.html" class="pagination-link" aria-label="EP05 Autonomous Agent Patterns">
+        <span class="nav-page-text"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>19.2 Autonomous Agent Patterns — Coding Demo – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<title>EP05 Autonomous Agent Patterns — Coding Demo (§19.2) – Agentic AI: จากพื้นฐานสู่ระบบ</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -154,7 +154,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/index.html">บทที่ 19 Agent Design Patterns</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span></a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -188,17 +188,22 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text" id="quarto-sidebar-section-1-label">บทที่ 19 Agent Design Patterns</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
       <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../ch19/19-2-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">19.2 Autonomous Agent Patterns</span></a>
+  <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../ch19/19-2-autonomous-agents/demo.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a>
+  <a href="../../ch19/19-2-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-2-autonomous-agents/demo.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span></a>
   </div>
 </li>
       </ul>
@@ -235,9 +240,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/index.html">บทที่ 19 Agent Design Patterns</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch19/19-2-autonomous-agents/demo.html"><span class="chapter-title">EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">19.2 Autonomous Agent Patterns — Coding Demo</span></h1>
+<h1 class="title"><span class="chapter-title">EP05 Autonomous Agent Patterns — Coding Demo (§19.2)</span></h1>
 </div>
 
 
@@ -1475,8 +1480,8 @@ Here is the breakdown of the calculation:
   </script>
 <nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
-      <a href="../../ch19/19-2-autonomous-agents/index.html" class="pagination-link" aria-label="19.2 Autonomous Agent Patterns">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">19.2 Autonomous Agent Patterns</span></span>
+      <a href="../../ch19/19-2-autonomous-agents/index.html" class="pagination-link" aria-label="EP05 Autonomous Agent Patterns">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
