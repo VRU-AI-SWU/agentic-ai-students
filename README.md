@@ -9,7 +9,7 @@ Notebook ประกอบคลิป YouTube ชุด *Agentic AI ภาษ�
 - **✏️ Starter** — โค้ดส่วนใหญ่เตรียมไว้แล้ว ดูคลิปแล้วเติมเฉพาะจุด `✏️ TODO` ทุกจุดบอกเวลาในคลิปที่อธิบายโค้ดตรงนั้น
 - **✅ เฉลย** — โค้ดชุดเดียวกับในคลิป รันได้ทันที ใช้เทียบเมื่อติด
 
-🇬🇧 English versions of every notebook (`.en.ipynb`, `.en.student.ipynb`) are in the same folders; the English course site is at https://vru-ai-swu.github.io/agentic-ai-students/en/
+🇬🇧 **English:** [README in English](README.en.md) · notebook ภาษาอังกฤษ (`.en.ipynb`) อยู่ในโฟลเดอร์เดียวกัน
 
 ## เริ่มต้น
 
