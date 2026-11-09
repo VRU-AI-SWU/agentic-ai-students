@@ -21,6 +21,14 @@ Notebook ประกอบคลิป YouTube ชุด *Agentic AI ภาษ�
 
 ⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่า commit ไฟล์ `.env`
 
+## EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent (§1.1–1.2, §1.12)
+
+| Lab | ✏️ Starter | ✅ เฉลย | 🇬🇧 English |
+|---|---|---|---|
+| Lab 1 — Tokens | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.student.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab1-tokens.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab1-tokens.ipynb) | [starter](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.en.student.ipynb) · [solution](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.en.ipynb) |
+| Lab 2 — Decoding | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.student.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab2-decoding.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab2-decoding.ipynb) | [starter](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.student.ipynb) · [solution](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.ipynb) |
+| Lab 3 — Model names & providers | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.student.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab3-model-names.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.ipynb) · [ไฟล์](ep01-how-llms-work/ep01-lab3-model-names.ipynb) | [starter](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.student.ipynb) · [solution](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.ipynb) |
+
 ## EP04 Workflow Patterns (§19.1)
 
 | Lab | ✏️ Starter | ✅ เฉลย | 🇬🇧 English |

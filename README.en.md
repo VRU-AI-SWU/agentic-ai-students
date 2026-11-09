@@ -21,6 +21,14 @@ Each lab has two files:
 
 ⚠️ Never put the key in the code itself, and never commit your `.env` file.
 
+## EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent (§1.1–1.2, §1.12)
+
+| Lab | ✏️ Starter | ✅ Solution |
+|---|---|---|
+| Lab 1 — Tokens | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.en.student.ipynb) · [file](ep01-how-llms-work/ep01-lab1-tokens.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.en.ipynb) · [file](ep01-how-llms-work/ep01-lab1-tokens.en.ipynb) |
+| Lab 2 — Decoding | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.student.ipynb) · [file](ep01-how-llms-work/ep01-lab2-decoding.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.ipynb) · [file](ep01-how-llms-work/ep01-lab2-decoding.en.ipynb) |
+| Lab 3 — Model names & providers | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.student.ipynb) · [file](ep01-how-llms-work/ep01-lab3-model-names.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.ipynb) · [file](ep01-how-llms-work/ep01-lab3-model-names.en.ipynb) |
+
 ## EP04 Workflow Patterns (§19.1)
 
 | Lab | ✏️ Starter | ✅ Solution |
