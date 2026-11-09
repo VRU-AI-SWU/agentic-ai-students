@@ -229,6 +229,7 @@ window.Quarto = {
   <li><a href="#หนาปดของคนสราง-agent" id="toc-หนาปดของคนสราง-agent" class="nav-link" data-scroll-target="#หนาปดของคนสราง-agent">หน้าปัดของคนสร้าง agent</a></li>
   <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
   <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#อานเพมเตม" id="toc-อานเพมเตม" class="nav-link" data-scroll-target="#อานเพมเตม">อ่านเพิ่มเติม</a></li>
   <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
   </ul>
 </nav>
@@ -292,7 +293,7 @@ window.Quarto = {
 </section>
 <section id="llm-สรางคำตอบทละชน" class="level2">
 <h2 class="anchored" data-anchor-id="llm-สรางคำตอบทละชน">LLM สร้างคำตอบทีละชิ้น</h2>
-<p>ตำราสรุปการทำงานของ LLM เป็นเส้นทางเดียว <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.1</a>)</span>: ข้อความถูกตัดเป็นชิ้นเล็กๆ (token) → model อ่านทุกชิ้นพร้อมกัน → ให้ความน่าจะเป็นกับทุก token ที่อาจมาเป็นตัวถัดไป → เลือกมาหนึ่งตัว แล้วนำไปต่อท้าย input และวนใหม่</p>
+<p>ตำราสรุปการทำงานของ LLM เป็นเส้นทางเดียว <span class="citation" data-cites="roitman2026hitchhiker vaswani2017attention">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.1</a>; <a href="../../index.html#ref-vaswani2017attention" role="doc-biblioref"><span class="nocase">Vaswani และคณะ</span> 2017</a>)</span>: ข้อความถูกตัดเป็นชิ้นเล็กๆ (token) → model อ่านทุกชิ้นพร้อมกัน → ให้ความน่าจะเป็นกับทุก token ที่อาจมาเป็นตัวถัดไป → เลือกมาหนึ่งตัว แล้วนำไปต่อท้าย input และวนใหม่</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -318,7 +319,7 @@ window.Quarto = {
 </section>
 <section id="token-และ-chat-template" class="level2">
 <h2 class="anchored" data-anchor-id="token-และ-chat-template">Token และ chat template</h2>
-<p><strong>Token</strong> คือชิ้นส่วนข้อความที่ model อ่าน ตัวตัดเรียกว่า <strong>tokenizer</strong> ตำราอธิบายว่าถ้าตัดเป็นตัวอักษร ข้อความจะยาวและคำนวณแพง ถ้าตัดเป็นคำ ก็รับคำใหม่ที่ไม่เคยเห็นไม่ได้ จึงตัดเป็นชิ้นกลางๆ <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.2</a>)</span> เหมือนตัวต่อ Lego: คำที่พบบ่อยอย่าง “the” เป็นชิ้นเดียว ส่วนคำที่หายากประกอบจากชิ้นเล็ก เช่น “unhappiness” อาจเป็น “un” + “happiness”</p>
+<p><strong>Token</strong> คือชิ้นส่วนข้อความที่ model อ่าน ตัวตัดเรียกว่า <strong>tokenizer</strong> ตำราอธิบายว่าถ้าตัดเป็นตัวอักษร ข้อความจะยาวและคำนวณแพง ถ้าตัดเป็นคำ ก็รับคำใหม่ที่ไม่เคยเห็นไม่ได้ จึงตัดเป็นชิ้นกลางๆ <span class="citation" data-cites="roitman2026hitchhiker sennrich2016bpe">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.2</a>; <a href="../../index.html#ref-sennrich2016bpe" role="doc-biblioref">Sennrich และคณะ 2016</a>)</span> เหมือนตัวต่อ Lego: คำที่พบบ่อยอย่าง “the” เป็นชิ้นเดียว ส่วนคำที่หายากประกอบจากชิ้นเล็ก เช่น “unhappiness” อาจเป็น “un” + “happiness”</p>
 <p>ตำราแนะนำให้วัด <strong>fertility</strong> คือจำนวน token ต่อหนึ่งคำ ถ้าสูงแปลว่า tokenizer รองรับภาษานั้นไม่ดี และเพราะราคาคิดเป็น token ภาษาไทยจึงเปลืองกว่า model แต่ละตัวมี tokenizer ของตัวเอง ข้อความเดียวกันจึงนับได้ไม่เท่ากัน</p>
 <div id="tbl-tokens" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -403,7 +404,7 @@ window.Quarto = {
 </div>
 </figure>
 </div>
-<p>ตัวอย่างในตำรา: หลัง “2 + 2 =” token “4” ได้เกือบทั้งหมด top-k ห้าสิบจะเก็บคำตอบผิดไว้อีก 49 ตัว แต่ top-p เหลือแค่ “4” ส่วนหลัง “I enjoy eating” อาหารที่เป็นไปได้มีเยอะ top-k ห้าแคบเกินไป แต่ top-p ขยายกลุ่มให้เอง <strong>top-p และ min-p จึงปรับตามความมั่นใจของ model ส่วน top-k ไม่ปรับ</strong></p>
+<p>ตัวอย่างในตำรา: หลัง “2 + 2 =” token “4” ได้เกือบทั้งหมด top-k ห้าสิบจะเก็บคำตอบผิดไว้อีก 49 ตัว แต่ top-p เหลือแค่ “4” ส่วนหลัง “I enjoy eating” อาหารที่เป็นไปได้มีเยอะ top-k ห้าแคบเกินไป แต่ top-p ขยายกลุ่มให้เอง <strong>top-p และ min-p จึงปรับตามความมั่นใจของ model ส่วน top-k ไม่ปรับ</strong> <span class="citation" data-cites="holtzman2020degeneration nguyen2025minp">(<a href="../../index.html#ref-holtzman2020degeneration" role="doc-biblioref">Holtzman และคณะ 2020</a>; <a href="../../index.html#ref-nguyen2025minp" role="doc-biblioref"><span class="nocase">Nguyen และคณะ</span> 2025</a>)</span></p>
 </section>
 <section id="temperature-ปมความกลา" class="level2">
 <h2 class="anchored" data-anchor-id="temperature-ปมความกลา">Temperature: ปุ่มความกล้า</h2>
@@ -655,11 +656,62 @@ p_i^{(T)} = \frac{p_i^{1/T}}{\sum_j p_j^{1/T}}
 <li>ถ้า tool ของ agent ดึงรูปมาส่งให้ model ต้องเช็กอะไรก่อน</li>
 </ol>
 </section>
+<section id="อานเพมเตม" class="level2">
+<h2 class="anchored" data-anchor-id="อานเพมเตม">อ่านเพิ่มเติม</h2>
+<p>ไม่จำเป็นต่อการทำ lab แต่ช่วยให้เข้าใจลึกขึ้น เรียงตามหัวข้อในหน้านี้</p>
+<ul>
+<li><strong>Transformer ต้นฉบับ:</strong> paper ที่ทุก LLM ในคอร์สนี้สืบทอดมา <span class="citation" data-cites="vaswani2017attention">(<a href="../../index.html#ref-vaswani2017attention" role="doc-biblioref"><span class="nocase">Vaswani และคณะ</span> 2017</a>)</span></li>
+<li><strong>Token:</strong> วิดีโอที่สร้าง tokenizer แบบ GPT ตั้งแต่ศูนย์ <span class="citation" data-cites="karpathy2024tokenizer">(<a href="../../index.html#ref-karpathy2024tokenizer" role="doc-biblioref">Karpathy 2024</a>)</span> และ BPE ต้นฉบับ <span class="citation" data-cites="sennrich2016bpe">(<a href="../../index.html#ref-sennrich2016bpe" role="doc-biblioref">Sennrich และคณะ 2016</a>)</span> ส่วน chat template ดูได้จากเอกสาร Hugging Face <span class="citation" data-cites="hf_chat_templates">(<a href="../../index.html#ref-hf_chat_templates" role="doc-biblioref">Hugging Face 2025a</a>)</span></li>
+<li><strong>Decoding:</strong> บทความที่เทียบ greedy, beam search, top-k, top-p พร้อมโค้ดให้ลอง <span class="citation" data-cites="vonplaten2020generate">(<a href="../../index.html#ref-vonplaten2020generate" role="doc-biblioref">Platen 2020</a>)</span> ที่มาของ top-p <span class="citation" data-cites="holtzman2020degeneration">(<a href="../../index.html#ref-holtzman2020degeneration" role="doc-biblioref">Holtzman และคณะ 2020</a>)</span> และ min-p <span class="citation" data-cites="nguyen2025minp">(<a href="../../index.html#ref-nguyen2025minp" role="doc-biblioref"><span class="nocase">Nguyen และคณะ</span> 2025</a>)</span></li>
+<li><strong>Instruction-tuned:</strong> วิธีฝึก base model ให้ทำตามคำสั่ง (InstructGPT) <span class="citation" data-cites="ouyang2022instructgpt">(<a href="../../index.html#ref-ouyang2022instructgpt" role="doc-biblioref"><span class="nocase">Ouyang และคณะ</span> 2022</a>)</span></li>
+<li><strong>Mixture of experts:</strong> บทความอธิบาย MoE เข้าใจง่าย <span class="citation" data-cites="hf2023moe">(<a href="../../index.html#ref-hf2023moe" role="doc-biblioref">Hugging Face 2023</a>)</span> และ paper ของ Switch Transformer <span class="citation" data-cites="fedus2022switch">(<a href="../../index.html#ref-fedus2022switch" role="doc-biblioref">Fedus และคณะ 2022</a>)</span> กับ Mixtral <span class="citation" data-cites="jiang2024mixtral">(<a href="../../index.html#ref-jiang2024mixtral" role="doc-biblioref"><span class="nocase">Jiang และคณะ</span> 2024</a>)</span></li>
+<li><strong>Quantization:</strong> ภาพรวมวิธีต่างๆ ใน Hugging Face <span class="citation" data-cites="hf_quantization">(<a href="../../index.html#ref-hf_quantization" role="doc-biblioref">Hugging Face 2025b</a>)</span> และ paper ที่ทำให้รัน model 8 บิตได้แพร่หลาย <span class="citation" data-cites="dettmers2022int8">(<a href="../../index.html#ref-dettmers2022int8" role="doc-biblioref">Dettmers และคณะ 2022</a>)</span></li>
+</ul>
+</section>
 <section id="เอกสารอางอง" class="level2">
 <h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-dettmers2022int8" class="csl-entry" role="listitem">
+Dettmers, Tim, Mike Lewis, Younes Belkada, และ Luke Zettlemoyer. 2022. <span>“<span>LLM.int8()</span>: 8-bit Matrix Multiplication for Transformers at Scale”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>.
+</div>
+<div id="ref-fedus2022switch" class="csl-entry" role="listitem">
+Fedus, William, Barret Zoph, และ Noam Shazeer. 2022. <span>“Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity”</span>. <em>Journal of Machine Learning Research</em>. <a href="https://arxiv.org/abs/2101.03961">https://arxiv.org/abs/2101.03961</a>.
+</div>
+<div id="ref-holtzman2020degeneration" class="csl-entry" role="listitem">
+Holtzman, Ari, Jan Buys, Li Du, Maxwell Forbes, และ Yejin Choi. 2020. <span>“The Curious Case of Neural Text Degeneration”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/1904.09751">https://arxiv.org/abs/1904.09751</a>.
+</div>
+<div id="ref-hf2023moe" class="csl-entry" role="listitem">
+Hugging Face. 2023. <em>Mixture of Experts Explained</em>. Hugging Face blog. <a href="https://huggingface.co/blog/moe">https://huggingface.co/blog/moe</a>.
+</div>
+<div id="ref-hf_chat_templates" class="csl-entry" role="listitem">
+Hugging Face. 2025a. <em>Chat templates</em>. Transformers documentation. <a href="https://huggingface.co/docs/transformers/main/en/chat_templating">https://huggingface.co/docs/transformers/main/en/chat_templating</a>.
+</div>
+<div id="ref-hf_quantization" class="csl-entry" role="listitem">
+Hugging Face. 2025b. <em>Quantization overview</em>. Transformers documentation. <a href="https://huggingface.co/docs/transformers/main/en/quantization/overview">https://huggingface.co/docs/transformers/main/en/quantization/overview</a>.
+</div>
+<div id="ref-jiang2024mixtral" class="csl-entry" role="listitem">
+<span class="nocase">Jiang, Albert Q., Alexandre Sablayrolles, Antoine Roux, และคณะ</span>. 2024. <em>Mixtral of Experts</em>. <a href="https://arxiv.org/abs/2401.04088">https://arxiv.org/abs/2401.04088</a>.
+</div>
+<div id="ref-karpathy2024tokenizer" class="csl-entry" role="listitem">
+Karpathy, Andrej. 2024. <em>Let’s build the GPT Tokenizer</em>. YouTube video. <a href="https://www.youtube.com/watch?v=zduSFxRajkE">https://www.youtube.com/watch?v=zduSFxRajkE</a>.
+</div>
+<div id="ref-nguyen2025minp" class="csl-entry" role="listitem">
+<span class="nocase">Nguyen, Minh Nhat, Andrew Baker, Clement Neo, และคณะ</span>. 2025. <span>“Turning Up the Heat: Min-p Sampling for Creative and Coherent <span>LLM</span> Outputs”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2407.01082">https://arxiv.org/abs/2407.01082</a>.
+</div>
+<div id="ref-ouyang2022instructgpt" class="csl-entry" role="listitem">
+<span class="nocase">Ouyang, Long, Jeff Wu, Xu Jiang, และคณะ</span>. 2022. <span>“Training language models to follow instructions with human feedback”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a>.
+</div>
+<div id="ref-vonplaten2020generate" class="csl-entry" role="listitem">
+Platen, Patrick von. 2020. <em>How to generate text: using different decoding methods for language generation with Transformers</em>. Hugging Face blog. <a href="https://huggingface.co/blog/how-to-generate">https://huggingface.co/blog/how-to-generate</a>.
+</div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-sennrich2016bpe" class="csl-entry" role="listitem">
+Sennrich, Rico, Barry Haddow, และ Alexandra Birch. 2016. <span>“Neural Machine Translation of Rare Words with Subword Units”</span>. <em>Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (ACL)</em>. <a href="https://arxiv.org/abs/1508.07909">https://arxiv.org/abs/1508.07909</a>.
+</div>
+<div id="ref-vaswani2017attention" class="csl-entry" role="listitem">
+<span class="nocase">Vaswani, Ashish, Noam Shazeer, Niki Parmar, และคณะ</span>. 2017. <span>“Attention Is All You Need”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.
 </div>
 </div>
 

@@ -225,6 +225,7 @@ window.Quarto = {
   <li><a href="#หา-pattern-เทยบกน" id="toc-หา-pattern-เทยบกน" class="nav-link" data-scroll-target="#หา-pattern-เทยบกน">ห้า pattern เทียบกัน</a></li>
   <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
   <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#อานเพมเตม" id="toc-อานเพมเตม" class="nav-link" data-scroll-target="#อานเพมเตม">อ่านเพิ่มเติม</a></li>
   <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
   </ul>
 </nav>
@@ -283,7 +284,7 @@ window.Quarto = {
 </section>
 <section id="workflow-หรอ-agent" class="level2">
 <h2 class="anchored" data-anchor-id="workflow-หรอ-agent">Workflow หรือ agent</h2>
-<p>ตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า <strong>ไม่ใช่ทุกงานที่ต้องใช้ agent</strong> <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 19.1</a>)</span> ใน <em>workflow</em> ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน <em>agent</em> ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ</p>
+<p>ตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า <strong>ไม่ใช่ทุกงานที่ต้องใช้ agent</strong> <span class="citation" data-cites="roitman2026hitchhiker anthropic2024effective">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 19.1</a>; <a href="../../index.html#ref-anthropic2024effective" role="doc-biblioref">Schluntz และ Zhang 2024</a>)</span> ใน <em>workflow</em> ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน <em>agent</em> ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ</p>
 <div id="tbl-workflow-agent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -607,11 +608,32 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 <li>ถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน <a href="#fig-eval" class="quarto-xref">รูปที่&nbsp;<span>2.4</span></a> จะเกิดอะไรขึ้น</li>
 </ol>
 </section>
+<section id="อานเพมเตม" class="level2">
+<h2 class="anchored" data-anchor-id="อานเพมเตม">อ่านเพิ่มเติม</h2>
+<ul>
+<li><strong>ห้า pattern ในบทความเดียว:</strong> บทความของ Anthropic ที่แบ่ง workflow เป็นห้า pattern แบบเดียวกับหน้านี้ และย้ำหลัก “เริ่มจาก workflow ก่อน” <span class="citation" data-cites="anthropic2024effective">(<a href="../../index.html#ref-anthropic2024effective" role="doc-biblioref">Schluntz และ Zhang 2024</a>)</span></li>
+<li><strong>โค้ดใน framework:</strong> ห้า pattern เดียวกันเขียนด้วย LangGraph <span class="citation" data-cites="langgraph_workflows">(<a href="../../index.html#ref-langgraph_workflows" role="doc-biblioref">LangChain 2025</a>)</span> (เราใช้ LangGraph ใน EP05 Lab 5)</li>
+<li><strong>Voting:</strong> ทำไมการถามหลายครั้งแล้วโหวตจึงแม่นขึ้น (self-consistency) <span class="citation" data-cites="wang2023selfconsistency">(<a href="../../index.html#ref-wang2023selfconsistency" role="doc-biblioref"><span class="nocase">Wang และคณะ</span> 2023</a>)</span></li>
+<li><strong>Evaluator-Optimizer:</strong> ให้ model วิจารณ์และแก้ผลงานของตัวเองซ้ำๆ (Self-Refine) <span class="citation" data-cites="madaan2023selfrefine">(<a href="../../index.html#ref-madaan2023selfrefine" role="doc-biblioref"><span class="nocase">Madaan และคณะ</span> 2023</a>)</span></li>
+</ul>
+</section>
 <section id="เอกสารอางอง" class="level2">
 <h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-langgraph_workflows" class="csl-entry" role="listitem">
+LangChain. 2025. <em>Workflows and Agents</em>. LangGraph documentation. <a href="https://langchain-ai.github.io/langgraph/tutorials/workflows/">https://langchain-ai.github.io/langgraph/tutorials/workflows/</a>.
+</div>
+<div id="ref-madaan2023selfrefine" class="csl-entry" role="listitem">
+<span class="nocase">Madaan, Aman, Niket Tandon, Prakhar Gupta, และคณะ</span>. 2023. <span>“Self-Refine: Iterative Refinement with Self-Feedback”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2303.17651">https://arxiv.org/abs/2303.17651</a>.
+</div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-anthropic2024effective" class="csl-entry" role="listitem">
+Schluntz, Erik, และ Barry Zhang. 2024. <em>Building Effective Agents</em>. Anthropic. <a href="https://www.anthropic.com/research/building-effective-agents">https://www.anthropic.com/research/building-effective-agents</a>.
+</div>
+<div id="ref-wang2023selfconsistency" class="csl-entry" role="listitem">
+<span class="nocase">Wang, Xuezhi, Jason Wei, Dale Schuurmans, และคณะ</span>. 2023. <span>“Self-Consistency Improves Chain of Thought Reasoning in Language Models”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a>.
 </div>
 </div>
 

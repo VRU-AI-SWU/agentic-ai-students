@@ -231,6 +231,7 @@ window.Quarto = {
   <li><a href="#จากโคดทเขยนเองส-langgraph" id="toc-จากโคดทเขยนเองส-langgraph" class="nav-link" data-scroll-target="#จากโคดทเขยนเองส-langgraph">จากโค้ดที่เขียนเองสู่ LangGraph</a></li>
   <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
   <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#อานเพมเตม" id="toc-อานเพมเตม" class="nav-link" data-scroll-target="#อานเพมเตม">อ่านเพิ่มเติม</a></li>
   <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
   </ul>
 </nav>
@@ -346,7 +347,7 @@ window.Quarto = {
 </section>
 <section id="react-reason-act" class="level2">
 <h2 class="anchored" data-anchor-id="react-reason-act">ReAct (Reason + Act)</h2>
-<p>ReAct เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง <strong>Thought</strong> (คิดว่าจะทำอะไร), <strong>Action</strong> (เรียก tool) และ <strong>Observation</strong> (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย</p>
+<p>ReAct <span class="citation" data-cites="yao2023react">(<a href="../../index.html#ref-yao2023react" role="doc-biblioref"><span class="nocase">Yao และคณะ</span> 2023</a>)</span> เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง <strong>Thought</strong> (คิดว่าจะทำอะไร), <strong>Action</strong> (เรียก tool) และ <strong>Observation</strong> (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย</p>
 <p><span id="eq-react"><span class="math display">\[
 \text{Thought}_t \rightarrow \text{Action}_t \rightarrow \text{Observation}_t \rightarrow \text{Thought}_{t+1} \rightarrow \cdots
 \tag{3.1}\]</span></span></p>
@@ -495,7 +496,7 @@ window.Quarto = {
 </ol>
 <section id="reflexion" class="level3">
 <h3 class="anchored" data-anchor-id="reflexion">Reflexion</h3>
-<p><strong>Reflexion</strong> เก็บ <em>reflection memory</em> ไว้ หลังทำพลาดแต่ละครั้ง agent เขียนบทเรียนเป็นภาษาธรรมชาติ (เช่น “พลาดเพราะไม่ได้เช็ค edge case”) แล้วใส่บทเรียนเหล่านี้ใน prompt รอบถัดไป ทำให้เรียนรู้ข้าม episode ได้ <strong>โดยไม่ต้องอัปเดต weight</strong></p>
+<p><strong>Reflexion</strong> <span class="citation" data-cites="shinn2023reflexion">(<a href="../../index.html#ref-shinn2023reflexion" role="doc-biblioref"><span class="nocase">Shinn และคณะ</span> 2023</a>)</span> เก็บ <em>reflection memory</em> ไว้ หลังทำพลาดแต่ละครั้ง agent เขียนบทเรียนเป็นภาษาธรรมชาติ (เช่น “พลาดเพราะไม่ได้เช็ค edge case”) แล้วใส่บทเรียนเหล่านี้ใน prompt รอบถัดไป ทำให้เรียนรู้ข้าม episode ได้ <strong>โดยไม่ต้องอัปเดต weight</strong></p>
 <blockquote class="blockquote">
 <p><strong>ใน Lab 3:</strong> ให้ agent เขียน <code>parse_duration()</code> แล้วตรวจด้วย unit tests ที่ agent มองไม่เห็นล่วงหน้า ในการรันที่บันทึกไว้ รอบแรกผ่าน 5/9 แล้วผ่านครบ 9/9 หลังได้บทเรียนหนึ่งข้อ</p>
 </blockquote>
@@ -715,11 +716,48 @@ window.Quarto = {
 <li>ใน LangGraph ส่วนไหนทำหน้าที่แทน <code>while</code> loop ของ ReAct agent ที่เราเขียนเอง</li>
 </ol>
 </section>
+<section id="อานเพมเตม" class="level2">
+<h2 class="anchored" data-anchor-id="อานเพมเตม">อ่านเพิ่มเติม</h2>
+<ul>
+<li><strong>ภาพรวม:</strong> บทความที่คนอ้างถึงมากที่สุดเรื่อง agent: planning, memory, tool use <span class="citation" data-cites="weng2023agents">(<a href="../../index.html#ref-weng2023agents" role="doc-biblioref">Weng 2023</a>)</span> และ survey ฉบับเต็ม <span class="citation" data-cites="wang2024agentsurvey">(<a href="../../index.html#ref-wang2024agentsurvey" role="doc-biblioref"><span class="nocase">Wang และคณะ</span> 2024</a>)</span></li>
+<li><strong>ReAct:</strong> paper ต้นฉบับ <span class="citation" data-cites="yao2023react">(<a href="../../index.html#ref-yao2023react" role="doc-biblioref"><span class="nocase">Yao และคณะ</span> 2023</a>)</span></li>
+<li><strong>Planning:</strong> วางแผนก่อนลงมือ (Plan-and-Solve) <span class="citation" data-cites="wang2023planandsolve">(<a href="../../index.html#ref-wang2023planandsolve" role="doc-biblioref"><span class="nocase">Wang และคณะ</span> 2023</a>)</span>, แยกการวางแผนออกจากผลของ tool เพื่อประหยัด token (ReWOO) <span class="citation" data-cites="xu2023rewoo">(<a href="../../index.html#ref-xu2023rewoo" role="doc-biblioref"><span class="nocase">Xu และคณะ</span> 2023</a>)</span> และ plan แบบ DAG ที่เรียก tool พร้อมกัน (LLMCompiler) <span class="citation" data-cites="kim2024llmcompiler">(<a href="../../index.html#ref-kim2024llmcompiler" role="doc-biblioref"><span class="nocase">Kim และคณะ</span> 2024</a>)</span></li>
+<li><strong>Reflexion:</strong> paper ต้นฉบับ <span class="citation" data-cites="shinn2023reflexion">(<a href="../../index.html#ref-shinn2023reflexion" role="doc-biblioref"><span class="nocase">Shinn และคณะ</span> 2023</a>)</span></li>
+<li><strong>Tool use:</strong> model ที่เรียนรู้ว่าจะเรียก tool เมื่อไร (Toolformer) <span class="citation" data-cites="schick2023toolformer">(<a href="../../index.html#ref-schick2023toolformer" role="doc-biblioref"><span class="nocase">Schick และคณะ</span> 2023</a>)</span> และแนวทางออกแบบ tool ให้ agent ใช้ได้ดี <span class="citation" data-cites="anthropic2025tools">(<a href="../../index.html#ref-anthropic2025tools" role="doc-biblioref">Anthropic 2025</a>)</span></li>
+</ul>
+</section>
 <section id="เอกสารอางอง" class="level2">
 <h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-anthropic2025tools" class="csl-entry" role="listitem">
+Anthropic. 2025. <em>Writing effective tools for <span>AI</span> agents—with agents</em>. Anthropic Engineering. <a href="https://www.anthropic.com/engineering/writing-tools-for-agents">https://www.anthropic.com/engineering/writing-tools-for-agents</a>.
+</div>
+<div id="ref-kim2024llmcompiler" class="csl-entry" role="listitem">
+<span class="nocase">Kim, Sehoon, Suhong Moon, Ryan Tabrizi, และคณะ</span>. 2024. <span>“An <span>LLM</span> Compiler for Parallel Function Calling”</span>. <em>International Conference on Machine Learning (ICML)</em>. <a href="https://arxiv.org/abs/2312.04511">https://arxiv.org/abs/2312.04511</a>.
+</div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-schick2023toolformer" class="csl-entry" role="listitem">
+<span class="nocase">Schick, Timo, Jane Dwivedi-Yu, Roberto Dessì, และคณะ</span>. 2023. <span>“Toolformer: Language Models Can Teach Themselves to Use Tools”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2302.04761">https://arxiv.org/abs/2302.04761</a>.
+</div>
+<div id="ref-shinn2023reflexion" class="csl-entry" role="listitem">
+<span class="nocase">Shinn, Noah, Federico Cassano, Edward Berman, และคณะ</span>. 2023. <span>“Reflexion: Language Agents with Verbal Reinforcement Learning”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2303.11366">https://arxiv.org/abs/2303.11366</a>.
+</div>
+<div id="ref-wang2024agentsurvey" class="csl-entry" role="listitem">
+<span class="nocase">Wang, Lei, Chen Ma, Xueyang Feng, และคณะ</span>. 2024. <span>“A Survey on Large Language Model based Autonomous Agents”</span>. <em>Frontiers of Computer Science</em>. <a href="https://arxiv.org/abs/2308.11432">https://arxiv.org/abs/2308.11432</a>.
+</div>
+<div id="ref-wang2023planandsolve" class="csl-entry" role="listitem">
+<span class="nocase">Wang, Lei, Wanyu Xu, Yihuai Lan, และคณะ</span>. 2023. <span>“Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models”</span>. <em>Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (ACL)</em>. <a href="https://arxiv.org/abs/2305.04091">https://arxiv.org/abs/2305.04091</a>.
+</div>
+<div id="ref-weng2023agents" class="csl-entry" role="listitem">
+Weng, Lilian. 2023. <em><span>LLM</span> Powered Autonomous Agents</em>. Lil’Log. <a href="https://lilianweng.github.io/posts/2023-06-23-agent/">https://lilianweng.github.io/posts/2023-06-23-agent/</a>.
+</div>
+<div id="ref-xu2023rewoo" class="csl-entry" role="listitem">
+<span class="nocase">Xu, Binfeng, Zhiyuan Peng, Bowen Lei, และคณะ</span>. 2023. <em><span>ReWOO</span>: Decoupling Reasoning from Observations for Efficient Augmented Language Models</em>. <a href="https://arxiv.org/abs/2305.18323">https://arxiv.org/abs/2305.18323</a>.
+</div>
+<div id="ref-yao2023react" class="csl-entry" role="listitem">
+<span class="nocase">Yao, Shunyu, Jeffrey Zhao, Dian Yu, และคณะ</span>. 2023. <span>“<span>ReAct</span>: Synergizing Reasoning and Acting in Language Models”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a>.
 </div>
 </div>
 

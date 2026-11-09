@@ -227,6 +227,7 @@ window.Quarto = {
   <li><a href="#the-agent-builders-dashboard" id="toc-the-agent-builders-dashboard" class="nav-link" data-scroll-target="#the-agent-builders-dashboard">The agent builder’s dashboard</a></li>
   <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Labs</a></li>
   <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions">Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -290,7 +291,7 @@ window.Quarto = {
 </section>
 <section id="an-llm-answers-one-piece-at-a-time" class="level2">
 <h2 class="anchored" data-anchor-id="an-llm-answers-one-piece-at-a-time">An LLM answers one piece at a time</h2>
-<p>The textbook sums up how an LLM works as one pipeline <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 1.1</a>)</span>: text is cut into small pieces (tokens) → the model reads all of them at once → gives a probability to every token that could come next → picks one, appends it to the input and runs again.</p>
+<p>The textbook sums up how an LLM works as one pipeline <span class="citation" data-cites="roitman2026hitchhiker vaswani2017attention">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 1.1</a>; <a href="../../index.html#ref-vaswani2017attention" role="doc-biblioref"><span class="nocase">Vaswani et al.</span> 2017</a>)</span>: text is cut into small pieces (tokens) → the model reads all of them at once → gives a probability to every token that could come next → picks one, appends it to the input and runs again.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -316,7 +317,7 @@ Figure&nbsp;1.1: An LLM writes one token at a time: it picks “Krung”, append
 </section>
 <section id="tokens-and-the-chat-template" class="level2">
 <h2 class="anchored" data-anchor-id="tokens-and-the-chat-template">Tokens and the chat template</h2>
-<p>A <strong>token</strong> is a piece of text the model reads; the thing that cuts text into tokens is the <strong>tokenizer</strong>. The textbook explains that cutting into characters makes sequences long and expensive, while cutting into words means the model can’t take words it has never seen — so text is cut into pieces in between <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 1.2</a>)</span>. Like Lego bricks: a common word such as “the” is a single brick, while rarer words are built from smaller ones — “unhappiness” might become “un” + “happiness”.</p>
+<p>A <strong>token</strong> is a piece of text the model reads; the thing that cuts text into tokens is the <strong>tokenizer</strong>. The textbook explains that cutting into characters makes sequences long and expensive, while cutting into words means the model can’t take words it has never seen — so text is cut into pieces in between <span class="citation" data-cites="roitman2026hitchhiker sennrich2016bpe">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 1.2</a>; <a href="../../index.html#ref-sennrich2016bpe" role="doc-biblioref">Sennrich et al. 2016</a>)</span>. Like Lego bricks: a common word such as “the” is a single brick, while rarer words are built from smaller ones — “unhappiness” might become “un” + “happiness”.</p>
 <p>The textbook recommends measuring <strong>fertility</strong>, the number of tokens per word. High fertility means the tokenizer covers that language poorly, and since price is counted in tokens, Thai costs more. Every model has its own tokenizer, so the same text can count differently.</p>
 <div id="tbl-tokens" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -401,7 +402,7 @@ Table&nbsp;1.2: Three ways to cut the tail before sampling
 </div>
 </figure>
 </div>
-<p>The textbook’s example: after “2 + 2 =”, the token “4” has almost everything; top-k of fifty would keep 49 wrong answers, while top-p keeps just “4”. After “I enjoy eating”, many foods are plausible: top-k of five is too narrow, but top-p widens the pool by itself. <strong>So top-p and min-p adapt to the model’s confidence; top-k doesn’t.</strong></p>
+<p>The textbook’s example: after “2 + 2 =”, the token “4” has almost everything; top-k of fifty would keep 49 wrong answers, while top-p keeps just “4”. After “I enjoy eating”, many foods are plausible: top-k of five is too narrow, but top-p widens the pool by itself. <strong>So top-p and min-p adapt to the model’s confidence; top-k doesn’t</strong> <span class="citation" data-cites="holtzman2020degeneration nguyen2025minp">(<a href="../../index.html#ref-holtzman2020degeneration" role="doc-biblioref">Holtzman et al. 2020</a>; <a href="../../index.html#ref-nguyen2025minp" role="doc-biblioref"><span class="nocase">Nguyen et al.</span> 2025</a>)</span>.</p>
 </section>
 <section id="temperature-the-boldness-knob" class="level2">
 <h2 class="anchored" data-anchor-id="temperature-the-boldness-knob">Temperature: the boldness knob</h2>
@@ -653,11 +654,62 @@ Table&nbsp;1.6: EP01 notebooks in English (every lab has its own setup; Lab 1 ex
 <li>If an agent’s tool fetches an image for the model, what must you check first?</li>
 </ol>
 </section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<p>Not needed for the labs, but useful for going deeper. In the order of this page.</p>
+<ul>
+<li><strong>The original Transformer:</strong> the paper every LLM in this course descends from <span class="citation" data-cites="vaswani2017attention">(<a href="../../index.html#ref-vaswani2017attention" role="doc-biblioref"><span class="nocase">Vaswani et al.</span> 2017</a>)</span></li>
+<li><strong>Tokens:</strong> a video that builds a GPT-style tokenizer from scratch <span class="citation" data-cites="karpathy2024tokenizer">(<a href="../../index.html#ref-karpathy2024tokenizer" role="doc-biblioref">Karpathy 2024</a>)</span> and the original BPE paper <span class="citation" data-cites="sennrich2016bpe">(<a href="../../index.html#ref-sennrich2016bpe" role="doc-biblioref">Sennrich et al. 2016</a>)</span>; for chat templates see the Hugging Face docs <span class="citation" data-cites="hf_chat_templates">(<a href="../../index.html#ref-hf_chat_templates" role="doc-biblioref">Hugging Face 2025a</a>)</span></li>
+<li><strong>Decoding:</strong> a hands-on comparison of greedy, beam search, top-k and top-p with code <span class="citation" data-cites="vonplaten2020generate">(<a href="../../index.html#ref-vonplaten2020generate" role="doc-biblioref">Platen 2020</a>)</span>; where top-p <span class="citation" data-cites="holtzman2020degeneration">(<a href="../../index.html#ref-holtzman2020degeneration" role="doc-biblioref">Holtzman et al. 2020</a>)</span> and min-p <span class="citation" data-cites="nguyen2025minp">(<a href="../../index.html#ref-nguyen2025minp" role="doc-biblioref"><span class="nocase">Nguyen et al.</span> 2025</a>)</span> come from</li>
+<li><strong>Instruction-tuned models:</strong> how a base model is trained to follow instructions (InstructGPT) <span class="citation" data-cites="ouyang2022instructgpt">(<a href="../../index.html#ref-ouyang2022instructgpt" role="doc-biblioref"><span class="nocase">Ouyang et al.</span> 2022</a>)</span></li>
+<li><strong>Mixture of experts:</strong> an accessible explainer <span class="citation" data-cites="hf2023moe">(<a href="../../index.html#ref-hf2023moe" role="doc-biblioref">Hugging Face 2023</a>)</span> and the Switch Transformer <span class="citation" data-cites="fedus2022switch">(<a href="../../index.html#ref-fedus2022switch" role="doc-biblioref">Fedus et al. 2022</a>)</span> and Mixtral <span class="citation" data-cites="jiang2024mixtral">(<a href="../../index.html#ref-jiang2024mixtral" role="doc-biblioref"><span class="nocase">Jiang et al.</span> 2024</a>)</span> papers</li>
+<li><strong>Quantization:</strong> an overview of the methods in Hugging Face <span class="citation" data-cites="hf_quantization">(<a href="../../index.html#ref-hf_quantization" role="doc-biblioref">Hugging Face 2025b</a>)</span> and the paper that made 8-bit inference widespread <span class="citation" data-cites="dettmers2022int8">(<a href="../../index.html#ref-dettmers2022int8" role="doc-biblioref">Dettmers et al. 2022</a>)</span></li>
+</ul>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-dettmers2022int8" class="csl-entry" role="listitem">
+Dettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022. <span>“<span class="nocase">LLM.int8()</span>: 8-Bit Matrix Multiplication for Transformers at Scale.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2208.07339">https://arxiv.org/abs/2208.07339</a>.
+</div>
+<div id="ref-fedus2022switch" class="csl-entry" role="listitem">
+Fedus, William, Barret Zoph, and Noam Shazeer. 2022. <span>“Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity.”</span> <em>Journal of Machine Learning Research</em>. <a href="https://arxiv.org/abs/2101.03961">https://arxiv.org/abs/2101.03961</a>.
+</div>
+<div id="ref-holtzman2020degeneration" class="csl-entry" role="listitem">
+Holtzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020. <span>“The Curious Case of Neural Text Degeneration.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/1904.09751">https://arxiv.org/abs/1904.09751</a>.
+</div>
+<div id="ref-hf2023moe" class="csl-entry" role="listitem">
+Hugging Face. 2023. <em>Mixture of Experts Explained</em>. Hugging Face blog. <a href="https://huggingface.co/blog/moe">https://huggingface.co/blog/moe</a>.
+</div>
+<div id="ref-hf_chat_templates" class="csl-entry" role="listitem">
+Hugging Face. 2025a. <em>Chat Templates</em>. Transformers documentation. <a href="https://huggingface.co/docs/transformers/main/en/chat_templating">https://huggingface.co/docs/transformers/main/en/chat_templating</a>.
+</div>
+<div id="ref-hf_quantization" class="csl-entry" role="listitem">
+Hugging Face. 2025b. <em>Quantization Overview</em>. Transformers documentation. <a href="https://huggingface.co/docs/transformers/main/en/quantization/overview">https://huggingface.co/docs/transformers/main/en/quantization/overview</a>.
+</div>
+<div id="ref-jiang2024mixtral" class="csl-entry" role="listitem">
+<span class="nocase">Jiang, Albert Q., Alexandre Sablayrolles, Antoine Roux, et al.</span> 2024. <em>Mixtral of Experts</em>. <a href="https://arxiv.org/abs/2401.04088">https://arxiv.org/abs/2401.04088</a>.
+</div>
+<div id="ref-karpathy2024tokenizer" class="csl-entry" role="listitem">
+Karpathy, Andrej. 2024. <em>Let’s Build the GPT Tokenizer</em>. YouTube video. <a href="https://www.youtube.com/watch?v=zduSFxRajkE">https://www.youtube.com/watch?v=zduSFxRajkE</a>.
+</div>
+<div id="ref-nguyen2025minp" class="csl-entry" role="listitem">
+<span class="nocase">Nguyen, Minh Nhat, Andrew Baker, Clement Neo, et al.</span> 2025. <span>“Turning up the Heat: Min-p Sampling for Creative and Coherent <span>LLM</span> Outputs.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2407.01082">https://arxiv.org/abs/2407.01082</a>.
+</div>
+<div id="ref-ouyang2022instructgpt" class="csl-entry" role="listitem">
+<span class="nocase">Ouyang, Long, Jeff Wu, Xu Jiang, et al.</span> 2022. <span>“Training Language Models to Follow Instructions with Human Feedback.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a>.
+</div>
+<div id="ref-vonplaten2020generate" class="csl-entry" role="listitem">
+Platen, Patrick von. 2020. <em>How to Generate Text: Using Different Decoding Methods for Language Generation with Transformers</em>. Hugging Face blog. <a href="https://huggingface.co/blog/how-to-generate">https://huggingface.co/blog/how-to-generate</a>.
+</div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-sennrich2016bpe" class="csl-entry" role="listitem">
+Sennrich, Rico, Barry Haddow, and Alexandra Birch. 2016. <span>“Neural Machine Translation of Rare Words with Subword Units.”</span> <em>Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (ACL)</em>. <a href="https://arxiv.org/abs/1508.07909">https://arxiv.org/abs/1508.07909</a>.
+</div>
+<div id="ref-vaswani2017attention" class="csl-entry" role="listitem">
+<span class="nocase">Vaswani, Ashish, Noam Shazeer, Niki Parmar, et al.</span> 2017. <span>“Attention Is All You Need.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a>.
 </div>
 </div>
 

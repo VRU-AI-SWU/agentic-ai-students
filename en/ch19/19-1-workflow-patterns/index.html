@@ -223,6 +223,7 @@ window.Quarto = {
   <li><a href="#the-five-patterns-side-by-side" id="toc-the-five-patterns-side-by-side" class="nav-link" data-scroll-target="#the-five-patterns-side-by-side">The five patterns side by side</a></li>
   <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Labs</a></li>
   <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions">Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -281,7 +282,7 @@ window.Quarto = {
 </section>
 <section id="workflow-or-agent" class="level2">
 <h2 class="anchored" data-anchor-id="workflow-or-agent">Workflow or agent</h2>
-<p>The first thing chapter 19 stresses is that <strong>not every task needs an agent</strong> <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 19.1</a>)</span>. In a <em>workflow</em>, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an <em>agent</em>, the LLM decides what to do next — like handing it the steering wheel.</p>
+<p>The first thing chapter 19 stresses is that <strong>not every task needs an agent</strong> <span class="citation" data-cites="roitman2026hitchhiker anthropic2024effective">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 19.1</a>; <a href="../../index.html#ref-anthropic2024effective" role="doc-biblioref">Schluntz and Zhang 2024</a>)</span>. In a <em>workflow</em>, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an <em>agent</em>, the LLM decides what to do next — like handing it the steering wheel.</p>
 <div id="tbl-workflow-agent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -605,11 +606,32 @@ Table&nbsp;2.3: EP04 notebooks (English). Every lab is standalone; installation 
 <li>In <a href="#fig-eval" class="quarto-xref">Figure&nbsp;<span>2.4</span></a>, what happens with a threshold of 10 and a budget of 1?</li>
 </ol>
 </section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li><strong>All five patterns in one article:</strong> Anthropic’s write-up with the same five workflow patterns as this page and the same “start with a workflow” advice <span class="citation" data-cites="anthropic2024effective">(<a href="../../index.html#ref-anthropic2024effective" role="doc-biblioref">Schluntz and Zhang 2024</a>)</span></li>
+<li><strong>In a framework:</strong> the same five patterns written in LangGraph <span class="citation" data-cites="langgraph_workflows">(<a href="../../index.html#ref-langgraph_workflows" role="doc-biblioref">LangChain 2025</a>)</span> (we use LangGraph in EP05 Lab 5)</li>
+<li><strong>Voting:</strong> why sampling several answers and voting improves accuracy (self-consistency) <span class="citation" data-cites="wang2023selfconsistency">(<a href="../../index.html#ref-wang2023selfconsistency" role="doc-biblioref"><span class="nocase">Wang et al.</span> 2023</a>)</span></li>
+<li><strong>Evaluator-Optimizer:</strong> a model that critiques and revises its own output in a loop (Self-Refine) <span class="citation" data-cites="madaan2023selfrefine">(<a href="../../index.html#ref-madaan2023selfrefine" role="doc-biblioref"><span class="nocase">Madaan et al.</span> 2023</a>)</span></li>
+</ul>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-langgraph_workflows" class="csl-entry" role="listitem">
+LangChain. 2025. <em>Workflows and Agents</em>. LangGraph documentation. <a href="https://langchain-ai.github.io/langgraph/tutorials/workflows/">https://langchain-ai.github.io/langgraph/tutorials/workflows/</a>.
+</div>
+<div id="ref-madaan2023selfrefine" class="csl-entry" role="listitem">
+<span class="nocase">Madaan, Aman, Niket Tandon, Prakhar Gupta, et al.</span> 2023. <span>“Self-Refine: Iterative Refinement with Self-Feedback.”</span> <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2303.17651">https://arxiv.org/abs/2303.17651</a>.
+</div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-anthropic2024effective" class="csl-entry" role="listitem">
+Schluntz, Erik, and Barry Zhang. 2024. <em>Building Effective Agents</em>. Anthropic. <a href="https://www.anthropic.com/research/building-effective-agents">https://www.anthropic.com/research/building-effective-agents</a>.
+</div>
+<div id="ref-wang2023selfconsistency" class="csl-entry" role="listitem">
+<span class="nocase">Wang, Xuezhi, Jason Wei, Dale Schuurmans, et al.</span> 2023. <span>“Self-Consistency Improves Chain of Thought Reasoning in Language Models.”</span> <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a>.
 </div>
 </div>
 
