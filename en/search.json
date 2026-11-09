@@ -34,7 +34,7 @@
     "href": "index.html#learning-path",
     "title": "Agentic AI: From Foundations to Systems",
     "section": "Learning path",
-    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP01\nHow LLMs work (for agent builders) coming soon how tokens, the context window and temperature affect an agent · ch1 · ≈30 min\n\n\nEP02\nPrompts, structured output and hallucination coming soon why agents need a JSON schema · ch1, §19.3 · ≈30 min\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent coming soon the five challenges of agents, and a map of the series · ch15 · ≈12 min\n\n\nEP04\nWorkflow Patterns ready chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 labs\n\n\nEP05\nAutonomous Agent Patterns ready ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign principles + choosing a pattern coming soon cost versus quality, and a decision matrix · §19.3–19.4 · ≈20 min\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
+    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP01\nHow LLMs work (for agent builders) ready tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs\n\n\nEP02\nPrompts, structured output and hallucination coming soon why agents need a JSON schema · ch1, §19.3 · ≈30 min\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent coming soon the five challenges of agents, and a map of the series · ch15 · ≈12 min\n\n\nEP04\nWorkflow Patterns ready chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 labs\n\n\nEP05\nAutonomous Agent Patterns ready ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign principles + choosing a pattern coming soon cost versus quality, and a decision matrix · §19.3–19.4 · ≈20 min\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
     "crumbs": [
       "Home"
     ]
@@ -70,6 +70,182 @@
     ]
   },
   {
+    "objectID": "ch01/ep01-how-llms-work/index.html",
+    "href": "ch01/ep01-how-llms-work/index.html",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "",
+    "text": "Learning objectives\nBy the end of this episode you will be able to",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#learning-objectives",
+    "href": "ch01/ep01-how-llms-work/index.html#learning-objectives",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "",
+    "text": "Explain how an LLM produces its answer one token at a time, and how the chat template turns messages into what the model reads\nCount the tokens of Thai and English text and estimate the cost of a call\nExplain greedy, top-k, top-p, min-p and temperature, and pick a temperature that suits an agent’s task\nUse max_tokens and check finish_reason to know whether an answer was cut off\nRead a model name (size, MoE, instruct) and work out the memory at each quantization level\nExplain why the same model from different providers gives different results, and check the modality before sending an image",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#three-questions-agent-builders-run-into",
+    "href": "ch01/ep01-how-llms-work/index.html#three-questions-agent-builders-run-into",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Three questions agent builders run into",
+    "text": "Three questions agent builders run into\nWhy does asking the same question twice give different answers? Why does Thai cost more than English? And why do some models break the moment you send them a picture? An agent builder doesn’t have to build an LLM, just as a driver doesn’t have to build the engine — but they do have to read the dashboard. This episode opens the dashboard gauge by gauge and answers all three questions with numbers from real lab runs.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#an-llm-answers-one-piece-at-a-time",
+    "href": "ch01/ep01-how-llms-work/index.html#an-llm-answers-one-piece-at-a-time",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "An LLM answers one piece at a time",
+    "text": "An LLM answers one piece at a time\nThe textbook sums up how an LLM works as one pipeline (Roitman 2026, sec. 1.1): text is cut into small pieces (tokens) → the model reads all of them at once → gives a probability to every token that could come next → picks one, appends it to the input and runs again.\n\n\n\n\n\n\n\nflowchart LR\n  I[\"input&lt;br/&gt;The capital of Thailand is\"] --&gt; M[\"🧠 model&lt;br/&gt;a probability for&lt;br/&gt;every token\"]\n  M --&gt; P[\"pick 1 token&lt;br/&gt;“Krung”\"]\n  P -- \"append to the input, run again\" --&gt; I\n\n\n\n\nFigure 1.1: An LLM writes one token at a time: it picks “Krung”, appends it to the input and runs again until it has “Thep” and “Mahanakhon”\n\n\n\n\n\nIt is like the next-word suggestions on a phone keyboard, where we keep tapping the suggestion until the sentence is done. Everything in this episode comes from two parts of this pipeline: the pieces the text is cut into and how the next piece is chosen.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#tokens-and-the-chat-template",
+    "href": "ch01/ep01-how-llms-work/index.html#tokens-and-the-chat-template",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Tokens and the chat template",
+    "text": "Tokens and the chat template\nA token is a piece of text the model reads; the thing that cuts text into tokens is the tokenizer. The textbook explains that cutting into characters makes sequences long and expensive, while cutting into words means the model can’t take words it has never seen — so text is cut into pieces in between (Roitman 2026, sec. 1.2). Like Lego bricks: a common word such as “the” is a single brick, while rarer words are built from smaller ones — “unhappiness” might become “un” + “happiness”.\nThe textbook recommends measuring fertility, the number of tokens per word. High fertility means the tokenizer covers that language poorly, and since price is counted in tokens, Thai costs more. Every model has its own tokenizer, so the same text can count differently.\n\n\n\nTable 1.1: Token counts measured in Lab 1\n\n\n\n\n\nSentence (same meaning)\nGemma 4\ntiktoken o200k_base\n\n\n\n\n“Agents use tools to finish tasks.”\n7\n7\n\n\n“เอเจนต์ใช้เครื่องมือเพื่อทำงานให้เสร็จ” (Thai)\n11\n15\n\n\n\n\n\n\nWhen we call a model through an API we send a list of messages, each with a role saying who is speaking (system = the standing instructions, user = the user, assistant = the model). But the model can only read one line of tokens, so the chat template joins the messages into a single string and separates the parts with special tokens, like a play script with the speaker’s name before each line. The textbook points out that a dedicated token for calling a tool is more reliable than having the model write “now I will call a tool”.\n\nIn Lab 1: we send the single letter a, yet usage counts more than one input token. The extra is what the chat template adds — 13 tokens on every call — and we pay for them too.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#probabilities-and-greedy",
+    "href": "ch01/ep01-how-llms-work/index.html#probabilities-and-greedy",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Probabilities and greedy",
+    "text": "Probabilities and greedy\nEach time it produces a new token, the model doesn’t hold just one answer; it gives a probability to every token it knows, summing to one. The textbook’s example is “The capital of France is”, where the token “Paris” gets 0.92 (Roitman 2026, sec. 1.12). The simplest way to choose is greedy: always take the top token — like always ordering the best-selling dish: never a miss, but never anything new. The textbook warns that it tends to produce repetitive, bland text.\nThe API doesn’t return probabilities directly but logprobs (the log of the probability), which convert back with \\(p = e^{\\text{logprob}}\\); for example a logprob of \\(-0.28\\) is \\(e^{-0.28} \\approx 0.756\\).",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#bounded-sampling-top-k-top-p-min-p",
+    "href": "ch01/ep01-how-llms-work/index.html#bounded-sampling-top-k-top-p-min-p",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Bounded sampling: top-k, top-p, min-p",
+    "text": "Bounded sampling: top-k, top-p, min-p\nFor variety we sample by probability. Sampling from every token, though, can let an odd word slip in, so we cut off the tail first. The textbook describes three ways; think of picking finalists in a singing contest.\n\n\n\nTable 1.2: Three ways to cut the tail before sampling\n\n\n\n\n\n\n\n\n\n\nMethod\nKeeps\nLike picking finalists\n\n\n\n\ntop-k\nalways the first \\(k\\) tokens\nalways take the \\(k\\) highest scorers\n\n\ntop-p\nsort high to low, keep until the total reaches \\(p\\)\nkeep adding people until their combined share reaches, say, 90%\n\n\nmin-p\nevery token with at least \\(m \\times\\) the top one\neveryone who scored at least 10% of the winner\n\n\n\n\n\n\nThe textbook’s example: after “2 + 2 =”, the token “4” has almost everything; top-k of fifty would keep 49 wrong answers, while top-p keeps just “4”. After “I enjoy eating”, many foods are plausible: top-k of five is too narrow, but top-p widens the pool by itself. So top-p and min-p adapt to the model’s confidence; top-k doesn’t.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#temperature-the-boldness-knob",
+    "href": "ch01/ep01-how-llms-work/index.html#temperature-the-boldness-knob",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Temperature: the boldness knob",
+    "text": "Temperature: the boldness knob\nBefore sampling we can also reshape the probabilities with temperature (\\(T\\)). In Lab 2 we write it ourselves from the probabilities \\(p_i\\):\n\\[\np_i^{(T)} = \\frac{p_i^{1/T}}{\\sum_j p_j^{1/T}}\n\\tag{1.1}\\]\n\\(T &lt; 1\\) makes the top tokens even stronger (confident), \\(T &gt; 1\\) pulls everything closer together (bold), and \\(T \\to 0\\) is greedy. The textbook’s example is “Once upon a time”: at \\(T = 0.3\\) the model tells a typical tale of a just king, while at \\(T = 1\\) rivers flow backwards and fish learn to fly. It recommends \\(T = 0\\) for code and maths, 0.7 for factual work, and 1–1.2 for creative work.\n\n\n\n\n\n\nImportantFor agents\n\n\n\nWhen the model has to write a tool name and its arguments correctly, use a low temperature. This answers the first question: asking again gives a different answer because the model samples its tokens.\n\n\n\nIn Lab 2 (Gemma’s real probabilities through a pinned provider): “The capital of France is” → Paris almost 1.00 · “I enjoy eating” → pizza 0.756, food 0.115, everything 0.105 · at \\(T = 2\\) pizza drops to 0.485 · top-k 5 even keeps “Paris” in Chinese and Japanese, while top-p 0.95 keeps only Paris · setting temperature=0 on the API gives pizza 10 times out of 10",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#the-context-window-and-max_tokens",
+    "href": "ch01/ep01-how-llms-work/index.html#the-context-window-and-max_tokens",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "The context window and max_tokens",
+    "text": "The context window and max_tokens\nThe context window is the maximum number of tokens a model can read and write at once; Gemma 4 26B in the labs has 262,144. The textbook calls it the agent’s working memory (Roitman 2026, sec. 18.2): every token in it costs money and time, and the model can’t see anything outside it — like a desk where you can only read the papers on it; however good the books in the library are, they don’t help unless you bring them to the desk. On the desk are the standing instructions, a conversation history that keeps growing, and room left for the answer, so count tokens before every call.\nThe answer has its own ceiling, max_tokens. If it is reached before the model finishes, the answer is cut off mid-sentence and finish_reason is \"length\" instead of \"stop\".\n\nIn Lab 1: a thousand questions cost only about a cent, but an agent calls many times and resends its history, so the number grows fast. With a low max_tokens the answer really is cut off, with finish_reason = \"length\" — an agent must check it every time.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#reading-a-model-name",
+    "href": "ch01/ep01-how-llms-work/index.html#reading-a-model-name",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Reading a model name",
+    "text": "Reading a model name\nA name on OpenRouter such as google/gemma-4-26b-a4b-it reads piece by piece.\n\n\n\nTable 1.3: Reading google/gemma-4-26b-a4b-it\n\n\n\n\n\n\n\n\n\nPart\nMeaning\n\n\n\n\ngoogle/\nthe maker\n\n\ngemma-4\nfamily and version\n\n\n26b\n26 billion parameters (the numbers a model learns during training; the more there are, the more memory it needs)\n\n\na4b\nmixture of experts (MoE): many experts inside, only a few used per token — about 4 billion parameters actually work on each token (Roitman 2026, sec. 1.10)\n\n\nit\ninstruction-tuned: trained further until it follows instructions (some names write instruct); the untrained version is called base (Roitman 2026, sec. 1.8)\n\n\n\n\n\n\nMoE is like a hospital with many specialists where each patient sees just two. An instruct model is like someone who has read many books and then trains on the job as a help-desk assistant — so agent work should use instruct versions.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#quantization-and-providers",
+    "href": "ch01/ep01-how-llms-work/index.html#quantization-and-providers",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Quantization and providers",
+    "text": "Quantization and providers\nA 26-billion-parameter model stored at 16 bits (2 bytes) per number needs about 52 GB of memory. The textbook says serving almost always uses quantization: fewer bits per number (Roitman 2026, sec. 1.14) — like rounding 3.14159 to 3.14, or shrinking a RAW photo to a JPEG: the file gets much smaller, but the eye can hardly tell.\n\\[\n\\text{memory (GB)} \\approx \\text{parameters (billions)} \\times \\frac{\\text{bits}}{8}\n\\tag{1.2}\\]\n\n\n\nTable 1.4: Memory of Gemma 4 26B at each quantization level\n\n\n\n\n\nPrecision\nBits\nGemma 4 26B\n\n\n\n\nbf16\n16\n52 GB\n\n\nfp8\n8\n26 GB\n\n\nfp4\n4\n13 GB\n\n\n\n\n\n\nThe companies that run a model for us behind an API are providers. The same Gemma name on OpenRouter has 15 of them: some run it at bf16, some at fp8 or fp4, and some don’t say; prices and context windows differ too.\n\nIn Lab 3 (2026-11-09): input prices differ almost fourfold, some providers offer only 131,072 tokens of context, half of the others, and asking “I enjoy eating” through 4 providers gives different results — Google puts pizza at 0.76, Darkbloom puts food at 0.77. So pin the provider while testing an agent, or today’s and tomorrow’s results might come from different providers.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#modality-what-a-model-accepts",
+    "href": "ch01/ep01-how-llms-work/index.html#modality-what-a-model-accepts",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Modality: what a model accepts",
+    "text": "Modality: what a model accepts\nA kind of data is called a modality: text, images, audio, video or files. Models don’t all accept the same ones, and input and output are separate: Gemma 4 can look at a picture but can’t draw one, because almost every model answers in text. This textbook deliberately focuses on text-in, text-out models, so the numbers below come from OpenRouter’s model list.\n\n\n\n\n\n\n\nflowchart LR\n  IMG[\"🖼️ chart + question&lt;br/&gt;which year had the most papers?\"] --&gt; G[\"gemma-4-26b-a4b-it&lt;br/&gt;accepts: text · image · video\"]\n  IMG --&gt; L[\"llama-3.1-8b-instruct&lt;br/&gt;accepts: text\"]\n  G --&gt; GA[\"✅ 2024&lt;br/&gt;278 input tokens\"]\n  L --&gt; LA[\"❌ 404&lt;br/&gt;No endpoints found&lt;br/&gt;that support image input\"]\n\n\n\n\nFigure 1.2: The same chart sent to two models: Gemma 4 accepts images, Llama 3.1 8B accepts text only\n\n\n\n\n\nImages become tokens too, so they take up context and cost money, and the model name doesn’t always tell you the modality. If an agent’s tool fetches an image for the model, check the modality first, or the agent will break halfway.\n\nIn Lab 3: of 461 models on OpenRouter, 137 accept text only. A one-sentence question with a chart used 278 input tokens, because the image became tokens (the chart’s numbers are made up for teaching).",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#the-agent-builders-dashboard",
+    "href": "ch01/ep01-how-llms-work/index.html#the-agent-builders-dashboard",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "The agent builder’s dashboard",
+    "text": "The agent builder’s dashboard\n\n\n\nTable 1.5: Four things an agent builder must remember\n\n\n\n\n\n\n\n\n\nGauge\nWhat to do\n\n\n\n\ntokens & finish_reason\ncount tokens before sending, and check finish_reason after the answer\n\n\ntemperature\nuse a low temperature when the model must write a tool name and arguments correctly\n\n\nprovider\npin the provider while testing\n\n\nmodality\ncheck the modality before sending an image, if you don’t know what the model accepts",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#lab",
+    "href": "ch01/ep01-how-llms-work/index.html#lab",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nTable 1.6: EP01 notebooks in English (every lab has its own setup; Lab 1 explains the API key and why we chose this model)\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Tokens\nColab\nColab\n\n\nLab 2 — Decoding\nColab\nColab\n\n\nLab 3 — Model names, providers, quantization, modality\nColab\nColab\n\n\n\n\n\n\nEvery model output in the videos comes from a real run. Probabilities, prices and the provider list change with the day and the provider, so your own numbers may differ a little.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#review-questions",
+    "href": "ch01/ep01-how-llms-work/index.html#review-questions",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhy do a Thai and an English sentence with the same meaning use different numbers of tokens, and do different models count the same?\nYou send a very short message, but usage counts more input tokens than expected. Where does the extra come from?\nAfter “2 + 2 =”, why is top-p better than top-k 50?\nIf an agent must call tools correctly every time, how should you set the temperature, and why?\nWhat does finish_reason = \"length\" tell you, and what should an agent do about it?\nAbout how much memory does Gemma 4 26B need at fp8, and how do you work it out?\nWhy pin the provider while testing an agent?\nIf an agent’s tool fetches an image for the model, what must you check first?",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#references",
+    "href": "ch01/ep01-how-llms-work/index.html#references",
+    "title": "EP01 How LLMs Work — for Agent Builders",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M0 · Before you start: the LLM basics agent builders need",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 How LLMs Work — for Agent Builders</span>"
+    ]
+  },
+  {
     "objectID": "ch19/19-1-workflow-patterns/index.html",
     "href": "ch19/19-1-workflow-patterns/index.html",
     "title": "EP04 Workflow Patterns",
@@ -77,7 +253,7 @@
     "text": "Learning objectives\nAfter this module you will be able to",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -88,7 +264,7 @@
     "text": "Explain how a workflow differs from an agent, and say when a workflow is enough\nDesign a prompt chain with validation gates between steps\nBuild a router that classifies once, then hands off to a specialist handler\nCall an LLM in parallel with sectioning and voting, and merge the results in code\nExplain how orchestrator-workers differs from parallelization\nBuild an evaluator-optimizer loop with a threshold and a retry budget",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -96,10 +272,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#workflow-or-agent",
     "title": "EP04 Workflow Patterns",
     "section": "Workflow or agent",
-    "text": "Workflow or agent\nThe first thing chapter 19 stresses is that not every task needs an agent (Roitman 2026, sec. 19.1). In a workflow, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an agent, the LLM decides what to do next — like handing it the steering wheel.\n\n\n\nTable 1.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need dynamic routing or open-ended exploration\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nMove to an agent only when the task genuinely needs dynamic routing or open-ended exploration. The running example in this module is the Cogito Learn teaching assistant: we already know student questions come in only a few kinds, so a workflow is enough.",
+    "text": "Workflow or agent\nThe first thing chapter 19 stresses is that not every task needs an agent (Roitman 2026, sec. 19.1). In a workflow, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an agent, the LLM decides what to do next — like handing it the steering wheel.\n\n\n\nTable 2.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need dynamic routing or open-ended exploration\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nMove to an agent only when the task genuinely needs dynamic routing or open-ended exploration. The running example in this module is the Cogito Learn teaching assistant: we already know student questions come in only a few kinds, so a workflow is enough.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -107,10 +283,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
     "title": "EP04 Workflow Patterns",
     "section": "1. Prompt Chaining",
-    "text": "1. Prompt Chaining\nSplit a big task into a fixed sequence of LLM calls; the output of one step is the context of the next. Between steps, validation gates catch errors early — like quality checks between stations on a factory conveyor belt. A gate can be an LLM or plain code.\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;is it an abstract?\"}\n  G0 --&gt; S1[\"step 1&lt;br/&gt;extract key points\"]\n  S1 --&gt; G1{\"gate (code)&lt;br/&gt;exactly 3 points?\"}\n  G1 --&gt; S2[\"step 2&lt;br/&gt;write Thai summary\"]\n  S2 --&gt; G2{\"gate (code)&lt;br/&gt;≤ 5 lines?\"}\n  G2 --&gt; O[\"✅ summary\"]\n\n\n\n\nFigure 1.1: The Lab 1 chain: abstract → key points → Thai summary; if any gate fails, the chain stops\n\n\n\n\n\nEach step can use a different prompt, model or temperature, and every intermediate result can be inspected. It fits tasks that are already a sequence of steps: content generation, data transformation, multi-stage analysis.\n\nIn Lab 1: the abstract passes every gate, an exam-room notice is stopped at the first gate, and when the summary is limited to two lines, the code gate stops it midway.",
+    "text": "1. Prompt Chaining\nSplit a big task into a fixed sequence of LLM calls; the output of one step is the context of the next. Between steps, validation gates catch errors early — like quality checks between stations on a factory conveyor belt. A gate can be an LLM or plain code.\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;is it an abstract?\"}\n  G0 --&gt; S1[\"step 1&lt;br/&gt;extract key points\"]\n  S1 --&gt; G1{\"gate (code)&lt;br/&gt;exactly 3 points?\"}\n  G1 --&gt; S2[\"step 2&lt;br/&gt;write Thai summary\"]\n  S2 --&gt; G2{\"gate (code)&lt;br/&gt;≤ 5 lines?\"}\n  G2 --&gt; O[\"✅ summary\"]\n\n\n\n\nFigure 2.1: The Lab 1 chain: abstract → key points → Thai summary; if any gate fails, the chain stops\n\n\n\n\n\nEach step can use a different prompt, model or temperature, and every intermediate result can be inspected. It fits tasks that are already a sequence of steps: content generation, data transformation, multi-stage analysis.\n\nIn Lab 1: the abstract passes every gate, an exam-room notice is stopped at the first gate, and when the summary is limited to two lines, the code gate stops it midway.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -118,10 +294,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#routing",
     "title": "EP04 Workflow Patterns",
     "section": "2. Routing",
-    "text": "2. Routing\nA classifier (an LLM or a traditional model) looks at the input first, then sends it to a specialist handler — like hospital triage: one check, then the right department.\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ student question\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"theory-explaining prompt\"]\n  C -- code_error --&gt; A2[\"code-running tool&lt;br/&gt;+ explain the real error\"]\n  C -- admin --&gt; A3[\"small, cheap model&lt;br/&gt;+ course info\"]\n\n\n\n\nFigure 1.2: The Lab 2 router: classify once, then each kind gets the prompt, tool or model that suits it\n\n\n\n\n\nRouting fits when there are clearly distinct kinds of input and each needs a different prompt, tool or model. The textbook’s examples are customer-support triage and multi-modal input handling.\n\nIn Lab 2: all six questions land in the right place, including a trick question that contains the word “error” but is really a concept question.",
+    "text": "2. Routing\nA classifier (an LLM or a traditional model) looks at the input first, then sends it to a specialist handler — like hospital triage: one check, then the right department.\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ student question\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"theory-explaining prompt\"]\n  C -- code_error --&gt; A2[\"code-running tool&lt;br/&gt;+ explain the real error\"]\n  C -- admin --&gt; A3[\"small, cheap model&lt;br/&gt;+ course info\"]\n\n\n\n\nFigure 2.2: The Lab 2 router: classify once, then each kind gets the prompt, tool or model that suits it\n\n\n\n\n\nRouting fits when there are clearly distinct kinds of input and each needs a different prompt, tool or model. The textbook’s examples are customer-support triage and multi-modal input handling.\n\nIn Lab 2: all six questions land in the right place, including a trick question that contains the word “error” but is really a concept question.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -129,10 +305,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#parallelization",
     "title": "EP04 Workflow Patterns",
     "section": "3. Parallelization",
-    "text": "3. Parallelization\nCall the LLM several times at once and let our code merge the results. The textbook describes two kinds:\n\nSectioning (fan-out): split the work into independent parts — e.g. review code for security, performance and style at the same time — then merge, deduplicate and rank by severity. Like three teachers each marking a different section of an exam at the same time.\nVoting: send the same prompt N times with different seeds or temperatures, then pick an answer by majority vote, a reward model, or an LLM judge.\n\nIf the calls take \\(t_1, \\dots, t_n\\), the parallel run takes about as long as the slowest call, not the sum:\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{1.1}\\]\n\nIn Lab 3: three reviews one at a time took 3.9 s; all at once took 1.6 s, as Equation 1.1 predicts. Voting five times gave “low” four times. (Your numbers will vary with server speed.)",
+    "text": "3. Parallelization\nCall the LLM several times at once and let our code merge the results. The textbook describes two kinds:\n\nSectioning (fan-out): split the work into independent parts — e.g. review code for security, performance and style at the same time — then merge, deduplicate and rank by severity. Like three teachers each marking a different section of an exam at the same time.\nVoting: send the same prompt N times with different seeds or temperatures, then pick an answer by majority vote, a reward model, or an LLM judge.\n\nIf the calls take \\(t_1, \\dots, t_n\\), the parallel run takes about as long as the slowest call, not the sum:\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{2.1}\\]\n\nIn Lab 3: three reviews one at a time took 3.9 s; all at once took 1.6 s, as Equation 2.1 predicts. Voting five times gave “low” four times. (Your numbers will vary with server speed.)",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -140,10 +316,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
     "title": "EP04 Workflow Patterns",
     "section": "4. Orchestrator-Workers",
-    "text": "4. Orchestrator-Workers\nNow the LLM decides how to split the work. The orchestrator analyses the task and writes a plan of subtasks; workers, which may use different prompts or tools, do each subtask; a synthesizer merges the results into one answer — like a head chef who reads the order before deciding how to split the work among the cooks.\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(writes a JSON plan)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 one answer\"]\n\n\n\n\nFigure 1.3: Orchestrator-workers: how many subtasks, and of which kind, comes from the model, not the code\n\n\n\n\n\nUnlike parallelization, the split is not hard-coded. The textbook recommends it for open-ended tasks where the number and kind of subtasks can’t be known in advance, such as “refactor this codebase”.\n\nIn Lab 4: the exact same code, two goals, two different plans — the first goal got four subtasks; the question about AI hints got two, and paper P2 wasn’t used at all.",
+    "text": "4. Orchestrator-Workers\nNow the LLM decides how to split the work. The orchestrator analyses the task and writes a plan of subtasks; workers, which may use different prompts or tools, do each subtask; a synthesizer merges the results into one answer — like a head chef who reads the order before deciding how to split the work among the cooks.\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(writes a JSON plan)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 one answer\"]\n\n\n\n\nFigure 2.3: Orchestrator-workers: how many subtasks, and of which kind, comes from the model, not the code\n\n\n\n\n\nUnlike parallelization, the split is not hard-coded. The textbook recommends it for open-ended tasks where the number and kind of subtasks can’t be known in advance, such as “refactor this codebase”.\n\nIn Lab 4: the exact same code, two goals, two different plans — the first goal got four subtasks; the question about AI hints got two, and paper P2 wasn’t used at all.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -151,10 +327,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
     "title": "EP04 Workflow Patterns",
     "section": "5. Evaluator-Optimizer",
-    "text": "5. Evaluator-Optimizer\nA feedback loop between two models: a generator produces work, an evaluator scores it against explicit criteria. Below the threshold, the evaluator’s critique is appended to the generator’s context and it tries again — until the work passes or the retry budget runs out. Like a writer and an editor.\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;translate into Thai\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;meaning · terms · fluency\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ pass\"]\n  Ev -- \"below\" --&gt; B{\"budget&lt;br/&gt;left?\"}\n  B -- yes --&gt; C[\"append critique&lt;br/&gt;to context\"] --&gt; Gen\n  B -- no --&gt; L[\"return last draft\"]\n\n\n\n\nFigure 1.4: The Lab 5 evaluator-optimizer loop, with a threshold and a retry budget\n\n\n\n\n\nIt fits tasks with clear quality criteria — code that must pass tests, writing that must follow a style guide, translation that must keep the meaning — and it improves results without training the model.\n\nIn Lab 5: the first draft scored 6/10 because technical terms were translated into Thai; after the critique went into the context, round two scored 10/10 — even though the generator never saw the glossary.",
+    "text": "5. Evaluator-Optimizer\nA feedback loop between two models: a generator produces work, an evaluator scores it against explicit criteria. Below the threshold, the evaluator’s critique is appended to the generator’s context and it tries again — until the work passes or the retry budget runs out. Like a writer and an editor.\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;translate into Thai\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;meaning · terms · fluency\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ pass\"]\n  Ev -- \"below\" --&gt; B{\"budget&lt;br/&gt;left?\"}\n  B -- yes --&gt; C[\"append critique&lt;br/&gt;to context\"] --&gt; Gen\n  B -- no --&gt; L[\"return last draft\"]\n\n\n\n\nFigure 2.4: The Lab 5 evaluator-optimizer loop, with a threshold and a retry budget\n\n\n\n\n\nIt fits tasks with clear quality criteria — code that must pass tests, writing that must follow a style guide, translation that must keep the meaning — and it improves results without training the model.\n\nIn Lab 5: the first draft scored 6/10 because technical terms were translated into Thai; after the critique went into the context, round two scored 10/10 — even though the generator never saw the glossary.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -162,10 +338,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#the-five-patterns-side-by-side",
     "title": "EP04 Workflow Patterns",
     "section": "The five patterns side by side",
-    "text": "The five patterns side by side\n\n\n\nTable 1.2: The five workflow patterns\n\n\n\n\n\n\n\n\n\n\n\nPattern\nWho sets the path\nLLM calls per input\nFits\n\n\n\n\nPrompt chaining\nCode (fixed order)\nOne per step\nTasks that are a sequence of steps\n\n\nRouting\nCode + classifier\n1 + handler\nClearly distinct kinds of input\n\n\nParallelization\nCode (fixed split)\nN at once\nIndependent parts, or several opinions\n\n\nOrchestrator-workers\nLLM plans, code runs\n1 + subtasks + 1\nOpen-ended tasks that can’t be split in advance\n\n\nEvaluator-optimizer\nCode (loop + budget)\n2 per round\nTasks with clear quality criteria\n\n\n\n\n\n\nAll five run the LLM on a path the system defines, so they stay predictable, testable and affordable — and they compose: a router can hand off to a chain, or one step of a chain can be an evaluator-optimizer. The last two already give the model more say, which is the bridge to autonomous agents in EP05.",
+    "text": "The five patterns side by side\n\n\n\nTable 2.2: The five workflow patterns\n\n\n\n\n\n\n\n\n\n\n\nPattern\nWho sets the path\nLLM calls per input\nFits\n\n\n\n\nPrompt chaining\nCode (fixed order)\nOne per step\nTasks that are a sequence of steps\n\n\nRouting\nCode + classifier\n1 + handler\nClearly distinct kinds of input\n\n\nParallelization\nCode (fixed split)\nN at once\nIndependent parts, or several opinions\n\n\nOrchestrator-workers\nLLM plans, code runs\n1 + subtasks + 1\nOpen-ended tasks that can’t be split in advance\n\n\nEvaluator-optimizer\nCode (loop + budget)\n2 per round\nTasks with clear quality criteria\n\n\n\n\n\n\nAll five run the LLM on a path the system defines, so they stay predictable, testable and affordable — and they compose: a router can hand off to a chain, or one step of a chain can be an evaluator-optimizer. The last two already give the model more say, which is the bridge to autonomous agents in EP05.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -173,10 +349,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#lab",
     "title": "EP04 Workflow Patterns",
     "section": "Labs",
-    "text": "Labs\n\n\n\nTable 1.3: EP04 notebooks (English). Every lab is standalone; installation and API key setup are in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nThe data in the code (abstracts, questions, reviewed code) is simulated for teaching; every model output shown in the videos is from a real run.",
+    "text": "Labs\n\n\n\nTable 2.3: EP04 notebooks (English). Every lab is standalone; installation and API key setup are in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nThe data in the code (abstracts, questions, reviewed code) is simulated for teaching; every model output shown in the videos is from a real run.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -184,10 +360,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#review-questions",
     "title": "EP04 Workflow Patterns",
     "section": "Review questions",
-    "text": "Review questions\n\nWhy is a workflow enough for the teaching assistant that answers student questions?\nIn Figure 1.1, what kind of error would reach the summary if there were no gate after step 1?\nWhy does the classifier in Figure 1.2 answer with an enum at temperature 0?\nFrom Equation 1.1, how would adding a fourth reviewer change the parallel time?\nHow does orchestrator-workers differ from sectioning?\nIn Figure 1.4, what happens with a threshold of 10 and a budget of 1?",
+    "text": "Review questions\n\nWhy is a workflow enough for the teaching assistant that answers student questions?\nIn Figure 2.1, what kind of error would reach the summary if there were no gate after step 1?\nWhy does the classifier in Figure 2.2 answer with an enum at temperature 0?\nFrom Equation 2.1, how would adding a fourth reviewer change the parallel time?\nHow does orchestrator-workers differ from sectioning?\nIn Figure 2.4, what happens with a threshold of 10 and a budget of 1?",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -198,7 +374,7 @@
     "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -209,7 +385,7 @@
     "text": "Learning objectives\nAfter this module you will be able to",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -220,7 +396,7 @@
     "text": "Explain the difference between a workflow and an autonomous agent\nExplain the ReAct loop and the four things its harness must have\nDesign a plan as a DAG and choose a suitable replanning strategy\nExplain how Reflexion lets an agent learn across attempts without training\nChoose a tool-use pattern for a task, and write the code for each pattern\nSay which part of your own code each LangGraph State, Node and Edge replaces",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -228,10 +404,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#from-workflow-to-agent",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "From workflow to agent",
-    "text": "From workflow to agent\nIn EP04 (§19.1) we studied workflow patterns, where the program — not the model — sets the order of work. The autonomous agent patterns in this section let the LLM control the execution flow itself: which tool to call, when, and when to stop (Roitman 2026, sec. 19.2).\n\n\n\nTable 2.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need flexible decisions\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nThe textbook recommends an agent only when the task genuinely needs dynamic routing or open-ended exploration.",
+    "text": "From workflow to agent\nIn EP04 (§19.1) we studied workflow patterns, where the program — not the model — sets the order of work. The autonomous agent patterns in this section let the LLM control the execution flow itself: which tool to call, when, and when to stop (Roitman 2026, sec. 19.2).\n\n\n\nTable 3.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need flexible decisions\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nThe textbook recommends an agent only when the task genuinely needs dynamic routing or open-ended exploration.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -239,10 +415,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#react-reason-act",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "ReAct (Reason + Act)",
-    "text": "ReAct (Reason + Act)\nReAct is the basic pattern behind almost every agent. The LLM alternates between a Thought (what to do), an Action (call a tool) and an Observation (read the result), looping until it has a final answer.\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{2.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"no tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nFigure 2.1: The ReAct loop: the agent alternates between thinking and acting until a stop condition\n\n\n\n\n\nThe harness around the ReAct loop (Figure 2.1) needs four things:\n\nScratchpad — Thought steps are logged but not shown to the user\nTool parsing — structured tool calls are extracted from the model’s output\nMax iterations — always cap the number of loops (typically 10–25)\nTermination — stop when the model emits a special action such as final_answer, or makes no tool call\n\n\nIn Lab 1: we write react_agent() with all four, and see that with max_iterations=1 the agent stops at once.",
+    "text": "ReAct (Reason + Act)\nReAct is the basic pattern behind almost every agent. The LLM alternates between a Thought (what to do), an Action (call a tool) and an Observation (read the result), looping until it has a final answer.\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{3.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"no tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nFigure 3.1: The ReAct loop: the agent alternates between thinking and acting until a stop condition\n\n\n\n\n\nThe harness around the ReAct loop (Figure 3.1) needs four things:\n\nScratchpad — Thought steps are logged but not shown to the user\nTool parsing — structured tool calls are extracted from the model’s output\nMax iterations — always cap the number of loops (typically 10–25)\nTermination — stop when the model emits a special action such as final_answer, or makes no tool call\n\n\nIn Lab 1: we write react_agent() with all four, and see that with max_iterations=1 the agent stops at once.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -250,10 +426,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#planning-agents",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Planning Agents",
-    "text": "Planning Agents\nReAct decides one step at a time, which can wander on long tasks. A planning agent first builds an explicit plan, then executes it and revises it along the way. Chapter 18 calls this Plan-and-Execute, with three phases: planning, execution (possibly with a cheaper model) and plan revision.\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{2.2}\\]\n\nExample: a report comparing transformers for time series\nThe user asks: “Write a 2-page report comparing transformer architectures for time-series forecasting.” The planner writes a 6-step plan; each step lists in deps the steps that must finish first, so the plan is a DAG (Directed Acyclic Graph), as in Figure 2.2.\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nFigure 2.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each other, so they can run in parallel\n\n\n\n\n\nThe harness tracks dependencies and executes only the steps whose prerequisites are all done.\n\n\nAdaptive replanning\nAfter step 1, the search finds only 3 relevant papers, so the agent replans: it adds a sub-step that widens the search to neighbouring work (e.g. PatchTST, iTransformer), then continues from step 2 with more material.\n\n\n\n\n\n\nNoteKey insight\n\n\n\nA plan is a living document — it gives structure, but adapts to what the agent observes.\n\n\n\n\n\nTable 2.2: Planning strategies (adapted from Table 19.1)\n\n\n\n\n\n\n\n\n\n\nStrategy\nWhen it replans\nCharacter\n\n\n\n\nPlan-then-Execute\nNever\nSimple, but brittle to surprises\n\n\nAdaptive\nWhen a step fails\nModerate cost\n\n\nContinuous\nEvery step\nExpensive but robust\n\n\nHierarchical\nWhen a sub-plan finishes\nFixed top-level plan, dynamic sub-plans\n\n\n\n\n\n\n\nIn Lab 2: the Adaptive strategy: when the search step finds only 3 papers, the harness replans, and each step runs react_agent() from Lab 1, so patterns compose.",
+    "text": "Planning Agents\nReAct decides one step at a time, which can wander on long tasks. A planning agent first builds an explicit plan, then executes it and revises it along the way. Chapter 18 calls this Plan-and-Execute, with three phases: planning, execution (possibly with a cheaper model) and plan revision.\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{3.2}\\]\n\nExample: a report comparing transformers for time series\nThe user asks: “Write a 2-page report comparing transformer architectures for time-series forecasting.” The planner writes a 6-step plan; each step lists in deps the steps that must finish first, so the plan is a DAG (Directed Acyclic Graph), as in Figure 3.2.\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nFigure 3.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each other, so they can run in parallel\n\n\n\n\n\nThe harness tracks dependencies and executes only the steps whose prerequisites are all done.\n\n\nAdaptive replanning\nAfter step 1, the search finds only 3 relevant papers, so the agent replans: it adds a sub-step that widens the search to neighbouring work (e.g. PatchTST, iTransformer), then continues from step 2 with more material.\n\n\n\n\n\n\nNoteKey insight\n\n\n\nA plan is a living document — it gives structure, but adapts to what the agent observes.\n\n\n\n\n\nTable 3.2: Planning strategies (adapted from Table 19.1)\n\n\n\n\n\n\n\n\n\n\nStrategy\nWhen it replans\nCharacter\n\n\n\n\nPlan-then-Execute\nNever\nSimple, but brittle to surprises\n\n\nAdaptive\nWhen a step fails\nModerate cost\n\n\nContinuous\nEvery step\nExpensive but robust\n\n\nHierarchical\nWhen a sub-plan finishes\nFixed top-level plan, dynamic sub-plans\n\n\n\n\n\n\n\nIn Lab 2: the Adaptive strategy: when the search step finds only 3 papers, the harness replans, and each step runs react_agent() from Lab 1, so patterns compose.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -264,7 +440,7 @@
     "text": "Reflection and Self-Critique\nAn agent stops to evaluate its own path at three levels:\n\nOutput validation — “Is this right? Did I miss anything?”\nTrajectory review — look back over the last k steps for mistakes or waste\nStrategy revision — “Am I solving the right problem?”\n\n\nReflexion\nReflexion keeps a reflection memory. After each failure, the agent writes a lesson in natural language (e.g. “I failed because I didn’t check the edge case”) and puts these lessons in the next attempt’s prompt — so it learns across episodes without updating any weights.\n\nIn Lab 3: the agent writes parse_duration(), checked by unit tests it can’t see in advance. In the recorded run the first attempt passed 5/9, and after one lesson all 9/9.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -272,10 +448,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#tool-use-patterns",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Tool-Use Patterns",
-    "text": "Tool-Use Patterns\n\n\n\nTable 2.3: Tool invocation patterns (adapted from Table 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nDescription\nExample\n\n\n\n\nSingle-turn\nOne tool call per response (2 LLM calls)\nSimple Q&A with search\n\n\nMulti-tool\nSeveral tool calls at once in one response\nsearch + calculate + format\n\n\nSequential\nOne tool’s output is the next tool’s input\nsearch → read → extract\n\n\nNested\nA tool call runs another agent\na code agent calls a test runner\n\n\nFallback\nIf the main tool fails, try a backup\nAPI → scrape → cache\n\n\n\n\n\n\nThings to remember:\n\nMulti-tool cuts latency a lot, but the tools must be independent, and all tool results go back in a single message\nSequential: the harness must manage the growing context, and may need to summarize along the way\nNested: the parent agent sees the sub-agent as a black-box function\nFallback is handled in the harness; the model doesn’t need to know\n\n\nIn Lab 4: single-turn takes exactly 2 LLM calls, and three tools that take 1.5 s each finish in ~1.5 s in parallel instead of 4.5 s.",
+    "text": "Tool-Use Patterns\n\n\n\nTable 3.3: Tool invocation patterns (adapted from Table 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nDescription\nExample\n\n\n\n\nSingle-turn\nOne tool call per response (2 LLM calls)\nSimple Q&A with search\n\n\nMulti-tool\nSeveral tool calls at once in one response\nsearch + calculate + format\n\n\nSequential\nOne tool’s output is the next tool’s input\nsearch → read → extract\n\n\nNested\nA tool call runs another agent\na code agent calls a test runner\n\n\nFallback\nIf the main tool fails, try a backup\nAPI → scrape → cache\n\n\n\n\n\n\nThings to remember:\n\nMulti-tool cuts latency a lot, but the tools must be independent, and all tool results go back in a single message\nSequential: the harness must manage the growing context, and may need to summarize along the way\nNested: the parent agent sees the sub-agent as a black-box function\nFallback is handled in the harness; the model doesn’t need to know\n\n\nIn Lab 4: single-turn takes exactly 2 LLM calls, and three tools that take 1.5 s each finish in ~1.5 s in parallel instead of 4.5 s.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -283,10 +459,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#which-pattern-to-choose",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Which pattern to choose",
-    "text": "Which pattern to choose\n\n\n\nTable 2.4: Choosing a pattern (adapted from Table 19.3)\n\n\n\n\n\n\n\n\n\n\n\nPattern\nComplexity\nLLM calls\nFits\n\n\n\n\nReAct\nMedium\n3–25 (loop)\nGeneral tool use, exploration\n\n\nPlanning agent\nHigh\n5–50+\nLong, multi-step tasks\n\n\nReflection\nHigh\n+50% overhead\nTasks often wrong on the first try\n\n\n\n\n\n\nStart with the simplest pattern and move up only when the simpler one genuinely isn’t enough — and patterns compose.",
+    "text": "Which pattern to choose\n\n\n\nTable 3.4: Choosing a pattern (adapted from Table 19.3)\n\n\n\n\n\n\n\n\n\n\n\nPattern\nComplexity\nLLM calls\nFits\n\n\n\n\nReAct\nMedium\n3–25 (loop)\nGeneral tool use, exploration\n\n\nPlanning agent\nHigh\n5–50+\nLong, multi-step tasks\n\n\nReflection\nHigh\n+50% overhead\nTasks often wrong on the first try\n\n\n\n\n\n\nStart with the simplest pattern and move up only when the simpler one genuinely isn’t enough — and patterns compose.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -294,10 +470,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#from-your-own-code-to-langgraph",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "From your own code to LangGraph",
-    "text": "From your own code to LangGraph\nIn Lab 5 we rebuild the agents from Labs 1 and 2 with LangGraph. Every piece of the framework maps to code we already wrote.\n\n\n\nTable 2.5: LangGraph vs our own code\n\n\n\n\n\n\n\n\n\nLangGraph\nOur own code\n\n\n\n\nState (messages, iteration counter)\nthe messages list and the loop counter\n\n\nNode (agent, tools)\nthe model call and run_tool()\n\n\nEdge / conditional edge\nthe while loop and the if that decides: call a tool, stop, or replan\n\n\nToolNode\nthe whole run_tool() function\n\n\nwith_structured_output\nthe plan’s JSON schema in Lab 2\n\n\n\n\n\n\nWhat the framework adds is a checkpoint that saves the state at every step, so the graph can pause for human approval before a tool runs (human-in-the-loop), resume, and let you look back at any step.",
+    "text": "From your own code to LangGraph\nIn Lab 5 we rebuild the agents from Labs 1 and 2 with LangGraph. Every piece of the framework maps to code we already wrote.\n\n\n\nTable 3.5: LangGraph vs our own code\n\n\n\n\n\n\n\n\n\nLangGraph\nOur own code\n\n\n\n\nState (messages, iteration counter)\nthe messages list and the loop counter\n\n\nNode (agent, tools)\nthe model call and run_tool()\n\n\nEdge / conditional edge\nthe while loop and the if that decides: call a tool, stop, or replan\n\n\nToolNode\nthe whole run_tool() function\n\n\nwith_structured_output\nthe plan’s JSON schema in Lab 2\n\n\n\n\n\n\nWhat the framework adds is a checkpoint that saves the state at every step, so the graph can pause for human approval before a tool runs (human-in-the-loop), resume, and let you look back at any step.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -305,10 +481,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#lab",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Labs",
-    "text": "Labs\n\n\n\nTable 2.6: EP05 notebooks (English). Every lab has its own setup; API key setup is explained in detail in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — ReAct Agent\nColab\nColab\n\n\nLab 2 — Planning Agent\nColab\nColab\n\n\nLab 3 — Reflexion\nColab\nColab\n\n\nLab 4 — Tool-Use Patterns\nColab\nColab\n\n\nLab 5 — LangGraph\nColab\nColab\n\n\n\n\n\n\nThe data in the tools (papers, stock prices, weather…) is simulated for teaching; every model output shown in the videos is from a real run.",
+    "text": "Labs\n\n\n\nTable 3.6: EP05 notebooks (English). Every lab has its own setup; API key setup is explained in detail in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — ReAct Agent\nColab\nColab\n\n\nLab 2 — Planning Agent\nColab\nColab\n\n\nLab 3 — Reflexion\nColab\nColab\n\n\nLab 4 — Tool-Use Patterns\nColab\nColab\n\n\nLab 5 — LangGraph\nColab\nColab\n\n\n\n\n\n\nThe data in the tools (papers, stock prices, weather…) is simulated for teaching; every model output shown in the videos is from a real run.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -316,10 +492,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#review-questions",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Review questions",
-    "text": "Review questions\n\nWhy does the textbook recommend starting with a workflow before an agent?\nWhat goes wrong in a ReAct loop with no max iterations?\nIn Figure 2.2, which steps can run in parallel, and why?\nHow does Reflexion differ from fine-tuning a model?\nWhy can’t the multi-tool pattern be used for a tool that needs another tool’s result?\nIn LangGraph, what replaces the while loop of the ReAct agent we wrote ourselves?",
+    "text": "Review questions\n\nWhy does the textbook recommend starting with a workflow before an agent?\nWhat goes wrong in a ReAct loop with no max iterations?\nIn Figure 3.2, which steps can run in parallel, and why?\nHow does Reflexion differ from fine-tuning a model?\nWhy can’t the multi-tool pattern be used for a tool that needs another tool’s result?\nIn LangGraph, what replaces the while loop of the ReAct agent we wrote ourselves?",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -330,7 +506,7 @@
     "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   }
 ]

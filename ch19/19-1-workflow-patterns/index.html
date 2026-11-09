@@ -56,7 +56,7 @@ div.csl-indent {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../ch19/ep05-autonomous-agents/index.html" rel="next">
-<link href="../../index.html" rel="prev">
+<link href="../../ch01/ep01-how-llms-work/index.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
@@ -177,9 +177,22 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text" id="quarto-sidebar-section-1-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
       <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP04 Workflow Patterns</span></a>
@@ -274,7 +287,7 @@ window.Quarto = {
 <div id="tbl-workflow-agent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-ตารางที่&nbsp;1.1: Workflow เทียบกับ agent
+ตารางที่&nbsp;2.1: Workflow เทียบกับ agent
 </figcaption>
 <div aria-describedby="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -351,7 +364,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-รูปที่&nbsp;1.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที
+รูปที่&nbsp;2.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที
 </figcaption>
 </figure>
 </div>
@@ -381,7 +394,7 @@ window.Quarto = {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-route-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-รูปที่&nbsp;1.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน
+รูปที่&nbsp;2.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน
 </figcaption>
 </figure>
 </div>
@@ -402,9 +415,9 @@ window.Quarto = {
 <p>ถ้า call แต่ละครั้งใช้เวลา <span class="math inline">\(t_1, \dots, t_n\)</span> เวลารวมของแบบพร้อมกันใกล้กับ call ที่ช้าที่สุด ไม่ใช่ผลรวม</p>
 <p><span id="eq-parallel"><span class="math display">\[
 T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_i t_i
-\tag{1.1}\]</span></span></p>
+\tag{2.1}\]</span></span></p>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 3:</strong> review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>1.1</span></a> ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)</p>
+<p><strong>ใน Lab 3:</strong> review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>2.1</span></a> ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)</p>
 </blockquote>
 </section>
 <section id="orchestrator-workers" class="level2">
@@ -430,7 +443,7 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-orch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-รูปที่&nbsp;1.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด
+รูปที่&nbsp;2.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด
 </figcaption>
 </figure>
 </div>
@@ -462,7 +475,7 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eval-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-รูปที่&nbsp;1.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget
+รูปที่&nbsp;2.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget
 </figcaption>
 </figure>
 </div>
@@ -478,7 +491,7 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 <div id="tbl-patterns" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-ตารางที่&nbsp;1.2: สรุปห้า workflow pattern
+ตารางที่&nbsp;2.2: สรุปห้า workflow pattern
 </figcaption>
 <div aria-describedby="tbl-patterns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -539,7 +552,7 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 <div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-ตารางที่&nbsp;1.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)
+ตารางที่&nbsp;2.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)
 </figcaption>
 <div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -587,11 +600,11 @@ T_\text{sequential} = \sum_{i=1}^{n} t_i, \qquad T_\text{parallel} \approx \max_
 <h2 class="anchored" data-anchor-id="คำถามทบทวน">คำถามทบทวน</h2>
 <ol type="1">
 <li>ทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent</li>
-<li>ใน <a href="#fig-chain" class="quarto-xref">รูปที่&nbsp;<span>1.1</span></a> ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป</li>
-<li>ทำไม classifier ใน <a href="#fig-route" class="quarto-xref">รูปที่&nbsp;<span>1.2</span></a> จึงตอบเป็น <code>enum</code> ด้วย temperature 0</li>
-<li>จาก <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>1.1</span></a> ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร</li>
+<li>ใน <a href="#fig-chain" class="quarto-xref">รูปที่&nbsp;<span>2.1</span></a> ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป</li>
+<li>ทำไม classifier ใน <a href="#fig-route" class="quarto-xref">รูปที่&nbsp;<span>2.2</span></a> จึงตอบเป็น <code>enum</code> ด้วย temperature 0</li>
+<li>จาก <a href="#eq-parallel" class="quarto-xref">สมการ&nbsp;<span>2.1</span></a> ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร</li>
 <li>Orchestrator-workers ต่างจาก sectioning ตรงไหน</li>
-<li>ถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน <a href="#fig-eval" class="quarto-xref">รูปที่&nbsp;<span>1.4</span></a> จะเกิดอะไรขึ้น</li>
+<li>ถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน <a href="#fig-eval" class="quarto-xref">รูปที่&nbsp;<span>2.4</span></a> จะเกิดอะไรขึ้น</li>
 </ol>
 </section>
 <section id="เอกสารอางอง" class="level2">
@@ -1111,8 +1124,8 @@ Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundati
   </script>
 <nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
-      <a href="../../index.html" class="pagination-link" aria-label="หน้าแรก">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">หน้าแรก</span>
+      <a href="../../ch01/ep01-how-llms-work/index.html" class="pagination-link" aria-label="EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

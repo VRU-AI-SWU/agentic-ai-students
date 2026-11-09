@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/19-1-workflow-patterns/index.html" rel="next">
+<link href="../../index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7835d1f0ca29b4e891ee73374c94434a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch01/ep01-how-llms-work/index.html">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</a></li><li class="breadcrumb-item"><a href="../../ch01/ep01-how-llms-work/index.html"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#วตถประสงคการเรยนร" id="toc-วตถประสงคการเรยนร" class="nav-link active" data-scroll-target="#วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</a></li>
+  <li><a href="#สามคำถามทคนสราง-agent-เจอ" id="toc-สามคำถามทคนสราง-agent-เจอ" class="nav-link" data-scroll-target="#สามคำถามทคนสราง-agent-เจอ">สามคำถามที่คนสร้าง agent เจอ</a></li>
+  <li><a href="#llm-สรางคำตอบทละชน" id="toc-llm-สรางคำตอบทละชน" class="nav-link" data-scroll-target="#llm-สรางคำตอบทละชน">LLM สร้างคำตอบทีละชิ้น</a></li>
+  <li><a href="#token-และ-chat-template" id="toc-token-และ-chat-template" class="nav-link" data-scroll-target="#token-และ-chat-template">Token และ chat template</a></li>
+  <li><a href="#ความนาจะเปนและ-greedy" id="toc-ความนาจะเปนและ-greedy" class="nav-link" data-scroll-target="#ความนาจะเปนและ-greedy">ความน่าจะเป็นและ greedy</a></li>
+  <li><a href="#สมแบบมขอบเขต-top-k-top-p-min-p" id="toc-สมแบบมขอบเขต-top-k-top-p-min-p" class="nav-link" data-scroll-target="#สมแบบมขอบเขต-top-k-top-p-min-p">สุ่มแบบมีขอบเขต: top-k, top-p, min-p</a></li>
+  <li><a href="#temperature-ปมความกลา" id="toc-temperature-ปมความกลา" class="nav-link" data-scroll-target="#temperature-ปมความกลา">Temperature: ปุ่มความกล้า</a></li>
+  <li><a href="#context-window-และ-max_tokens" id="toc-context-window-และ-max_tokens" class="nav-link" data-scroll-target="#context-window-และ-max_tokens">Context window และ max_tokens</a></li>
+  <li><a href="#อานชอ-model-ใหเปน" id="toc-อานชอ-model-ใหเปน" class="nav-link" data-scroll-target="#อานชอ-model-ใหเปน">อ่านชื่อ model ให้เป็น</a></li>
+  <li><a href="#quantization-และ-provider" id="toc-quantization-และ-provider" class="nav-link" data-scroll-target="#quantization-และ-provider">Quantization และ provider</a></li>
+  <li><a href="#modality-model-รบอะไรไดบาง" id="toc-modality-model-รบอะไรไดบาง" class="nav-link" data-scroll-target="#modality-model-รบอะไรไดบาง">Modality: model รับอะไรได้บ้าง</a></li>
+  <li><a href="#หนาปดของคนสราง-agent" id="toc-หนาปดของคนสราง-agent" class="nav-link" data-scroll-target="#หนาปดของคนสราง-agent">หน้าปัดของคนสร้าง agent</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch01/ep01-how-llms-work/index.html">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</a></li><li class="breadcrumb-item"><a href="../../ch01/ep01-how-llms-work/index.html"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></h1>
+<p class="subtitle lead">§1.1–1.2, §1.12 (+ §1.8, §1.10, §1.14, §18.2) · token · temperature · ชื่อ model · quantization · modality</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>🎬 วิดีโอและ notebook ประกอบ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>วิดีโอ:</strong> ทฤษฎี (≈14 นาที) → Lab 1–3 (10–13 นาที) → สรุป (≈5 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
+<li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
+<li><strong>Model ใน lab:</strong> Gemma 4 26B (open weights) ผ่าน OpenRouter ไม่ฟรี ต้องเติมเครดิตก่อน แต่รันทั้งสาม lab ใช้เงินไม่ถึงหนึ่งบาท รุ่น <code>:free</code> ใช้กับ EP นี้ไม่ได้ (ดูเหตุผลใน Lab 1) ต้องมี OpenRouter API key</li>
+<li><strong>ตอนเสริม:</strong> EP01–EP02 (module M0) เป็นพื้นฐาน LLM ถ้าเคยเรียก LLM ผ่าน API มาแล้ว ข้ามไป <a href="../../ch19/19-1-workflow-patterns/index.html">EP04</a> ได้</li>
+</ul>
+</div>
+</div>
+<section id="วตถประสงคการเรยนร" class="level2">
+<h2 class="anchored" data-anchor-id="วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</h2>
+<p>เมื่อจบตอนนี้ ผู้เรียนจะสามารถ</p>
+<ol type="1">
+<li>อธิบายว่า LLM สร้างคำตอบทีละ token อย่างไร และ chat template เปลี่ยน messages เป็นสิ่งที่ model อ่านอย่างไร</li>
+<li>นับ token ของข้อความไทยและอังกฤษ และประเมินค่าใช้จ่ายของการเรียก model</li>
+<li>อธิบาย greedy, top-k, top-p, min-p และ temperature และเลือก temperature ให้เหมาะกับงานของ agent</li>
+<li>ใช้ <code>max_tokens</code> และตรวจ <code>finish_reason</code> เพื่อรู้ว่าคำตอบถูกตัดหรือไม่</li>
+<li>อ่านชื่อ model (ขนาด, MoE, instruct) และคำนวณหน่วยความจำที่ quantization แต่ละระดับ</li>
+<li>อธิบายว่าทำไม model ชื่อเดียวกันจาก provider ต่างกันให้ผลไม่เท่ากัน และเช็ก modality ก่อนส่งรูป</li>
+</ol>
+</section>
+<section id="สามคำถามทคนสราง-agent-เจอ" class="level2">
+<h2 class="anchored" data-anchor-id="สามคำถามทคนสราง-agent-เจอ">สามคำถามที่คนสร้าง agent เจอ</h2>
+<p>ทำไมถามคำถามเดียวกันสองครั้งแล้วได้คำตอบไม่เหมือนกัน? ทำไมภาษาไทยเปลืองกว่าภาษาอังกฤษ? และทำไมส่งรูปให้บาง model แล้วพังทันที? คนสร้าง agent ไม่ต้องสร้าง LLM เอง เหมือนคนขับรถไม่ต้องสร้างเครื่องยนต์ แต่ต้อง <strong>อ่านหน้าปัดเป็น</strong> ตอนนี้เปิดดูหน้าปัดทีละตัว และตอบทั้งสามคำถามด้วยตัวเลขที่รันจริงใน lab</p>
+</section>
+<section id="llm-สรางคำตอบทละชน" class="level2">
+<h2 class="anchored" data-anchor-id="llm-สรางคำตอบทละชน">LLM สร้างคำตอบทีละชิ้น</h2>
+<p>ตำราสรุปการทำงานของ LLM เป็นเส้นทางเดียว <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.1</a>)</span>: ข้อความถูกตัดเป็นชิ้นเล็กๆ (token) → model อ่านทุกชิ้นพร้อมกัน → ให้ความน่าจะเป็นกับทุก token ที่อาจมาเป็นตัวถัดไป → เลือกมาหนึ่งตัว แล้วนำไปต่อท้าย input และวนใหม่</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-loop">flowchart LR
+  I["input&lt;br/&gt;เมืองหลวงของไทยคือ"] --&gt; M["🧠 model&lt;br/&gt;ความน่าจะเป็น&lt;br/&gt;ของทุก token"]
+  M --&gt; P["เลือก 1 token&lt;br/&gt;“กรุง”"]
+  P -- "ต่อท้าย input แล้ววนใหม่" --&gt; I
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.1: LLM สร้างคำตอบทีละ token: เลือกได้ “กรุง” ก็ต่อท้าย input แล้ววนใหม่จนได้ “เทพ” และ “มหานคร”
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>เหมือนคีย์บอร์ดมือถือที่แนะนำคำถัดไป แล้วเรากดคำที่แนะนำไปเรื่อยๆ จนจบประโยค ทุกเรื่องในตอนนี้มาจากสองส่วนของเส้นทางนี้: <strong>ชิ้นส่วนที่ถูกตัด</strong> และ <strong>วิธีเลือกชิ้นถัดไป</strong></p>
+</section>
+<section id="token-และ-chat-template" class="level2">
+<h2 class="anchored" data-anchor-id="token-และ-chat-template">Token และ chat template</h2>
+<p><strong>Token</strong> คือชิ้นส่วนข้อความที่ model อ่าน ตัวตัดเรียกว่า <strong>tokenizer</strong> ตำราอธิบายว่าถ้าตัดเป็นตัวอักษร ข้อความจะยาวและคำนวณแพง ถ้าตัดเป็นคำ ก็รับคำใหม่ที่ไม่เคยเห็นไม่ได้ จึงตัดเป็นชิ้นกลางๆ <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.2</a>)</span> เหมือนตัวต่อ Lego: คำที่พบบ่อยอย่าง “the” เป็นชิ้นเดียว ส่วนคำที่หายากประกอบจากชิ้นเล็ก เช่น “unhappiness” อาจเป็น “un” + “happiness”</p>
+<p>ตำราแนะนำให้วัด <strong>fertility</strong> คือจำนวน token ต่อหนึ่งคำ ถ้าสูงแปลว่า tokenizer รองรับภาษานั้นไม่ดี และเพราะราคาคิดเป็น token ภาษาไทยจึงเปลืองกว่า model แต่ละตัวมี tokenizer ของตัวเอง ข้อความเดียวกันจึงนับได้ไม่เท่ากัน</p>
+<div id="tbl-tokens" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.1: จำนวน token ที่วัดจริงใน Lab 1
+</figcaption>
+<div aria-describedby="tbl-tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ประโยค (ความหมายเดียวกัน)</th>
+<th>Gemma 4</th>
+<th>tiktoken <code>o200k_base</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Agents use tools to finish tasks.”</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>“เอเจนต์ใช้เครื่องมือเพื่อทำงานให้เสร็จ”</td>
+<td>11</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>เวลาเรียก model ผ่าน API เราส่ง list ของ <strong>messages</strong> แต่ละอันมี <strong>role</strong> บอกว่าใครพูด (<code>system</code> = คำสั่งตั้งต้น, <code>user</code> = ผู้ใช้, <code>assistant</code> = model) แต่ model อ่านได้แค่ token เส้นเดียว <strong>chat template</strong> จึงเรียง messages เป็นสตริงเดียวและคั่นแต่ละบทด้วย <strong>special token</strong> เหมือนบทละครที่มีชื่อผู้พูดกำกับไว้ ตำราชี้ว่า token เฉพาะสำหรับเรียก tool น่าเชื่อถือกว่าการให้ model พิมพ์ว่า “now I will call a tool”</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> ส่งตัวอักษร <code>a</code> ตัวเดียว แต่ <code>usage</code> นับ token เข้ามากกว่าหนึ่ง ส่วนที่เกินคือ token ที่ chat template เติมให้ — <strong>13 token ทุกครั้งที่เรียก</strong> และเราจ่ายเงินส่วนนี้ด้วย</p>
+</blockquote>
+</section>
+<section id="ความนาจะเปนและ-greedy" class="level2">
+<h2 class="anchored" data-anchor-id="ความนาจะเปนและ-greedy">ความน่าจะเป็นและ greedy</h2>
+<p>ทุกครั้งที่จะสร้าง token ใหม่ model ไม่ได้มีคำตอบเดียวในหัว มันให้ความน่าจะเป็นกับทุก token ที่รู้จักรวมกันได้หนึ่ง ตำรายกตัวอย่าง “The capital of France is” ที่ token “Paris” ได้ 0.92 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.12</a>)</span> วิธีเลือกที่ง่ายที่สุดคือ <strong>greedy</strong>: เลือกตัวที่สูงสุดเสมอ เหมือนสั่งเมนูขายดีที่สุดทุกครั้ง ไม่พลาดแต่ไม่เคยได้ลองอะไรใหม่ ตำราเตือนว่ามักได้ข้อความซ้ำและจืด</p>
+<p>API ไม่ได้คืนความน่าจะเป็นตรงๆ แต่คืน <strong>logprob</strong> (log ของความน่าจะเป็น) ซึ่งแปลงกลับได้ด้วย <span class="math inline">\(p = e^{\text{logprob}}\)</span> เช่น logprob <span class="math inline">\(-0.28\)</span> คือ <span class="math inline">\(e^{-0.28} \approx 0.756\)</span></p>
+</section>
+<section id="สมแบบมขอบเขต-top-k-top-p-min-p" class="level2">
+<h2 class="anchored" data-anchor-id="สมแบบมขอบเขต-top-k-top-p-min-p">สุ่มแบบมีขอบเขต: top-k, top-p, min-p</h2>
+<p>ถ้าอยากได้ความหลากหลายต้อง <strong>สุ่ม</strong> ตามความน่าจะเป็น แต่ถ้าสุ่มจากทุก token อาจได้คำแปลกๆ หลุดมา จึงต้องตัดหางทิ้งก่อน ตำราเล่าไว้สามวิธี นึกถึงการคัดผู้เข้ารอบประกวดร้องเพลง</p>
+<div id="tbl-sampling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sampling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.2: สามวิธีตัดหางก่อนสุ่ม
+</figcaption>
+<div aria-describedby="tbl-sampling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>วิธี</th>
+<th>เก็บไว้</th>
+<th>เปรียบกับการคัดผู้เข้ารอบ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>top-k</td>
+<td><span class="math inline">\(k\)</span> ตัวแรกเสมอ</td>
+<td>เอาคนคะแนนสูงสุด <span class="math inline">\(k\)</span> คนเสมอ</td>
+</tr>
+<tr class="even">
+<td>top-p</td>
+<td>เรียงจากมากไปน้อย เก็บจนผลรวมถึง <span class="math inline">\(p\)</span></td>
+<td>เอาเข้ามาจนคะแนนรวมถึง เช่น 90%</td>
+</tr>
+<tr class="odd">
+<td>min-p</td>
+<td>ทุกตัวที่ได้อย่างน้อย <span class="math inline">\(m \times\)</span> ของตัวที่หนึ่ง</td>
+<td>ทุกคนที่ได้อย่างน้อย 10% ของที่หนึ่ง</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>ตัวอย่างในตำรา: หลัง “2 + 2 =” token “4” ได้เกือบทั้งหมด top-k ห้าสิบจะเก็บคำตอบผิดไว้อีก 49 ตัว แต่ top-p เหลือแค่ “4” ส่วนหลัง “I enjoy eating” อาหารที่เป็นไปได้มีเยอะ top-k ห้าแคบเกินไป แต่ top-p ขยายกลุ่มให้เอง <strong>top-p และ min-p จึงปรับตามความมั่นใจของ model ส่วน top-k ไม่ปรับ</strong></p>
+</section>
+<section id="temperature-ปมความกลา" class="level2">
+<h2 class="anchored" data-anchor-id="temperature-ปมความกลา">Temperature: ปุ่มความกล้า</h2>
+<p>ก่อนสุ่มยังปรับรูปร่างของความน่าจะเป็นได้ด้วย <strong>temperature</strong> (<span class="math inline">\(T\)</span>) ใน Lab 2 เราเขียนเองจากความน่าจะเป็น <span class="math inline">\(p_i\)</span>:</p>
+<p><span id="eq-temperature"><span class="math display">\[
+p_i^{(T)} = \frac{p_i^{1/T}}{\sum_j p_j^{1/T}}
+\tag{1.1}\]</span></span></p>
+<p><span class="math inline">\(T &lt; 1\)</span> ทำให้ตัวที่สูงยิ่งสูง (มั่นใจ) <span class="math inline">\(T &gt; 1\)</span> ทำให้ทุกตัวเข้าใกล้กัน (กล้าเสี่ยง) และ <span class="math inline">\(T \to 0\)</span> คือ greedy ตำรายกตัวอย่าง “Once upon a time” ที่ <span class="math inline">\(T = 0.3\)</span> model เล่าเรื่องพระราชาผู้ทรงธรรมแบบนิทานทั่วไป แต่ที่ <span class="math inline">\(T = 1\)</span> กลายเป็นแม่น้ำไหลย้อนกลับและปลาหัดบิน และแนะนำ <span class="math inline">\(T = 0\)</span> สำหรับโค้ดและคณิตศาสตร์, 0.7 สำหรับงานข้อเท็จจริง, 1–1.2 สำหรับงานสร้างสรรค์</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">สำคัญ</span>สำหรับ agent
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ตอนที่ model ต้องเขียนชื่อ tool และ argument ให้ถูก ให้ใช้ temperature ต่ำ นี่คือคำตอบของคำถามแรก: ถามซ้ำได้คำตอบไม่เหมือนเดิม เพราะ model <strong>สุ่ม</strong> เลือก token</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 2</strong> (ความน่าจะเป็นจริงของ Gemma ผ่าน provider ที่ล็อกไว้): “The capital of France is” → Paris เกือบ 1.00 · “I enjoy eating” → pizza 0.756, food 0.115, everything 0.105 · ที่ <span class="math inline">\(T = 2\)</span> pizza เหลือ 0.485 · top-k 5 เก็บแม้แต่ “Paris” ภาษาจีนและญี่ปุ่น แต่ top-p 0.95 เหลือ Paris ตัวเดียว · การตั้ง <code>temperature=0</code> บน API ได้ pizza ครบ 10 ครั้งจาก 10</p>
+</blockquote>
+</section>
+<section id="context-window-และ-max_tokens" class="level2">
+<h2 class="anchored" data-anchor-id="context-window-และ-max_tokens">Context window และ max_tokens</h2>
+<p><strong>Context window</strong> คือจำนวน token สูงสุดที่ model อ่านและเขียนได้ในครั้งเดียว Gemma 4 26B ที่ใช้ใน lab ได้ 262,144 token ตำราเรียกมันว่าความจำใช้งานของ agent <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 18.2</a>)</span>: ทุก token ในนั้นมีค่าเงินและเวลา และ token ที่อยู่นอกนั้น model มองไม่เห็นเลย เหมือนโต๊ะทำงานที่เราอ่านได้เฉพาะกระดาษบนโต๊ะ หนังสือในห้องสมุดดีแค่ไหนก็ไม่ช่วยถ้าไม่ได้หยิบมาวาง บนโต๊ะมีทั้งคำสั่งตั้งต้น ประวัติการคุยที่ยาวขึ้นเรื่อยๆ และพื้นที่เผื่อไว้ให้คำตอบ จึงควร <strong>นับ token ก่อนส่งทุกครั้ง</strong></p>
+<p>ฝั่งคำตอบมีเพดานชื่อ <code>max_tokens</code> ถ้าถึงก่อนพูดจบ คำตอบจะถูกตัดกลางประโยค และ <code>finish_reason</code> จะเป็น <code>"length"</code> แทน <code>"stop"</code></p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> ถามหนึ่งพันครั้งยังแค่ราวหนึ่งเซนต์ แต่ agent เรียกหลายรอบและส่งประวัติซ้ำ ตัวเลขจึงโตเร็ว และเมื่อตั้ง <code>max_tokens</code> ต่ำ คำตอบถูกตัดจริงพร้อม <code>finish_reason = "length"</code> — agent ต้องเช็กทุกครั้ง</p>
+</blockquote>
+</section>
+<section id="อานชอ-model-ใหเปน" class="level2">
+<h2 class="anchored" data-anchor-id="อานชอ-model-ใหเปน">อ่านชื่อ model ให้เป็น</h2>
+<p>ชื่อบน OpenRouter อย่าง <code>google/gemma-4-26b-a4b-it</code> อ่านได้ทีละส่วน</p>
+<div id="tbl-name" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-name-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.3: อ่านชื่อ <code>google/gemma-4-26b-a4b-it</code>
+</figcaption>
+<div aria-describedby="tbl-name-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ส่วน</th>
+<th>ความหมาย</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>google/</code></td>
+<td>ผู้สร้าง</td>
+</tr>
+<tr class="even">
+<td><code>gemma-4</code></td>
+<td>ตระกูลและรุ่น</td>
+</tr>
+<tr class="odd">
+<td><code>26b</code></td>
+<td>26 พันล้าน <strong>parameter</strong> (ตัวเลขที่ model เรียนรู้ระหว่างฝึก ยิ่งมากยิ่งใช้หน่วยความจำมาก)</td>
+</tr>
+<tr class="even">
+<td><code>a4b</code></td>
+<td><strong>mixture of experts (MoE)</strong>: ข้างในมีผู้เชี่ยวชาญหลายตัว แต่ใช้แค่บางตัวต่อ token ทำงานจริงราว 4 พันล้าน parameter ต่อ token <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.10</a>)</span></td>
+</tr>
+<tr class="odd">
+<td><code>it</code></td>
+<td><strong>instruction-tuned</strong>: ฝึกต่อจนทำตามคำสั่งได้ (บางชื่อเขียน <code>instruct</code>) รุ่นที่ไม่ได้ฝึกเรียกว่า base <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.8</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>MoE เหมือนโรงพยาบาลที่มีหมอเฉพาะทางเยอะ แต่คนไข้แต่ละคนพบหมอแค่สองคน ส่วน instruct เหมือนคนที่อ่านหนังสือมามาก แล้วฝึกงานเป็นเจ้าหน้าที่ตอบคำถาม งานของ agent จึงควรใช้รุ่น instruct</p>
+</section>
+<section id="quantization-และ-provider" class="level2">
+<h2 class="anchored" data-anchor-id="quantization-และ-provider">Quantization และ provider</h2>
+<p>model 26 พันล้าน parameter ถ้าเก็บแต่ละตัวเลขด้วย 16 บิต (2 ไบต์) ต้องใช้หน่วยความจำราว 52 GB วิธีที่ตำราบอกว่าใช้เสมอตอนให้บริการ model คือ <strong>quantization</strong>: ลดจำนวนบิตต่อตัวเลข <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 1.14</a>)</span> เหมือนปัด 3.14159 เหลือ 3.14 หรือย่อรูป RAW เป็น JPEG ไฟล์เล็กลงมากแต่ตาแทบมองไม่ต่าง</p>
+<p><span id="eq-memory"><span class="math display">\[
+\text{หน่วยความจำ (GB)} \approx \text{parameter (พันล้าน)} \times \frac{\text{บิต}}{8}
+\tag{1.2}\]</span></span></p>
+<div id="tbl-quant" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-quant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.4: หน่วยความจำของ Gemma 4 26B ที่ quantization แต่ละระดับ
+</figcaption>
+<div aria-describedby="tbl-quant-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ความละเอียด</th>
+<th>บิต</th>
+<th>Gemma 4 26B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bf16</td>
+<td>16</td>
+<td>52 GB</td>
+</tr>
+<tr class="even">
+<td>fp8</td>
+<td>8</td>
+<td>26 GB</td>
+</tr>
+<tr class="odd">
+<td>fp4</td>
+<td>4</td>
+<td>13 GB</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>บริษัทที่รัน model ให้เราเรียกผ่าน API เรียกว่า <strong>provider</strong> Gemma ชื่อเดียวกันบน OpenRouter มีถึง 15 เจ้า บางเจ้ารันที่ bf16 บางเจ้า fp8 หรือ fp4 และบางเจ้าไม่บอก ราคาและ context window ก็ต่างกัน</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 3</strong> (2026-11-09): ราคา token เข้าต่างกันเกือบ 4 เท่า บางเจ้าให้ context แค่ 131,072 token ครึ่งเดียวของเจ้าอื่น และถาม “I enjoy eating” กับ 4 เจ้า ได้ผลไม่เท่ากัน — Google ให้ pizza 0.76 แต่ Darkbloom ให้ food 0.77 <strong>จึงควรล็อก provider ไว้ตอนทดสอบ agent</strong> ไม่อย่างนั้นผลวันนี้กับพรุ่งนี้อาจมาจากคนละเจ้า</p>
+</blockquote>
+</section>
+<section id="modality-model-รบอะไรไดบาง" class="level2">
+<h2 class="anchored" data-anchor-id="modality-model-รบอะไรไดบาง">Modality: model รับอะไรได้บ้าง</h2>
+<p>ชนิดของข้อมูลเรียกว่า <strong>modality</strong> เช่น ข้อความ รูปภาพ เสียง วิดีโอ หรือไฟล์ model แต่ละตัวรับได้ไม่เหมือนกัน และ <strong>input กับ output แยกกัน</strong>: Gemma 4 ดูรูปได้แต่วาดรูปไม่ได้ เพราะเกือบทุก model ตอบเป็นข้อความ ตำราเล่มนี้ตั้งใจเน้น model ที่รับและตอบเป็นข้อความ ตัวเลขด้านล่างจึงมาจากรายชื่อบน OpenRouter</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-modality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-modality">flowchart LR
+  IMG["🖼️ กราฟ + คำถาม&lt;br/&gt;ปีไหนมี paper มากที่สุด"] --&gt; G["gemma-4-26b-a4b-it&lt;br/&gt;รับ: text · image · video"]
+  IMG --&gt; L["llama-3.1-8b-instruct&lt;br/&gt;รับ: text"]
+  G --&gt; GA["✅ 2024&lt;br/&gt;278 token เข้า"]
+  L --&gt; LA["❌ 404&lt;br/&gt;No endpoints found&lt;br/&gt;that support image input"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;1.2: ส่งรูปกราฟเดียวกันให้สอง model: Gemma 4 รับรูปได้ ส่วน Llama 3.1 8B รับได้แค่ข้อความ
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>รูปก็ถูกแปลงเป็น token จึงกิน context และคิดเงินด้วย และชื่อ model ไม่ได้บอก modality เสมอไป ถ้า tool ของ agent ดึงรูปมาส่งให้ model ต้องเช็ก modality ก่อน ไม่อย่างนั้น agent จะพังกลางทาง</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 3:</strong> จาก 461 model บน OpenRouter มี 137 ตัวที่รับได้แค่ข้อความ คำถามประโยคเดียวพร้อมรูปกราฟใช้ token เข้า 278 token เพราะรูปถูกแปลงเป็น token (ตัวเลขในกราฟเป็นข้อมูลสมมติเพื่อการสอน)</p>
+</blockquote>
+</section>
+<section id="หนาปดของคนสราง-agent" class="level2">
+<h2 class="anchored" data-anchor-id="หนาปดของคนสราง-agent">หน้าปัดของคนสร้าง agent</h2>
+<div id="tbl-dashboard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dashboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.5: สี่ข้อที่คนสร้าง agent ต้องจำ
+</figcaption>
+<div aria-describedby="tbl-dashboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>หน้าปัด</th>
+<th>สิ่งที่ต้องทำ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>token &amp; <code>finish_reason</code></td>
+<td>นับ token ก่อนส่ง และเช็ก <code>finish_reason</code> หลังได้คำตอบ</td>
+</tr>
+<tr class="even">
+<td>temperature</td>
+<td>ใช้ temperature ต่ำเมื่อ model ต้องเขียนชื่อ tool และ argument ให้ถูก</td>
+</tr>
+<tr class="odd">
+<td>provider</td>
+<td>ล็อก provider ไว้ตอนทดสอบ</td>
+</tr>
+<tr class="even">
+<td>modality</td>
+<td>เช็ก modality ก่อนส่งรูป ถ้าไม่รู้ว่า model รับอะไรได้บ้าง</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;1.6: Notebook ของ EP01 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก model อธิบายใน Lab 1)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ เฉลย</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — Tokens</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab1-tokens.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — Decoding</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 3 — ชื่อ model, provider, quantization, modality</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>output ของ model ในวิดีโอมาจากการรันจริง ความน่าจะเป็น ราคา และรายชื่อ provider เปลี่ยนได้ตามวันและเจ้าที่ให้บริการ ตัวเลขที่คุณรันเองจึงอาจต่างไปเล็กน้อย</p>
+</section>
+<section id="คำถามทบทวน" class="level2">
+<h2 class="anchored" data-anchor-id="คำถามทบทวน">คำถามทบทวน</h2>
+<ol type="1">
+<li>ทำไมประโยคไทยกับอังกฤษที่ความหมายเดียวกันจึงใช้ token ไม่เท่ากัน และ model ต่างตัวนับเท่ากันไหม</li>
+<li>ส่งข้อความสั้นมากแต่ <code>usage</code> นับ token เข้ามากกว่าที่คิด ส่วนที่เกินมาจากไหน</li>
+<li>หลัง “2 + 2 =” ทำไม top-p จึงเหมาะกว่า top-k 50</li>
+<li>ถ้า agent ต้องเรียก tool ให้ถูกทุกครั้ง ควรตั้ง temperature อย่างไร เพราะอะไร</li>
+<li><code>finish_reason = "length"</code> บอกอะไร และ agent ควรทำอย่างไร</li>
+<li>Gemma 4 26B ที่ fp8 ใช้หน่วยความจำราวเท่าไร คำนวณอย่างไร</li>
+<li>ทำไมควรล็อก provider ไว้ตอนทดสอบ agent</li>
+<li>ถ้า tool ของ agent ดึงรูปมาส่งให้ model ต้องเช็กอะไรก่อน</li>
+</ol>
+</section>
+<section id="เอกสารอางอง" class="level2">
+<h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../index.html" class="pagination-link" aria-label="หน้าแรก">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">หน้าแรก</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch19/19-1-workflow-patterns/index.html" class="pagination-link" aria-label="EP04 Workflow Patterns">
+        <span class="nav-page-text"><span class="chapter-title">EP04 Workflow Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

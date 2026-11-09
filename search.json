@@ -34,7 +34,7 @@
     "href": "index.html#เสนทางการเรยน",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "เส้นทางการเรียน",
-    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) เร็วๆ นี้ token, context window, temperature กระทบ agent อย่างไร · ch1 · ≈30 นาที\n\n\nEP02\nPrompt, structured output และ hallucination เร็วๆ นี้ ทำไม agent ต้องการ JSON schema · ch1, §19.3 · ≈30 นาที\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent เร็วๆ นี้ 5 ความท้าทายของ agent และแผนที่ทั้งซีรีส์ · ch15 · ≈12 นาที\n\n\nEP04\nWorkflow Patterns พร้อมเรียน chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 lab\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nหลักออกแบบ + เลือก pattern เร็วๆ นี้ ต้นทุนเทียบคุณภาพ และ decision matrix · §19.3–19.4 · ≈20 นาที\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext window management เร็วๆ นี้ sliding window, summarization เมื่อบทสนทนายาวเกิน context · §18.1–18.3\n\n\nEP08\nTools, state และ error handling เร็วๆ นี้ retry, guardrail, checkpoint · §18.4, 18.6–18.8\n\n\nEP09\nสร้าง production harness เร็วๆ นี้ รวมทุกอย่างเป็น harness ของ research agent · §18.10\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG พื้นฐาน เร็วๆ นี้ chunking และ retrieval บน paper · §16.1–16.4\n\n\nEP11\nAdvanced & Agentic RAG เร็วๆ นี้ agent ตัดสินใจเองว่าจะค้นอะไร เมื่อไร และวัดผล RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
+    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) พร้อมเรียน token · temperature · ชื่อ model · quantization · modality · §1.1–1.2, §1.12 · 3 lab\n\n\nEP02\nPrompt, structured output และ hallucination เร็วๆ นี้ ทำไม agent ต้องการ JSON schema · ch1, §19.3 · ≈30 นาที\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent เร็วๆ นี้ 5 ความท้าทายของ agent และแผนที่ทั้งซีรีส์ · ch15 · ≈12 นาที\n\n\nEP04\nWorkflow Patterns พร้อมเรียน chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 lab\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nหลักออกแบบ + เลือก pattern เร็วๆ นี้ ต้นทุนเทียบคุณภาพ และ decision matrix · §19.3–19.4 · ≈20 นาที\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext window management เร็วๆ นี้ sliding window, summarization เมื่อบทสนทนายาวเกิน context · §18.1–18.3\n\n\nEP08\nTools, state และ error handling เร็วๆ นี้ retry, guardrail, checkpoint · §18.4, 18.6–18.8\n\n\nEP09\nสร้าง production harness เร็วๆ นี้ รวมทุกอย่างเป็น harness ของ research agent · §18.10\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG พื้นฐาน เร็วๆ นี้ chunking และ retrieval บน paper · §16.1–16.4\n\n\nEP11\nAdvanced & Agentic RAG เร็วๆ นี้ agent ตัดสินใจเองว่าจะค้นอะไร เมื่อไร และวัดผล RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -70,6 +70,182 @@
     ]
   },
   {
+    "objectID": "ch01/ep01-how-llms-work/index.html",
+    "href": "ch01/ep01-how-llms-work/index.html",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#วตถประสงคการเรยนร",
+    "href": "ch01/ep01-how-llms-work/index.html#วตถประสงคการเรยนร",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "",
+    "text": "อธิบายว่า LLM สร้างคำตอบทีละ token อย่างไร และ chat template เปลี่ยน messages เป็นสิ่งที่ model อ่านอย่างไร\nนับ token ของข้อความไทยและอังกฤษ และประเมินค่าใช้จ่ายของการเรียก model\nอธิบาย greedy, top-k, top-p, min-p และ temperature และเลือก temperature ให้เหมาะกับงานของ agent\nใช้ max_tokens และตรวจ finish_reason เพื่อรู้ว่าคำตอบถูกตัดหรือไม่\nอ่านชื่อ model (ขนาด, MoE, instruct) และคำนวณหน่วยความจำที่ quantization แต่ละระดับ\nอธิบายว่าทำไม model ชื่อเดียวกันจาก provider ต่างกันให้ผลไม่เท่ากัน และเช็ก modality ก่อนส่งรูป",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#สามคำถามทคนสราง-agent-เจอ",
+    "href": "ch01/ep01-how-llms-work/index.html#สามคำถามทคนสราง-agent-เจอ",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "สามคำถามที่คนสร้าง agent เจอ",
+    "text": "สามคำถามที่คนสร้าง agent เจอ\nทำไมถามคำถามเดียวกันสองครั้งแล้วได้คำตอบไม่เหมือนกัน? ทำไมภาษาไทยเปลืองกว่าภาษาอังกฤษ? และทำไมส่งรูปให้บาง model แล้วพังทันที? คนสร้าง agent ไม่ต้องสร้าง LLM เอง เหมือนคนขับรถไม่ต้องสร้างเครื่องยนต์ แต่ต้อง อ่านหน้าปัดเป็น ตอนนี้เปิดดูหน้าปัดทีละตัว และตอบทั้งสามคำถามด้วยตัวเลขที่รันจริงใน lab",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#llm-สรางคำตอบทละชน",
+    "href": "ch01/ep01-how-llms-work/index.html#llm-สรางคำตอบทละชน",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "LLM สร้างคำตอบทีละชิ้น",
+    "text": "LLM สร้างคำตอบทีละชิ้น\nตำราสรุปการทำงานของ LLM เป็นเส้นทางเดียว (Roitman 2026, หมวด 1.1): ข้อความถูกตัดเป็นชิ้นเล็กๆ (token) → model อ่านทุกชิ้นพร้อมกัน → ให้ความน่าจะเป็นกับทุก token ที่อาจมาเป็นตัวถัดไป → เลือกมาหนึ่งตัว แล้วนำไปต่อท้าย input และวนใหม่\n\n\n\n\n\n\n\nflowchart LR\n  I[\"input&lt;br/&gt;เมืองหลวงของไทยคือ\"] --&gt; M[\"🧠 model&lt;br/&gt;ความน่าจะเป็น&lt;br/&gt;ของทุก token\"]\n  M --&gt; P[\"เลือก 1 token&lt;br/&gt;“กรุง”\"]\n  P -- \"ต่อท้าย input แล้ววนใหม่\" --&gt; I\n\n\n\n\nรูปที่ 1.1: LLM สร้างคำตอบทีละ token: เลือกได้ “กรุง” ก็ต่อท้าย input แล้ววนใหม่จนได้ “เทพ” และ “มหานคร”\n\n\n\n\n\nเหมือนคีย์บอร์ดมือถือที่แนะนำคำถัดไป แล้วเรากดคำที่แนะนำไปเรื่อยๆ จนจบประโยค ทุกเรื่องในตอนนี้มาจากสองส่วนของเส้นทางนี้: ชิ้นส่วนที่ถูกตัด และ วิธีเลือกชิ้นถัดไป",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#token-และ-chat-template",
+    "href": "ch01/ep01-how-llms-work/index.html#token-และ-chat-template",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Token และ chat template",
+    "text": "Token และ chat template\nToken คือชิ้นส่วนข้อความที่ model อ่าน ตัวตัดเรียกว่า tokenizer ตำราอธิบายว่าถ้าตัดเป็นตัวอักษร ข้อความจะยาวและคำนวณแพง ถ้าตัดเป็นคำ ก็รับคำใหม่ที่ไม่เคยเห็นไม่ได้ จึงตัดเป็นชิ้นกลางๆ (Roitman 2026, หมวด 1.2) เหมือนตัวต่อ Lego: คำที่พบบ่อยอย่าง “the” เป็นชิ้นเดียว ส่วนคำที่หายากประกอบจากชิ้นเล็ก เช่น “unhappiness” อาจเป็น “un” + “happiness”\nตำราแนะนำให้วัด fertility คือจำนวน token ต่อหนึ่งคำ ถ้าสูงแปลว่า tokenizer รองรับภาษานั้นไม่ดี และเพราะราคาคิดเป็น token ภาษาไทยจึงเปลืองกว่า model แต่ละตัวมี tokenizer ของตัวเอง ข้อความเดียวกันจึงนับได้ไม่เท่ากัน\n\n\n\nตารางที่ 1.1: จำนวน token ที่วัดจริงใน Lab 1\n\n\n\n\n\nประโยค (ความหมายเดียวกัน)\nGemma 4\ntiktoken o200k_base\n\n\n\n\n“Agents use tools to finish tasks.”\n7\n7\n\n\n“เอเจนต์ใช้เครื่องมือเพื่อทำงานให้เสร็จ”\n11\n15\n\n\n\n\n\n\nเวลาเรียก model ผ่าน API เราส่ง list ของ messages แต่ละอันมี role บอกว่าใครพูด (system = คำสั่งตั้งต้น, user = ผู้ใช้, assistant = model) แต่ model อ่านได้แค่ token เส้นเดียว chat template จึงเรียง messages เป็นสตริงเดียวและคั่นแต่ละบทด้วย special token เหมือนบทละครที่มีชื่อผู้พูดกำกับไว้ ตำราชี้ว่า token เฉพาะสำหรับเรียก tool น่าเชื่อถือกว่าการให้ model พิมพ์ว่า “now I will call a tool”\n\nใน Lab 1: ส่งตัวอักษร a ตัวเดียว แต่ usage นับ token เข้ามากกว่าหนึ่ง ส่วนที่เกินคือ token ที่ chat template เติมให้ — 13 token ทุกครั้งที่เรียก และเราจ่ายเงินส่วนนี้ด้วย",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#ความนาจะเปนและ-greedy",
+    "href": "ch01/ep01-how-llms-work/index.html#ความนาจะเปนและ-greedy",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "ความน่าจะเป็นและ greedy",
+    "text": "ความน่าจะเป็นและ greedy\nทุกครั้งที่จะสร้าง token ใหม่ model ไม่ได้มีคำตอบเดียวในหัว มันให้ความน่าจะเป็นกับทุก token ที่รู้จักรวมกันได้หนึ่ง ตำรายกตัวอย่าง “The capital of France is” ที่ token “Paris” ได้ 0.92 (Roitman 2026, หมวด 1.12) วิธีเลือกที่ง่ายที่สุดคือ greedy: เลือกตัวที่สูงสุดเสมอ เหมือนสั่งเมนูขายดีที่สุดทุกครั้ง ไม่พลาดแต่ไม่เคยได้ลองอะไรใหม่ ตำราเตือนว่ามักได้ข้อความซ้ำและจืด\nAPI ไม่ได้คืนความน่าจะเป็นตรงๆ แต่คืน logprob (log ของความน่าจะเป็น) ซึ่งแปลงกลับได้ด้วย \\(p = e^{\\text{logprob}}\\) เช่น logprob \\(-0.28\\) คือ \\(e^{-0.28} \\approx 0.756\\)",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#สมแบบมขอบเขต-top-k-top-p-min-p",
+    "href": "ch01/ep01-how-llms-work/index.html#สมแบบมขอบเขต-top-k-top-p-min-p",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "สุ่มแบบมีขอบเขต: top-k, top-p, min-p",
+    "text": "สุ่มแบบมีขอบเขต: top-k, top-p, min-p\nถ้าอยากได้ความหลากหลายต้อง สุ่ม ตามความน่าจะเป็น แต่ถ้าสุ่มจากทุก token อาจได้คำแปลกๆ หลุดมา จึงต้องตัดหางทิ้งก่อน ตำราเล่าไว้สามวิธี นึกถึงการคัดผู้เข้ารอบประกวดร้องเพลง\n\n\n\nตารางที่ 1.2: สามวิธีตัดหางก่อนสุ่ม\n\n\n\n\n\n\n\n\n\n\nวิธี\nเก็บไว้\nเปรียบกับการคัดผู้เข้ารอบ\n\n\n\n\ntop-k\n\\(k\\) ตัวแรกเสมอ\nเอาคนคะแนนสูงสุด \\(k\\) คนเสมอ\n\n\ntop-p\nเรียงจากมากไปน้อย เก็บจนผลรวมถึง \\(p\\)\nเอาเข้ามาจนคะแนนรวมถึง เช่น 90%\n\n\nmin-p\nทุกตัวที่ได้อย่างน้อย \\(m \\times\\) ของตัวที่หนึ่ง\nทุกคนที่ได้อย่างน้อย 10% ของที่หนึ่ง\n\n\n\n\n\n\nตัวอย่างในตำรา: หลัง “2 + 2 =” token “4” ได้เกือบทั้งหมด top-k ห้าสิบจะเก็บคำตอบผิดไว้อีก 49 ตัว แต่ top-p เหลือแค่ “4” ส่วนหลัง “I enjoy eating” อาหารที่เป็นไปได้มีเยอะ top-k ห้าแคบเกินไป แต่ top-p ขยายกลุ่มให้เอง top-p และ min-p จึงปรับตามความมั่นใจของ model ส่วน top-k ไม่ปรับ",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#temperature-ปมความกลา",
+    "href": "ch01/ep01-how-llms-work/index.html#temperature-ปมความกลา",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Temperature: ปุ่มความกล้า",
+    "text": "Temperature: ปุ่มความกล้า\nก่อนสุ่มยังปรับรูปร่างของความน่าจะเป็นได้ด้วย temperature (\\(T\\)) ใน Lab 2 เราเขียนเองจากความน่าจะเป็น \\(p_i\\):\n\\[\np_i^{(T)} = \\frac{p_i^{1/T}}{\\sum_j p_j^{1/T}}\n\\tag{1.1}\\]\n\\(T &lt; 1\\) ทำให้ตัวที่สูงยิ่งสูง (มั่นใจ) \\(T &gt; 1\\) ทำให้ทุกตัวเข้าใกล้กัน (กล้าเสี่ยง) และ \\(T \\to 0\\) คือ greedy ตำรายกตัวอย่าง “Once upon a time” ที่ \\(T = 0.3\\) model เล่าเรื่องพระราชาผู้ทรงธรรมแบบนิทานทั่วไป แต่ที่ \\(T = 1\\) กลายเป็นแม่น้ำไหลย้อนกลับและปลาหัดบิน และแนะนำ \\(T = 0\\) สำหรับโค้ดและคณิตศาสตร์, 0.7 สำหรับงานข้อเท็จจริง, 1–1.2 สำหรับงานสร้างสรรค์\n\n\n\n\n\n\nสำคัญสำหรับ agent\n\n\n\nตอนที่ model ต้องเขียนชื่อ tool และ argument ให้ถูก ให้ใช้ temperature ต่ำ นี่คือคำตอบของคำถามแรก: ถามซ้ำได้คำตอบไม่เหมือนเดิม เพราะ model สุ่ม เลือก token\n\n\n\nใน Lab 2 (ความน่าจะเป็นจริงของ Gemma ผ่าน provider ที่ล็อกไว้): “The capital of France is” → Paris เกือบ 1.00 · “I enjoy eating” → pizza 0.756, food 0.115, everything 0.105 · ที่ \\(T = 2\\) pizza เหลือ 0.485 · top-k 5 เก็บแม้แต่ “Paris” ภาษาจีนและญี่ปุ่น แต่ top-p 0.95 เหลือ Paris ตัวเดียว · การตั้ง temperature=0 บน API ได้ pizza ครบ 10 ครั้งจาก 10",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#context-window-และ-max_tokens",
+    "href": "ch01/ep01-how-llms-work/index.html#context-window-และ-max_tokens",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Context window และ max_tokens",
+    "text": "Context window และ max_tokens\nContext window คือจำนวน token สูงสุดที่ model อ่านและเขียนได้ในครั้งเดียว Gemma 4 26B ที่ใช้ใน lab ได้ 262,144 token ตำราเรียกมันว่าความจำใช้งานของ agent (Roitman 2026, หมวด 18.2): ทุก token ในนั้นมีค่าเงินและเวลา และ token ที่อยู่นอกนั้น model มองไม่เห็นเลย เหมือนโต๊ะทำงานที่เราอ่านได้เฉพาะกระดาษบนโต๊ะ หนังสือในห้องสมุดดีแค่ไหนก็ไม่ช่วยถ้าไม่ได้หยิบมาวาง บนโต๊ะมีทั้งคำสั่งตั้งต้น ประวัติการคุยที่ยาวขึ้นเรื่อยๆ และพื้นที่เผื่อไว้ให้คำตอบ จึงควร นับ token ก่อนส่งทุกครั้ง\nฝั่งคำตอบมีเพดานชื่อ max_tokens ถ้าถึงก่อนพูดจบ คำตอบจะถูกตัดกลางประโยค และ finish_reason จะเป็น \"length\" แทน \"stop\"\n\nใน Lab 1: ถามหนึ่งพันครั้งยังแค่ราวหนึ่งเซนต์ แต่ agent เรียกหลายรอบและส่งประวัติซ้ำ ตัวเลขจึงโตเร็ว และเมื่อตั้ง max_tokens ต่ำ คำตอบถูกตัดจริงพร้อม finish_reason = \"length\" — agent ต้องเช็กทุกครั้ง",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#อานชอ-model-ใหเปน",
+    "href": "ch01/ep01-how-llms-work/index.html#อานชอ-model-ใหเปน",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "อ่านชื่อ model ให้เป็น",
+    "text": "อ่านชื่อ model ให้เป็น\nชื่อบน OpenRouter อย่าง google/gemma-4-26b-a4b-it อ่านได้ทีละส่วน\n\n\n\nตารางที่ 1.3: อ่านชื่อ google/gemma-4-26b-a4b-it\n\n\n\n\n\n\n\n\n\nส่วน\nความหมาย\n\n\n\n\ngoogle/\nผู้สร้าง\n\n\ngemma-4\nตระกูลและรุ่น\n\n\n26b\n26 พันล้าน parameter (ตัวเลขที่ model เรียนรู้ระหว่างฝึก ยิ่งมากยิ่งใช้หน่วยความจำมาก)\n\n\na4b\nmixture of experts (MoE): ข้างในมีผู้เชี่ยวชาญหลายตัว แต่ใช้แค่บางตัวต่อ token ทำงานจริงราว 4 พันล้าน parameter ต่อ token (Roitman 2026, หมวด 1.10)\n\n\nit\ninstruction-tuned: ฝึกต่อจนทำตามคำสั่งได้ (บางชื่อเขียน instruct) รุ่นที่ไม่ได้ฝึกเรียกว่า base (Roitman 2026, หมวด 1.8)\n\n\n\n\n\n\nMoE เหมือนโรงพยาบาลที่มีหมอเฉพาะทางเยอะ แต่คนไข้แต่ละคนพบหมอแค่สองคน ส่วน instruct เหมือนคนที่อ่านหนังสือมามาก แล้วฝึกงานเป็นเจ้าหน้าที่ตอบคำถาม งานของ agent จึงควรใช้รุ่น instruct",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#quantization-และ-provider",
+    "href": "ch01/ep01-how-llms-work/index.html#quantization-และ-provider",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Quantization และ provider",
+    "text": "Quantization และ provider\nmodel 26 พันล้าน parameter ถ้าเก็บแต่ละตัวเลขด้วย 16 บิต (2 ไบต์) ต้องใช้หน่วยความจำราว 52 GB วิธีที่ตำราบอกว่าใช้เสมอตอนให้บริการ model คือ quantization: ลดจำนวนบิตต่อตัวเลข (Roitman 2026, หมวด 1.14) เหมือนปัด 3.14159 เหลือ 3.14 หรือย่อรูป RAW เป็น JPEG ไฟล์เล็กลงมากแต่ตาแทบมองไม่ต่าง\n\\[\n\\text{หน่วยความจำ (GB)} \\approx \\text{parameter (พันล้าน)} \\times \\frac{\\text{บิต}}{8}\n\\tag{1.2}\\]\n\n\n\nตารางที่ 1.4: หน่วยความจำของ Gemma 4 26B ที่ quantization แต่ละระดับ\n\n\n\n\n\nความละเอียด\nบิต\nGemma 4 26B\n\n\n\n\nbf16\n16\n52 GB\n\n\nfp8\n8\n26 GB\n\n\nfp4\n4\n13 GB\n\n\n\n\n\n\nบริษัทที่รัน model ให้เราเรียกผ่าน API เรียกว่า provider Gemma ชื่อเดียวกันบน OpenRouter มีถึง 15 เจ้า บางเจ้ารันที่ bf16 บางเจ้า fp8 หรือ fp4 และบางเจ้าไม่บอก ราคาและ context window ก็ต่างกัน\n\nใน Lab 3 (2026-11-09): ราคา token เข้าต่างกันเกือบ 4 เท่า บางเจ้าให้ context แค่ 131,072 token ครึ่งเดียวของเจ้าอื่น และถาม “I enjoy eating” กับ 4 เจ้า ได้ผลไม่เท่ากัน — Google ให้ pizza 0.76 แต่ Darkbloom ให้ food 0.77 จึงควรล็อก provider ไว้ตอนทดสอบ agent ไม่อย่างนั้นผลวันนี้กับพรุ่งนี้อาจมาจากคนละเจ้า",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#modality-model-รบอะไรไดบาง",
+    "href": "ch01/ep01-how-llms-work/index.html#modality-model-รบอะไรไดบาง",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Modality: model รับอะไรได้บ้าง",
+    "text": "Modality: model รับอะไรได้บ้าง\nชนิดของข้อมูลเรียกว่า modality เช่น ข้อความ รูปภาพ เสียง วิดีโอ หรือไฟล์ model แต่ละตัวรับได้ไม่เหมือนกัน และ input กับ output แยกกัน: Gemma 4 ดูรูปได้แต่วาดรูปไม่ได้ เพราะเกือบทุก model ตอบเป็นข้อความ ตำราเล่มนี้ตั้งใจเน้น model ที่รับและตอบเป็นข้อความ ตัวเลขด้านล่างจึงมาจากรายชื่อบน OpenRouter\n\n\n\n\n\n\n\nflowchart LR\n  IMG[\"🖼️ กราฟ + คำถาม&lt;br/&gt;ปีไหนมี paper มากที่สุด\"] --&gt; G[\"gemma-4-26b-a4b-it&lt;br/&gt;รับ: text · image · video\"]\n  IMG --&gt; L[\"llama-3.1-8b-instruct&lt;br/&gt;รับ: text\"]\n  G --&gt; GA[\"✅ 2024&lt;br/&gt;278 token เข้า\"]\n  L --&gt; LA[\"❌ 404&lt;br/&gt;No endpoints found&lt;br/&gt;that support image input\"]\n\n\n\n\nรูปที่ 1.2: ส่งรูปกราฟเดียวกันให้สอง model: Gemma 4 รับรูปได้ ส่วน Llama 3.1 8B รับได้แค่ข้อความ\n\n\n\n\n\nรูปก็ถูกแปลงเป็น token จึงกิน context และคิดเงินด้วย และชื่อ model ไม่ได้บอก modality เสมอไป ถ้า tool ของ agent ดึงรูปมาส่งให้ model ต้องเช็ก modality ก่อน ไม่อย่างนั้น agent จะพังกลางทาง\n\nใน Lab 3: จาก 461 model บน OpenRouter มี 137 ตัวที่รับได้แค่ข้อความ คำถามประโยคเดียวพร้อมรูปกราฟใช้ token เข้า 278 token เพราะรูปถูกแปลงเป็น token (ตัวเลขในกราฟเป็นข้อมูลสมมติเพื่อการสอน)",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#หนาปดของคนสราง-agent",
+    "href": "ch01/ep01-how-llms-work/index.html#หนาปดของคนสราง-agent",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "หน้าปัดของคนสร้าง agent",
+    "text": "หน้าปัดของคนสร้าง agent\n\n\n\nตารางที่ 1.5: สี่ข้อที่คนสร้าง agent ต้องจำ\n\n\n\n\n\n\n\n\n\nหน้าปัด\nสิ่งที่ต้องทำ\n\n\n\n\ntoken & finish_reason\nนับ token ก่อนส่ง และเช็ก finish_reason หลังได้คำตอบ\n\n\ntemperature\nใช้ temperature ต่ำเมื่อ model ต้องเขียนชื่อ tool และ argument ให้ถูก\n\n\nprovider\nล็อก provider ไว้ตอนทดสอบ\n\n\nmodality\nเช็ก modality ก่อนส่งรูป ถ้าไม่รู้ว่า model รับอะไรได้บ้าง",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#lab",
+    "href": "ch01/ep01-how-llms-work/index.html#lab",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 1.6: Notebook ของ EP01 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก model อธิบายใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Tokens\nColab\nColab\n\n\nLab 2 — Decoding\nColab\nColab\n\n\nLab 3 — ชื่อ model, provider, quantization, modality\nColab\nColab\n\n\n\n\n\n\noutput ของ model ในวิดีโอมาจากการรันจริง ความน่าจะเป็น ราคา และรายชื่อ provider เปลี่ยนได้ตามวันและเจ้าที่ให้บริการ ตัวเลขที่คุณรันเองจึงอาจต่างไปเล็กน้อย",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#คำถามทบทวน",
+    "href": "ch01/ep01-how-llms-work/index.html#คำถามทบทวน",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไมประโยคไทยกับอังกฤษที่ความหมายเดียวกันจึงใช้ token ไม่เท่ากัน และ model ต่างตัวนับเท่ากันไหม\nส่งข้อความสั้นมากแต่ usage นับ token เข้ามากกว่าที่คิด ส่วนที่เกินมาจากไหน\nหลัง “2 + 2 =” ทำไม top-p จึงเหมาะกว่า top-k 50\nถ้า agent ต้องเรียก tool ให้ถูกทุกครั้ง ควรตั้ง temperature อย่างไร เพราะอะไร\nfinish_reason = \"length\" บอกอะไร และ agent ควรทำอย่างไร\nGemma 4 26B ที่ fp8 ใช้หน่วยความจำราวเท่าไร คำนวณอย่างไร\nทำไมควรล็อก provider ไว้ตอนทดสอบ agent\nถ้า tool ของ agent ดึงรูปมาส่งให้ model ต้องเช็กอะไรก่อน",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
+    "objectID": "ch01/ep01-how-llms-work/index.html#เอกสารอางอง",
+    "href": "ch01/ep01-how-llms-work/index.html#เอกสารอางอง",
+    "title": "EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span>"
+    ]
+  },
+  {
     "objectID": "ch19/19-1-workflow-patterns/index.html",
     "href": "ch19/19-1-workflow-patterns/index.html",
     "title": "EP04 Workflow Patterns",
@@ -77,7 +253,7 @@
     "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบ module นี้ ผู้เรียนจะสามารถ",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -88,7 +264,7 @@
     "text": "อธิบายความแตกต่างระหว่าง workflow และ agent และบอกได้ว่าเมื่อไร workflow ก็เพียงพอ\nออกแบบ prompt chain ที่มี validation gate ระหว่างขั้น\nสร้าง router ที่ classify ครั้งเดียวแล้วส่งงานต่อให้ handler เฉพาะทาง\nเรียก LLM พร้อมกันแบบ sectioning และ voting แล้วรวมผลด้วยโค้ด\nอธิบายว่า orchestrator-workers ต่างจาก parallelization อย่างไร\nสร้าง evaluator-optimizer loop ที่มี threshold และ retry budget",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -96,10 +272,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#workflow-หรอ-agent",
     "title": "EP04 Workflow Patterns",
     "section": "Workflow หรือ agent",
-    "text": "Workflow หรือ agent\nตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า ไม่ใช่ทุกงานที่ต้องใช้ agent (Roitman 2026, หมวด 19.1) ใน workflow ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน agent ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ\n\n\n\nตารางที่ 1.1: Workflow เทียบกับ agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิด\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nขยับไปใช้ agent เมื่องานต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิดจริงๆ เท่านั้น ตัวอย่างตลอด module นี้คือ ผู้ช่วยอาจารย์ของ Cogito Learn ซึ่งเรารู้อยู่แล้วว่าคำถามมีไม่กี่ประเภท workflow จึงเพียงพอ",
+    "text": "Workflow หรือ agent\nตำราย้ำเป็นเรื่องแรกของบทที่ 19 ว่า ไม่ใช่ทุกงานที่ต้องใช้ agent (Roitman 2026, หมวด 19.1) ใน workflow ระบบเป็นผู้กำหนดลำดับขั้นตอนไว้ล่วงหน้า แล้วเรียก LLM ในขั้นที่กำหนด เหมือนรถไฟที่วิ่งตามราง ส่วน agent ให้ LLM ตัดสินใจเองว่าจะทำอะไรต่อ เหมือนยกพวงมาลัยให้มันขับ\n\n\n\nตารางที่ 2.1: Workflow เทียบกับ agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิด\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nขยับไปใช้ agent เมื่องานต้องการเส้นทางแบบ dynamic หรือการสำรวจแบบเปิดจริงๆ เท่านั้น ตัวอย่างตลอด module นี้คือ ผู้ช่วยอาจารย์ของ Cogito Learn ซึ่งเรารู้อยู่แล้วว่าคำถามมีไม่กี่ประเภท workflow จึงเพียงพอ",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -107,10 +283,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
     "title": "EP04 Workflow Patterns",
     "section": "1. Prompt Chaining",
-    "text": "1. Prompt Chaining\nแบ่งงานใหญ่เป็นลำดับ LLM call ที่ตายตัว ผลลัพธ์ของขั้นหนึ่งเป็น context ของขั้นถัดไป และระหว่างขั้นมี validation gate คอยจับข้อผิดพลาดตั้งแต่เนิ่นๆ เหมือนจุดตรวจคุณภาพบนสายพานโรงงาน gate จะใช้ LLM ตรวจ หรือเขียนโค้ดตรวจธรรมดาก็ได้\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;เป็น abstract ไหม\"}\n  G0 --&gt; S1[\"ขั้น 1&lt;br/&gt;ดึงประเด็นหลัก\"]\n  S1 --&gt; G1{\"gate (โค้ด)&lt;br/&gt;ครบ 3 ข้อไหม\"}\n  G1 --&gt; S2[\"ขั้น 2&lt;br/&gt;สรุปภาษาไทย\"]\n  S2 --&gt; G2{\"gate (โค้ด)&lt;br/&gt;ไม่เกิน 5 บรรทัด\"}\n  G2 --&gt; O[\"✅ สรุป\"]\n\n\n\n\nรูปที่ 1.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที\n\n\n\n\n\nข้อดีคือแต่ละขั้นใช้ prompt, model หรือ temperature ต่างกันได้ และเปิดดูผลระหว่างทางได้ทุกขั้น เหมาะกับงานที่เป็นลำดับขั้นอยู่แล้ว เช่น สร้างเนื้อหา แปลงข้อมูล หรือวิเคราะห์หลายขั้น\n\nใน Lab 1: abstract ผ่านครบทุกด่าน ประกาศห้องสอบถูก gate แรกหยุดไว้ และเมื่อตั้งให้สรุปได้แค่สองบรรทัด gate ที่เป็นโค้ดก็หยุดผลลัพธ์ไว้กลางทาง",
+    "text": "1. Prompt Chaining\nแบ่งงานใหญ่เป็นลำดับ LLM call ที่ตายตัว ผลลัพธ์ของขั้นหนึ่งเป็น context ของขั้นถัดไป และระหว่างขั้นมี validation gate คอยจับข้อผิดพลาดตั้งแต่เนิ่นๆ เหมือนจุดตรวจคุณภาพบนสายพานโรงงาน gate จะใช้ LLM ตรวจ หรือเขียนโค้ดตรวจธรรมดาก็ได้\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;เป็น abstract ไหม\"}\n  G0 --&gt; S1[\"ขั้น 1&lt;br/&gt;ดึงประเด็นหลัก\"]\n  S1 --&gt; G1{\"gate (โค้ด)&lt;br/&gt;ครบ 3 ข้อไหม\"}\n  G1 --&gt; S2[\"ขั้น 2&lt;br/&gt;สรุปภาษาไทย\"]\n  S2 --&gt; G2{\"gate (โค้ด)&lt;br/&gt;ไม่เกิน 5 บรรทัด\"}\n  G2 --&gt; O[\"✅ สรุป\"]\n\n\n\n\nรูปที่ 2.1: Prompt chain ของ Lab 1: abstract → ประเด็นหลัก → สรุปภาษาไทย ถ้า gate ไหนไม่ผ่าน chain หยุดทันที\n\n\n\n\n\nข้อดีคือแต่ละขั้นใช้ prompt, model หรือ temperature ต่างกันได้ และเปิดดูผลระหว่างทางได้ทุกขั้น เหมาะกับงานที่เป็นลำดับขั้นอยู่แล้ว เช่น สร้างเนื้อหา แปลงข้อมูล หรือวิเคราะห์หลายขั้น\n\nใน Lab 1: abstract ผ่านครบทุกด่าน ประกาศห้องสอบถูก gate แรกหยุดไว้ และเมื่อตั้งให้สรุปได้แค่สองบรรทัด gate ที่เป็นโค้ดก็หยุดผลลัพธ์ไว้กลางทาง",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -118,10 +294,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#routing",
     "title": "EP04 Workflow Patterns",
     "section": "2. Routing",
-    "text": "2. Routing\nClassifier (LLM หรือ model แบบดั้งเดิม) ดู input ก่อน แล้วส่งไปยัง handler เฉพาะทาง เหมือนจุดคัดกรองในโรงพยาบาลที่ถามอาการครั้งเดียวแล้วส่งไปแผนกที่ถูก\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ คำถามนักศึกษา\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"prompt อธิบายทฤษฎี\"]\n  C -- code_error --&gt; A2[\"tool รันโค้ด&lt;br/&gt;+ อธิบาย error จริง\"]\n  C -- admin --&gt; A3[\"model ตัวเล็ก ราคาถูก&lt;br/&gt;+ ข้อมูลรายวิชา\"]\n\n\n\n\nรูปที่ 1.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน\n\n\n\n\n\nRouting เหมาะเมื่องานมีหลายประเภทที่ชัดเจน และแต่ละประเภทต้องการ prompt, tool หรือ model ต่างกัน ตัวอย่างในตำราคือการคัดกรองงาน customer support และการรับ input หลายรูปแบบ\n\nใน Lab 2: คำถามทั้งหกข้อไปถูกที่ รวมถึงข้อหลอกที่มีคำว่า error แต่จริงๆ เป็นคำถามแนวคิด",
+    "text": "2. Routing\nClassifier (LLM หรือ model แบบดั้งเดิม) ดู input ก่อน แล้วส่งไปยัง handler เฉพาะทาง เหมือนจุดคัดกรองในโรงพยาบาลที่ถามอาการครั้งเดียวแล้วส่งไปแผนกที่ถูก\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ คำถามนักศึกษา\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"prompt อธิบายทฤษฎี\"]\n  C -- code_error --&gt; A2[\"tool รันโค้ด&lt;br/&gt;+ อธิบาย error จริง\"]\n  C -- admin --&gt; A3[\"model ตัวเล็ก ราคาถูก&lt;br/&gt;+ ข้อมูลรายวิชา\"]\n\n\n\n\nรูปที่ 2.2: Router ของ Lab 2: classify ครั้งเดียว แล้วแต่ละประเภทได้ prompt, tool หรือ model ที่เหมาะกับมัน\n\n\n\n\n\nRouting เหมาะเมื่องานมีหลายประเภทที่ชัดเจน และแต่ละประเภทต้องการ prompt, tool หรือ model ต่างกัน ตัวอย่างในตำราคือการคัดกรองงาน customer support และการรับ input หลายรูปแบบ\n\nใน Lab 2: คำถามทั้งหกข้อไปถูกที่ รวมถึงข้อหลอกที่มีคำว่า error แต่จริงๆ เป็นคำถามแนวคิด",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -129,10 +305,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#parallelization",
     "title": "EP04 Workflow Patterns",
     "section": "3. Parallelization",
-    "text": "3. Parallelization\nเรียก LLM หลายครั้งพร้อมกัน แล้วให้โค้ดของเรารวมผล ตำราแบ่งเป็นสองแบบ\n\nSectioning (fan-out) แบ่งงานเป็นส่วนที่ไม่ทับกัน เช่น review โค้ดสามด้าน security / performance / style พร้อมกัน แล้วรวมผล ตัดซ้ำ และเรียงตามความรุนแรง เหมือนครูสามคนตรวจข้อสอบคนละตอนในเวลาเดียวกัน\nVoting ส่ง prompt เดียวกัน N ครั้งด้วย seed หรือ temperature ต่างกัน แล้วเลือกคำตอบด้วยเสียงข้างมาก, reward model หรือ LLM-as-judge\n\nถ้า call แต่ละครั้งใช้เวลา \\(t_1, \\dots, t_n\\) เวลารวมของแบบพร้อมกันใกล้กับ call ที่ช้าที่สุด ไม่ใช่ผลรวม\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{1.1}\\]\n\nใน Lab 3: review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม สมการ 1.1 ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)",
+    "text": "3. Parallelization\nเรียก LLM หลายครั้งพร้อมกัน แล้วให้โค้ดของเรารวมผล ตำราแบ่งเป็นสองแบบ\n\nSectioning (fan-out) แบ่งงานเป็นส่วนที่ไม่ทับกัน เช่น review โค้ดสามด้าน security / performance / style พร้อมกัน แล้วรวมผล ตัดซ้ำ และเรียงตามความรุนแรง เหมือนครูสามคนตรวจข้อสอบคนละตอนในเวลาเดียวกัน\nVoting ส่ง prompt เดียวกัน N ครั้งด้วย seed หรือ temperature ต่างกัน แล้วเลือกคำตอบด้วยเสียงข้างมาก, reward model หรือ LLM-as-judge\n\nถ้า call แต่ละครั้งใช้เวลา \\(t_1, \\dots, t_n\\) เวลารวมของแบบพร้อมกันใกล้กับ call ที่ช้าที่สุด ไม่ใช่ผลรวม\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{2.1}\\]\n\nใน Lab 3: review สามด้านทีละ call ใช้ 3.9 วินาที แบบพร้อมกันใช้ 1.6 วินาที ตาม สมการ 2.1 ส่วน voting ห้าครั้งได้ “low” สี่เสียง (ตัวเลขของคุณจะต่างไปตามความเร็วของ server)",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -140,10 +316,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
     "title": "EP04 Workflow Patterns",
     "section": "4. Orchestrator-Workers",
-    "text": "4. Orchestrator-Workers\nคราวนี้ LLM เป็นผู้ตัดสินใจว่าจะแบ่งงานอย่างไร orchestrator วิเคราะห์โจทย์ สร้างแผนเป็นงานย่อย ส่งให้ worker ที่อาจใช้ prompt หรือ tool ต่างกัน แล้ว synthesizer รวมผลเป็นคำตอบเดียว เหมือนหัวหน้าเชฟที่ต้องดูออร์เดอร์ก่อนถึงจะรู้ว่าต้องแบ่งงานให้ลูกมือกี่คน\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(เขียนแผนเป็น JSON)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 คำตอบเดียว\"]\n\n\n\n\nรูปที่ 1.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด\n\n\n\n\n\nความต่างจาก parallelization คือวิธีแบ่งงานไม่ได้ตายตัวในโค้ด ตำราบอกว่าเหมาะกับงานปลายเปิดที่ไม่รู้ล่วงหน้าว่าจะมีงานย่อยกี่ชิ้น เช่น “refactor this codebase”\n\nใน Lab 4: โค้ดเดียวกันทุกบรรทัด แต่สอง goal ได้แผนต่างกัน goal แรกได้สี่งานย่อย ส่วนคำถามเรื่อง AI hints ได้สองงานย่อยและไม่ใช้ paper P2 เลย",
+    "text": "4. Orchestrator-Workers\nคราวนี้ LLM เป็นผู้ตัดสินใจว่าจะแบ่งงานอย่างไร orchestrator วิเคราะห์โจทย์ สร้างแผนเป็นงานย่อย ส่งให้ worker ที่อาจใช้ prompt หรือ tool ต่างกัน แล้ว synthesizer รวมผลเป็นคำตอบเดียว เหมือนหัวหน้าเชฟที่ต้องดูออร์เดอร์ก่อนถึงจะรู้ว่าต้องแบ่งงานให้ลูกมือกี่คน\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(เขียนแผนเป็น JSON)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 คำตอบเดียว\"]\n\n\n\n\nรูปที่ 2.3: Orchestrator-workers: จำนวนและชนิดของงานย่อยมาจาก model ไม่ได้เขียนไว้ในโค้ด\n\n\n\n\n\nความต่างจาก parallelization คือวิธีแบ่งงานไม่ได้ตายตัวในโค้ด ตำราบอกว่าเหมาะกับงานปลายเปิดที่ไม่รู้ล่วงหน้าว่าจะมีงานย่อยกี่ชิ้น เช่น “refactor this codebase”\n\nใน Lab 4: โค้ดเดียวกันทุกบรรทัด แต่สอง goal ได้แผนต่างกัน goal แรกได้สี่งานย่อย ส่วนคำถามเรื่อง AI hints ได้สองงานย่อยและไม่ใช้ paper P2 เลย",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -151,10 +327,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
     "title": "EP04 Workflow Patterns",
     "section": "5. Evaluator-Optimizer",
-    "text": "5. Evaluator-Optimizer\nFeedback loop ของสอง model: generator สร้างผลงาน evaluator ให้คะแนนตามเกณฑ์ที่เขียนไว้ชัดเจน ถ้ายังไม่ถึง threshold คำวิจารณ์ (critique) จะถูกต่อเข้า context ของ generator แล้ววนใหม่ จนผ่านหรือจน retry budget หมด เหมือนนักเขียนกับบรรณาธิการ\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;แปลเป็นภาษาไทย\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;ความหมาย · ศัพท์ · ความลื่นไหล\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ ผ่าน\"]\n  Ev -- \"ยังไม่ผ่าน\" --&gt; B{\"budget&lt;br/&gt;เหลือไหม\"}\n  B -- เหลือ --&gt; C[\"ต่อ critique&lt;br/&gt;เข้า context\"] --&gt; Gen\n  B -- หมด --&gt; L[\"คืนร่างสุดท้าย\"]\n\n\n\n\nรูปที่ 1.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget\n\n\n\n\n\nเหมาะกับงานที่มีเกณฑ์คุณภาพชัดเจน เช่น โค้ดที่ต้องผ่าน test งานเขียนที่ต้องตรง style guide หรืองานแปลที่ต้องรักษาความหมาย และทั้งหมดนี้ทำได้ โดยไม่ต้อง train model\n\nใน Lab 5: ร่างแรกได้ 6/10 เพราะแปลศัพท์เทคนิคเป็นภาษาไทย พอต่อ critique เข้าไป รอบที่สองได้ 10/10 ทั้งที่ generator ไม่เคยเห็น glossary",
+    "text": "5. Evaluator-Optimizer\nFeedback loop ของสอง model: generator สร้างผลงาน evaluator ให้คะแนนตามเกณฑ์ที่เขียนไว้ชัดเจน ถ้ายังไม่ถึง threshold คำวิจารณ์ (critique) จะถูกต่อเข้า context ของ generator แล้ววนใหม่ จนผ่านหรือจน retry budget หมด เหมือนนักเขียนกับบรรณาธิการ\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;แปลเป็นภาษาไทย\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;ความหมาย · ศัพท์ · ความลื่นไหล\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ ผ่าน\"]\n  Ev -- \"ยังไม่ผ่าน\" --&gt; B{\"budget&lt;br/&gt;เหลือไหม\"}\n  B -- เหลือ --&gt; C[\"ต่อ critique&lt;br/&gt;เข้า context\"] --&gt; Gen\n  B -- หมด --&gt; L[\"คืนร่างสุดท้าย\"]\n\n\n\n\nรูปที่ 2.4: Evaluator-optimizer loop ของ Lab 5 พร้อม threshold และ retry budget\n\n\n\n\n\nเหมาะกับงานที่มีเกณฑ์คุณภาพชัดเจน เช่น โค้ดที่ต้องผ่าน test งานเขียนที่ต้องตรง style guide หรืองานแปลที่ต้องรักษาความหมาย และทั้งหมดนี้ทำได้ โดยไม่ต้อง train model\n\nใน Lab 5: ร่างแรกได้ 6/10 เพราะแปลศัพท์เทคนิคเป็นภาษาไทย พอต่อ critique เข้าไป รอบที่สองได้ 10/10 ทั้งที่ generator ไม่เคยเห็น glossary",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -162,10 +338,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#หา-pattern-เทยบกน",
     "title": "EP04 Workflow Patterns",
     "section": "ห้า pattern เทียบกัน",
-    "text": "ห้า pattern เทียบกัน\n\n\n\nตารางที่ 1.2: สรุปห้า workflow pattern\n\n\n\n\n\n\n\n\n\n\n\nPattern\nใครกำหนดเส้นทาง\nLLM calls ต่อ input\nเหมาะกับ\n\n\n\n\nPrompt chaining\nโค้ด (ลำดับตายตัว)\nเท่าจำนวนขั้น\nงานเป็นลำดับขั้น\n\n\nRouting\nโค้ด + classifier\n1 + handler\ninput หลายประเภทที่ชัดเจน\n\n\nParallelization\nโค้ด (แบ่งตายตัว)\nN พร้อมกัน\nงานแยกเป็นส่วนอิสระ หรืออยากได้หลายเสียง\n\n\nOrchestrator-workers\nLLM วางแผน โค้ดรัน\n1 + งานย่อย + 1\nงานปลายเปิดที่แบ่งล่วงหน้าไม่ได้\n\n\nEvaluator-optimizer\nโค้ด (loop + budget)\n2 ต่อรอบ\nงานที่มีเกณฑ์คุณภาพชัดเจน\n\n\n\n\n\n\nทั้งห้าแบบใช้ LLM บนเส้นทางที่ระบบกำหนดไว้ จึงคาดเดาได้ ทดสอบได้ และคุมต้นทุนได้ และประกอบกันได้ เช่น router ส่งงานต่อให้ chain หรือขั้นหนึ่งของ chain เป็น evaluator-optimizer สองแบบหลังเริ่มให้ model มีส่วนตัดสินใจมากขึ้น ซึ่งเป็นสะพานไปสู่ autonomous agent ใน EP05",
+    "text": "ห้า pattern เทียบกัน\n\n\n\nตารางที่ 2.2: สรุปห้า workflow pattern\n\n\n\n\n\n\n\n\n\n\n\nPattern\nใครกำหนดเส้นทาง\nLLM calls ต่อ input\nเหมาะกับ\n\n\n\n\nPrompt chaining\nโค้ด (ลำดับตายตัว)\nเท่าจำนวนขั้น\nงานเป็นลำดับขั้น\n\n\nRouting\nโค้ด + classifier\n1 + handler\ninput หลายประเภทที่ชัดเจน\n\n\nParallelization\nโค้ด (แบ่งตายตัว)\nN พร้อมกัน\nงานแยกเป็นส่วนอิสระ หรืออยากได้หลายเสียง\n\n\nOrchestrator-workers\nLLM วางแผน โค้ดรัน\n1 + งานย่อย + 1\nงานปลายเปิดที่แบ่งล่วงหน้าไม่ได้\n\n\nEvaluator-optimizer\nโค้ด (loop + budget)\n2 ต่อรอบ\nงานที่มีเกณฑ์คุณภาพชัดเจน\n\n\n\n\n\n\nทั้งห้าแบบใช้ LLM บนเส้นทางที่ระบบกำหนดไว้ จึงคาดเดาได้ ทดสอบได้ และคุมต้นทุนได้ และประกอบกันได้ เช่น router ส่งงานต่อให้ chain หรือขั้นหนึ่งของ chain เป็น evaluator-optimizer สองแบบหลังเริ่มให้ model มีส่วนตัดสินใจมากขึ้น ซึ่งเป็นสะพานไปสู่ autonomous agent ใน EP05",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -173,10 +349,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#lab",
     "title": "EP04 Workflow Patterns",
     "section": "Lab",
-    "text": "Lab\n\n\n\nตารางที่ 1.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nข้อมูลในโค้ด (abstract, คำถาม, โค้ดที่ตรวจ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง",
+    "text": "Lab\n\n\n\nตารางที่ 2.3: Notebook ของ EP04 (แต่ละ lab เริ่มเรียนได้เลย ส่วนติดตั้งและ API key อยู่ใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nข้อมูลในโค้ด (abstract, คำถาม, โค้ดที่ตรวจ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -184,10 +360,10 @@
     "href": "ch19/19-1-workflow-patterns/index.html#คำถามทบทวน",
     "title": "EP04 Workflow Patterns",
     "section": "คำถามทบทวน",
-    "text": "คำถามทบทวน\n\nทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent\nใน รูปที่ 1.1 ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป\nทำไม classifier ใน รูปที่ 1.2 จึงตอบเป็น enum ด้วย temperature 0\nจาก สมการ 1.1 ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร\nOrchestrator-workers ต่างจาก sectioning ตรงไหน\nถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน รูปที่ 1.4 จะเกิดอะไรขึ้น",
+    "text": "คำถามทบทวน\n\nทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent\nใน รูปที่ 2.1 ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป\nทำไม classifier ใน รูปที่ 2.2 จึงตอบเป็น enum ด้วย temperature 0\nจาก สมการ 2.1 ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร\nOrchestrator-workers ต่างจาก sectioning ตรงไหน\nถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน รูปที่ 2.4 จะเกิดอะไรขึ้น",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -198,7 +374,7 @@
     "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
@@ -209,7 +385,7 @@
     "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบ module นี้ ผู้เรียนจะสามารถ",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -220,7 +396,7 @@
     "text": "อธิบายความแตกต่างระหว่าง workflow และ autonomous agent\nอธิบาย ReAct loop และองค์ประกอบที่ harness ต้องมี 4 อย่าง\nออกแบบ plan แบบ DAG และเลือกกลยุทธ์ replanning ที่เหมาะสม\nอธิบายกลไก Reflexion ที่ทำให้ agent เรียนรู้ข้ามรอบโดยไม่ต้อง train\nเลือก tool-use pattern ที่เหมาะกับงาน และเขียนโค้ดแต่ละ pattern ได้\nบอกได้ว่า State, Node และ Edge ของ LangGraph ตรงกับส่วนไหนของโค้ดที่เขียนเอง",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -228,10 +404,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#จาก-workflow-ส-agent",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "จาก Workflow สู่ Agent",
-    "text": "จาก Workflow สู่ Agent\nใน EP04 (§19.1) เราเรียน workflow pattern ซึ่งโปรแกรม (ไม่ใช่ model) เป็นผู้กำหนดลำดับการทำงาน ส่วน autonomous agent pattern ใน section นี้ ให้ LLM เป็นผู้ควบคุม execution flow เอง ว่าจะเรียก tool ใด เมื่อใด และจะหยุดเมื่อใด (Roitman 2026, หมวด 19.2)\n\n\n\nตารางที่ 2.1: Workflow เทียบกับ agent\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องตัดสินใจแบบยืดหยุ่น\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nตำราแนะนำให้ใช้ agent เฉพาะเมื่องานต้องการ dynamic routing หรือการสำรวจแบบปลายเปิดจริงๆ เท่านั้น",
+    "text": "จาก Workflow สู่ Agent\nใน EP04 (§19.1) เราเรียน workflow pattern ซึ่งโปรแกรม (ไม่ใช่ model) เป็นผู้กำหนดลำดับการทำงาน ส่วน autonomous agent pattern ใน section นี้ ให้ LLM เป็นผู้ควบคุม execution flow เอง ว่าจะเรียก tool ใด เมื่อใด และจะหยุดเมื่อใด (Roitman 2026, หมวด 19.2)\n\n\n\nตารางที่ 3.1: Workflow เทียบกับ agent\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nใครตัดสินใจขั้นถัดไป\nระบบ (โค้ดของเรา)\nLLM\n\n\nความคาดเดาได้\nสูง ทดสอบง่าย\nต่ำกว่า\n\n\nต้นทุน\nต่ำกว่า\nสูงกว่า\n\n\nเหมาะกับ\nงานที่รู้โครงสร้างล่วงหน้า\nงานที่ต้องตัดสินใจแบบยืดหยุ่น\n\n\n\n\n\n\n\n\n\n\n\n\nสำคัญเริ่มจาก workflow ก่อนเสมอ\n\n\n\nตำราแนะนำให้ใช้ agent เฉพาะเมื่องานต้องการ dynamic routing หรือการสำรวจแบบปลายเปิดจริงๆ เท่านั้น",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -239,10 +415,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#react-reason-act",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "ReAct (Reason + Act)",
-    "text": "ReAct (Reason + Act)\nReAct เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง Thought (คิดว่าจะทำอะไร), Action (เรียก tool) และ Observation (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{2.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"ไม่มี tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nรูปที่ 2.1: ReAct loop: agent สลับระหว่างการคิดและการกระทำจนกว่าจะถึงเงื่อนไขจบ\n\n\n\n\n\nHarness ที่ครอบ ReAct loop (รูปที่ 2.1) ต้องมี 4 องค์ประกอบ\n\nScratchpad — ขั้น Thought ถูกบันทึกไว้ แต่ไม่แสดงให้ผู้ใช้\nTool parsing — ดึง tool call ที่มีโครงสร้างออกจาก output ของ model\nMax iterations — จำกัดจำนวนรอบเสมอ (โดยทั่วไป 10–25 รอบ)\nTermination — จบเมื่อ model ส่ง action พิเศษ เช่น final_answer หรือเมื่อไม่มี tool call\n\n\nใน Lab 1: เราเขียน react_agent() ที่มีครบทั้ง 4 ข้อนี้ และเห็นว่าเมื่อตั้ง max_iterations=1 agent หยุดทันที",
+    "text": "ReAct (Reason + Act)\nReAct เป็น pattern พื้นฐานของ agent เกือบทุกตัว LLM สลับกันระหว่าง Thought (คิดว่าจะทำอะไร), Action (เรียก tool) และ Observation (อ่านผลลัพธ์) วนไปจนได้คำตอบสุดท้าย\n\\[\n\\text{Thought}_t \\rightarrow \\text{Action}_t \\rightarrow \\text{Observation}_t \\rightarrow \\text{Thought}_{t+1} \\rightarrow \\cdots\n\\tag{3.1}\\]\n\n\n\n\n\n\n\nflowchart LR\n  T[\"💭 Thought\"] --&gt; A[\"🔧 Action&lt;br/&gt;(tool call)\"]\n  A --&gt; O[\"👀 Observation&lt;br/&gt;(tool result)\"]\n  O --&gt; T\n  T -- \"ไม่มี tool call\" --&gt; F[\"🏁 Final answer\"]\n\n\n\n\nรูปที่ 3.1: ReAct loop: agent สลับระหว่างการคิดและการกระทำจนกว่าจะถึงเงื่อนไขจบ\n\n\n\n\n\nHarness ที่ครอบ ReAct loop (รูปที่ 3.1) ต้องมี 4 องค์ประกอบ\n\nScratchpad — ขั้น Thought ถูกบันทึกไว้ แต่ไม่แสดงให้ผู้ใช้\nTool parsing — ดึง tool call ที่มีโครงสร้างออกจาก output ของ model\nMax iterations — จำกัดจำนวนรอบเสมอ (โดยทั่วไป 10–25 รอบ)\nTermination — จบเมื่อ model ส่ง action พิเศษ เช่น final_answer หรือเมื่อไม่มี tool call\n\n\nใน Lab 1: เราเขียน react_agent() ที่มีครบทั้ง 4 ข้อนี้ และเห็นว่าเมื่อตั้ง max_iterations=1 agent หยุดทันที",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -250,10 +426,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#planning-agents",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Planning Agents",
-    "text": "Planning Agents\nReAct ตัดสินใจทีละก้าว ซึ่งอาจหลงทางในงานยาว planning agent จึงสร้าง plan ที่ชัดเจนก่อนลงมือ และแก้ plan ระหว่างทางได้ บทที่ 18 เรียกแนวทางนี้ว่า Plan-and-Execute ซึ่งมี 3 ช่วง คือ planning phase, execution phase (อาจใช้ model ที่ถูกกว่า) และ plan revision\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{2.2}\\]\n\nตัวอย่าง: รายงานเปรียบเทียบ transformer สำหรับ time-series\nผู้ใช้สั่ง “Write a 2-page report comparing transformer architectures for time-series forecasting.” Planner สร้าง plan 6 ขั้น แต่ละขั้นมี deps ระบุขั้นที่ต้องเสร็จก่อน ทำให้ plan เป็น DAG (Directed Acyclic Graph) ดัง รูปที่ 2.2\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nรูปที่ 2.2: Plan แบบ DAG ขั้น 3 และ 4 รอขั้น 2 แต่ไม่รอกันเอง จึงรันพร้อมกันได้\n\n\n\n\n\nHarness ติดตาม dependency และ execute เฉพาะขั้นที่ขั้นก่อนหน้าเสร็จครบแล้ว\n\n\nAdaptive replanning\nหลังขั้นที่ 1 การค้นหาพบ paper ที่เกี่ยวข้องเพียง 3 ฉบับ agent จึง replan โดยเพิ่ม sub-step ขยายการค้นหาไปยังโดเมนใกล้เคียง (เช่น PatchTST, iTransformer) แล้วทำต่อจากขั้นที่ 2 ด้วยข้อมูลที่มากขึ้น\n\n\n\n\n\n\nหมายเหตุKey insight\n\n\n\nPlan คือ living document — ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้\n\n\n\n\n\nตารางที่ 2.2: กลยุทธ์ planning (ดัดแปลงจากตาราง 19.1)\n\n\n\n\n\n\n\n\n\n\nกลยุทธ์\nReplan เมื่อใด\nลักษณะ\n\n\n\n\nPlan-then-Execute\nไม่ replan\nเรียบง่าย แต่เปราะบางต่อผลลัพธ์ที่ไม่คาดคิด\n\n\nAdaptive\nเมื่อขั้นตอนล้มเหลว\nต้นทุนปานกลาง\n\n\nContinuous\nทุกขั้น\nแพงแต่ทนทาน\n\n\nHierarchical\nเมื่อ sub-plan เสร็จ\nplan ระดับบนคงที่ sub-plan สร้างแบบ dynamic\n\n\n\n\n\n\n\nใน Lab 2: ใช้กลยุทธ์ Adaptive เมื่อขั้นค้นหาเจอ paper แค่ 3 ฉบับ harness ก็สั่ง replan และแต่ละขั้นใช้ react_agent() จาก Lab 1 แสดงว่า pattern ประกอบกันได้",
+    "text": "Planning Agents\nReAct ตัดสินใจทีละก้าว ซึ่งอาจหลงทางในงานยาว planning agent จึงสร้าง plan ที่ชัดเจนก่อนลงมือ และแก้ plan ระหว่างทางได้ บทที่ 18 เรียกแนวทางนี้ว่า Plan-and-Execute ซึ่งมี 3 ช่วง คือ planning phase, execution phase (อาจใช้ model ที่ถูกกว่า) และ plan revision\n\\[\n\\text{Plan} = \\text{Planner}(q), \\qquad\n\\text{Result} = \\prod_{i=1}^{|\\text{Plan}|} \\text{Executor}(\\text{Plan}[i], \\text{context}_i)\n\\tag{3.2}\\]\n\nตัวอย่าง: รายงานเปรียบเทียบ transformer สำหรับ time-series\nผู้ใช้สั่ง “Write a 2-page report comparing transformer architectures for time-series forecasting.” Planner สร้าง plan 6 ขั้น แต่ละขั้นมี deps ระบุขั้นที่ต้องเสร็จก่อน ทำให้ plan เป็น DAG (Directed Acyclic Graph) ดัง รูปที่ 3.2\n\n\n\n\n\n\n\nflowchart LR\n  S1[\"1 Search models&lt;br/&gt;2023–2025\"] --&gt; S2[\"2 Read top 5 papers\"]\n  S2 --&gt; S3[\"3 Comparison table\"]\n  S2 --&gt; S4[\"4 Intro + methodology\"]\n  S3 --&gt; S5[\"5 Results + conclusion\"]\n  S4 --&gt; S5\n  S5 --&gt; S6[\"6 Review & polish\"]\n\n\n\n\nรูปที่ 3.2: Plan แบบ DAG ขั้น 3 และ 4 รอขั้น 2 แต่ไม่รอกันเอง จึงรันพร้อมกันได้\n\n\n\n\n\nHarness ติดตาม dependency และ execute เฉพาะขั้นที่ขั้นก่อนหน้าเสร็จครบแล้ว\n\n\nAdaptive replanning\nหลังขั้นที่ 1 การค้นหาพบ paper ที่เกี่ยวข้องเพียง 3 ฉบับ agent จึง replan โดยเพิ่ม sub-step ขยายการค้นหาไปยังโดเมนใกล้เคียง (เช่น PatchTST, iTransformer) แล้วทำต่อจากขั้นที่ 2 ด้วยข้อมูลที่มากขึ้น\n\n\n\n\n\n\nหมายเหตุKey insight\n\n\n\nPlan คือ living document — ให้โครงสร้าง แต่ปรับตามสิ่งที่สังเกตได้\n\n\n\n\n\nตารางที่ 3.2: กลยุทธ์ planning (ดัดแปลงจากตาราง 19.1)\n\n\n\n\n\n\n\n\n\n\nกลยุทธ์\nReplan เมื่อใด\nลักษณะ\n\n\n\n\nPlan-then-Execute\nไม่ replan\nเรียบง่าย แต่เปราะบางต่อผลลัพธ์ที่ไม่คาดคิด\n\n\nAdaptive\nเมื่อขั้นตอนล้มเหลว\nต้นทุนปานกลาง\n\n\nContinuous\nทุกขั้น\nแพงแต่ทนทาน\n\n\nHierarchical\nเมื่อ sub-plan เสร็จ\nplan ระดับบนคงที่ sub-plan สร้างแบบ dynamic\n\n\n\n\n\n\n\nใน Lab 2: ใช้กลยุทธ์ Adaptive เมื่อขั้นค้นหาเจอ paper แค่ 3 ฉบับ harness ก็สั่ง replan และแต่ละขั้นใช้ react_agent() จาก Lab 1 แสดงว่า pattern ประกอบกันได้",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -264,7 +440,7 @@
     "text": "Reflection และ Self-Critique\nAgent หยุดประเมินเส้นทางของตัวเองใน 3 ระดับ\n\nOutput validation — “ถูกไหม ลืมอะไรไหม”\nTrajectory review — ย้อนดู k ขั้นล่าสุด หาข้อผิดพลาดหรือความสิ้นเปลือง\nStrategy revision — “เรากำลังแก้ปัญหาถูกข้ออยู่หรือเปล่า”\n\n\nReflexion\nReflexion เก็บ reflection memory ไว้ หลังทำพลาดแต่ละครั้ง agent เขียนบทเรียนเป็นภาษาธรรมชาติ (เช่น “พลาดเพราะไม่ได้เช็ค edge case”) แล้วใส่บทเรียนเหล่านี้ใน prompt รอบถัดไป ทำให้เรียนรู้ข้าม episode ได้ โดยไม่ต้องอัปเดต weight\n\nใน Lab 3: ให้ agent เขียน parse_duration() แล้วตรวจด้วย unit tests ที่ agent มองไม่เห็นล่วงหน้า ในการรันที่บันทึกไว้ รอบแรกผ่าน 5/9 แล้วผ่านครบ 9/9 หลังได้บทเรียนหนึ่งข้อ",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -272,10 +448,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#tool-use-patterns",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Tool-Use Patterns",
-    "text": "Tool-Use Patterns\n\n\n\nตารางที่ 2.3: Tool invocation patterns (ดัดแปลงจากตาราง 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nคำอธิบาย\nตัวอย่าง\n\n\n\n\nSingle-turn\ntool call เดียวต่อ response (LLM 2 calls)\nQ&A ง่ายๆ ด้วย search\n\n\nMulti-tool\nหลาย tool call พร้อมกันใน response เดียว\nsearch + calculate + format\n\n\nSequential\noutput ของ tool หนึ่งเป็น input ของอีกตัว\nsearch → read → extract\n\n\nNested\ntool call เรียก agent อีกตัว\ncode agent เรียก test runner\n\n\nFallback\ntool หลักล้มเหลว ลองตัวสำรอง\nAPI → scrape → cache\n\n\n\n\n\n\nข้อควรจำ\n\nMulti-tool ลด latency ได้มาก แต่ tool ต้อง เป็นอิสระต่อกัน และต้องส่ง tool result ทั้งหมดกลับใน message เดียว\nSequential harness ต้องดูแล context ที่โตขึ้น และอาจต้องสรุปผลระหว่างทาง\nNested parent agent มองเห็น sub-agent เป็น black-box function\nFallback จัดการที่ระดับ harness model ไม่จำเป็นต้องรู้\n\n\nใน Lab 4: single-turn ใช้ LLM 2 calls พอดี และ tool 3 ตัวที่ใช้เวลาตัวละ 1.5 วินาที รันพร้อมกันเสร็จใน ~1.5 วินาทีแทน 4.5 วินาที",
+    "text": "Tool-Use Patterns\n\n\n\nตารางที่ 3.3: Tool invocation patterns (ดัดแปลงจากตาราง 19.2)\n\n\n\n\n\n\n\n\n\n\nPattern\nคำอธิบาย\nตัวอย่าง\n\n\n\n\nSingle-turn\ntool call เดียวต่อ response (LLM 2 calls)\nQ&A ง่ายๆ ด้วย search\n\n\nMulti-tool\nหลาย tool call พร้อมกันใน response เดียว\nsearch + calculate + format\n\n\nSequential\noutput ของ tool หนึ่งเป็น input ของอีกตัว\nsearch → read → extract\n\n\nNested\ntool call เรียก agent อีกตัว\ncode agent เรียก test runner\n\n\nFallback\ntool หลักล้มเหลว ลองตัวสำรอง\nAPI → scrape → cache\n\n\n\n\n\n\nข้อควรจำ\n\nMulti-tool ลด latency ได้มาก แต่ tool ต้อง เป็นอิสระต่อกัน และต้องส่ง tool result ทั้งหมดกลับใน message เดียว\nSequential harness ต้องดูแล context ที่โตขึ้น และอาจต้องสรุปผลระหว่างทาง\nNested parent agent มองเห็น sub-agent เป็น black-box function\nFallback จัดการที่ระดับ harness model ไม่จำเป็นต้องรู้\n\n\nใน Lab 4: single-turn ใช้ LLM 2 calls พอดี และ tool 3 ตัวที่ใช้เวลาตัวละ 1.5 วินาที รันพร้อมกันเสร็จใน ~1.5 วินาทีแทน 4.5 วินาที",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -283,10 +459,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#เลอก-pattern-ไหนด",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "เลือก pattern ไหนดี",
-    "text": "เลือก pattern ไหนดี\n\n\n\nตารางที่ 2.4: เลือก pattern (ดัดแปลงจากตาราง 19.3)\n\n\n\n\n\nPattern\nความซับซ้อน\nLLM calls\nเหมาะกับ\n\n\n\n\nReAct\nกลาง\n3–25 (loop)\ntool-use ทั่วไป การสำรวจ\n\n\nPlanning agent\nสูง\n5–50+\nงานยาว หลายขั้นตอน\n\n\nReflection\nสูง\n+50% overhead\nงานที่ครั้งแรกมักพลาด\n\n\n\n\n\n\nเริ่มจาก pattern ที่ง่ายที่สุด แล้วขยับขึ้นเมื่อ pattern ที่ง่ายกว่าใช้ไม่ได้จริงเท่านั้น และ pattern ต่างๆ ประกอบกันได้",
+    "text": "เลือก pattern ไหนดี\n\n\n\nตารางที่ 3.4: เลือก pattern (ดัดแปลงจากตาราง 19.3)\n\n\n\n\n\nPattern\nความซับซ้อน\nLLM calls\nเหมาะกับ\n\n\n\n\nReAct\nกลาง\n3–25 (loop)\ntool-use ทั่วไป การสำรวจ\n\n\nPlanning agent\nสูง\n5–50+\nงานยาว หลายขั้นตอน\n\n\nReflection\nสูง\n+50% overhead\nงานที่ครั้งแรกมักพลาด\n\n\n\n\n\n\nเริ่มจาก pattern ที่ง่ายที่สุด แล้วขยับขึ้นเมื่อ pattern ที่ง่ายกว่าใช้ไม่ได้จริงเท่านั้น และ pattern ต่างๆ ประกอบกันได้",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -294,10 +470,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#จากโคดทเขยนเองส-langgraph",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "จากโค้ดที่เขียนเองสู่ LangGraph",
-    "text": "จากโค้ดที่เขียนเองสู่ LangGraph\nใน Lab 5 เราสร้าง agent จาก Lab 1 และ Lab 2 ใหม่ด้วย LangGraph ทุกส่วนของ framework ตรงกับโค้ดที่เราเขียนเองมาก่อน\n\n\n\nตารางที่ 2.5: LangGraph เทียบกับโค้ดที่เขียนเอง\n\n\n\n\n\n\n\n\n\nLangGraph\nโค้ดที่เขียนเอง\n\n\n\n\nState (messages, ตัวนับรอบ)\nlist messages และตัวนับ iteration ใน loop\n\n\nNode (agent, tools)\nการเรียก model และ run_tool()\n\n\nEdge / conditional edge\nwhile loop และ if ที่ตัดสินว่าจะเรียก tool ต่อ หยุด หรือ replan\n\n\nToolNode\nrun_tool() ทั้งฟังก์ชัน\n\n\nwith_structured_output\nJSON schema ของ plan ใน Lab 2\n\n\n\n\n\n\nสิ่งที่ framework ให้เพิ่มคือ checkpoint ที่บันทึก state ทุกขั้น ทำให้หยุดรอคนอนุมัติก่อนรัน tool (human-in-the-loop) แล้วรันต่อได้ และย้อนดู state ของแต่ละขั้นได้",
+    "text": "จากโค้ดที่เขียนเองสู่ LangGraph\nใน Lab 5 เราสร้าง agent จาก Lab 1 และ Lab 2 ใหม่ด้วย LangGraph ทุกส่วนของ framework ตรงกับโค้ดที่เราเขียนเองมาก่อน\n\n\n\nตารางที่ 3.5: LangGraph เทียบกับโค้ดที่เขียนเอง\n\n\n\n\n\n\n\n\n\nLangGraph\nโค้ดที่เขียนเอง\n\n\n\n\nState (messages, ตัวนับรอบ)\nlist messages และตัวนับ iteration ใน loop\n\n\nNode (agent, tools)\nการเรียก model และ run_tool()\n\n\nEdge / conditional edge\nwhile loop และ if ที่ตัดสินว่าจะเรียก tool ต่อ หยุด หรือ replan\n\n\nToolNode\nrun_tool() ทั้งฟังก์ชัน\n\n\nwith_structured_output\nJSON schema ของ plan ใน Lab 2\n\n\n\n\n\n\nสิ่งที่ framework ให้เพิ่มคือ checkpoint ที่บันทึก state ทุกขั้น ทำให้หยุดรอคนอนุมัติก่อนรัน tool (human-in-the-loop) แล้วรันต่อได้ และย้อนดู state ของแต่ละขั้นได้",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -305,10 +481,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#lab",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "Lab",
-    "text": "Lab\n\n\n\nตารางที่ 2.6: Notebook ของ EP05 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key อธิบายละเอียดใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — ReAct Agent\nColab\nColab\n\n\nLab 2 — Planning Agent\nColab\nColab\n\n\nLab 3 — Reflexion\nColab\nColab\n\n\nLab 4 — Tool-Use Patterns\nColab\nColab\n\n\nLab 5 — LangGraph\nColab\nColab\n\n\n\n\n\n\nข้อมูลใน tools (paper, ราคาหุ้น, สภาพอากาศ ฯลฯ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง",
+    "text": "Lab\n\n\n\nตารางที่ 3.6: Notebook ของ EP05 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key อธิบายละเอียดใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — ReAct Agent\nColab\nColab\n\n\nLab 2 — Planning Agent\nColab\nColab\n\n\nLab 3 — Reflexion\nColab\nColab\n\n\nLab 4 — Tool-Use Patterns\nColab\nColab\n\n\nLab 5 — LangGraph\nColab\nColab\n\n\n\n\n\n\nข้อมูลใน tools (paper, ราคาหุ้น, สภาพอากาศ ฯลฯ) เป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -316,10 +492,10 @@
     "href": "ch19/ep05-autonomous-agents/index.html#คำถามทบทวน",
     "title": "EP05 Autonomous Agent Patterns",
     "section": "คำถามทบทวน",
-    "text": "คำถามทบทวน\n\nทำไมตำราจึงแนะนำให้เริ่มจาก workflow ก่อน agent\nถ้าไม่มี max iterations ใน ReAct loop จะเกิดปัญหาอะไร\nจาก รูปที่ 2.2 ขั้นใดบ้างที่รันพร้อมกันได้ เพราะอะไร\nReflexion ต่างจากการ fine-tune model อย่างไร\nทำไม multi-tool pattern จึงใช้ไม่ได้กับ tool ที่ต้องใช้ผลของอีก tool\nใน LangGraph ส่วนไหนทำหน้าที่แทน while loop ของ ReAct agent ที่เราเขียนเอง",
+    "text": "คำถามทบทวน\n\nทำไมตำราจึงแนะนำให้เริ่มจาก workflow ก่อน agent\nถ้าไม่มี max iterations ใน ReAct loop จะเกิดปัญหาอะไร\nจาก รูปที่ 3.2 ขั้นใดบ้างที่รันพร้อมกันได้ เพราะอะไร\nReflexion ต่างจากการ fine-tune model อย่างไร\nทำไม multi-tool pattern จึงใช้ไม่ได้กับ tool ที่ต้องใช้ผลของอีก tool\nใน LangGraph ส่วนไหนทำหน้าที่แทน while loop ของ ReAct agent ที่เราเขียนเอง",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   },
   {
@@ -330,7 +506,7 @@
     "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
   }
 ]
