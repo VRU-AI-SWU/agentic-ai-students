@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Asst.Prof. Ratchainant Thammasudjarit, Ph.D.">
-<meta name="dcterms.date" content="2026-11-09">
+<meta name="dcterms.date" content="2026-11-10">
 
 <title>Agentic AI: From Foundations to Systems</title>
 <style>
@@ -152,6 +152,11 @@ div.csl-indent {
   <a href="./ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 How LLMs Work — for Agent Builders</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompts, Structured Output and Hallucination</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -201,7 +206,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 9, 2026</p>
+      <p class="date">November 10, 2026</p>
     </div>
   </div>
   
@@ -289,9 +294,9 @@ div.csl-indent {
 <p><span class="epno">EP01</span></p>
 <p><a href="./ch01/ep01-how-llms-work/index.html">How LLMs work (for agent builders)</a> <span class="badge-live">ready</span> <span class="epmeta">tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs</span></p>
 </div>
-<div class="ep">
+<div class="ep live">
 <p><span class="epno">EP02</span></p>
-<p>Prompts, structured output and hallucination <span class="badge-soon">coming soon</span> <span class="epmeta">why agents need a JSON schema · ch1, §19.3 · ≈30 min</span></p>
+<p><a href="./ch01/ep02-prompt-structured-output/index.html">Prompts, structured output and hallucination</a> <span class="badge-live">ready</span> <span class="epmeta">work orders · few-shot · JSON schema · validation · grounding · §1.12.11, §1.13, §1.16 · 4 labs</span></p>
 </div>
 </div>
 <div class="module has-live">
@@ -455,6 +460,11 @@ Srinakharinwirot University</p>
 Anthropic. 2025. <em>Writing Effective Tools for <span>AI</span>
 Agents—with Agents</em>. Anthropic Engineering. <a href="https://www.anthropic.com/engineering/writing-tools-for-agents">https://www.anthropic.com/engineering/writing-tools-for-agents</a>.
 </div>
+<div id="ref-brown2020fewshot" class="csl-entry" role="listitem">
+<span class="nocase">Brown, Tom B., Benjamin Mann, Nick Ryder, et
+al.</span> 2020. <span>“Language Models Are Few-Shot Learners.”</span>
+<em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2005.14165">https://arxiv.org/abs/2005.14165</a>.
+</div>
 <div id="ref-dettmers2022int8" class="csl-entry" role="listitem">
 Dettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022.
 <span>“<span class="nocase">LLM.int8()</span>: 8-Bit Matrix
@@ -466,6 +476,13 @@ Fedus, William, Barret Zoph, and Noam Shazeer. 2022. <span>“Switch
 Transformers: Scaling to Trillion Parameter Models with Simple and
 Efficient Sparsity.”</span> <em>Journal of Machine Learning
 Research</em>. <a href="https://arxiv.org/abs/2101.03961">https://arxiv.org/abs/2101.03961</a>.
+</div>
+<div id="ref-greshake2023injection" class="csl-entry" role="listitem">
+Greshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,
+Thorsten Holz, and Mario Fritz. 2023. <span>“Not What You’ve Signed up
+for: Compromising Real-World LLM-Integrated Applications with Indirect
+Prompt Injection.”</span> <em>ACM Workshop on Artificial Intelligence
+and Security (AISec)</em>. <a href="https://arxiv.org/abs/2302.12173">https://arxiv.org/abs/2302.12173</a>.
 </div>
 <div id="ref-holtzman2020degeneration" class="csl-entry" role="listitem">
 Holtzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020.
@@ -484,9 +501,19 @@ documentation. <a href="https://huggingface.co/docs/transformers/main/en/chat_te
 Hugging Face. 2025b. <em>Quantization Overview</em>. Transformers
 documentation. <a href="https://huggingface.co/docs/transformers/main/en/quantization/overview">https://huggingface.co/docs/transformers/main/en/quantization/overview</a>.
 </div>
+<div id="ref-ji2023hallucination" class="csl-entry" role="listitem">
+<span class="nocase">Ji, Ziwei, Nayeon Lee, Rita Frieske, et al.</span>
+2023. <span>“Survey of Hallucination in Natural Language
+Generation.”</span> <em>ACM Computing Surveys</em> 55 (12). <a href="https://arxiv.org/abs/2202.03629">https://arxiv.org/abs/2202.03629</a>.
+</div>
 <div id="ref-jiang2024mixtral" class="csl-entry" role="listitem">
 <span class="nocase">Jiang, Albert Q., Alexandre Sablayrolles, Antoine
 Roux, et al.</span> 2024. <em>Mixtral of Experts</em>. <a href="https://arxiv.org/abs/2401.04088">https://arxiv.org/abs/2401.04088</a>.
+</div>
+<div id="ref-kadavath2022know" class="csl-entry" role="listitem">
+<span class="nocase">Kadavath, Saurav, Tom Conerly, Amanda Askell, et
+al.</span> 2022. <em>Language Models (Mostly) Know What They Know</em>.
+arXiv:2207.05221. <a href="https://arxiv.org/abs/2207.05221">https://arxiv.org/abs/2207.05221</a>.
 </div>
 <div id="ref-karpathy2024tokenizer" class="csl-entry" role="listitem">
 Karpathy, Andrej. 2024. <em>Let’s Build the GPT Tokenizer</em>. YouTube
@@ -498,15 +525,33 @@ al.</span> 2024. <span>“An <span>LLM</span> Compiler for Parallel
 Function Calling.”</span> <em>International Conference on Machine
 Learning (ICML)</em>. <a href="https://arxiv.org/abs/2312.04511">https://arxiv.org/abs/2312.04511</a>.
 </div>
+<div id="ref-kojima2022zeroshot" class="csl-entry" role="listitem">
+Kojima, Takeshi, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and
+Yusuke Iwasawa. 2022. <span>“Large Language Models Are Zero-Shot
+Reasoners.”</span> <em>Advances in Neural Information Processing Systems
+(NeurIPS)</em>. <a href="https://arxiv.org/abs/2205.11916">https://arxiv.org/abs/2205.11916</a>.
+</div>
 <div id="ref-langgraph_workflows" class="csl-entry" role="listitem">
 LangChain. 2025. <em>Workflows and Agents</em>. LangGraph documentation.
 <a href="https://langchain-ai.github.io/langgraph/tutorials/workflows/">https://langchain-ai.github.io/langgraph/tutorials/workflows/</a>.
+</div>
+<div id="ref-lewis2020rag" class="csl-entry" role="listitem">
+<span class="nocase">Lewis, Patrick, Ethan Perez, Aleksandra Piktus, et
+al.</span> 2020. <span>“Retrieval-Augmented Generation for
+Knowledge-Intensive NLP Tasks.”</span> <em>Advances in Neural
+Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a>.
 </div>
 <div id="ref-madaan2023selfrefine" class="csl-entry" role="listitem">
 <span class="nocase">Madaan, Aman, Niket Tandon, Prakhar Gupta, et
 al.</span> 2023. <span>“Self-Refine: Iterative Refinement with
 Self-Feedback.”</span> <em>Advances in Neural Information Processing
 Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2303.17651">https://arxiv.org/abs/2303.17651</a>.
+</div>
+<div id="ref-manakul2023selfcheckgpt" class="csl-entry" role="listitem">
+Manakul, Potsawee, Adian Liusie, and Mark J. F. Gales. 2023.
+<span>“SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for
+Generative Large Language Models.”</span> <em>Conference on Empirical
+Methods in Natural Language Processing (EMNLP)</em>. <a href="https://arxiv.org/abs/2303.08896">https://arxiv.org/abs/2303.08896</a>.
 </div>
 <div id="ref-nguyen2025minp" class="csl-entry" role="listitem">
 <span class="nocase">Nguyen, Minh Nhat, Andrew Baker, Clement Neo, et
@@ -524,6 +569,10 @@ Feedback.”</span> <em>Advances in Neural Information Processing Systems
 Platen, Patrick von. 2020. <em>How to Generate Text: Using Different
 Decoding Methods for Language Generation with Transformers</em>. Hugging
 Face blog. <a href="https://huggingface.co/blog/how-to-generate">https://huggingface.co/blog/how-to-generate</a>.
+</div>
+<div id="ref-pydantic_docs" class="csl-entry" role="listitem">
+Pydantic. 2026. <em>Pydantic Documentation: Models and Validators</em>.
+<a href="https://docs.pydantic.dev/latest/">https://docs.pydantic.dev/latest/</a>.
 </div>
 <div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
 Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From
@@ -574,9 +623,19 @@ al.</span> 2023. <span>“Self-Consistency Improves Chain of Thought
 Reasoning in Language Models.”</span> <em>International Conference on
 Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a>.
 </div>
+<div id="ref-wei2022cot" class="csl-entry" role="listitem">
+<span class="nocase">Wei, Jason, Xuezhi Wang, Dale Schuurmans, et
+al.</span> 2022. <span>“Chain-of-Thought Prompting Elicits Reasoning in
+Large Language Models.”</span> <em>Advances in Neural Information
+Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a>.
+</div>
 <div id="ref-weng2023agents" class="csl-entry" role="listitem">
 Weng, Lilian. 2023. <em><span>LLM</span> Powered Autonomous Agents</em>.
 Lil’Log. <a href="https://lilianweng.github.io/posts/2023-06-23-agent/">https://lilianweng.github.io/posts/2023-06-23-agent/</a>.
+</div>
+<div id="ref-willard2023outlines" class="csl-entry" role="listitem">
+Willard, Brandon T., and Rémi Louf. 2023. <em>Efficient Guided
+Generation for Large Language Models</em>. arXiv:2307.09702. <a href="https://arxiv.org/abs/2307.09702">https://arxiv.org/abs/2307.09702</a>.
 </div>
 <div id="ref-xu2023rewoo" class="csl-entry" role="listitem">
 <span class="nocase">Xu, Binfeng, Zhiyuan Peng, Bowen Lei, et al.</span>
