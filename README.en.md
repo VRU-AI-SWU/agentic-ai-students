@@ -40,6 +40,13 @@ Each lab has two files:
 | Lab 3 — Hallucination | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab3-hallucination.en.student.ipynb) · [file](ep02-prompt-structured-output/ep02-lab3-hallucination.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab3-hallucination.en.ipynb) · [file](ep02-prompt-structured-output/ep02-lab3-hallucination.en.ipynb) |
 | Lab 4 — LangChain | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab4-langchain.en.student.ipynb) · [file](ep02-prompt-structured-output/ep02-lab4-langchain.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab4-langchain.en.ipynb) · [file](ep02-prompt-structured-output/ep02-lab4-langchain.en.ipynb) |
 
+## EP03 จาก Chatbot สู่ Agent (ch15)
+
+| Lab | ✏️ Starter | ✅ Solution |
+|---|---|---|
+| Lab 1 — From chatbot to agent | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab1-agent-loop.en.student.ipynb) · [file](ep03-chatbot-to-agent/ep03-lab1-agent-loop.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab1-agent-loop.en.ipynb) · [file](ep03-chatbot-to-agent/ep03-lab1-agent-loop.en.ipynb) |
+| Lab 2 — The same assistant with LangChain | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.en.student.ipynb) · [file](ep03-chatbot-to-agent/ep03-lab2-langchain-agent.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.en.ipynb) · [file](ep03-chatbot-to-agent/ep03-lab2-langchain-agent.en.ipynb) |
+
 ## EP04 Workflow Patterns (§19.1)
 
 | Lab | ✏️ Starter | ✅ Solution |
