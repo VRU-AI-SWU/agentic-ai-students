@@ -140,7 +140,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep05-autonomous-agents/index.html"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep05-autonomous-agents/index.html"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -197,6 +197,11 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 From Chatbot to Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
   </div>
 </li>
@@ -242,7 +247,7 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch19/19-1-workflow-patterns/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep05-autonomous-agents/index.html"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep05-autonomous-agents/index.html"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></h1>
 <p class="subtitle lead">§19.2 · ReAct · Planning · Reflection · Tool-Use · LangGraph</p>
@@ -297,7 +302,7 @@ window.Quarto = {
 <div id="tbl-workflow-agent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.1: Workflow vs agent
+Table&nbsp;5.1: Workflow vs agent
 </figcaption>
 <div aria-describedby="tbl-workflow-agent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -358,7 +363,7 @@ Table&nbsp;4.1: Workflow vs agent
 <p>ReAct <span class="citation" data-cites="yao2023react">(<a href="../../index.html#ref-yao2023react" role="doc-biblioref"><span class="nocase">Yao et al.</span> 2023</a>)</span> is the basic pattern behind almost every agent. The LLM alternates between a <strong>Thought</strong> (what to do), an <strong>Action</strong> (call a tool) and an <strong>Observation</strong> (read the result), looping until it has a final answer.</p>
 <p><span id="eq-react"><span class="math display">\[
 \text{Thought}_t \rightarrow \text{Action}_t \rightarrow \text{Observation}_t \rightarrow \text{Thought}_{t+1} \rightarrow \cdots
-\tag{4.1}\]</span></span></p>
+\tag{5.1}\]</span></span></p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-react" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -375,13 +380,13 @@ Table&nbsp;4.1: Workflow vs agent
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-react-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.1: The ReAct loop: the agent alternates between thinking and acting until a stop condition
+Figure&nbsp;5.1: The ReAct loop: the agent alternates between thinking and acting until a stop condition
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The harness around the ReAct loop (<a href="#fig-react" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>) needs four things:</p>
+<p>The harness around the ReAct loop (<a href="#fig-react" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>) needs four things:</p>
 <ol type="1">
 <li><strong>Scratchpad</strong> — Thought steps are logged but not shown to the user</li>
 <li><strong>Tool parsing</strong> — structured tool calls are extracted from the model’s output</li>
@@ -398,10 +403,10 @@ Figure&nbsp;4.1: The ReAct loop: the agent alternates between thinking and actin
 <p><span id="eq-plan-execute"><span class="math display">\[
 \text{Plan} = \text{Planner}(q), \qquad
 \text{Result} = \prod_{i=1}^{|\text{Plan}|} \text{Executor}(\text{Plan}[i], \text{context}_i)
-\tag{4.2}\]</span></span></p>
+\tag{5.2}\]</span></span></p>
 <section id="example-a-report-comparing-transformers-for-time-series" class="level3">
 <h3 class="anchored" data-anchor-id="example-a-report-comparing-transformers-for-time-series">Example: a report comparing transformers for time series</h3>
-<p>The user asks: <em>“Write a 2-page report comparing transformer architectures for time-series forecasting.”</em> The planner writes a 6-step plan; each step lists in <code>deps</code> the steps that must finish first, so the plan is a <strong>DAG (Directed Acyclic Graph)</strong>, as in <a href="#fig-plan-dag" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>.</p>
+<p>The user asks: <em>“Write a 2-page report comparing transformer architectures for time-series forecasting.”</em> The planner writes a 6-step plan; each step lists in <code>deps</code> the steps that must finish first, so the plan is a <strong>DAG (Directed Acyclic Graph)</strong>, as in <a href="#fig-plan-dag" class="quarto-xref">Figure&nbsp;<span>5.2</span></a>.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-plan-dag" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -420,7 +425,7 @@ Figure&nbsp;4.1: The ReAct loop: the agent alternates between thinking and actin
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plan-dag-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each other, so they can run in parallel
+Figure&nbsp;5.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each other, so they can run in parallel
 </figcaption>
 </figure>
 </div>
@@ -447,7 +452,7 @@ Figure&nbsp;4.2: A DAG plan: steps 3 and 4 wait for step 2 but not for each othe
 <div id="tbl-planning" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-planning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.2: Planning strategies (adapted from Table 19.1)
+Table&nbsp;5.2: Planning strategies (adapted from Table 19.1)
 </figcaption>
 <div aria-describedby="tbl-planning-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -515,7 +520,7 @@ Table&nbsp;4.2: Planning strategies (adapted from Table 19.1)
 <div id="tbl-tool-use" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tool-use-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.3: Tool invocation patterns (adapted from Table 19.2)
+Table&nbsp;5.3: Tool invocation patterns (adapted from Table 19.2)
 </figcaption>
 <div aria-describedby="tbl-tool-use-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -578,7 +583,7 @@ Table&nbsp;4.3: Tool invocation patterns (adapted from Table 19.2)
 <div id="tbl-selection" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.4: Choosing a pattern (adapted from Table 19.3)
+Table&nbsp;5.4: Choosing a pattern (adapted from Table 19.3)
 </figcaption>
 <div aria-describedby="tbl-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -628,7 +633,7 @@ Table&nbsp;4.4: Choosing a pattern (adapted from Table 19.3)
 <div id="tbl-langgraph" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-langgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.5: LangGraph vs our own code
+Table&nbsp;5.5: LangGraph vs our own code
 </figcaption>
 <div aria-describedby="tbl-langgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -675,7 +680,7 @@ Table&nbsp;4.5: LangGraph vs our own code
 <div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4.6: EP05 notebooks (English). Every lab has its own setup; API key setup is explained in detail in Lab 1.
+Table&nbsp;5.6: EP05 notebooks (English). Every lab has its own setup; API key setup is explained in detail in Lab 1.
 </figcaption>
 <div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -724,7 +729,7 @@ Table&nbsp;4.6: EP05 notebooks (English). Every lab has its own setup; API key s
 <ol type="1">
 <li>Why does the textbook recommend starting with a workflow before an agent?</li>
 <li>What goes wrong in a ReAct loop with no max iterations?</li>
-<li>In <a href="#fig-plan-dag" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>, which steps can run in parallel, and why?</li>
+<li>In <a href="#fig-plan-dag" class="quarto-xref">Figure&nbsp;<span>5.2</span></a>, which steps can run in parallel, and why?</li>
 <li>How does Reflexion differ from fine-tuning a model?</li>
 <li>Why can’t the multi-tool pattern be used for a tool that needs another tool’s result?</li>
 <li>In LangGraph, what replaces the <code>while</code> loop of the ReAct agent we wrote ourselves?</li>

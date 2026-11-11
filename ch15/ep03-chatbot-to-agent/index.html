@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP03 จาก Chatbot สู่ Agent – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/19-1-workflow-patterns/index.html" rel="next">
+<link href="../../ch01/ep02-prompt-structured-output/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7835d1f0ca29b4e891ee73374c94434a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/19-1-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#วตถประสงคการเรยนร" id="toc-วตถประสงคการเรยนร" class="nav-link active" data-scroll-target="#วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</a></li>
+  <li><a href="#คำขอท-chatbot-ทำไมได" id="toc-คำขอท-chatbot-ทำไมได" class="nav-link" data-scroll-target="#คำขอท-chatbot-ทำไมได">คำขอที่ chatbot ทำไม่ได้</a></li>
+  <li><a href="#chatbot-ตอบหนงครง-แลวรอ" id="toc-chatbot-ตอบหนงครง-แลวรอ" class="nav-link" data-scroll-target="#chatbot-ตอบหนงครง-แลวรอ">Chatbot: ตอบหนึ่งครั้ง แล้วรอ</a></li>
+  <li><a href="#agent-llm-ททำงานเปนวง" id="toc-agent-llm-ททำงานเปนวง" class="nav-link" data-scroll-target="#agent-llm-ททำงานเปนวง">Agent: LLM ที่ทำงานเป็นวง</a></li>
+  <li><a href="#tool-model-ขอ-โปรแกรมทำ" id="toc-tool-model-ขอ-โปรแกรมทำ" class="nav-link" data-scroll-target="#tool-model-ขอ-โปรแกรมทำ">Tool: model ขอ โปรแกรมทำ</a></li>
+  <li><a href="#harness-ตวรถรอบเครองยนต" id="toc-harness-ตวรถรอบเครองยนต" class="nav-link" data-scroll-target="#harness-ตวรถรอบเครองยนต">Harness: ตัวรถรอบเครื่องยนต์</a></li>
+  <li><a href="#หาความทาทายของ-agent" id="toc-หาความทาทายของ-agent" class="nav-link" data-scroll-target="#หาความทาทายของ-agent">ห้าความท้าทายของ agent</a></li>
+  <li><a href="#safety-guardrail-และ-human-in-the-loop" id="toc-safety-guardrail-และ-human-in-the-loop" class="nav-link" data-scroll-target="#safety-guardrail-และ-human-in-the-loop">Safety: guardrail และ human-in-the-loop</a></li>
+  <li><a href="#agentic-ai-stack-แผนทของทงซรส" id="toc-agentic-ai-stack-แผนทของทงซรส" class="nav-link" data-scroll-target="#agentic-ai-stack-แผนทของทงซรส">Agentic AI stack: แผนที่ของทั้งซีรีส์</a></li>
+  <li><a href="#เขยนเอง-vs-framework" id="toc-เขยนเอง-vs-framework" class="nav-link" data-scroll-target="#เขยนเอง-vs-framework">เขียนเอง vs framework</a></li>
+  <li><a href="#คำศพทในตอนน" id="toc-คำศพทในตอนน" class="nav-link" data-scroll-target="#คำศพทในตอนน">คำศัพท์ในตอนนี้</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#อานเพมเตม" id="toc-อานเพมเตม" class="nav-link" data-scroll-target="#อานเพมเตม">อ่านเพิ่มเติม</a></li>
+  <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · Agent คืออะไร และออกแบบอย่างไร</a></li><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></h1>
+<p class="subtitle lead">บทที่ 15 (หน้า 292–294) + ตาราง 18.1 · agent loop · tool · harness · ห้าความท้าทาย · Agentic AI stack</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>🎬 วิดีโอและ notebook ประกอบ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>วิดีโอ:</strong> ทฤษฎี (≈12 นาที) → Lab 1 (≈17 นาที) → Lab 2 (≈15 นาที) → สรุป (≈5 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
+<li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
+<li><strong>Model ใน lab:</strong> Gemma 4 26B ผ่าน OpenRouter (ล็อก provider ไว้ที่ DeepInfra) ไม่ฟรี แต่รัน Lab 1 ครบหนึ่งรอบใช้เงินไม่ถึงหนึ่งเซนต์ รุ่น <code>:free</code> ใช้กับ EP นี้ไม่ได้ (ดูเหตุผลใน Lab 1) ต้องมี OpenRouter API key</li>
+<li><strong>เริ่มจากตอนนี้ได้:</strong> EP03 เปิด module ใหม่เรื่อง agent ถ้ารู้พื้นฐาน LLM อยู่แล้ว ไม่ต้องดู <a href="../../ch01/ep01-how-llms-work/index.html">EP01</a>–<a href="../../ch01/ep02-prompt-structured-output/index.html">EP02</a> ก่อน</li>
+</ul>
+</div>
+</div>
+<section id="วตถประสงคการเรยนร" class="level2">
+<h2 class="anchored" data-anchor-id="วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</h2>
+<p>เมื่อจบตอนนี้ ผู้เรียนจะสามารถ</p>
+<ol type="1">
+<li>อธิบายความต่างระหว่าง chatbot ที่ตอบครั้งเดียวกับ agent ที่ทำงานเป็นวง รับรู้ คิด ลงมือ</li>
+<li>อธิบายว่า model ลงมือผ่าน tool ได้อย่างไร ทั้งที่มันเขียนได้แค่ข้อความ</li>
+<li>บอกหน้าที่ของ harness และเขียน agent loop เองด้วย Python</li>
+<li>อธิบายห้าความท้าทายของ agent (persistence, grounding, action, coordination, safety) และชี้ได้ว่าแต่ละข้ออยู่ตรงไหนในโค้ด</li>
+<li>ใส่ guardrail และให้คนอนุมัติก่อน agent ลงมือในเรื่องที่สำคัญ</li>
+<li>จับคู่แต่ละชิ้นของ LangChain (<code>@tool</code>, <code>create_agent</code>, checkpointer, middleware) กับโค้ดที่เขียนเอง</li>
+</ol>
+</section>
+<section id="คำขอท-chatbot-ทำไมได" class="level2">
+<h2 class="anchored" data-anchor-id="คำขอท-chatbot-ทำไมได">คำขอที่ chatbot ทำไม่ได้</h2>
+<p>สมมติว่านักศึกษาพิมพ์มาว่า “อีกกี่วันจะสอบกลางภาค ช่วยจองห้องติวให้หน่อย” chatbot ที่เก่งแค่ไหนก็มักตอบได้แค่ว่า ขออภัย ไม่ทราบวันที่วันนี้ และจองห้องให้ไม่ได้ แล้วก็หยุดรอ ส่วนผู้ช่วยอีกแบบเปิดปฏิทินเอง ดูว่าห้องไหนว่าง ถามเราก่อนว่าจองห้องนี้ได้ไหม แล้วจองให้จริง ทั้งสองแบบใช้ model ตัวเดียวกันได้ สิ่งที่ต่างคือสิ่งที่เราสร้างไว้รอบ model</p>
+</section>
+<section id="chatbot-ตอบหนงครง-แลวรอ" class="level2">
+<h2 class="anchored" data-anchor-id="chatbot-ตอบหนงครง-แลวรอ">Chatbot: ตอบหนึ่งครั้ง แล้วรอ</h2>
+<p>ตำราเรียกสิ่งที่เราใช้กันทุกวันว่า <strong>chatbot แบบตอบรอบเดียว</strong> (single-turn chatbot): model ได้ข้อความหนึ่งข้อความ ตอบกลับหนึ่งคำตอบ แล้วหยุดรอ <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, ch.&nbsp;15)</span> เหมือนรุ่นพี่ที่เราโทรไปถาม บอกได้ว่าควรทำอะไร เข้าเว็บไหน แต่ลงมือทำแทนเราไม่ได้ และสิ่งที่รุ่นพี่คนนี้รู้ก็มีแค่สิ่งที่เรียนมาตอนฝึก จาก EP01 เรารู้แล้วว่า model ไม่รู้ว่าวันนี้วันที่เท่าไร และไม่เคยเห็นปฏิทินสอบของวิชาเรา</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> เรียก Gemma ครั้งเดียวด้วยคำขอนี้ model บอกเองว่าไม่รู้วันสอบของเรา และเข้าระบบจองห้องไม่ได้</p>
+</blockquote>
+</section>
+<section id="agent-llm-ททำงานเปนวง" class="level2">
+<h2 class="anchored" data-anchor-id="agent-llm-ททำงานเปนวง">Agent: LLM ที่ทำงานเป็นวง</h2>
+<p>ตำรานิยามระบบ agentic AI ว่าเป็นระบบที่ LLM ทำงานเป็นวง รับสิ่งที่เห็นจากสภาพแวดล้อม คิดว่าจะทำอะไรต่อ แล้วลงมือ วนไปจนบรรลุเป้าหมาย หรือจนกว่าจะหยุดถามคน <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, ch.&nbsp;15)</span> สิ่งที่เห็นในแต่ละรอบเรียกว่า <strong>observation</strong> อาจเป็นข้อความของผู้ใช้ ผลลัพธ์จาก tool หรือข้อมูลจากเซนเซอร์ ส่วนการลงมืออาจเป็นการเรียก tool รันโค้ด หรือเรียก API แนวคิดให้ model คิดสลับกับลงมือนี้ตรงกับ ReAct ที่เราจะเจออีกใน EP05 <span class="citation" data-cites="yao2023react">(<a href="../../index.html#ref-yao2023react" role="doc-biblioref"><span class="nocase">Yao และคณะ</span> 2023</a>)</span></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-loop">flowchart TD
+  O["👀 รับรู้&lt;br/&gt;observation"] --&gt; R["💭 คิด"]
+  R --&gt; A["🔧 ลงมือ&lt;br/&gt;เรียก tool"]
+  A --&gt; O
+  R --&gt; D["🏁 เสร็จ / 🙋 ถามคน"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;3.1: agent loop: ขั้นต่อไปของทุกรอบมาจากสิ่งที่เพิ่งเห็นในรอบก่อน
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>ลองนึกถึงเลขาที่ได้รับงานจัดห้องติว:</p>
+<div id="tbl-rounds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rounds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;3.1: วงของเลขาจัดห้องติว
+</figcaption>
+<div aria-describedby="tbl-rounds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>รอบ</th>
+<th>👀 เห็น</th>
+<th>💭 คิด</th>
+<th>🔧 ทำ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>คำขอของนักศึกษา</td>
+<td>ต้องรู้วันสอบก่อน</td>
+<td>เปิดปฏิทิน</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>สอบ 18 พ.ย. · วันนี้ 10 พ.ย.</td>
+<td>ติวก่อนสอบ</td>
+<td>ดูห้องว่างวันพฤหัส</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>ห้อง 3 ว่างบ่ายโมง</td>
+<td>การจองเป็นเรื่องจริง</td>
+<td>🙋 ถามนักศึกษาก่อน</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>ขั้นต่อไปของทุกรอบมาจากสิ่งที่เพิ่งเห็นในรอบก่อน นี่คือสิ่งที่การเรียก model ครั้งเดียวทำไม่ได้</p>
+</section>
+<section id="tool-model-ขอ-โปรแกรมทำ" class="level2">
+<h2 class="anchored" data-anchor-id="tool-model-ขอ-โปรแกรมทำ">Tool: model ขอ โปรแกรมทำ</h2>
+<p>model เขียนได้แค่ข้อความ มันกดปุ่มจองห้องเองไม่ได้ คำตอบคือ <strong>tool</strong> ซึ่งก็คือฟังก์ชันในโปรแกรมของเราเอง เช่นเปิดปฏิทิน ดูห้องว่าง และจองห้อง เราบอก model ว่ามีเครื่องมืออะไรให้ใช้ เมื่อมันอยากใช้ มันจะเขียนคำขอออกมาเป็นแบบฟอร์มที่เรียกว่า <strong>tool call</strong> ว่าอยากเรียกเครื่องมือไหน ด้วยค่าอะไร <span class="citation" data-cites="schick2023toolformer">(<a href="../../index.html#ref-schick2023toolformer" role="doc-biblioref"><span class="nocase">Schick และคณะ</span> 2023</a>)</span> แล้วโปรแกรมของเราเป็นคนเรียกฟังก์ชันนั้นจริง ผลที่ได้ส่งกลับไปเป็น observation ของรอบถัดไป เหมือนหมอที่เขียนใบสั่งยา แต่คนจ่ายยาคือเภสัชกร</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"name"</span><span class="fu">:</span> <span class="st">"find_rooms"</span><span class="fu">,</span> <span class="dt">"arguments"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"date"</span><span class="fu">:</span> <span class="st">"2026-11-12"</span><span class="fu">}}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>ใน Lab 1 “เภสัชกร” คือฟังก์ชันสามบรรทัดนี้:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_tool(call):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    args <span class="op">=</span> json.loads(call.function.arguments <span class="kw">or</span> <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.dumps(FUNCS[call.function.name](<span class="op">**</span>args), ensure_ascii<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="harness-ตวรถรอบเครองยนต" class="level2">
+<h2 class="anchored" data-anchor-id="harness-ตวรถรอบเครองยนต">Harness: ตัวรถรอบเครื่องยนต์</h2>
+<p>ใครเป็นคนวนรอบ ใครเรียก tool ใครเก็บว่าทำอะไรไปแล้ว ตำราเรียกส่วนนี้ว่า <strong>harness</strong> และเปรียบว่าเป็นระบบปฏิบัติการของ agent: คุมวงของ agent ดูแลงบของ context window ส่งงานให้ tool จัดการเมื่อมีอะไรพัง เก็บสถานะ และบันทึกให้ย้อนดูได้ว่า agent ทำอะไรไปบ้าง <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, ch.&nbsp;15)</span> ถ้า model คือเครื่องยนต์ harness ก็คือรถทั้งคัน ทั้งพวงมาลัย เบรก และเข็มขัดนิรภัย เครื่องยนต์แรงแค่ไหนก็พาเราไปไม่ถึงไหนถ้าไม่มีตัวรถ</p>
+<p>harness ตัวแรกของเราใน Lab 1 คือลูปนี้:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_agent(history, max_steps<span class="op">=</span>MAX_STEPS):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_steps <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        msg <span class="op">=</span> call_llm(history)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> msg.tool_calls:                      <span class="co"># ไม่ขอ tool แล้ว = ตอบเสร็จ</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>            history.append({<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: msg.content})</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> msg.content</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        history.append({<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: msg.content <span class="kw">or</span> <span class="st">""</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"tool_calls"</span>: [c.model_dump() <span class="cf">for</span> c <span class="kw">in</span> msg.tool_calls]})</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> call <span class="kw">in</span> msg.tool_calls:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> call.function.name <span class="kw">in</span> NEEDS_APPROVAL:  <span class="co"># เรื่องสำคัญ: พักไว้รอคน</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                PENDING.append(call)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> run_tool(call)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            history.append({<span class="st">"role"</span>: <span class="st">"tool"</span>, <span class="st">"tool_call_id"</span>: call.<span class="bu">id</span>, <span class="st">"content"</span>: result})</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> PENDING:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="st">"⏸ รออนุมัติ"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"⚠️ หยุด: ครบ </span><span class="sc">{</span>max_steps<span class="sc">}</span><span class="ss"> รอบ"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> พอเติม tool สามตัวกับลูปนี้ agent เรียก <code>get_calendar</code> เห็นว่าวันนี้วันอังคารที่ 10 คิดเองว่าพฤหัสนี้คือวันที่ 12 แล้วเรียก <code>find_rooms</code> สุดท้ายตอบว่าอีกแปดวันสอบ และเพราะห้อง 3 ว่างทั้งบ่ายโมงและบ่ายสาม มันจึงไม่เดาเอง แต่ถามเรากลับ</p>
+</blockquote>
+</section>
+<section id="หาความทาทายของ-agent" class="level2">
+<h2 class="anchored" data-anchor-id="หาความทาทายของ-agent">ห้าความท้าทายของ agent</h2>
+<p>เมื่อเปลี่ยนจาก chatbot มาเป็น agent ตำราบอกว่าเราจะเจอความท้าทายพื้นฐานห้าข้อ ที่การเรียก model ครั้งเดียวแก้ไม่ได้ <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, ch.&nbsp;15)</span></p>
+<div id="tbl-challenges" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-challenges-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;3.2: ห้าความท้าทายเมื่อ agent ลงมือได้จริง
+</figcaption>
+<div aria-describedby="tbl-challenges-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ความท้าทาย</th>
+<th>ความหมาย</th>
+<th>ตัวอย่างในงานจองห้องติว</th>
+<th>ลึกขึ้นใน</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>🧠 Persistence</td>
+<td>จำสิ่งที่ทำไปแล้ว สิ่งที่พลาด และบริบท ข้ามรอบ ข้ามวัน</td>
+<td>เช้าวันพฤหัส “ขอเลื่อนเป็นบ่ายสาม” ต้องรู้ว่าเมื่อวานจองอะไร</td>
+<td>EP07, EP12</td>
+</tr>
+<tr class="even">
+<td>📚 Grounding</td>
+<td>เข้าถึงความรู้ใหม่หรือเฉพาะทางที่ไม่มีตอนฝึก</td>
+<td>วันสอบของวิชาเรา และวันที่ของวันนี้</td>
+<td>EP10–11 (RAG)</td>
+</tr>
+<tr class="odd">
+<td>🔧 Action</td>
+<td>ลงมือกับระบบภายนอก (ฐานข้อมูล API ไฟล์ เบราว์เซอร์) ผ่านช่องทางที่นิยามชัด</td>
+<td>ระบบจองห้องของคณะ</td>
+<td>EP13–14 (MCP)</td>
+</tr>
+<tr class="even">
+<td>👥 Coordination</td>
+<td>หลาย agent ที่ถนัดคนละด้าน ร่วมมือ ส่งต่องาน และตกลงกัน</td>
+<td>จัดวันติวทั้งชั้น: จองห้อง · ทำข้อสอบฝึก · แจ้งนักศึกษา</td>
+<td>EP15–16</td>
+</tr>
+<tr class="odd">
+<td>🛡️ Safety</td>
+<td>guardrail · ให้คนกำกับดูแล · ถอยอย่างนุ่มนวลเมื่อไม่แน่ใจ</td>
+<td>จองได้แค่ห้องติว · ถามก่อนจอง · ไม่บอกว่าจองแล้วทั้งที่ยังไม่ได้จอง</td>
+<td>ทุก EP</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Persistence</strong> สำคัญเพราะ model เองไม่จำอะไรข้ามการเรียกเลย ทุกครั้งที่เรียก มันเห็นแค่สิ่งที่อยู่ใน context window ตอนนั้น การจำจึงเป็นหน้าที่ของ harness ที่ต้องเก็บประวัติแล้วส่งกลับเข้าไปทุกครั้ง เหมือนเลขาที่ความจำหายทุกเช้า แต่มีสมุดบันทึกไว้เปิดดู ส่วน <strong>action</strong> ตำราเปรียบมาตรฐานการต่อ tool ว่าเหมือนพอร์ต USB ต่อแบบเดียว ใช้ได้กับทุกอุปกรณ์ ซึ่งคือ MCP ใน EP13</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> ตอบ “13:00 ครับ” ต่อในประวัติเดิม agent จองห้อง 3 วันที่ 12 บ่ายโมงได้ถูกต้อง แต่พอเริ่มประวัติใหม่แล้วขอเลื่อนเป็นบ่ายสาม มันถามกลับว่าวันไหน ห้องไหน <strong>ความจำของ agent จึงไม่ได้อยู่ใน model แต่อยู่ในประวัติที่ harness เก็บ</strong></p>
+</blockquote>
+</section>
+<section id="safety-guardrail-และ-human-in-the-loop" class="level2">
+<h2 class="anchored" data-anchor-id="safety-guardrail-และ-human-in-the-loop">Safety: guardrail และ human-in-the-loop</h2>
+<p>ข้อสุดท้ายสำคัญที่สุดเมื่อ agent ลงมือได้จริง ตำราบอกว่าการกระทำที่เป็นอิสระต้องมีสามอย่าง: <strong>guardrail</strong> กติกาที่ harness บังคับ เช่นจองได้แค่ห้องติวและวนได้ไม่เกินแปดรอบ, การให้คนกำกับดูแลหรือ <strong>human-in-the-loop</strong> เหมือนเด็กฝึกงานที่ต้องให้หัวหน้าเซ็นก่อนจ่ายเงิน และเมื่อไม่แน่ใจต้องถอยอย่างนุ่มนวล บอกตรงๆ หรือถามคน ดีกว่าแต่งเรื่องว่าจองให้แล้ว ทั้งที่ยังไม่ได้จอง</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1</strong> มี guardrail สามชั้น:</p>
+<ul>
+<li><strong>จำกัดรอบ:</strong> <code>max_steps=1</code> agent เรียกปฏิทินได้ครั้งเดียวแล้วหยุด “ครบ 1 รอบ”</li>
+<li><strong>ตรวจในตัว tool:</strong> <code>book_room</code> ตรวจก่อนว่าห้องว่างจริงตอนนั้น ถ้าไม่ว่างคืน error แทนการจองมั่ว</li>
+<li><strong>ขออนุมัติ:</strong> ใส่ <code>book_room</code> ใน <code>NEEDS_APPROVAL</code> แล้วขอเลื่อนเป็นบ่ายสาม harness พักคำขอไว้ การจองยังเป็นบ่ายโมงจนเรากดอนุมัติ จึงเปลี่ยนเป็นบ่ายสาม</li>
+</ul>
+</blockquote>
+</section>
+<section id="agentic-ai-stack-แผนทของทงซรส" class="level2">
+<h2 class="anchored" data-anchor-id="agentic-ai-stack-แผนทของทงซรส">Agentic AI stack: แผนที่ของทั้งซีรีส์</h2>
+<p>ตำราไม่มอง agent เป็น model ตัวเดียว แต่เป็นระบบหลายชั้น แต่ละชั้นแก้ปัญหาหนึ่งเรื่อง <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, Figure 15.1)</span> ภาพนี้คือแผนที่ของทั้งซีรีส์เราด้วย และทุกชั้นจะถูกเพิ่มเข้าไปในโปรเจกต์เดียวกัน คือผู้ช่วยค้นคว้างานวิจัย (Research Assistant Agent)</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-stack" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stack-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-stack">flowchart TD
+  U["👤 User · Agentic UI (EP20)"] --- H["🧠 Agent core: รับรู้ · คิด · ลงมือ&lt;br/&gt;ล้อมด้วย Harness &amp; Orchestration (EP07–09)"]
+  H --- X["📚 RAG (EP10–11) · 🧠 Memory (EP12)&lt;br/&gt;🔧 Tools via MCP + Skills (EP13–14) · 🤖 Agents via A2A (EP15–16)"]
+  X --- E["🌍 Environment"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stack-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+รูปที่&nbsp;3.2: Agentic AI stack ตามตำรา และ EP ที่จะสร้างแต่ละชั้น
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>ตรงกลางคือ agent core ล้อมด้วย harness ที่ตัดสินว่าเมื่อไรจะค้นข้อมูล เมื่อไรจะเรียก tool เมื่อไรจะส่งงานให้ agent ตัวอื่น และเมื่อไรจะถามคน ด้านล่างคือสิ่งที่ agent ต่อออกไป ด้านบนคือผู้ใช้ที่ให้เป้าหมาย feedback และคอยกำกับ ส่วน design pattern (EP04–06) การวัดผล (EP17–18) และ framework (EP19) มีตอนของมันเอง ตำราสรุปว่า agentic AI ไม่ใช่แค่การเขียน prompt แต่ต้องออกแบบการจัดการ context การรับมือ error guardrail และการสังเกตการทำงานในทุกชั้น</p>
+</section>
+<section id="เขยนเอง-vs-framework" class="level2">
+<h2 class="anchored" data-anchor-id="เขยนเอง-vs-framework">เขียนเอง vs framework</h2>
+<p>Lab 2 สร้างผู้ช่วยตัวเดิมอีกครั้งด้วย <strong>LangChain</strong> แล้วเทียบทีละชิ้น ตำรามีตารางเทียบ framework ไว้ในบทที่ 18 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>, Table 18.1)</span> ส่วนตารางข้างล่างคือสิ่งที่เราเห็นจริงในสอง lab</p>
+<div id="tbl-langchain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-langchain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;3.3: แต่ละชิ้นของ LangChain แทนโค้ดส่วนไหน
+</figcaption>
+<div aria-describedby="tbl-langchain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Lab 1 (เขียนเอง)</th>
+<th>Lab 2 (LangChain)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>เรียก model</td>
+<td><code>client</code> + <code>call_llm</code></td>
+<td><code>ChatOpenAI</code></td>
+</tr>
+<tr class="even">
+<td>tool</td>
+<td>ฟังก์ชัน + schema + <code>FUNCS</code> + <code>run_tool</code></td>
+<td><code>@tool</code> (schema จาก type hint และ docstring)</td>
+</tr>
+<tr class="odd">
+<td>agent loop</td>
+<td><code>run_agent()</code></td>
+<td><code>create_agent()</code></td>
+</tr>
+<tr class="even">
+<td>ความจำ</td>
+<td><code>history</code> list</td>
+<td><code>checkpointer</code> + <code>thread_id</code></td>
+</tr>
+<tr class="odd">
+<td>จำกัดรอบ</td>
+<td><code>MAX_STEPS</code></td>
+<td><code>ModelCallLimitMiddleware</code></td>
+</tr>
+<tr class="even">
+<td>ให้คนอนุมัติ</td>
+<td><code>NEEDS_APPROVAL</code> + <code>approve()</code></td>
+<td><code>HumanInTheLoopMiddleware</code> + <code>Command(resume=...)</code></td>
+</tr>
+<tr class="odd">
+<td>ตรวจห้องว่างก่อนจอง</td>
+<td>ใน <code>book_room</code></td>
+<td>ใน <code>book_room</code> (ยังเป็นงานของเรา)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>safe <span class="op">=</span> create_agent(llm, tools<span class="op">=</span>TOOLS, system_prompt<span class="op">=</span>SYSTEM, checkpointer<span class="op">=</span>memory,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    middleware<span class="op">=</span>[HumanInTheLoopMiddleware(interrupt_on<span class="op">=</span>{<span class="st">"book_room"</span>: <span class="va">True</span>})])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: <span class="st">"student-1"</span>}}</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>safe.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"ขอเลื่อนเป็นบ่ายสามได้ไหม"</span>}]}, config)  <span class="co"># ⏸ พักไว้</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>safe.invoke(Command(resume<span class="op">=</span>{<span class="st">"decisions"</span>: [{<span class="st">"type"</span>: <span class="st">"approve"</span>}]}), config)                   <span class="co"># ✅ จองจริง</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 2:</strong> agent เดินขั้นตอนเหมือน Lab 1 ทุกขั้น ข้างในเก็บประวัติแบบเดียวกัน (<code>human</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>) แต่ framework <strong>ไม่ได้จำให้เอง</strong>: ไม่ใส่ checkpointer แล้วตอบ “13:00 ครับ” ไม่มีการจองเลย พอใส่ checkpointer จึงจองได้ใน thread <code>student-1</code> ส่วน thread <code>student-2</code> ถามกลับว่าวันไหน ห้องไหน <code>ModelCallLimitMiddleware(run_limit=1)</code> หยุดหลังเรียกปฏิทินครั้งเดียว และ <code>HumanInTheLoopMiddleware</code> พัก <code>book_room</code> ไว้ การจองยังเป็นบ่ายโมงจนเราส่ง <code>"approve"</code> กลับไป จึงเปลี่ยนเป็นบ่ายสาม</p>
+</blockquote>
+<p>framework ช่วยให้โค้ดสั้นลงและมีของพร้อมใช้ เช่นเก็บประวัติลงฐานข้อมูล หรือไม่อนุมัติพร้อมเหตุผล แต่ทุกชิ้นคือสิ่งที่เราเขียนเองได้ใน Lab 1 และเมื่อ agent ทำตัวแปลกๆ ความเข้าใจจาก Lab 1 คือสิ่งที่ช่วยให้รู้ว่าต้องดูตรงไหน</p>
+<p><strong>ให้ model คิด ให้ tool ลงมือ และให้คนตัดสินใจในเรื่องที่สำคัญ</strong></p>
+</section>
+<section id="คำศพทในตอนน" class="level2">
+<h2 class="anchored" data-anchor-id="คำศพทในตอนน">คำศัพท์ในตอนนี้</h2>
+<div id="tbl-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;3.4: คำศัพท์ที่ใช้ใน EP03
+</figcaption>
+<div aria-describedby="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>คำ</th>
+<th>คืออะไร</th>
+<th>ตัวอย่าง</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>chatbot (single-turn)</td>
+<td>model ตอบหนึ่งครั้งแล้วรอคนพิมพ์ใหม่</td>
+<td>“ลองเข้าเว็บจองห้องดูนะครับ”</td>
+</tr>
+<tr class="even">
+<td>agent</td>
+<td>ระบบที่ให้ LLM ทำงานเป็นวง รับรู้ คิด ลงมือ จนเสร็จหรือถามคน</td>
+<td>ผู้ช่วยที่จองห้องติวให้จนเสร็จ</td>
+</tr>
+<tr class="odd">
+<td>agent loop</td>
+<td>วงรับรู้ → คิด → ลงมือ ที่วนซ้ำ</td>
+<td>เปิดปฏิทิน → เห็นวันสอบ → ดูห้อง</td>
+</tr>
+<tr class="even">
+<td>observation</td>
+<td>สิ่งที่ agent เห็นในแต่ละรอบ</td>
+<td>“ห้อง 3 ว่างบ่ายโมง”</td>
+</tr>
+<tr class="odd">
+<td>tool</td>
+<td>ฟังก์ชันในโปรแกรมของเราที่ model ขอให้เรียกได้</td>
+<td>ดูห้องว่าง, จองห้อง</td>
+</tr>
+<tr class="even">
+<td>tool call</td>
+<td>คำขอเรียก tool ที่ model เขียนเป็นแบบฟอร์ม</td>
+<td><code>{"name": "find_rooms", ...}</code></td>
+</tr>
+<tr class="odd">
+<td>harness</td>
+<td>โค้ดรอบ model ที่คุมวง ส่งงานให้ tool เก็บสถานะ และหยุดเมื่อควรหยุด</td>
+<td><code>run_agent</code> ใน Lab 1</td>
+</tr>
+<tr class="even">
+<td>persistence</td>
+<td>การจำสิ่งที่ทำไปแล้ว สิ่งที่พลาด และบริบท ข้ามรอบ ข้ามวัน</td>
+<td>“ขอเลื่อนห้องเมื่อวานเป็นบ่ายสาม”</td>
+</tr>
+<tr class="odd">
+<td>grounding</td>
+<td>ให้ agent ใช้ข้อมูลใหม่หรือข้อมูลเฉพาะของเรา ที่ไม่มีตอนฝึก</td>
+<td>ปฏิทินสอบของวิชา AI</td>
+</tr>
+<tr class="even">
+<td>multi-agent</td>
+<td>หลาย agent ที่ถนัดคนละงาน แบ่งงานและส่งต่อกัน</td>
+<td>คนหนึ่งจองห้อง คนหนึ่งทำข้อสอบฝึก</td>
+</tr>
+<tr class="odd">
+<td>guardrail</td>
+<td>กติกาที่ harness บังคับ ไม่ให้ agent ทำเกินขอบเขต</td>
+<td>วนไม่เกิน 8 รอบ, จองได้แค่ห้องติว</td>
+</tr>
+<tr class="even">
+<td>human-in-the-loop</td>
+<td>ให้คนอนุมัติก่อน agent ลงมือในเรื่องสำคัญ</td>
+<td>“จองห้อง 3 บ่ายโมง ยืนยันไหม?”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;3.5: Notebook ของ EP03 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก model อธิบายใน Lab 1)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ เฉลย</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — จาก chatbot เป็น agent</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab1-agent-loop.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab1-agent-loop.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — ผู้ช่วยตัวเดิมด้วย LangChain</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>ปฏิทินและระบบจองห้องเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง คำตอบที่คุณรันเองจึงอาจต่างไปบ้าง เช่นถ้อยคำที่ agent ใช้ถามกลับ</p>
+</section>
+<section id="คำถามทบทวน" class="level2">
+<h2 class="anchored" data-anchor-id="คำถามทบทวน">คำถามทบทวน</h2>
+<ol type="1">
+<li>chatbot แบบตอบรอบเดียวกับ agent ต่างกันอย่างไร ยกตัวอย่างจากคำขอจองห้องติว</li>
+<li>model เขียนได้แค่ข้อความ แล้ว agent จองห้องได้อย่างไร ใครเป็นคนรันฟังก์ชันจริง</li>
+<li>harness ทำหน้าที่อะไรบ้าง และใน Lab 1 harness ของเราคือโค้ดส่วนไหน</li>
+<li>ทำไมใน Lab 1 agent จึงถามกลับแทนที่จะจองห้องทันที</li>
+<li>เมื่อเริ่มประวัติใหม่แล้วขอเลื่อนการจอง agent ทำอะไร และนั่นบอกอะไรเกี่ยวกับความจำของ agent</li>
+<li>guardrail สามชั้นใน Lab 1 คืออะไร และแต่ละชั้นอยู่ที่ไหนในโค้ด</li>
+<li>ใน Lab 2 ทำไมไม่มีการจองเมื่อยังไม่ใส่ checkpointer</li>
+<li>ทำไมการตรวจว่าห้องว่างจริงยังอยู่ใน <code>book_room</code> แม้จะใช้ LangChain แล้ว</li>
+</ol>
+</section>
+<section id="อานเพมเตม" class="level2">
+<h2 class="anchored" data-anchor-id="อานเพมเตม">อ่านเพิ่มเติม</h2>
+<p>ไม่จำเป็นต่อการทำ lab แต่ช่วยให้เข้าใจลึกขึ้น</p>
+<ul>
+<li><strong>Agent ภาพรวม:</strong> บทความภาพรวมของ LLM agent <span class="citation" data-cites="weng2023agents">(<a href="../../index.html#ref-weng2023agents" role="doc-biblioref">Weng 2023</a>)</span> และ survey <span class="citation" data-cites="wang2024agentsurvey">(<a href="../../index.html#ref-wang2024agentsurvey" role="doc-biblioref"><span class="nocase">Wang และคณะ</span> 2024</a>)</span></li>
+<li><strong>Agent loop:</strong> ReAct ที่ให้ model คิดสลับกับลงมือ <span class="citation" data-cites="yao2023react">(<a href="../../index.html#ref-yao2023react" role="doc-biblioref"><span class="nocase">Yao และคณะ</span> 2023</a>)</span></li>
+<li><strong>Tool use:</strong> model ที่เรียนรู้การเรียก tool เอง <span class="citation" data-cites="schick2023toolformer">(<a href="../../index.html#ref-schick2023toolformer" role="doc-biblioref"><span class="nocase">Schick และคณะ</span> 2023</a>)</span> และแนวทางเขียน tool ให้ agent <span class="citation" data-cites="anthropic2025tools">(<a href="../../index.html#ref-anthropic2025tools" role="doc-biblioref">Anthropic 2025</a>)</span></li>
+<li><strong>ออกแบบ agent ให้เรียบง่าย:</strong> เมื่อไรควรใช้ agent และเมื่อไร workflow ก็พอ <span class="citation" data-cites="anthropic2024effective">(<a href="../../index.html#ref-anthropic2024effective" role="doc-biblioref">Schluntz และ Zhang 2024</a>)</span> ซึ่งเป็นคำถามของ EP04</li>
+</ul>
+</section>
+<section id="เอกสารอางอง" class="level2">
+<h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-anthropic2025tools" class="csl-entry" role="listitem">
+Anthropic. 2025. <em>Writing effective tools for <span>AI</span> agents—with agents</em>. Anthropic Engineering. <a href="https://www.anthropic.com/engineering/writing-tools-for-agents">https://www.anthropic.com/engineering/writing-tools-for-agents</a>.
+</div>
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+<div id="ref-schick2023toolformer" class="csl-entry" role="listitem">
+<span class="nocase">Schick, Timo, Jane Dwivedi-Yu, Roberto Dessì, และคณะ</span>. 2023. <span>“Toolformer: Language Models Can Teach Themselves to Use Tools”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2302.04761">https://arxiv.org/abs/2302.04761</a>.
+</div>
+<div id="ref-anthropic2024effective" class="csl-entry" role="listitem">
+Schluntz, Erik, และ Barry Zhang. 2024. <em>Building Effective Agents</em>. Anthropic. <a href="https://www.anthropic.com/research/building-effective-agents">https://www.anthropic.com/research/building-effective-agents</a>.
+</div>
+<div id="ref-wang2024agentsurvey" class="csl-entry" role="listitem">
+<span class="nocase">Wang, Lei, Chen Ma, Xueyang Feng, และคณะ</span>. 2024. <span>“A Survey on Large Language Model based Autonomous Agents”</span>. <em>Frontiers of Computer Science</em>. <a href="https://arxiv.org/abs/2308.11432">https://arxiv.org/abs/2308.11432</a>.
+</div>
+<div id="ref-weng2023agents" class="csl-entry" role="listitem">
+Weng, Lilian. 2023. <em><span>LLM</span> Powered Autonomous Agents</em>. Lil’Log. <a href="https://lilianweng.github.io/posts/2023-06-23-agent/">https://lilianweng.github.io/posts/2023-06-23-agent/</a>.
+</div>
+<div id="ref-yao2023react" class="csl-entry" role="listitem">
+<span class="nocase">Yao, Shunyu, Jeffrey Zhao, Dian Yu, และคณะ</span>. 2023. <span>“<span>ReAct</span>: Synergizing Reasoning and Acting in Language Models”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch01/ep02-prompt-structured-output/index.html" class="pagination-link" aria-label="EP02 Prompt, Structured Output และ Hallucination">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch19/19-1-workflow-patterns/index.html" class="pagination-link" aria-label="EP04 Workflow Patterns">
+        <span class="nav-page-text"><span class="chapter-title">EP04 Workflow Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
