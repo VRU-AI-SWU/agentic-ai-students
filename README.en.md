@@ -6,7 +6,7 @@ Notebooks for the YouTube series *Agentic AI ภาษาไทย* (narrated in
 
 📖 **Read the lessons online:** https://vru-ai-swu.github.io/agentic-ai-students/en/
 
-👋 **Start here:** the series in one minute (EP00, Thai with English subtitles) — https://youtu.be/GDHsek4l-Zk
+👋 **Start here:** the series in one minute (EP00, Thai with English subtitles) — https://youtu.be/9rca27feC24
 
 Each lab has two files:
 
