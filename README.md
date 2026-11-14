@@ -1,8 +1,8 @@
-# Agentic AI (Thai course) — Lab notebooks for learners
+# Agentic AI — Lab notebooks for learners
 
 [![English](https://img.shields.io/badge/lang-English-blue)](README.md) [![ภาษาไทย](https://img.shields.io/badge/lang-%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2-lightgrey)](README.th.md)
 
-Notebooks for the YouTube series *Agentic AI ภาษาไทย* (narrated in Thai, with English subtitles), based on the textbook *The Hitchhiker's Guide to Agentic AI* (Haggai Roitman, CC BY-SA 4.0). Every lab has an English notebook; the links below open them.
+Notebooks for the YouTube series *Agentic AI*, narrated in English with English and Thai subtitles (a Thai audio track is added to each video later), based on the textbook *The Hitchhiker's Guide to Agentic AI* (Haggai Roitman, CC BY-SA 4.0). The episodes are being remade in English one by one: EP01 is done, and EP02–EP05 are still the earlier Thai-narrated versions with English subtitles until their remakes are out. Every lab has an English notebook; the links below open them.
 
 📖 **Read the lessons online:** https://vru-ai-swu.github.io/agentic-ai-students/en/
 
