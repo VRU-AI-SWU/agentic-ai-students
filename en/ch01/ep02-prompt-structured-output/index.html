@@ -311,7 +311,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Videos</strong> (narrated in Thai, with English subtitles): theory (≈12 min) → Labs 1–4 (8–12 min) → recap (≈6 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI</a></li>
+<li><strong>Videos</strong> (English audio, English &amp; Thai subtitles · Thai audio coming): theory (≈9 min) → Labs 1–4 (5–9 min) → recap (≈4 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI</a></li>
 <li><strong>Notebooks:</strong> every lab has an ✏️ English starter (fill in only the TODOs) and a ✅ solution; see the <a href="#lab">Labs</a> table at the end</li>
 <li><strong>Model in the labs:</strong> Gemma 4 26B through OpenRouter, pinned to the Parasail provider. Not free, but all four labs cost less than one baht (a few US cents). The <code>:free</code> version doesn’t work for this episode (Lab 1 explains why). You need an OpenRouter API key.</li>
 <li><strong>Optional episode:</strong> EP01–EP02 (module M0) cover LLM basics. If you have used structured output before, you can skip to <a href="../../ch19/19-1-workflow-patterns/index.html">EP04</a>.</li>
@@ -415,7 +415,7 @@ Table&nbsp;2.1: The book’s six-part work order
 <p><strong>Zero-shot</strong> means giving the instruction with no examples. It works well for tasks the model has seen a lot, but the book notes it often fails when the answer format is our own, such as labels we made up. <strong>Few-shot</strong> adds a few question–answer pairs, like showing a new hire two filled-in forms before they fill one in. This ability is called <strong>in-context learning</strong>: the model learns the task from examples in the prompt, with no retraining <span class="citation" data-cites="brown2020fewshot">(<a href="../../index.html#ref-brown2020fewshot" role="doc-biblioref"><span class="nocase">Brown et al.</span> 2020</a>)</span>.</p>
 <p>The book advises covering every category and writing every example in exactly the same format, because the model copies that format. More examples usually help up to about 4–8; beyond 20 the gain is small and they eat the context window.</p>
 <blockquote class="blockquote">
-<p><strong>In Lab 1:</strong> zero-shot sorted every email correctly but answered in sentences such as “Classified as: <strong>question</strong>”, so exact label matches were <strong>0 of 6</strong>. With three example pairs, every answer was a single label: <strong>6 of 6</strong>, using only 3–5 tokens each.</p>
+<p><strong>In Lab 1:</strong> zero-shot sorted every email correctly but answered in sentences or wrapped the label in bold, such as “**question**”, so exact label matches were <strong>0 of 6</strong>. With three example pairs, every answer was a single label: <strong>6 of 6</strong>, using only 2–3 tokens each.</p>
 </blockquote>
 </section>
 <section id="chain-of-thought-thinking-step-by-step" class="level2">
@@ -435,7 +435,7 @@ Table&nbsp;2.1: The book’s six-part work order
 </div>
 </div>
 <blockquote class="blockquote">
-<p><strong>In Lab 1:</strong> for “Somchai is 4 years older than his sister; in 6 years their ages will add up to 40; how old is the sister now?”, the direct answer was <strong>13</strong> (wrong, 3 tokens). Thinking step by step, the model set up an equation, got <strong>12</strong>, and checked that the ages add up to 40 — but it used <strong>509 tokens</strong>. On the email-sorting task, CoT spent 223 tokens to reach the same label.</p>
+<p><strong>In Lab 1:</strong> for “Somchai is 4 years older than his sister; in 6 years their ages will add up to 40; how old is the sister now?”, the direct answer was <strong>15</strong> (wrong, 3 tokens). Thinking step by step, the model set up an equation, got <strong>12</strong>, and checked that the ages add up to 40 — but it used <strong>410 tokens</strong>. On the email-sorting task, CoT spent 147 tokens to reach the same label.</p>
 </blockquote>
 </section>
 <section id="why-agents-need-structured-output" class="level2">
@@ -520,7 +520,7 @@ Table&nbsp;2.2: Three levels of format control
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"not a course code: </span><span class="sc">{</span>v<span class="sc">!r}</span><span class="ss">"</span>)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
-<p><strong>In Lab 2:</strong> the first schema, with Thai labels in the enum, produced valid JSON for all six emails, but the course field got <code>'unknown'</code> and <code>'ไม่ระบุ'</code> (“not specified”) instead of <code>null</code>, and one question email was labelled an extension request. <strong>That is valid JSON that isn’t correct.</strong> Adding a description to every field, using short English codes instead of Thai labels (mapped to Thai for display), and a <code>field_validator</code> for the course code that asks again on failure made <strong>all six correct</strong>.</p>
+<p><strong>In Lab 2:</strong> sending a bare schema through <code>response_format</code> produced valid JSON for all six emails, but the course field of some got <code>'not specified'</code> instead of <code>null</code>. <strong>That is valid JSON that isn’t correct.</strong> Adding a description to every field and a <code>field_validator</code> for the course code that asks again on failure made the course field <strong>right on all six</strong>. But email six (the score shows zero, please check) was labelled <code>question</code> in almost every run we tried. The email really is borderline, and a validator can’t decide which label fits: that takes sharper definitions or more examples.</p>
 </blockquote>
 </section>
 <section id="three-kinds-of-hallucination" class="level2">
@@ -593,8 +593,8 @@ Table&nbsp;2.3: Three kinds of hallucination
 <ul>
 <li>The capital of Australia → Canberra all 5 times, log prob near zero: <strong>confident and right</strong></li>
 <li>4738 × 6219 → five different answers, clearly negative log prob: <strong>caught as unsure</strong></li>
-<li>7851 × 2144 → 16830544 all 5 times, log prob near zero, but the right answer is 16832544: <strong>confident and wrong</strong></li>
-<li>A paper title we made up → “AAAI 2024” all 5 times: <strong>confident and wrong</strong></li>
+<li>7851 × 2144 → 16830544 four times out of five, log prob near zero, but the right answer is 16832544: <strong>confident and wrong</strong></li>
+<li>A paper title we made up → AAAI 2024 and IJCAI 2024 in turn: <strong>labelled unsure</strong>, yet not once did the model say it didn’t know the paper. The label warns us; it can’t tell us there is no such paper</li>
 </ul>
 <p>With the syllabus attached and a <code>found</code> · <code>quote</code> · <code>answer</code> schema at temperature 0, the question about a third quiz, which isn’t in the document, got <code>found = false</code> and “I don’t know”; for the questions that do have answers, every quote passed the check that it is really in the document.</p>
 </blockquote>
@@ -646,7 +646,7 @@ Table&nbsp;2.4: Which part of our code each LangChain piece replaces
 </figure>
 </div>
 <blockquote class="blockquote">
-<p><strong>In Lab 4:</strong> a bare prompt (no role, no delimiters) with <code>with_retry</code> and three tries still raised <code>ValidationError</code> for <strong>3 of 6 emails</strong>, because <code>with_retry</code> only resends the same input and never tells the model what was wrong last time. A framework makes the code short and tidy, but the work order, the schema and a good checker are still our job.</p>
+<p><strong>In Lab 4:</strong> a bare prompt (no role, no delimiters) with <code>with_retry</code> and three tries still left an email with a <code>ValidationError</code> (one in the video; 0–2 per run when we tested again), because <code>with_retry</code> only resends the same input and never tells the model what was wrong last time. A framework makes the code short and tidy, but the work order, the schema and a good checker are still our job.</p>
 </blockquote>
 </section>
 <section id="four-things-an-agent-builder-must-remember" class="level2">

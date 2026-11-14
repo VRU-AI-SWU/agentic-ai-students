@@ -313,7 +313,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>วิดีโอ:</strong> ทฤษฎี (≈12 นาที) → Lab 1–4 (8–12 นาที) → สรุป (≈6 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
+<li><strong>วิดีโอ</strong> (เสียงอังกฤษ ซับไทย/อังกฤษ · เสียงไทยตามมา): ทฤษฎี (≈9 นาที) → Lab 1–4 (5–9 นาที) → สรุป (≈4 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
 <li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
 <li><strong>Model ใน lab:</strong> Gemma 4 26B ผ่าน OpenRouter (ล็อก provider ไว้ที่ Parasail) ไม่ฟรี แต่รันทั้งสี่ lab ใช้เงินไม่ถึงหนึ่งบาท รุ่น <code>:free</code> ใช้กับ EP นี้ไม่ได้ (ดูเหตุผลใน Lab 1) ต้องมี OpenRouter API key</li>
 <li><strong>ตอนเสริม:</strong> EP01–EP02 (module M0) เป็นพื้นฐาน LLM ถ้าเคยใช้ structured output มาแล้ว ข้ามไป <a href="../../ch19/19-1-workflow-patterns/index.html">EP04</a> ได้</li>
@@ -413,7 +413,7 @@ window.Quarto = {
 <p><strong>Zero-shot</strong> คือสั่งงานเฉยๆ โดยไม่ให้ตัวอย่าง ใช้ได้ดีกับงานที่ model เคยเห็นมาเยอะ แต่ตำราบอกว่ามักพลาดเมื่อรูปแบบคำตอบเป็นของเราเอง เช่นป้ายที่เราตั้งขึ้น <strong>Few-shot</strong> คือใส่คู่คำถามกับคำตอบไว้ไม่กี่คู่ เหมือนให้พนักงานใหม่ดูแบบฟอร์มที่กรอกเสร็จแล้วสองใบก่อนให้กรอกเอง ความสามารถนี้เรียกว่า <strong>in-context learning</strong>: model เรียนงานจากตัวอย่างใน prompt ได้เลยโดยไม่ต้องฝึกใหม่ <span class="citation" data-cites="brown2020fewshot">(<a href="../../index.html#ref-brown2020fewshot" role="doc-biblioref"><span class="nocase">Brown และคณะ</span> 2020</a>)</span></p>
 <p>ตำราแนะนำให้ตัวอย่างครอบคลุมทุกประเภท และเขียนทุกตัวอย่างในรูปแบบเดียวกันเป๊ะ เพราะ model จะเลียนแบบรูปแบบนั้น จำนวนตัวอย่างยิ่งมาก ผลมักยิ่งดีจนถึงราว 4–8 ตัวอย่าง เกิน 20 แล้วได้เพิ่มน้อย แถมกิน context window</p>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 1:</strong> zero-shot จัดประเภทอีเมลถูกทุกฉบับ แต่ตอบเป็นประโยคอย่าง “จัดประเภทเป็น: <strong>คำถาม</strong>” ตรงกับป้ายพอดี <strong>0 จาก 6</strong> พอใส่ตัวอย่างสามคู่ ได้ป้ายคำเดียวทุกฉบับ <strong>6 จาก 6</strong> และแต่ละคำตอบใช้แค่ 3–5 token</p>
+<p><strong>ใน Lab 1:</strong> zero-shot จัดประเภทอีเมลถูกทุกฉบับ แต่ตอบเป็นประโยคหรือครอบด้วยตัวหนาอย่าง “**question**” ตรงกับป้ายพอดี <strong>0 จาก 6</strong> พอใส่ตัวอย่างสามคู่ ได้ป้ายคำเดียวทุกฉบับ <strong>6 จาก 6</strong> และแต่ละคำตอบใช้แค่ 2–3 token</p>
 </blockquote>
 </section>
 <section id="chain-of-thought-ใหคดทละขน" class="level2">
@@ -433,7 +433,7 @@ window.Quarto = {
 </div>
 </div>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 1:</strong> โจทย์ “สมชายอายุมากกว่าน้องสาว 4 ปี อีก 6 ปีอายุรวมกันจะเป็น 40 ปี ตอนนี้น้องสาวอายุเท่าไร” ตอบทันทีได้ <strong>13</strong> (ผิด, 3 token) พอให้คิดทีละขั้น model ตั้งสมการ ได้ <strong>12</strong> และตรวจเองว่ารวมกันได้ 40 พอดี แต่ใช้ <strong>509 token</strong> ส่วนงานจัดประเภทอีเมล CoT กินไป 223 token เพื่อได้คำตอบเดิม</p>
+<p><strong>ใน Lab 1:</strong> โจทย์ “สมชายอายุมากกว่าน้องสาว 4 ปี อีก 6 ปีอายุรวมกันจะเป็น 40 ปี ตอนนี้น้องสาวอายุเท่าไร” ตอบทันทีได้ <strong>15</strong> (ผิด, 3 token) พอให้คิดทีละขั้น model ตั้งสมการ ได้ <strong>12</strong> และตรวจเองว่ารวมกันได้ 40 พอดี แต่ใช้ <strong>410 token</strong> ส่วนงานจัดประเภทอีเมล CoT กินไป 147 token เพื่อได้คำตอบเดิม</p>
 </blockquote>
 </section>
 <section id="ทำไม-agent-ตองการ-structured-output" class="level2">
@@ -518,7 +518,8 @@ window.Quarto = {
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"ไม่ใช่รหัสวิชา: </span><span class="sc">{</span>v<span class="sc">!r}</span><span class="ss">"</span>)</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> v</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 2:</strong> schema แรกที่ใช้ป้ายไทยใน enum ได้ JSON ถูกรูปแบบทั้งหก แต่ช่องรหัสวิชาได้ <code>'unknown'</code> และ <code>'ไม่ระบุ'</code> แทนที่จะเป็น <code>null</code> และอีเมลคำถามฉบับหนึ่งถูกจัดเป็นขอเลื่อนส่ง <strong>นี่คือ JSON ที่ถูกรูปแบบแต่ไม่ถูกต้อง</strong> พอเพิ่มคำอธิบายทุกช่อง ใช้รหัสภาษาอังกฤษสั้นๆ แทนป้ายไทย (แล้วแปลงเป็นไทยตอนแสดงผล) และเขียน <code>field_validator</code> ตรวจรหัสวิชาพร้อมถามใหม่เมื่อไม่ผ่าน ได้ <strong>ถูกครบทั้งหกฉบับ</strong></p>
+<p><strong>ใน Lab 2:</strong> ส่ง schema เปล่าๆ ผ่าน <code>response_format</code> ได้ JSON ถูกรูปแบบทั้งหก แต่ช่องรหัสวิชาของบางฉบับได้ <code>'not specified'</code> แทนที่จะเป็น <code>null</code> <strong>นี่คือ JSON ที่ถูกรูปแบบแต่ไม่ถูกต้อง</strong> พอเพิ่มคำอธิบายทุกช่องและเขียน <code>field_validator</code> ตรวจรหัสวิชาพร้อมถามใหม่เมื่อไม่ผ่าน ช่อง course <strong>ถูกครบทั้งหกฉบับ</strong> แต่อีเมลฉบับที่หก (คะแนนขึ้นศูนย์ ขอให้ช่วยตรวจ) ถูกจัดเป็น <code>question</code> แทบทุกรอบที่เราทดสอบ อีเมลนี้ก้ำกึ่งจริง และ validator ตัดสินแทนเราไม่ได้ว่าป้ายไหนเหมาะ ต้องเขียนนิยามให้ชัดขึ้นหรือใส่ตัวอย่างเพิ่ม</p>
+<p><em>(ผลในวิดีโอมาจาก notebook ภาษาอังกฤษ notebook ภาษาไทยใช้ป้ายไทยใน schema แรก ซึ่งตอนทดสอบทำให้อีเมลฉบับที่หกถูกจัดเป็นขอเลื่อนส่ง)</em></p>
 </blockquote>
 </section>
 <section id="hallucination-สามแบบ" class="level2">
@@ -591,8 +592,8 @@ window.Quarto = {
 <ul>
 <li>เมืองหลวงของออสเตรเลีย → Canberra ทั้ง 5 รอบ log prob ใกล้ศูนย์ <strong>มั่นใจและถูก</strong></li>
 <li>4738 × 6219 → ได้ห้าคำตอบไม่ซ้ำกัน log prob ติดลบชัด <strong>จับได้ว่าไม่แน่ใจ</strong></li>
-<li>7851 × 2144 → ตอบ 16830544 ทั้ง 5 รอบ log prob ใกล้ศูนย์ แต่ที่ถูกคือ 16832544 <strong>มั่นใจแต่ผิด</strong></li>
-<li>paper ที่เราแต่งชื่อขึ้นเอง → “AAAI 2024” ทั้ง 5 รอบ <strong>มั่นใจแต่ผิด</strong></li>
+<li>7851 × 2144 → ตอบ 16830544 สี่ในห้ารอบ log prob ใกล้ศูนย์ แต่ที่ถูกคือ 16832544 <strong>มั่นใจแต่ผิด</strong></li>
+<li>paper ที่เราแต่งชื่อขึ้นเอง → ตอบสลับระหว่าง AAAI 2024 กับ IJCAI 2024 <strong>ได้ป้ายไม่แน่ใจ</strong> แต่ไม่มีรอบไหนบอกว่าไม่รู้จัก paper นี้ ป้ายเตือนได้ แต่บอกไม่ได้ว่าไม่มี paper นี้</li>
 </ul>
 <p>พอแนบประมวลรายวิชาและใช้ schema <code>found</code> · <code>quote</code> · <code>answer</code> ที่ temperature 0 คำถามเรื่องสอบย่อยครั้งที่ 3 ซึ่งไม่มีในเอกสาร ได้ <code>found = false</code> และ “ไม่ทราบ” ส่วนคำถามที่มีคำตอบ ทุก quote ผ่านการตรวจว่าอยู่ในเอกสารจริง</p>
 </blockquote>
@@ -644,7 +645,7 @@ window.Quarto = {
 </figure>
 </div>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 4:</strong> ใช้ prompt เปล่าๆ (ไม่มีบทบาท ไม่มีป้ายคั่น) คู่กับ <code>with_retry</code> สามรอบ ยังได้ <code>ValidationError</code> <strong>3 จาก 6 ฉบับ</strong> เพราะ <code>with_retry</code> แค่ส่ง input เดิมซ้ำ ไม่ได้บอก model ว่ารอบที่แล้วผิดตรงไหน framework ช่วยให้โค้ดสั้นและเป็นระเบียบ แต่ใบสั่งงาน schema และผู้ตรวจที่ดี ยังเป็นงานของเรา</p>
+<p><strong>ใน Lab 4:</strong> ใช้ prompt เปล่าๆ (ไม่มีบทบาท ไม่มีป้ายคั่น) คู่กับ <code>with_retry</code> สามรอบ ยังมีฉบับที่ได้ <code>ValidationError</code> (ในวิดีโอ 1 ฉบับ ตอนทดสอบซ้ำได้ 0–2 ฉบับต่อรอบ) เพราะ <code>with_retry</code> แค่ส่ง input เดิมซ้ำ ไม่ได้บอก model ว่ารอบที่แล้วผิดตรงไหน framework ช่วยให้โค้ดสั้นและเป็นระเบียบ แต่ใบสั่งงาน schema และผู้ตรวจที่ดี ยังเป็นงานของเรา</p>
 </blockquote>
 </section>
 <section id="สขอทคนสราง-agent-ตองจำ" class="level2">
