@@ -23,7 +23,7 @@ Each lab has two files:
 
 ⚠️ Never put the key in the code itself, and never commit your `.env` file.
 
-## EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent (§1.1–1.2, §1.12)
+## EP01 How LLMs Work — for Agent Builders (§1.1–1.2, §1.12)
 
 | Lab | ✏️ Starter | ✅ Solution |
 |---|---|---|
@@ -31,7 +31,7 @@ Each lab has two files:
 | Lab 2 — Decoding | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.student.ipynb) · [file](ep01-how-llms-work/ep01-lab2-decoding.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab2-decoding.en.ipynb) · [file](ep01-how-llms-work/ep01-lab2-decoding.en.ipynb) |
 | Lab 3 — Model names & providers | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.student.ipynb) · [file](ep01-how-llms-work/ep01-lab3-model-names.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep01-how-llms-work/ep01-lab3-model-names.en.ipynb) · [file](ep01-how-llms-work/ep01-lab3-model-names.en.ipynb) |
 
-## EP02 Prompt, Structured Output และ Hallucination (§1.12.11, §1.13, §1.16)
+## EP02 Prompts, Structured Output and Hallucination (§1.12.11, §1.13, §1.16)
 
 | Lab | ✏️ Starter | ✅ Solution |
 |---|---|---|
@@ -40,7 +40,7 @@ Each lab has two files:
 | Lab 3 — Hallucination | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab3-hallucination.en.student.ipynb) · [file](ep02-prompt-structured-output/ep02-lab3-hallucination.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab3-hallucination.en.ipynb) · [file](ep02-prompt-structured-output/ep02-lab3-hallucination.en.ipynb) |
 | Lab 4 — LangChain | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab4-langchain.en.student.ipynb) · [file](ep02-prompt-structured-output/ep02-lab4-langchain.en.student.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep02-prompt-structured-output/ep02-lab4-langchain.en.ipynb) · [file](ep02-prompt-structured-output/ep02-lab4-langchain.en.ipynb) |
 
-## EP03 จาก Chatbot สู่ Agent (ch15)
+## EP03 From Chatbot to Agent (ch15)
 
 | Lab | ✏️ Starter | ✅ Solution |
 |---|---|---|
