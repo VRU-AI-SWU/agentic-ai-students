@@ -276,7 +276,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Videos</strong> (narrated in Thai, with English subtitles): theory (≈14 min) → Labs 1–3 (10–13 min) → recap (≈5 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI</a></li>
+<li><strong>Videos</strong> (English audio, English &amp; Thai subtitles · Thai audio coming): theory (≈10 min) → Labs 1–3 (8–9 min) → recap (≈3 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI</a></li>
 <li><strong>Notebooks:</strong> every lab has an ✏️ English starter (fill in only the TODOs) and a ✅ solution; see the <a href="#lab">Labs</a> table at the end</li>
 <li><strong>Model in the labs:</strong> Gemma 4 26B (open weights) through OpenRouter. Not free — you need to add credit — but all three labs cost less than one baht (a few US cents). The <code>:free</code> version doesn’t work for this episode (Lab 1 explains why). You need an OpenRouter API key.</li>
 <li><strong>Optional episode:</strong> EP01–EP02 (module M0) cover LLM basics. If you have called an LLM through an API before, you can skip to <a href="../../ch19/19-1-workflow-patterns/index.html">EP04</a>.</li>
@@ -367,7 +367,7 @@ Table&nbsp;1.1: Token counts measured in Lab 1
 <section id="probabilities-and-greedy" class="level2">
 <h2 class="anchored" data-anchor-id="probabilities-and-greedy">Probabilities and greedy</h2>
 <p>Each time it produces a new token, the model doesn’t hold just one answer; it gives a probability to every token it knows, summing to one. The textbook’s example is “The capital of France is”, where the token “Paris” gets 0.92 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 1.12</a>)</span>. The simplest way to choose is <strong>greedy</strong>: always take the top token — like always ordering the best-selling dish: never a miss, but never anything new. The textbook warns that it tends to produce repetitive, bland text.</p>
-<p>The API doesn’t return probabilities directly but <strong>logprobs</strong> (the log of the probability), which convert back with <span class="math inline">\(p = e^{\text{logprob}}\)</span>; for example a logprob of <span class="math inline">\(-0.28\)</span> is <span class="math inline">\(e^{-0.28} \approx 0.756\)</span>.</p>
+<p>The API doesn’t return probabilities directly but <strong>logprobs</strong> (the log of the probability), which convert back with <span class="math inline">\(p = e^{\text{logprob}}\)</span>; for example a logprob of <span class="math inline">\(-0.21\)</span> is <span class="math inline">\(e^{-0.21} \approx 0.811\)</span>.</p>
 </section>
 <section id="bounded-sampling-top-k-top-p-min-p" class="level2">
 <h2 class="anchored" data-anchor-id="bounded-sampling-top-k-top-p-min-p">Bounded sampling: top-k, top-p, min-p</h2>
@@ -435,7 +435,7 @@ p_i^{(T)} = \frac{p_i^{1/T}}{\sum_j p_j^{1/T}}
 </div>
 </div>
 <blockquote class="blockquote">
-<p><strong>In Lab 2</strong> (Gemma’s real probabilities through a pinned provider): “The capital of France is” → Paris almost 1.00 · “I enjoy eating” → pizza 0.756, food 0.115, everything 0.105 · at <span class="math inline">\(T = 2\)</span> pizza drops to 0.485 · top-k 5 even keeps “Paris” in Chinese and Japanese, while top-p 0.95 keeps only Paris · setting <code>temperature=0</code> on the API gives pizza 10 times out of 10</p>
+<p><strong>In Lab 2</strong> (Gemma’s real probabilities through a pinned provider): “The capital of France is” → Paris almost 1.00 · “I enjoy eating” → pizza 0.811, food 0.111, everything 0.059 · at <span class="math inline">\(T = 2\)</span> pizza drops to 0.526 · top-k 5 even keeps “Paris” in Chinese and Japanese, while top-p 0.95 keeps only Paris · setting <code>temperature=0</code> on the API gives pizza 10 times out of 10</p>
 </blockquote>
 </section>
 <section id="the-context-window-and-max_tokens" class="level2">
@@ -537,7 +537,7 @@ Table&nbsp;1.4: Memory of Gemma 4 26B at each quantization level
 </div>
 <p>The companies that run a model for us behind an API are <strong>providers</strong>. The same Gemma name on OpenRouter has 15 of them: some run it at bf16, some at fp8 or fp4, and some don’t say; prices and context windows differ too.</p>
 <blockquote class="blockquote">
-<p><strong>In Lab 3</strong> (2026-11-09): input prices differ almost fourfold, some providers offer only 131,072 tokens of context, half of the others, and asking “I enjoy eating” through 4 providers gives different results — Google puts pizza at 0.76, Darkbloom puts food at 0.77. <strong>So pin the provider while testing an agent</strong>, or today’s and tomorrow’s results might come from different providers.</p>
+<p><strong>In Lab 3</strong> (2026-11-14): input prices differ more than tenfold, some providers offer only 131,072 tokens of context, half of the others, and asking “I enjoy eating” through 4 providers gives different results — Google puts pizza at 0.81, while NextBit and Darkbloom put food first (0.57 and 0.45). <strong>So pin the provider while testing an agent</strong>, or today’s and tomorrow’s results might come from different providers.</p>
 </blockquote>
 </section>
 <section id="modality-what-a-model-accepts" class="level2">
@@ -553,7 +553,7 @@ Table&nbsp;1.4: Memory of Gemma 4 26B at each quantization level
 <pre class="mermaid mermaid-js" data-label="fig-modality">flowchart LR
   IMG["🖼️ chart + question&lt;br/&gt;which year had the most papers?"] --&gt; G["gemma-4-26b-a4b-it&lt;br/&gt;accepts: text · image · video"]
   IMG --&gt; L["llama-3.1-8b-instruct&lt;br/&gt;accepts: text"]
-  G --&gt; GA["✅ 2024&lt;br/&gt;278 input tokens"]
+  G --&gt; GA["✅ 2024&lt;br/&gt;277 input tokens"]
   L --&gt; LA["❌ 404&lt;br/&gt;No endpoints found&lt;br/&gt;that support image input"]
 </pre>
 </div>
@@ -567,7 +567,7 @@ Figure&nbsp;1.2: The same chart sent to two models: Gemma 4 accepts images, Llam
 </div>
 <p>Images become tokens too, so they take up context and cost money, and the model name doesn’t always tell you the modality. If an agent’s tool fetches an image for the model, check the modality first, or the agent will break halfway.</p>
 <blockquote class="blockquote">
-<p><strong>In Lab 3:</strong> of 461 models on OpenRouter, 137 accept text only. A one-sentence question with a chart used 278 input tokens, because the image became tokens (the chart’s numbers are made up for teaching).</p>
+<p><strong>In Lab 3:</strong> of 471 models on OpenRouter, 136 accept text only. A one-sentence question with a chart used 277 input tokens, because the image became tokens (the chart’s numbers are made up for teaching).</p>
 </blockquote>
 </section>
 <section id="the-agent-builders-dashboard" class="level2">
