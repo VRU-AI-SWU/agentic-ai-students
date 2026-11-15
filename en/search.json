@@ -34,7 +34,7 @@
     "href": "index.html#learning-path",
     "title": "Agentic AI: From Foundations to Systems",
     "section": "Learning path",
-    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP00\nWelcome to the series watch first · 1 min what the series gives you · what you need · start with EP01 · video\n\n\nEP01\nHow LLMs work (for agent builders) ready tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs\n\n\nEP02\nPrompts, structured output and hallucination ready work orders · few-shot · JSON schema · validation · grounding · §1.12.11, §1.13, §1.16 · 4 labs\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent coming soon the five challenges of agents, and a map of the series · ch15 · ≈12 min\n\n\nEP04\nWorkflow Patterns ready chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 5 labs\n\n\nEP05\nAutonomous Agent Patterns ready ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign principles + choosing a pattern coming soon cost versus quality, and a decision matrix · §19.3–19.4 · ≈20 min\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
+    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP00\nWelcome to the series watch first · 1 min what the series gives you · what you need · start with EP01 · video\n\n\nEP01\nHow LLMs work (for agent builders) ready tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs\n\n\nEP02\nPrompts, structured output and hallucination ready work orders · few-shot · JSON schema · validation · grounding · §1.12.11, §1.13, §1.16 · 4 labs\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent coming soon the five challenges of agents, and a map of the series · ch15 · ≈12 min\n\n\nEP04\nWorkflow Patterns ready chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 labs incl. LangGraph\n\n\nEP05\nAutonomous Agent Patterns ready ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign principles + choosing a pattern coming soon cost versus quality, and a decision matrix · §19.3–19.4 · ≈20 min\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
     "crumbs": [
       "Home"
     ]
@@ -620,8 +620,8 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html",
-    "href": "ch19/19-1-workflow-patterns/index.html",
+    "objectID": "ch19/ep04-workflow-patterns/index.html",
+    "href": "ch19/ep04-workflow-patterns/index.html",
     "title": "EP04 Workflow Patterns",
     "section": "",
     "text": "Learning objectives\nAfter this module you will be able to",
@@ -631,19 +631,19 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#learning-objectives",
-    "href": "ch19/19-1-workflow-patterns/index.html#learning-objectives",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#learning-objectives",
+    "href": "ch19/ep04-workflow-patterns/index.html#learning-objectives",
     "title": "EP04 Workflow Patterns",
     "section": "",
-    "text": "Explain how a workflow differs from an agent, and say when a workflow is enough\nDesign a prompt chain with validation gates between steps\nBuild a router that classifies once, then hands off to a specialist handler\nCall an LLM in parallel with sectioning and voting, and merge the results in code\nExplain how orchestrator-workers differs from parallelization\nBuild an evaluator-optimizer loop with a threshold and a retry budget",
+    "text": "Explain how a workflow differs from an agent, and say when a workflow is enough\nDesign a prompt chain with validation gates between steps\nBuild a router that classifies once, then hands off to a specialist handler\nCall an LLM in parallel with sectioning and voting, and merge the results in code\nExplain how orchestrator-workers differs from parallelization\nBuild an evaluator-optimizer loop with a threshold and a retry budget\nRebuild all five patterns with LangGraph and match each piece to the code you wrote yourself",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#workflow-or-agent",
-    "href": "ch19/19-1-workflow-patterns/index.html#workflow-or-agent",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#workflow-or-agent",
+    "href": "ch19/ep04-workflow-patterns/index.html#workflow-or-agent",
     "title": "EP04 Workflow Patterns",
     "section": "Workflow or agent",
     "text": "Workflow or agent\nThe first thing chapter 19 stresses is that not every task needs an agent (Roitman 2026, sec. 19.1; Schluntz and Zhang 2024). In a workflow, the system fixes the order of steps in advance and calls the LLM at set steps — like a train on rails. In an agent, the LLM decides what to do next — like handing it the steering wheel.\n\n\n\nTable 4.1: Workflow vs agent\n\n\n\n\n\n\n\n\n\n\n\nWorkflow\nAgent\n\n\n\n\nWho decides the next step\nThe system (our code)\nThe LLM\n\n\nPredictability\nHigh, easy to test\nLower\n\n\nCost\nLower\nHigher\n\n\nFits\nTasks whose structure is known in advance\nTasks that need dynamic routing or open-ended exploration\n\n\n\n\n\n\n\n\n\n\n\n\nImportantAlways start with a workflow\n\n\n\nMove to an agent only when the task genuinely needs dynamic routing or open-ended exploration. The running example in this module is the Cogito Learn teaching assistant: we already know student questions come in only a few kinds, so a workflow is enough.",
@@ -653,8 +653,8 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
-    "href": "ch19/19-1-workflow-patterns/index.html#prompt-chaining",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#prompt-chaining",
+    "href": "ch19/ep04-workflow-patterns/index.html#prompt-chaining",
     "title": "EP04 Workflow Patterns",
     "section": "1. Prompt Chaining",
     "text": "1. Prompt Chaining\nSplit a big task into a fixed sequence of LLM calls; the output of one step is the context of the next. Between steps, validation gates catch errors early — like quality checks between stations on a factory conveyor belt. A gate can be an LLM or plain code.\n\n\n\n\n\n\n\nflowchart LR\n  I[\"📄 abstract\"] --&gt; G0{\"gate (LLM)&lt;br/&gt;is it an abstract?\"}\n  G0 --&gt; S1[\"step 1&lt;br/&gt;extract key points\"]\n  S1 --&gt; G1{\"gate (code)&lt;br/&gt;exactly 3 points?\"}\n  G1 --&gt; S2[\"step 2&lt;br/&gt;write Thai summary\"]\n  S2 --&gt; G2{\"gate (code)&lt;br/&gt;≤ 5 lines?\"}\n  G2 --&gt; O[\"✅ summary\"]\n\n\n\n\nFigure 4.1: The Lab 1 chain: abstract → key points → Thai summary; if any gate fails, the chain stops\n\n\n\n\n\nEach step can use a different prompt, model or temperature, and every intermediate result can be inspected. It fits tasks that are already a sequence of steps: content generation, data transformation, multi-stage analysis.\n\nIn Lab 1: the abstract passes every gate, an exam-room notice is stopped at the first gate, and when the summary is limited to two lines, the code gate stops it midway.",
@@ -664,8 +664,8 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#routing",
-    "href": "ch19/19-1-workflow-patterns/index.html#routing",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#routing",
+    "href": "ch19/ep04-workflow-patterns/index.html#routing",
     "title": "EP04 Workflow Patterns",
     "section": "2. Routing",
     "text": "2. Routing\nA classifier (an LLM or a traditional model) looks at the input first, then sends it to a specialist handler — like hospital triage: one check, then the right department.\n\n\n\n\n\n\n\nflowchart LR\n  Q[\"❓ student question\"] --&gt; C{\"classifier&lt;br/&gt;(JSON, enum, temperature 0)\"}\n  C -- concept --&gt; A1[\"theory-explaining prompt\"]\n  C -- code_error --&gt; A2[\"code-running tool&lt;br/&gt;+ explain the real error\"]\n  C -- admin --&gt; A3[\"small, cheap model&lt;br/&gt;+ course info\"]\n\n\n\n\nFigure 4.2: The Lab 2 router: classify once, then each kind gets the prompt, tool or model that suits it\n\n\n\n\n\nRouting fits when there are clearly distinct kinds of input and each needs a different prompt, tool or model. The textbook’s examples are customer-support triage and multi-modal input handling.\n\nIn Lab 2: all six questions land in the right place, including a trick question that contains the word “error” but is really a concept question.",
@@ -675,30 +675,30 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#parallelization",
-    "href": "ch19/19-1-workflow-patterns/index.html#parallelization",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#parallelization",
+    "href": "ch19/ep04-workflow-patterns/index.html#parallelization",
     "title": "EP04 Workflow Patterns",
     "section": "3. Parallelization",
-    "text": "3. Parallelization\nCall the LLM several times at once and let our code merge the results. The textbook describes two kinds:\n\nSectioning (fan-out): split the work into independent parts — e.g. review code for security, performance and style at the same time — then merge, deduplicate and rank by severity. Like three teachers each marking a different section of an exam at the same time.\nVoting: send the same prompt N times with different seeds or temperatures, then pick an answer by majority vote, a reward model, or an LLM judge.\n\nIf the calls take \\(t_1, \\dots, t_n\\), the parallel run takes about as long as the slowest call, not the sum:\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{4.1}\\]\n\nIn Lab 3: three reviews one at a time took 3.9 s; all at once took 1.6 s, as Equation 4.1 predicts. Voting five times gave “low” four times. (Your numbers will vary with server speed.)",
+    "text": "3. Parallelization\nCall the LLM several times at once and let our code merge the results. The textbook describes two kinds:\n\nSectioning (fan-out): split the work into independent parts — e.g. review code for security, performance and style at the same time — then merge, deduplicate and rank by severity. Like three teachers each marking a different section of an exam at the same time.\nVoting: send the same prompt N times with different seeds or temperatures, then pick an answer by majority vote, a reward model, or an LLM judge.\n\nIf the calls take \\(t_1, \\dots, t_n\\), the parallel run takes about as long as the slowest call, not the sum:\n\\[\nT_\\text{sequential} = \\sum_{i=1}^{n} t_i, \\qquad T_\\text{parallel} \\approx \\max_i t_i\n\\tag{4.1}\\]\n\nIn Lab 3: three reviews one at a time took 7.0 s; all at once took 2.1 s, as Equation 4.1 predicts. Voting five times gave “high” four times. (Your numbers will vary with server speed.)",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
-    "href": "ch19/19-1-workflow-patterns/index.html#orchestrator-workers",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#orchestrator-workers",
+    "href": "ch19/ep04-workflow-patterns/index.html#orchestrator-workers",
     "title": "EP04 Workflow Patterns",
     "section": "4. Orchestrator-Workers",
-    "text": "4. Orchestrator-Workers\nNow the LLM decides how to split the work. The orchestrator analyses the task and writes a plan of subtasks; workers, which may use different prompts or tools, do each subtask; a synthesizer merges the results into one answer — like a head chef who reads the order before deciding how to split the work among the cooks.\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(writes a JSON plan)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 one answer\"]\n\n\n\n\nFigure 4.3: Orchestrator-workers: how many subtasks, and of which kind, comes from the model, not the code\n\n\n\n\n\nUnlike parallelization, the split is not hard-coded. The textbook recommends it for open-ended tasks where the number and kind of subtasks can’t be known in advance, such as “refactor this codebase”.\n\nIn Lab 4: the exact same code, two goals, two different plans — the first goal got four subtasks; the question about AI hints got two, and paper P2 wasn’t used at all.",
+    "text": "4. Orchestrator-Workers\nNow the LLM decides how to split the work. The orchestrator analyses the task and writes a plan of subtasks; workers, which may use different prompts or tools, do each subtask; a synthesizer merges the results into one answer — like a head chef who reads the order before deciding how to split the work among the cooks.\n\n\n\n\n\n\n\nflowchart LR\n  G[\"🎯 goal\"] --&gt; O[\"orchestrator&lt;br/&gt;(writes a JSON plan)\"]\n  O --&gt; W1[\"worker: summarize\"]\n  O --&gt; W2[\"worker: extract\"]\n  O --&gt; W3[\"worker: compare\"]\n  W1 --&gt; S[\"synthesizer\"]\n  W2 --&gt; S\n  W3 --&gt; S\n  S --&gt; R[\"📝 one answer\"]\n\n\n\n\nFigure 4.3: Orchestrator-workers: how many subtasks, and of which kind, comes from the model, not the code\n\n\n\n\n\nUnlike parallelization, the split is not hard-coded. The textbook recommends it for open-ended tasks where the number and kind of subtasks can’t be known in advance, such as “refactor this codebase”.\n\nIn Lab 4: the exact same code, two goals, two different plans — the first goal got four subtasks; the question about AI hints got three (extract from P1 and P3, then compare), and paper P2 wasn’t used at all.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
-    "href": "ch19/19-1-workflow-patterns/index.html#evaluator-optimizer",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#evaluator-optimizer",
+    "href": "ch19/ep04-workflow-patterns/index.html#evaluator-optimizer",
     "title": "EP04 Workflow Patterns",
     "section": "5. Evaluator-Optimizer",
     "text": "5. Evaluator-Optimizer\nA feedback loop between two models: a generator produces work, an evaluator scores it against explicit criteria. Below the threshold, the evaluator’s critique is appended to the generator’s context and it tries again — until the work passes or the retry budget runs out. Like a writer and an editor.\n\n\n\n\n\n\n\nflowchart LR\n  T[\"📄 abstract\"] --&gt; Gen[\"generator&lt;br/&gt;translate into Thai\"]\n  Gen --&gt; Ev{\"evaluator&lt;br/&gt;meaning · terms · fluency\"}\n  Ev -- \"≥ threshold\" --&gt; OK[\"✅ pass\"]\n  Ev -- \"below\" --&gt; B{\"budget&lt;br/&gt;left?\"}\n  B -- yes --&gt; C[\"append critique&lt;br/&gt;to context\"] --&gt; Gen\n  B -- no --&gt; L[\"return last draft\"]\n\n\n\n\nFigure 4.4: The Lab 5 evaluator-optimizer loop, with a threshold and a retry budget\n\n\n\n\n\nIt fits tasks with clear quality criteria — code that must pass tests, writing that must follow a style guide, translation that must keep the meaning — and it improves results without training the model.\n\nIn Lab 5: the first draft scored 6/10 because technical terms were translated into Thai; after the critique went into the context, round two scored 10/10 — even though the generator never saw the glossary.",
@@ -708,8 +708,8 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#the-five-patterns-side-by-side",
-    "href": "ch19/19-1-workflow-patterns/index.html#the-five-patterns-side-by-side",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#the-five-patterns-side-by-side",
+    "href": "ch19/ep04-workflow-patterns/index.html#the-five-patterns-side-by-side",
     "title": "EP04 Workflow Patterns",
     "section": "The five patterns side by side",
     "text": "The five patterns side by side\n\n\n\nTable 4.2: The five workflow patterns\n\n\n\n\n\n\n\n\n\n\n\nPattern\nWho sets the path\nLLM calls per input\nFits\n\n\n\n\nPrompt chaining\nCode (fixed order)\nOne per step\nTasks that are a sequence of steps\n\n\nRouting\nCode + classifier\n1 + handler\nClearly distinct kinds of input\n\n\nParallelization\nCode (fixed split)\nN at once\nIndependent parts, or several opinions\n\n\nOrchestrator-workers\nLLM plans, code runs\n1 + subtasks + 1\nOpen-ended tasks that can’t be split in advance\n\n\nEvaluator-optimizer\nCode (loop + budget)\n2 per round\nTasks with clear quality criteria\n\n\n\n\n\n\nAll five run the LLM on a path the system defines, so they stay predictable, testable and affordable — and they compose: a router can hand off to a chain, or one step of a chain can be an evaluator-optimizer. The last two already give the model more say, which is the bridge to autonomous agents in EP05.",
@@ -719,41 +719,52 @@
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#lab",
-    "href": "ch19/19-1-workflow-patterns/index.html#lab",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#the-five-patterns-in-langgraph-lab-6",
+    "href": "ch19/ep04-workflow-patterns/index.html#the-five-patterns-in-langgraph-lab-6",
+    "title": "EP04 Workflow Patterns",
+    "section": "The five patterns in LangGraph (Lab 6)",
+    "text": "The five patterns in LangGraph (Lab 6)\nLab 6 rebuilds all five patterns with LangGraph, which sees a workflow as a graph, using the same prompts and data as Labs 1–5. Every piece of the framework maps to code we wrote ourselves.\n\n\n\nTable 4.3: Our own code vs LangGraph\n\n\n\n\n\n\n\n\n\n\nPattern\nWritten ourselves (Labs 1–5)\nLangGraph (Lab 6)\n\n\n\n\nPrompt chaining + gates\nif not gate(...): return None\nconditional edge → END\n\n\nRouting\nROUTES[label](item)\nconditional edge to the node named like the route\n\n\nParallelization\nThreadPoolExecutor\nseveral edges from START + reducer operator.add\n\n\nOrchestrator-workers\nex.map(run_worker, tasks)\none Send(\"worker\", ...) per subtask\n\n\nEvaluator-optimizer\nfor + if score &gt;= threshold\nan edge that loops back + a conditional edge\n\n\n\n\n\n\n\nIn Lab 6: the three code reviewers run at the same time with no thread code, and the same orchestrator graph fans out to a different number of worker runs depending on the plan the LLM writes.",
+    "crumbs": [
+      "M1 · What an agent is, and how to design one",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep04-workflow-patterns/index.html#lab",
+    "href": "ch19/ep04-workflow-patterns/index.html#lab",
     "title": "EP04 Workflow Patterns",
     "section": "Labs",
-    "text": "Labs\n\n\n\nTable 4.3: EP04 notebooks (English). Every lab is standalone; installation and API key setup are in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\n\n\n\n\nThe data in the code (abstracts, questions, reviewed code) is simulated for teaching; every model output shown in the videos is from a real run.",
+    "text": "Labs\n\n\n\nTable 4.4: EP04 notebooks (English). Every lab is standalone; installation and API key setup are in Lab 1.\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Prompt Chaining\nColab\nColab\n\n\nLab 2 — Routing\nColab\nColab\n\n\nLab 3 — Parallelization\nColab\nColab\n\n\nLab 4 — Orchestrator-Workers\nColab\nColab\n\n\nLab 5 — Evaluator-Optimizer\nColab\nColab\n\n\nLab 6 — Workflow Patterns with LangGraph\nColab\nColab\n\n\n\n\n\n\nThe data in the code (abstracts, questions, reviewed code) is simulated for teaching; every model output shown in the videos is from a real run.",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#review-questions",
-    "href": "ch19/19-1-workflow-patterns/index.html#review-questions",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#review-questions",
+    "href": "ch19/ep04-workflow-patterns/index.html#review-questions",
     "title": "EP04 Workflow Patterns",
     "section": "Review questions",
-    "text": "Review questions\n\nWhy is a workflow enough for the teaching assistant that answers student questions?\nIn Figure 4.1, what kind of error would reach the summary if there were no gate after step 1?\nWhy does the classifier in Figure 4.2 answer with an enum at temperature 0?\nFrom Equation 4.1, how would adding a fourth reviewer change the parallel time?\nHow does orchestrator-workers differ from sectioning?\nIn Figure 4.4, what happens with a threshold of 10 and a budget of 1?",
+    "text": "Review questions\n\nWhy is a workflow enough for the teaching assistant that answers student questions?\nIn Figure 4.1, what kind of error would reach the summary if there were no gate after step 1?\nWhy does the classifier in Figure 4.2 answer with an enum at temperature 0?\nFrom Equation 4.1, how would adding a fourth reviewer change the parallel time?\nHow does orchestrator-workers differ from sectioning?\nIn Figure 4.4, what happens with a threshold of 10 and a budget of 1?\nIn Table 5.5, why does orchestrator-workers need Send instead of edges drawn in advance as in parallelization?",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#further-reading",
-    "href": "ch19/19-1-workflow-patterns/index.html#further-reading",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#further-reading",
+    "href": "ch19/ep04-workflow-patterns/index.html#further-reading",
     "title": "EP04 Workflow Patterns",
     "section": "Further reading",
-    "text": "Further reading\n\nAll five patterns in one article: Anthropic’s write-up with the same five workflow patterns as this page and the same “start with a workflow” advice (Schluntz and Zhang 2024)\nIn a framework: the same five patterns written in LangGraph (LangChain 2025) (we use LangGraph in EP05 Lab 5)\nVoting: why sampling several answers and voting improves accuracy (self-consistency) (Wang et al. 2023)\nEvaluator-Optimizer: a model that critiques and revises its own output in a loop (Self-Refine) (Madaan et al. 2023)",
+    "text": "Further reading\n\nAll five patterns in one article: Anthropic’s write-up with the same five workflow patterns as this page and the same “start with a workflow” advice (Schluntz and Zhang 2024)\nIn a framework: the same five patterns written in LangGraph (LangChain 2025) (we build them ourselves in Lab 6 and use LangGraph again in EP05 Lab 5)\nVoting: why sampling several answers and voting improves accuracy (self-consistency) (Wang et al. 2023)\nEvaluator-Optimizer: a model that critiques and revises its own output in a loop (Self-Refine) (Madaan et al. 2023)",
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
     ]
   },
   {
-    "objectID": "ch19/19-1-workflow-patterns/index.html#references",
-    "href": "ch19/19-1-workflow-patterns/index.html#references",
+    "objectID": "ch19/ep04-workflow-patterns/index.html#references",
+    "href": "ch19/ep04-workflow-patterns/index.html#references",
     "title": "EP04 Workflow Patterns",
     "section": "References",
     "text": "References\n\n\nLangChain. 2025. Workflows and Agents. LangGraph documentation. https://langchain-ai.github.io/langgraph/tutorials/workflows/.\n\n\nMadaan, Aman, Niket Tandon, Prakhar Gupta, et al. 2023. “Self-Refine: Iterative Refinement with Self-Feedback.” Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2303.17651.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSchluntz, Erik, and Barry Zhang. 2024. Building Effective Agents. Anthropic. https://www.anthropic.com/research/building-effective-agents.\n\n\nWang, Xuezhi, Jason Wei, Dale Schuurmans, et al. 2023. “Self-Consistency Improves Chain of Thought Reasoning in Language Models.” International Conference on Learning Representations (ICLR). https://arxiv.org/abs/2203.11171.",
