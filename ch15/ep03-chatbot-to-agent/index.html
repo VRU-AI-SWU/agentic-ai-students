@@ -283,7 +283,7 @@ div.csl-indent {
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>วิดีโอ:</strong> ทฤษฎี (≈12 นาที) → Lab 1 (≈17 นาที) → Lab 2 (≈15 นาที) → สรุป (≈5 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
+<li><strong>วิดีโอ</strong> (เสียงอังกฤษ ซับไทย/อังกฤษ · เสียงไทยตามมา): ทฤษฎี (≈9 นาที) → Lab 1 (≈12 นาที) → Lab 2 (≈10 นาที) → สรุป (≈4 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLGmbxsvI4IaE">Cogito Learn · Agentic AI ภาษาไทย</a></li>
 <li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
 <li><strong>Model ใน lab:</strong> Gemma 4 26B ผ่าน OpenRouter (ล็อก provider ไว้ที่ DeepInfra) ไม่ฟรี แต่รัน Lab 1 ครบหนึ่งรอบใช้เงินไม่ถึงหนึ่งเซนต์ รุ่น <code>:free</code> ใช้กับ EP นี้ไม่ได้ (ดูเหตุผลใน Lab 1) ต้องมี OpenRouter API key</li>
 <li><strong>เริ่มจากตอนนี้ได้:</strong> EP03 เปิด module ใหม่เรื่อง agent ถ้ารู้พื้นฐาน LLM อยู่แล้ว ไม่ต้องดู <a href="../../ch01/ep01-how-llms-work/index.html">EP01</a>–<a href="../../ch01/ep02-prompt-structured-output/index.html">EP02</a> ก่อน</li>
@@ -476,7 +476,7 @@ div.csl-indent {
 </div>
 <p><strong>Persistence</strong> สำคัญเพราะ model เองไม่จำอะไรข้ามการเรียกเลย ทุกครั้งที่เรียก มันเห็นแค่สิ่งที่อยู่ใน context window ตอนนั้น การจำจึงเป็นหน้าที่ของ harness ที่ต้องเก็บประวัติแล้วส่งกลับเข้าไปทุกครั้ง เหมือนเลขาที่ความจำหายทุกเช้า แต่มีสมุดบันทึกไว้เปิดดู ส่วน <strong>action</strong> ตำราเปรียบมาตรฐานการต่อ tool ว่าเหมือนพอร์ต USB ต่อแบบเดียว ใช้ได้กับทุกอุปกรณ์ ซึ่งคือ MCP ใน EP13</p>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 1:</strong> ตอบ “13:00 ครับ” ต่อในประวัติเดิม agent จองห้อง 3 วันที่ 12 บ่ายโมงได้ถูกต้อง แต่พอเริ่มประวัติใหม่แล้วขอเลื่อนเป็นบ่ายสาม มันถามกลับว่าวันไหน ห้องไหน <strong>ความจำของ agent จึงไม่ได้อยู่ใน model แต่อยู่ในประวัติที่ harness เก็บ</strong></p>
+<p><strong>ใน Lab 1:</strong> ตอบ “13:00” ต่อในประวัติเดิม agent จองห้อง 3 วันที่ 12 บ่ายโมงได้ถูกต้อง แต่พอเริ่มประวัติใหม่แล้วขอเลื่อนเป็นบ่ายสาม มันถามกลับว่าวันไหน ห้องไหน <strong>ความจำของ agent จึงไม่ได้อยู่ใน model แต่อยู่ในประวัติที่ harness เก็บ</strong></p>
 </blockquote>
 </section>
 <section id="safety-guardrail-และ-human-in-the-loop" class="level2">
@@ -586,7 +586,7 @@ div.csl-indent {
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>safe.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: <span class="st">"ขอเลื่อนเป็นบ่ายสามได้ไหม"</span>}]}, config)  <span class="co"># ⏸ พักไว้</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>safe.invoke(Command(resume<span class="op">=</span>{<span class="st">"decisions"</span>: [{<span class="st">"type"</span>: <span class="st">"approve"</span>}]}), config)                   <span class="co"># ✅ จองจริง</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
-<p><strong>ใน Lab 2:</strong> agent เดินขั้นตอนเหมือน Lab 1 ทุกขั้น ข้างในเก็บประวัติแบบเดียวกัน (<code>human</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>) แต่ framework <strong>ไม่ได้จำให้เอง</strong>: ไม่ใส่ checkpointer แล้วตอบ “13:00 ครับ” ไม่มีการจองเลย พอใส่ checkpointer จึงจองได้ใน thread <code>student-1</code> ส่วน thread <code>student-2</code> ถามกลับว่าวันไหน ห้องไหน <code>ModelCallLimitMiddleware(run_limit=1)</code> หยุดหลังเรียกปฏิทินครั้งเดียว และ <code>HumanInTheLoopMiddleware</code> พัก <code>book_room</code> ไว้ การจองยังเป็นบ่ายโมงจนเราส่ง <code>"approve"</code> กลับไป จึงเปลี่ยนเป็นบ่ายสาม</p>
+<p><strong>ใน Lab 2:</strong> agent เดินขั้นตอนเหมือน Lab 1 ทุกขั้น ข้างในเก็บประวัติแบบเดียวกัน (<code>human</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>, <code>tool</code>, <code>ai</code>) แต่ framework <strong>ไม่ได้จำให้เอง</strong>: ไม่ใส่ checkpointer แล้วตอบ “13:00” ไม่มีการจองเลย พอใส่ checkpointer จึงจองได้ใน thread <code>student-1</code> ส่วน thread <code>student-2</code> ถามกลับว่าวันไหน ห้องไหน <code>ModelCallLimitMiddleware(run_limit=1)</code> หยุดหลังเรียกปฏิทินครั้งเดียว และ <code>HumanInTheLoopMiddleware</code> พัก <code>book_room</code> ไว้ การจองยังเป็นบ่ายโมงจนเราส่ง <code>"approve"</code> กลับไป จึงเปลี่ยนเป็นบ่ายสาม</p>
 </blockquote>
 <p>framework ช่วยให้โค้ดสั้นลงและมีของพร้อมใช้ เช่นเก็บประวัติลงฐานข้อมูล หรือไม่อนุมัติพร้อมเหตุผล แต่ทุกชิ้นคือสิ่งที่เราเขียนเองได้ใน Lab 1 และเมื่อ agent ทำตัวแปลกๆ ความเข้าใจจาก Lab 1 คือสิ่งที่ช่วยให้รู้ว่าต้องดูตรงไหน</p>
 <p><strong>ให้ model คิด ให้ tool ลงมือ และให้คนตัดสินใจในเรื่องที่สำคัญ</strong></p>
