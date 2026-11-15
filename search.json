@@ -915,5 +915,137 @@
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>EP05 Autonomous Agent Patterns</span>"
     ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html",
+    "href": "ch19/ep06-design-principles/index.html",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#วตถประสงคการเรยนร",
+    "href": "ch19/ep06-design-principles/index.html#วตถประสงคการเรยนร",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "",
+    "text": "อธิบายหลักออกแบบ agent 6 ข้อจากตำรา พร้อมยกตัวอย่างของแต่ละข้อได้\nเขียน tool description และ error message ที่ model ใช้ได้ถูก\nแยกได้ว่าความล้มเหลวแบบไหน harness ควรจัดการเอง และแบบไหนต้องส่ง error กลับให้ model แก้\nใส่ trace ใน agent loop และสร้างชุดทดสอบที่มี input หลายแบบ รันซ้ำหลายรอบ\nใช้สามคำถามและตาราง 19.3 เลือก pattern โดยเริ่มจากแถวบนสุด และวัดผลก่อนขยับลง\nบอกได้ว่า middleware แต่ละตัวของ LangChain ตรงกับโค้ดส่วนไหนที่เราเขียนเอง",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#สองทม-โจทยเดยวกน",
+    "href": "ch19/ep06-design-principles/index.html#สองทม-โจทยเดยวกน",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "สองทีม โจทย์เดียวกัน",
+    "text": "สองทีม โจทย์เดียวกัน\nลองนึกภาพสองทีมที่ได้โจทย์เดียวกัน คือสรุป paper ใหม่ให้อาจารย์ทุกเช้า ทีมแรกต่อ LLM สามขั้นเป็นเส้นตรง ใช้งานได้ในหนึ่งสัปดาห์ ทีมที่สองสร้าง agent ห้าตัวคุยกัน ผ่านไปหนึ่งเดือนยังแก้บั๊กไม่จบ และไม่รู้ด้วยซ้ำว่าพังตรงไหน ทีมที่สองไม่ได้เขียนโค้ดแย่กว่า แต่เลือกโครงสร้างที่ซับซ้อนเกินโจทย์\nถ้า pattern ที่เราเรียนใน EP04–EP05 คือสูตรอาหาร หลักออกแบบ ก็คือสิ่งที่เชฟทำทุกจานไม่ว่าเมนูไหน เช่น ชิมก่อนเสิร์ฟ ตำรากลั่นหลัก 6 ข้อมาจากแนวทางของ Anthropic (Schluntz และ Zhang 2024) และบอกว่าใช้ได้กับทุก pattern (Roitman 2026, หมวด 19.3)",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#หลกออกแบบ-6-ขอ",
+    "href": "ch19/ep06-design-principles/index.html#หลกออกแบบ-6-ขอ",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "หลักออกแบบ 6 ข้อ",
+    "text": "หลักออกแบบ 6 ข้อ\n\n① Keep it simple\nใช้โครงสร้างที่ง่ายที่สุดที่ทำงานได้ แล้วค่อยเพิ่มความซับซ้อนเมื่อพิสูจน์แล้วว่าจำเป็นจริงๆ เหมือนไปซื้อขนมที่ร้านปากซอย เดินไปก็พอ ไม่ต้องเรียกรถบรรทุก\nงานแปล abstract เป็นไทยแล้วสรุปสามบรรทัด ใช้ prompt chain สองขั้น (แปล → สรุป) ก็จบ ไม่ต้องมี agent หัวหน้า นักแปล และผู้ตรวจ ตำราเขียนไว้ชัดว่า prompt chain ที่แก้ปัญหาได้จริง ดีกว่า multi-agent system ที่อาจจะแก้ได้ เพราะทุกชั้นที่เพิ่มคือ LLM call ที่เพิ่มขึ้น เวลารอที่นานขึ้น และจุดที่พังได้อีกหนึ่งจุด\n\n\n② Transparency over cleverness\nทุกขั้นของ agent ต้องเปิดดูได้ ไม่มี state ที่ซ่อนอยู่ ไม่มีเหตุผลที่มองไม่เห็น เหมือนข้อสอบคณิต ถ้าเขียนแค่คำตอบแล้วผิด ครูไม่รู้ว่าผิดตรงไหน แต่ถ้าแสดงวิธีทำ ครูชี้ได้เลยว่าผิดบรรทัดที่สาม\nใน agent สิ่งที่ทำหน้าที่เป็นวิธีทำคือ trace สมมติ research agent ตอบว่า “ยังไม่มีงานวิจัยเรื่องนี้” ซึ่งไม่จริง เปิด trace ก็เห็นว่าขั้นที่สองมันค้นด้วย year_from=2030 ตำราบอกว่าระบบที่มองข้างในไม่ได้ ทำให้ debug เป็นไปไม่ได้\n\nใน Lab 2: เราใส่ trace ใน agent loop แล้วถามหา paper “ในสองปีที่ผ่านมา” คำตอบดูถูกต้อง แต่ trace บอกว่า model ค้นด้วยปีที่เก่าเกินไป เพราะมันไม่รู้ว่าวันนี้วันที่เท่าไร แก้ด้วยการบอกวันที่ใน system prompt\n\n\n\n③ Provide good tools\nModel ไม่เห็นโค้ดของ tool เห็นแค่ชื่อ คำอธิบาย และชนิดของ argument เหมือนกล่องเครื่องมือที่ไม่มีป้าย หยิบผิดชิ้นก็ไม่แปลก\n\n\n\nตารางที่ 6.1: Tool description ที่ดีบอกว่า tool ทำอะไร รับอะไร คืนอะไร และ error ต้องบอกวิธีแก้\n\n\n\n\n\n\n\n\n\n\n\nTool ที่คลุมเครือ\nTool ที่ชัดเจน\n\n\n\n\nชื่อและ argument\nsearch(q)\nsearch_papers(query: str, year_from: int)\n\n\nคำอธิบาย\n“ค้นหา”\n“ค้น paper วิชาการตามหัวข้อ คืน list ของ {id, title, year} ถ้าไม่เจอคืน []”\n\n\nError\nError\nyear_from ต้องเป็นปี ค.ศ. เช่น 2020\n\n\n\n\n\n\nตำราบอกว่า tool ที่คำอธิบายคลุมเครือจะถูกใช้ผิด ส่วน tool ที่ schema ชัดจะถูกเลือกใช้ถูก และเรียก tool ที่ดีว่า force multiplier คือตัวคูณที่ทำให้ model ตัวเดิมทำงานได้ดีขึ้นหลายเท่า\n\nใน Lab 1: tool ที่มี argument ชื่อ n ทำให้ model ส่ง n=10 มาทุกรอบ (ได้ paper ที่เก่ากว่า 2023 ติดมา 5 ฉบับทุกรอบ) พอตั้งชื่อเป็น year_from และเขียนคำอธิบายให้ชัด model ส่ง year_from=2023 ถูกทั้ง 5 รอบ\n\n\n\n④ Plan for failure\nทุก tool call ล้มเหลวได้ เช่น API timeout หรือผู้ให้บริการตอบว่าเรียกถี่เกินไป (429) ตำราบอกให้สร้าง retry, fallback และ graceful degradation ไว้ที่ ระดับ harness เพื่อให้ model ไม่ต้องคิดเรื่องปัญหาของระบบ\n\n\n\n\n\n\n\nflowchart TB\n  C[\"⚡ Tool call ล้ม&lt;br/&gt;(timeout, 429)\"] --&gt; R[\"🔁 Retry&lt;br/&gt;รอ 1 วิ → 2 วิ\"]\n  R -- \"ยังล้ม\" --&gt; F[\"↪ Fallback&lt;br/&gt;(EP05 Lab 4)\"]\n  F -- \"ทุกทางปิด\" --&gt; D[\"🗂 ตอบจาก cache&lt;br/&gt;+ บอกว่าอาจไม่ใหม่\"]\n\n\n\n\nรูปที่ 6.1: Harness จัดการความล้มเหลวของระบบเอง model ไม่ต้องรู้\n\n\n\n\n\nRetry เหมือนโทรหาเพื่อนแล้วสายไม่ว่าง เรารอสักพักแล้วค่อยโทรใหม่ ไม่ใช่กดซ้ำรัวๆ ถ้าทุกทางปิด ระบบก็ยังไม่ควรล่มทั้งระบบ แต่ตอบจากข้อมูลเก่าใน cache แล้วบอกตรงๆ ว่าอาจไม่ใหม่ นี่คือ graceful degradation\n\n\n\n\n\n\nหมายเหตุข้อ ③ กับ ④ ทำงานคู่กัน\n\n\n\nถ้าระบบล่ม harness จัดการเองเงียบๆ แต่ถ้า model ใช้ tool ผิด ต้องส่ง error ที่ชัดกลับไปให้ model แก้\n\n\n\nใน Lab 1: retry ใน harness รอ 1 วินาที แล้ว 2 วินาที ก่อนลองใหม่ เมื่อทุกทางปิดจะตอบจากสำเนาคลัง paper แต่ model ตัดคำเตือน “ข้อมูลอาจไม่ใหม่” ทิ้งทุกครั้งที่เราทดสอบ harness จึงต้องแปะคำเตือนเอง\n\n\n\n⑤ Use structured outputs\nใช้ JSON schema หรือ function calling บังคับรูปแบบคำตอบ agent ที่ตอบเป็นข้อความอิสระแล้วเราต้องใช้ regex ไล่แกะจะเปราะบาง ส่วน agent ที่ตอบเป็น JSON ที่ตรวจแล้วจะทนทาน เหมือนแบบฟอร์มที่มีช่องให้กรอก เทียบกับจดหมายที่เขียนอะไรมาก็ได้ เรื่องนี้เราลงมือแล้วใน EP02\n\n\n⑥ Test with diverse inputs\nพฤติกรรมของ agent ไม่นิ่งเท่าแชตธรรมดา prompt เดียวกันรันสองรอบอาจเรียก tool คนละลำดับ ตำราจึงแนะนำให้ทดสอบแบบหาเรื่อง ด้วย edge case คำขอที่กำกวม และ input ที่ผิดรูป เหมือนทดสอบเครื่องคิดเลข ไม่ใช่กดแค่ 2 + 2 แต่ต้องลองหารด้วยศูนย์\n\n\n\nตารางที่ 6.2: Input หลายแบบ แต่ละแบบควรรันซ้ำหลายรอบ\n\n\n\n\n\nแบบ\nตัวอย่างสำหรับ research agent\n\n\n\n\nปกติ\n“transformer สำหรับ time-series”\n\n\nกำกวม\n“หา paper ดีๆ ให้หน่อย”\n\n\nสุดขอบ\n“paper ปี 2099”\n\n\nผิดรูป\nข้อความว่าง\n\n\n\n\n\n\n\nใน Lab 2: ชุดทดสอบ 7 แบบ แบบละ 3 รอบ เจอบั๊กที่เราไม่ได้คิดไว้ คำขอหัวข้อที่ไม่มีในคลัง paper พังทุกรอบ และ trace ชี้ว่าสาเหตุคือระบบค้นหาของเราเอง ไม่ใช่ model (find_papers ถือว่าเจอถ้าคำเดียวในชื่อตรงกัน คำว่า “learning” จึงดึง Chronos มา) หลังแก้ ผ่าน 21/21",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#เลอก-pattern-สามคำถาม",
+    "href": "ch19/ep06-design-principles/index.html#เลอก-pattern-สามคำถาม",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "เลือก pattern: สามคำถาม",
+    "text": "เลือก pattern: สามคำถาม\nตำราให้ดูสามเรื่องก่อนเลือก pattern (Roitman 2026, หมวด 19.4)\n\nโครงสร้างของงานคาดเดาได้แค่ไหน รู้ขั้นตอนล่วงหน้าไหม\nจ่าย LLM call ได้กี่ครั้ง ทั้งเวลาที่ผู้ใช้ต้องรอ และค่าใช้จ่าย\nคุณภาพต้องอาศัยการทำซ้ำไหม\n\n\n\n\nตารางที่ 6.3: สามคำถามกับโจทย์จริง\n\n\n\n\n\n\n\n\n\n\nโจทย์\nลักษณะ\nPattern\n\n\n\n\nแปลแล้วสรุป abstract\nขั้นตอนตายตัว\nPrompt chaining\n\n\nคัดคำถามนักศึกษาส่งให้คนที่ตอบได้\ninput หลายประเภท\nRouting\n\n\nรายงาน 2 หน้าเรื่อง time-series\nไม่รู้ว่าต้องค้นกี่รอบ ขั้นตอนเปิดกว้างและยาว\nPlanning agent",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#ตาราง-19.3-decision-matrix",
+    "href": "ch19/ep06-design-principles/index.html#ตาราง-19.3-decision-matrix",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "ตาราง 19.3: decision matrix",
+    "text": "ตาราง 19.3: decision matrix\nตำราสรุปทุก pattern ไว้ในตารางเดียว ใช้เป็น decision matrix ได้ เก้าแถวนี้คือทุกอย่างที่เราเรียนใน EP04 และ EP05 (ยกเว้น multi-agent ที่จะเรียนในตอนหลัง)\n\n\n\nตารางที่ 6.4: เลือก pattern (ดัดแปลงจากตาราง 19.3)\n\n\n\n\n\nPattern\nความซับซ้อน\nLLM calls\nเหมาะกับ\nเรียนใน\n\n\n\n\nPrompt chaining\nต่ำ\nN (คงที่)\nงานเป็นลำดับ\nEP04\n\n\nRouting\nต่ำ\n1 + 1\ninput หลายประเภท\nEP04\n\n\nParallelization\nต่ำ\nN (ขนาน)\nงานย่อยอิสระ, voting\nEP04\n\n\nOrchestrator-workers\nกลาง\nไม่แน่นอน\nไม่รู้วิธีแบ่งงานล่วงหน้า\nEP04\n\n\nEvaluator-optimizer\nกลาง\n2–10 (วน)\nงานที่คุณภาพสำคัญ\nEP04\n\n\nReAct\nกลาง\n3–25 (วน)\ntool-use ทั่วไป, สำรวจ\nEP05\n\n\nPlanning agent\nสูง\n5–50+\nงานยาวหลายขั้น\nEP05\n\n\nReflection\nสูง\n+50% overhead\nงานที่ครั้งแรกมักพลาด\nEP05\n\n\nMulti-agent\nสูง\nหลายครั้ง\nงานซับซ้อน ต้องแบ่งผู้เชี่ยวชาญ\nตอนหลัง\n\n\n\n\n\n\nวิธีใช้คือ เริ่มจากแถวบนสุด แล้วขยับลงเมื่อแบบที่ง่ายกว่าพังให้เห็นจริงๆ เท่านั้น เช่น งานหา paper ห้าฉบับแล้วสรุป ลอง chain ก่อน ถ้าพังเพราะไม่รู้ว่าต้องค้นกี่รอบ ค่อยลงไปใช้ ReAct\n\n\n\n\n\n\n\nflowchart TB\n  A[\"ลอง pattern แถวบน\"] --&gt; B{\"วัดผล: ถูกไหม&lt;br/&gt;กี่ call ราคาเท่าไร\"}\n  B -- \"ผ่าน\" --&gt; C[\"✅ หยุดที่แถวนี้\"]\n  B -- \"พังให้เห็นจริง\" --&gt; D[\"⬇ ลงแถวถัดไป\"]\n\n\n\n\nรูปที่ 6.2: ลองแบบที่ง่ายกว่าก่อน วัดผล แล้วขยับลงเมื่อพังจริง\n\n\n\n\n\n\nใน Lab 3: เราสร้างตัววัดจำนวน LLM call และค่าใช้จ่าย แล้วลอง prompt chaining (แถวบน) กับ ReAct (แถวกลาง) กับสองโจทย์\n\nงาน A สรุป PatchTST สามข้อ: chain ถูกทุกรอบด้วย 2 LLM calls ReAct ก็ถูกแต่ใช้ 3 calls และแพงกว่าราว 3 เท่า จึง หยุดที่แถวบน\nงาน B หา paper ตั้งแต่ปี 2023 ที่ได้คะแนน ≥ 4.5: chain ผิดทุกรอบ และผิดแบบเงียบๆ เพราะอ่านแค่ผลแรก ReAct ถูกทุกรอบ จึง ขยับลงหนึ่งแถว\n\nขั้นแรกของ chain ใช้ structured output (หลักข้อ ⑤)\n\n\n\n\n\n\n\nสำคัญประกอบกันได้ แต่รู้จักหยุด\n\n\n\nPattern ทั้งหมดประกอบกันได้ planning agent หนึ่งตัวอาจใช้ chaining ในแต่ละขั้น ใช้ evaluator-optimizer ตอนตรวจทาน และใช้ routing ส่งงานย่อย แต่ตำราปิดท้ายว่า ศิลปะอยู่ที่การรู้ว่าเมื่อไรควรหยุดเพิ่มชั้น",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#เขยนเอง-vs-framework",
+    "href": "ch19/ep06-design-principles/index.html#เขยนเอง-vs-framework",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "เขียนเอง vs framework",
+    "text": "เขียนเอง vs framework\nใน Lab 4 เราทำหลักทั้งหมดอีกครั้งด้วย LangChain (langchain==1.4.7) แต่ละชิ้นตรงกับโค้ดที่เขียนเองใน Lab 1–3\n\n\n\nตารางที่ 6.5: Middleware ของ LangChain เทียบกับโค้ดที่เขียนเอง\n\n\n\n\n\nหลัก\nโค้ดที่เขียนเอง (Lab 1–3)\nLangChain\n\n\n\n\n③ tool ที่ดี\nJSON schema + คำอธิบายที่เขียนเอง\n@tool + docstring\n\n\n② trace\nฟังก์ชันบันทึกทุกขั้นใน agent loop\nstream_mode=\"updates\"\n\n\nบอกวันที่ให้ model\nต่อท้าย system prompt\n@dynamic_prompt\n\n\n④ retry\nloop รอ 1 วิ → 2 วิ\nToolRetryMiddleware\n\n\n④ ตอบจาก cache\nfallback ใน harness\nwrap_tool_call\n\n\n④ คำเตือนถึงผู้ใช้\nharness แปะคำเตือนเอง\nafter_agent\n\n\nจำกัดจำนวนรอบ\nmax iterations\nModelCallLimitMiddleware\n\n\n\n\n\n\nโค้ดสั้นลงมาก แต่ framework ไม่ได้ตัดสินใจแทนเราว่า error แบบไหนควร retry จะเรียง middleware อย่างไร และผู้ใช้ต้องเห็นอะไร การตัดสินใจเหล่านี้ยังเป็นของคนออกแบบ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#คำศพทในตอนน",
+    "href": "ch19/ep06-design-principles/index.html#คำศพทในตอนน",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "คำศัพท์ในตอนนี้",
+    "text": "คำศัพท์ในตอนนี้\n\n\n\nตารางที่ 6.6: คำศัพท์ที่ใช้ใน EP06\n\n\n\n\n\n\n\n\n\n\nคำ\nคืออะไร\nตัวอย่าง\n\n\n\n\ntrace\nบันทึกทุกขั้นที่ agent ทำ ทั้งคิดอะไร เรียก tool อะไร ได้ผลอะไร\nขั้น 2: search_papers(…, year_from=2030) → ไม่เจอเลย\n\n\ntool description\nข้อความที่บอก model ว่า tool นี้ทำอะไร รับอะไร คืนอะไร\n“ค้น paper วิชาการตามหัวข้อ คืน list ของ {id, title, year}”\n\n\nretry\nลองเรียกซ้ำเมื่อพลาดแบบชั่วคราว\nAPI ตอบ 429 → รอ 1 วินาที → ลองใหม่\n\n\ngraceful degradation\nส่วนหนึ่งเสีย แต่ระบบยังทำงานต่อได้แบบลดคุณภาพลง\nsearch ล่ม → ใช้ผลจาก cache แล้วบอกว่าอาจไม่ใหม่\n\n\nedge case\ninput สุดขอบที่คนออกแบบมักลืมคิด\nขอ paper ปี 2099 หรือส่งข้อความว่าง\n\n\ndecision matrix\nตารางช่วยตัดสินใจ เทียบตัวเลือกด้วยเกณฑ์เดียวกัน\nตาราง 19.3: 9 pattern เทียบความซับซ้อน จำนวน LLM call งานที่เหมาะ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#lab",
+    "href": "ch19/ep06-design-principles/index.html#lab",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 6.7: Notebook ของ EP06 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก model อธิบายใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Tool ที่ดี + รับมือตอนระบบล่ม\nColab\nColab\n\n\nLab 2 — Trace + ชุดทดสอบ\nColab\nColab\n\n\nLab 3 — Chain หรือ ReAct? วัดก่อนเลือก\nColab\nColab\n\n\nLab 4 — LangChain middleware\nColab\nColab\n\n\n\n\n\n\nคลัง paper และ search API ที่ล่มเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง ผลที่คุณรันเองจึงอาจต่างไปบ้าง เช่นจำนวน call ของ ReAct ในแต่ละรอบ",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#คำถามทบทวน",
+    "href": "ch19/ep06-design-principles/index.html#คำถามทบทวน",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไม prompt chain ที่แก้ปัญหาได้จึงดีกว่า multi-agent system ที่อาจจะแก้ได้\nถ้า agent ตอบว่า “ไม่มีงานวิจัยเรื่องนี้” ทั้งที่มี เราจะใช้ trace หาสาเหตุอย่างไร\nจาก ตารางที่ 6.1 error message แบบขวามือช่วย model อย่างไร\nTimeout ของ API กับการที่ model ส่ง argument ผิด ควรจัดการต่างกันอย่างไร\nทำไมต้องรันแต่ละ input ในชุดทดสอบซ้ำหลายรอบ\nใน Lab 3 ทำไมงาน A จึงหยุดที่ prompt chaining แต่งาน B ต้องขยับลงไปใช้ ReAct\nMiddleware ตัวไหนของ LangChain ทำหน้าที่แทน retry loop ที่เราเขียนเองใน Lab 1",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#อานเพมเตม",
+    "href": "ch19/ep06-design-principles/index.html#อานเพมเตม",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nหลักออกแบบ: แนวทางสร้าง agent ที่ได้ผลจาก Anthropic ซึ่งตำราใช้เป็นที่มาของหลัก 6 ข้อ (Schluntz และ Zhang 2024)\nTool ที่ดี: แนวทางเขียน tool ให้ agent ใช้ได้ดี (Anthropic 2025)\nPattern ทั้งหมดในตาราง 19.3: ทบทวน EP04 และ EP05",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch19/ep06-design-principles/index.html#เอกสารอางอง",
+    "href": "ch19/ep06-design-principles/index.html#เอกสารอางอง",
+    "title": "EP06 Design Principles and Choosing a Pattern",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nAnthropic. 2025. Writing effective tools for AI agents—with agents. Anthropic Engineering. https://www.anthropic.com/engineering/writing-tools-for-agents.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSchluntz, Erik, และ Barry Zhang. 2024. Building Effective Agents. Anthropic. https://www.anthropic.com/research/building-effective-agents.",
+    "crumbs": [
+      "M1 · Agent คืออะไร และออกแบบอย่างไร",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
   }
 ]
