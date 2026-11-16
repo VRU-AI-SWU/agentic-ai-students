@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP07 Context Window Management – Agentic AI: From Foundations to Systems</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/ep06-design-principles/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-163ef9275c2a66b11cebe983e0e85afc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: the agent’s operating system</a></li><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html"><span class="chapter-title">EP07 Context Window Management</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: From Foundations to Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · Before you start: the LLM basics agent builders need</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 How LLMs Work — for Agent Builders</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompts, Structured Output and Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · What an agent is, and how to design one</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 From Chatbot to Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: the agent’s operating system</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#the-agent-that-forgot-its-first-instruction" id="toc-the-agent-that-forgot-its-first-instruction" class="nav-link" data-scroll-target="#the-agent-that-forgot-its-first-instruction">The agent that forgot its first instruction</a></li>
+  <li><a href="#the-agent-harness" id="toc-the-agent-harness" class="nav-link" data-scroll-target="#the-agent-harness">The agent harness</a></li>
+  <li><a href="#the-context-window-is-a-desk" id="toc-the-context-window-is-a-desk" class="nav-link" data-scroll-target="#the-context-window-is-a-desk">The context window is a desk</a></li>
+  <li><a href="#the-context-budget" id="toc-the-context-budget" class="nav-link" data-scroll-target="#the-context-budget">The context budget</a></li>
+  <li><a href="#the-silent-truncation-trap" id="toc-the-silent-truncation-trap" class="nav-link" data-scroll-target="#the-silent-truncation-trap">The silent truncation trap</a></li>
+  <li><a href="#compress-the-history-①-summarize" id="toc-compress-the-history-①-summarize" class="nav-link" data-scroll-target="#compress-the-history-①-summarize">Compress the history ① summarize</a></li>
+  <li><a href="#compress-the-history-②-keep-what-matters" id="toc-compress-the-history-②-keep-what-matters" class="nav-link" data-scroll-target="#compress-the-history-②-keep-what-matters">Compress the history ② keep what matters</a></li>
+  <li><a href="#three-sliding-windows" id="toc-three-sliding-windows" class="nav-link" data-scroll-target="#three-sliding-windows">Three sliding windows</a></li>
+  <li><a href="#recursive-context-decomposition" id="toc-recursive-context-decomposition" class="nav-link" data-scroll-target="#recursive-context-decomposition">Recursive context decomposition</a></li>
+  <li><a href="#pre-flight-token-check" id="toc-pre-flight-token-check" class="nav-link" data-scroll-target="#pre-flight-token-check">Pre-flight token check</a></li>
+  <li><a href="#prompt-architecture" id="toc-prompt-architecture" class="nav-link" data-scroll-target="#prompt-architecture">Prompt architecture</a></li>
+  <li><a href="#write-it-yourself-vs.-a-framework" id="toc-write-it-yourself-vs.-a-framework" class="nav-link" data-scroll-target="#write-it-yourself-vs.-a-framework">Write it yourself vs.&nbsp;a framework</a></li>
+  <li><a href="#terms-in-this-episode" id="toc-terms-in-this-episode" class="nav-link" data-scroll-target="#terms-in-this-episode">Terms in this episode</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions">Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: the agent’s operating system</a></li><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html"><span class="chapter-title">EP07 Context Window Management</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP07 Context Window Management</span></h1>
+<p class="subtitle lead">§18.1–18.3 · agent harness · context budget · silent truncation · compressing history · recursive decomposition · prompt architecture</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🎬 Videos and notebooks
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Videos:</strong> theory (≈10 min) → Labs 1–4 (6–11 min) → recap (≈4 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLIpXhIptkaSg">Cogito Learn · Agentic AI (EN/TH audio &amp; subs)</a>. Every video has English audio and English and Thai subtitles (⚙️ → Subtitles); the Thai audio track is coming soon.</li>
+<li><strong>Notebooks:</strong> each lab has a ✏️ starter (fill in only the TODOs) and a ✅ solution; see the <a href="#lab">Lab</a> table at the end of the page.</li>
+<li><strong>Model in the labs:</strong> Gemma 4 26B (open weights) through OpenRouter, pinned to the deepinfra/fp8 provider. It isn’t free, so add credit first, but the whole of Lab 1 cost about $0.012 and each other lab under one cent. You need an OpenRouter API key (set up in Lab 1).</li>
+</ul>
+</div>
+</div>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this episode you will be able to</p>
+<ol type="1">
+<li>explain what an agent harness does, and why the context window is the harness’s job</li>
+<li>write an agent’s context budget as five parts, and choose a fixed or a dynamic split</li>
+<li>explain silent truncation and write a pre-flight token check with the model’s own tokenizer</li>
+<li>compare ways to compress the history: FIFO, pinning, importance weights and summarizing the old part</li>
+<li>use recursive context decomposition on a document bigger than the per-call budget</li>
+<li>assemble a prompt from blocks that change independently, and use LangChain’s SummarizationMiddleware</li>
+</ol>
+</section>
+<section id="the-agent-that-forgot-its-first-instruction" class="level2">
+<h2 class="anchored" data-anchor-id="the-agent-that-forgot-its-first-instruction">The agent that forgot its first instruction</h2>
+<p>Picture this: we’ve been talking with a research assistant agent since nine in the morning. Our very first message said clearly: “Answer in Thai, and cite a paper every time.” Along the way we pasted in papers one by one, twelve of them. By eleven the agent answers in English, with no citations at all. The strange part: the log doesn’t show a single error. This episode explains what happened, and what the harness must do so it never happens again.</p>
+</section>
+<section id="the-agent-harness" class="level2">
+<h2 class="anchored" data-anchor-id="the-agent-harness">The agent harness</h2>
+<p>The textbook calls the structure wrapped around an LLM the <strong>agent harness</strong>. It turns the model from a text completer that remembers nothing into an agent with goals, many steps and tools <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 18.1</a>)</span>. The model on its own is just a function from tokens to tokens: no memory, no API calls, no sense of time. So the textbook compares the harness to an <strong>operating system</strong> that gives the model a body.</p>
+<p>The work splits cleanly. The thinking is the model’s; the harness handles tool calls, memory, message passing and logging every step. In our research assistant, Gemma does the thinking, but the harness calls <code>search_papers</code>, keeps the conversation and keeps the trace (EP06). The first piece of memory the harness must manage is the context window.</p>
+</section>
+<section id="the-context-window-is-a-desk" class="level2">
+<h2 class="anchored" data-anchor-id="the-context-window-is-a-desk">The context window is a desk</h2>
+<p>The <strong>context window</strong> is the agent’s working memory. Think of a desk: the model can read only the papers on the desk. A paper that isn’t on it, however important, is invisible to the model. And every paper on the desk has a cost: every token sent costs money and adds waiting time. Deciding what goes on the desk is one of the most consequential engineering decisions in agent design <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 18.2</a>)</span>.</p>
+</section>
+<section id="the-context-budget" class="level2">
+<h2 class="anchored" data-anchor-id="the-context-budget">The context budget</h2>
+<p>The textbook writes the desk’s budget as one equation. The maximum context length <span class="math inline">\(C\)</span> must hold five parts:</p>
+<p><span id="eq-budget"><span class="math display">\[
+C \;\geq\; S + M + T + H + R
+\tag{7.1}\]</span></span></p>
+<div id="tbl-budget" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.1: Five parts share one context window
+</figcaption>
+<div aria-describedby="tbl-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>What it is</th>
+<th>In our research assistant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(S\)</span></td>
+<td>system prompt</td>
+<td>“Answer in Thai, cite a paper every time”</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(M\)</span></td>
+<td>memory or retrieved data (RAG)</td>
+<td>saved paper notes</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(T\)</span></td>
+<td>tool definitions</td>
+<td>the schema of <code>search_papers</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H\)</span></td>
+<td>conversation history</td>
+<td>every message since nine o’clock</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(R\)</span></td>
+<td>space reserved for the answer</td>
+<td>10% of <span class="math inline">\(C\)</span> (in Lab 1)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The problem: <span class="math inline">\(C\)</span> is fixed, but <span class="math inline">\(H\)</span> keeps growing, and sometimes a tool returns a huge result at once, like a whole web page. The first approach is a <strong>fixed budget</strong>, like splitting a salary into envelopes. The textbook’s example: <span class="math inline">\(S\)</span> 10%, <span class="math inline">\(M\)</span> 20%, <span class="math inline">\(T\)</span> 10%, <span class="math inline">\(H\)</span> 50% and <span class="math inline">\(R\)</span> 10%. Simple and predictable, but it wastes space when an envelope isn’t full. The other approach is a <strong>dynamic</strong> split every turn, which in practice means filling the most important parts first, then compressing or cutting the less important ones.</p>
+</section>
+<section id="the-silent-truncation-trap" class="level2">
+<h2 class="anchored" data-anchor-id="the-silent-truncation-trap">The silent truncation trap</h2>
+<p>Many APIs, given input longer than the context, <strong>quietly drop part of it</strong>, from the middle or from the beginning. The textbook calls this <strong>silent truncation</strong>. The system prompt may be lost, earlier instructions forgotten, or the model may hallucinate from the missing data, with no error signal at all. In our research assistant, the first message, the one saying “answer in Thai and cite papers”, is exactly what was cut.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>The textbook’s rule
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Count tokens before every call, and handle overflow explicitly. Never let the API decide for you.</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p><strong>In Lab 1:</strong> we sent a conversation of about 270,000 tokens three ways. The pre-flight check stopped it before sending; sending it as is gave a clear 400 error; but OpenRouter’s middle-out option came back normally, 200 OK, while over 90,000 tokens from the middle were gone, so the model said there was no due date in the data. The harness caught it by comparing its own count before sending with the number of tokens the API said it really saw.</p>
+</blockquote>
+</section>
+<section id="compress-the-history-①-summarize" class="level2">
+<h2 class="anchored" data-anchor-id="compress-the-history-①-summarize">Compress the history ① summarize</h2>
+<p>When the history outgrows its budget, the harness must shorten it without losing what matters. The first approach summarizes the oldest <span class="math inline">\(k\)</span> messages into one paragraph, placed before the recent messages, which stay word for word:</p>
+<p><span id="eq-summarize"><span class="math display">\[
+H' \;=\; \text{Summarize}(H_{1:k}) \,\|\, H_{k+1:n}
+\tag{7.2}\]</span></span></p>
+<p>Like not replaying a week of lecture recordings, but reading a one-page summary. The first ten messages of our research assistant might become “The user studies transformers for time series, wants answers in Thai with citations, and has read two papers.” The textbook says a summary is usually 5–10× shorter than the original, and a smaller, cheaper model can do the summarizing.</p>
+</section>
+<section id="compress-the-history-②-keep-what-matters" class="level2">
+<h2 class="anchored" data-anchor-id="compress-the-history-②-keep-what-matters">Compress the history ② keep what matters</h2>
+<p>The second approach doesn’t summarize; it chooses what to keep. The textbook offers two ways:</p>
+<ul>
+<li><strong>Selective retention:</strong> score each message by its relevance to the current question plus its recency, and keep the top <span class="math inline">\(k\)</span>. Measuring relevance needs tools we’ll meet in the RAG episodes.</li>
+<li><strong>Importance-weighted truncation:</strong> give each message a weight <span class="math inline">\(w_i\)</span> (user corrections and tool results weigh more, small talk less) and keep the set with the largest total weight that fits the budget:</li>
+</ul>
+<p><span id="eq-knapsack"><span class="math display">\[
+\max_{\mathcal{K}} \sum_{i \in \mathcal{K}} w_i \quad \text{subject to} \quad \sum_{i \in \mathcal{K}} |m_i| \leq B_H
+\tag{7.3}\]</span></span></p>
+<p>Like packing a suitcase with a 20 kg limit: what’s most worth its weight goes in first. The textbook says this is a 0/1 knapsack problem, solved greedily by sorting messages by <span class="math inline">\(w_i / |m_i|\)</span>.</p>
+</section>
+<section id="three-sliding-windows" class="level2">
+<h2 class="anchored" data-anchor-id="three-sliding-windows">Three sliding windows</h2>
+<p>Looking at the whole window, the textbook compares three approaches:</p>
+<div id="tbl-windows" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-windows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.2: Three sliding windows (adapted from Figure 18.2)
+</figcaption>
+<div aria-describedby="tbl-windows-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>How</th>
+<th>Like</th>
+<th>Weak spot</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FIFO</td>
+<td>when full, drop the oldest message</td>
+<td>a full whiteboard erased from the top</td>
+<td>the first message, usually the task, goes first</td>
+</tr>
+<tr class="even">
+<td>Pinned + importance</td>
+<td>pin the system prompt and the user’s first message; choose the rest by score</td>
+<td>a sticky note with the task in the board’s corner</td>
+<td>helps only messages known in advance to matter</td>
+</tr>
+<tr class="odd">
+<td>Hierarchical summary</td>
+<td>recent messages word for word, older ones as paragraph summaries, the oldest as one abstract</td>
+<td>a pyramid of summaries</td>
+<td>extra model calls to summarize</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>In Lab 2:</strong> one conversation, a 400-token budget, four methods. FIFO dropped both the task and the correction, so the answer included older papers the user had excluded. Pinning saved the task, but the later correction was still lost. Importance weights kept every instruction, but one long note didn’t fit: 5 of 6. Summarizing the old part, from 532 tokens to 156, got all 6, like the full history, with less than half the tokens.</p>
+</blockquote>
+</section>
+<section id="recursive-context-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="recursive-context-decomposition">Recursive context decomposition</h2>
+<p>Every method so far accepts the same constraint: everything must fit in one window. The textbook describes an idea that rejects it: a <strong>recursive language model (RLM)</strong>, where the model calls itself on one part of the data at a time <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 18.2.5</a>)</span>.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-rlm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rlm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-rlm">flowchart TB
+  R["RLM(q, C)&lt;br/&gt;split + sub-questions"] --&gt; A["RLM(q₁, C₁)"]
+  R --&gt; B["RLM(q₂, C₂)&lt;br/&gt;still big → split again"]
+  R --&gt; D["RLM(q₃, C₃)"]
+  A &amp; B &amp; D --&gt; F["combine → answer"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rlm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: The root splits the context, calls itself on each chunk and combines the results; no call sees the full context (adapted from Figure 18.3)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Like a lecturer facing a six-hundred-page thesis who has each teaching assistant summarize one chapter, then combines their notes. Why does it help? The textbook’s answer is <strong>context rot</strong>: a model’s accuracy drops as the context grows, even with a 128K-token window. Keeping each call short and focused avoids it. The textbook cites research where a recursive GPT-5-mini beat plain GPT-5 on difficult long-context benchmarks, while being cheaper per query.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 3:</strong> a research group’s meeting notes for a whole year, 52 weeks and 8,243 tokens, hide three decisions to drop a paper. We set a budget of 1,500 tokens per call (an assumption for this lab; the document would fit Gemma’s real window). Cutting it to fit and sending once saw only the start and found just one decision. The textbook’s <code>recursive_summarize</code> built a tree two levels deep, 15 calls, the largest 798 tokens, never over budget. But in the first run P04 had no week, every time, because the sub-chunks had no <code>## Week 27</code> heading line. Carrying the heading into every chunk found all three with their weeks. Each small chunk must make sense on its own.</p>
+</blockquote>
+</section>
+<section id="pre-flight-token-check" class="level2">
+<h2 class="anchored" data-anchor-id="pre-flight-token-check">Pre-flight token check</h2>
+<p>Before every LLM call the harness runs a four-item checklist, like a pilot’s checklist before take-off <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 18.2.6</a>)</span>:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-preflight" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-preflight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+
+<pre class="mermaid mermaid-js" data-label="fig-preflight">flowchart TB
+  A["① count the prompt's tokens&lt;br/&gt;with the model's tokenizer"] --&gt; B{"② prompt ≤ C − R ?"}
+  B -- "fits" --&gt; D["✅ send + ④ log tokens per part"]
+  B -- "over" --&gt; C["③ compress / cut&lt;br/&gt;or stop with a clear error"]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-preflight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: The pre-flight token check before every LLM call
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Item ④ shows what takes up the space. The textbook also warns that the “4 characters ≈ 1 token” rule can be off by 20–40% for code, JSON and languages other than English, Thai included.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 1:</strong> against Gemma’s tokenizer, the four-character rule guessed 19% too many for English, but too few for Thai (32%), Python (28%) and JSON (58%). Counting with Gemma’s tokenizer, chat format included, we counted 214 and the API counted 215: one token apart.</p>
+</blockquote>
+</section>
+<section id="prompt-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="prompt-architecture">Prompt architecture</h2>
+<p>The textbook says the prompt is the main channel through which the harness talks to the model: it should be modular, composable and versioned <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 18.3</a>)</span>. A production system prompt usually has four sections, identity, capabilities, constraints and output format, with blanks filled in at run time, such as the agent’s name, the tool list or today’s date.</p>
+<p>The harness doesn’t keep the prompt as one block of text; it assembles it fresh every call from five blocks:</p>
+<p><span id="eq-concat"><span class="math display">\[
+\text{Prompt} \;=\; \text{Concat}(\text{System},\ \text{Memory},\ \text{Tools},\ \text{History},\ \text{Query})
+\tag{7.4}\]</span></span></p>
+<p>Like Lego: to change one piece, swap only that piece, and each piece has its own version number. Few-shot examples count against the budget too: the textbook suggests choosing only examples similar to the current question, within the <span class="math inline">\(M\)</span> budget. Tool descriptions we wrote in EP06 Lab 1; what’s new here is including only the tools relevant to the task at hand, to save tokens and confuse the model less.</p>
+</section>
+<section id="write-it-yourself-vs.-a-framework" class="level2">
+<h2 class="anchored" data-anchor-id="write-it-yourself-vs.-a-framework">Write it yourself vs.&nbsp;a framework</h2>
+<p>In Lab 4 we use LangChain’s <code>SummarizationMiddleware</code> (<code>langchain==1.4.7</code>) to do what we wrote ourselves in Lab 2:</p>
+<div id="tbl-middleware" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-middleware-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.3: SummarizationMiddleware next to our own code
+</figcaption>
+<div aria-describedby="tbl-middleware-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Our code (Lab 2)</th>
+<th>SummarizationMiddleware</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>our own <code>BUDGET</code> check</td>
+<td><code>trigger</code></td>
+</tr>
+<tr class="even">
+<td><code>keep_last</code> recent messages kept</td>
+<td><code>keep</code></td>
+</tr>
+<tr class="odd">
+<td><code>SUMMARY_PROMPT</code></td>
+<td><code>summary_prompt</code></td>
+</tr>
+<tr class="even">
+<td><code>message_tokens</code></td>
+<td><code>token_counter</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>What the framework adds is checking the budget itself before every model call. But its default prompt wrote 410-token summaries that hit the cap, so it summarized again almost every turn. With our prompt from Lab 2, whose summaries stayed under 200 tokens, it summarized just once or twice and got all 6 papers. A framework saves code, but we need to know what it does inside.</p>
+</section>
+<section id="terms-in-this-episode" class="level2">
+<h2 class="anchored" data-anchor-id="terms-in-this-episode">Terms in this episode</h2>
+<div id="tbl-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.4: Terms used in EP07
+</figcaption>
+<div aria-describedby="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>What it is</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>agent harness</td>
+<td>the structure around an LLM that handles tools, memory, messages and logging</td>
+<td>the harness calls <code>search_papers</code> and keeps the conversation for Gemma</td>
+</tr>
+<tr class="even">
+<td>context window</td>
+<td>the most tokens a model can read in one call</td>
+<td>a desk with room for only so many papers</td>
+</tr>
+<tr class="odd">
+<td>context budget</td>
+<td>splitting <span class="math inline">\(C\)</span> among the five parts <span class="math inline">\(S, M, T, H, R\)</span></td>
+<td>history gets 50% of the window</td>
+</tr>
+<tr class="even">
+<td>reserved output (<span class="math inline">\(R\)</span>)</td>
+<td>space left for the model’s answer</td>
+<td>Lab 1 reserves 10% of <span class="math inline">\(C\)</span> for the answer</td>
+</tr>
+<tr class="odd">
+<td>silent truncation</td>
+<td>the API quietly drops part of an overlong prompt, with no error</td>
+<td>“answer in Thai” is cut, so the agent answers in English</td>
+</tr>
+<tr class="even">
+<td>tokenizer</td>
+<td>splits text into tokens exactly as the model does</td>
+<td><code>tokenizers</code> loads Gemma’s tokenizer to count on our machine</td>
+</tr>
+<tr class="odd">
+<td>pre-flight token check</td>
+<td>checking the token budget before every LLM call</td>
+<td>prompt + <span class="math inline">\(R\)</span> &gt; <span class="math inline">\(C\)</span> → summarize, or stop with an error</td>
+</tr>
+<tr class="even">
+<td>sliding window (FIFO)</td>
+<td>keep only recent messages; when full, drop the oldest</td>
+<td>keep the last 8 messages; the task goes first</td>
+</tr>
+<tr class="odd">
+<td>pinned message</td>
+<td>a message pinned so it is never dropped</td>
+<td>the system prompt and the user’s first message</td>
+</tr>
+<tr class="even">
+<td>importance-weighted truncation</td>
+<td>drop the messages with the lowest weight per token first</td>
+<td>a user correction weighs 10, small talk 0.1</td>
+</tr>
+<tr class="odd">
+<td>RLM</td>
+<td>a model that calls itself on one chunk of context at a time, then combines</td>
+<td>a year of meeting notes summarized in 15 calls</td>
+</tr>
+<tr class="even">
+<td>context rot</td>
+<td>a model’s accuracy drops as the context grows</td>
+<td>facts in the middle of a long document get missed</td>
+</tr>
+<tr class="odd">
+<td>prompt template</td>
+<td>a prompt with blanks filled in at run time</td>
+<td><code>{agent_name}</code>, <code>{tools}</code>, <code>{today}</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7.5: EP07 notebooks (every lab has its own setup; the API key and the choice of model are explained in Lab 1)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — Count before you send</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab1-count-before-send.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab1-count-before-send.en.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — When history outgrows the window</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab2-history-window.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab2-history-window.en.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 3 — Recursive context decomposition</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab3-recursive-context.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab3-recursive-context.en.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 4 — LangChain SummarizationMiddleware</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab4-langchain-summarization.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab4-langchain-summarization.en.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The conversations and documents in the code are simulated for teaching; every model output in the videos is from a real run. Your own run may differ a little, for example in how many tokens middle-out drops or how often the middleware summarizes.</p>
+</section>
+<section id="review-questions" class="level2">
+<h2 class="anchored" data-anchor-id="review-questions">Review questions</h2>
+<ol type="1">
+<li>Why does a model need a harness, and how is the context window the harness’s job?</li>
+<li>Using <a href="#eq-budget" class="quarto-xref">Equation&nbsp;<span>7.1</span></a>: if a tool returns a whole web page, which part of the budget gets squeezed, and what should the harness do?</li>
+<li>Why is silent truncation more dangerous than getting a 400 error?</li>
+<li>Why shouldn’t we use the “4 characters ≈ 1 token” rule for Thai or JSON?</li>
+<li>In Lab 2, why did FIFO answer with papers the user had already excluded?</li>
+<li>In Lab 3, why carry the heading line into every sub-chunk?</li>
+<li>Which SummarizationMiddleware parameter matches the budget we checked ourselves in Lab 2, and why did the default prompt make it summarize almost every turn?</li>
+</ol>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li><strong>Textbook:</strong> §18.1–18.3 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>)</span>. Next, EP08 continues with the rest of the harness: handling tools, state and failure.</li>
+<li><strong>Tokenizers:</strong> review what a token is in <a href="../../ch01/ep01-how-llms-work/index.html">EP01</a>.</li>
+<li><strong>Design principles and the trace:</strong> <a href="../../ch19/ep06-design-principles/index.html">EP06</a>.</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch19/ep06-design-principles/index.html" class="pagination-link" aria-label="EP06 Design Principles and Choosing a Pattern">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

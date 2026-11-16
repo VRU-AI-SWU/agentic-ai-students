@@ -34,7 +34,7 @@
     "href": "index.html#learning-path",
     "title": "Agentic AI: From Foundations to Systems",
     "section": "Learning path",
-    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP00\nWelcome to the series watch first · 1 min ▶ what the series gives you · what you need · start with EP01 · video\n\n\nEP01\nHow LLMs work (for agent builders) ready ▶ tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs\n\n\nEP02\nPrompts, structured output and hallucination ready ▶ work orders · few-shot · JSON schema · validation · grounding · §1.12.11, §1.13, §1.16 · 4 labs\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent ready ▶ agent loop · tools · harness · human-in-the-loop · LangChain · ch15 · 2 labs\n\n\nEP04\nWorkflow Patterns ready ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 labs incl. LangGraph\n\n\nEP05\nAutonomous Agent Patterns ready ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign Principles and Choosing a Pattern ready ▶ six design principles · Table 19.3 · tracing · test suites · LangChain middleware · §19.3–19.4 · 4 labs\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext window management coming soon sliding windows and summarization when a conversation outgrows the context · §18.1–18.3\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
+    "text": "Learning path\nIn the recommended order; episodes not open yet will be added to the playlist as they are released · § numbers are textbook sections\n\n\n\nM0 Before you start: the LLM basics agent builders need Optional if you have used an LLM API before\n\n\nEP00\nWelcome to the series watch first · 1 min ▶ what the series gives you · what you need · start with EP01 · video\n\n\nEP01\nHow LLMs work (for agent builders) ready ▶ tokens · temperature · model names · quantization · modality · §1.1–1.2, §1.12 · 3 labs\n\n\nEP02\nPrompts, structured output and hallucination ready ▶ work orders · few-shot · JSON schema · validation · grounding · §1.12.11, §1.13, §1.16 · 4 labs\n\n\n\n\nM1 What an agent is, and how to design one By the end you can tell when a workflow is enough and when you need an agent\n\n\nEP03\nFrom chatbot to agent ready ▶ agent loop · tools · harness · human-in-the-loop · LangChain · ch15 · 2 labs\n\n\nEP04\nWorkflow Patterns ready ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 labs incl. LangGraph\n\n\nEP05\nAutonomous Agent Patterns ready ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 labs\n\n\nEP06\nDesign Principles and Choosing a Pattern ready ▶ six design principles · Table 19.3 · tracing · test suites · LangChain middleware · §19.3–19.4 · 4 labs\n\n\n\n\nM2 The harness: an agent’s operating system Build the capstone’s first harness\n\n\nEP07\nContext Window Management ready ▶ token budget · silent truncation · history windows · recursive summaries · LangChain SummarizationMiddleware · §18.1–18.3 · 4 labs\n\n\nEP08\nTools, state and error handling coming soon retries, guardrails, checkpoints · §18.4, 18.6–18.8\n\n\nEP09\nBuilding a production harness coming soon everything combined into the research agent’s harness · §18.10\n\n\n\n\nM3 Knowledge: RAG Let the agent answer from your own documents\n\n\nEP10\nRAG basics coming soon chunking and retrieval over papers · §16.1–16.4\n\n\nEP11\nAdvanced & agentic RAG coming soon the agent decides what to search and when, and how to evaluate RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 Memory An agent that remembers what it has done\n\n\nEP12\nAgent memory coming soon short-term, long-term and episodic memory, and how to store, retrieve and forget · ch17\n\n\n\n\nM5 Connecting to the world: MCP and Skills Plug the agent into tools and knowledge through standards\n\n\nEP13\nMCP coming soon why tools need a standard, and an MCP server for paper search · ch21\n\n\nEP14\nAgent Skills coming soon how a skill differs from a tool and from fine-tuning · ch22\n\n\n\n\nM6 Many agents working together Split the work across a team of agents\n\n\nEP15\nMulti-agent systems coming soon when to use several agents, and the supervisor + workers architecture · ch24\n\n\nEP16\nThe A2A protocol coming soon how agents talk across systems, and how A2A differs from MCP · ch23\n\n\n\n\nM7 Evaluation and reliability Know whether the agent really got better\n\n\nEP17\nEvaluating agents coming soon metrics for multi-step tasks, and LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability coming soon debugging an agent that behaves differently every run, with traces and a test suite · §25.5–25.6\n\n\n\n\nM8 Frameworks, production and UI Finish with a capstone that has a real UI\n\n\nEP19\nAgent frameworks coming soon which framework to choose, and how they differ · ch25\n\n\nEP20\nAgentic UI coming soon streaming and human-in-the-loop · the research agent with a UI · ch26",
     "crumbs": [
       "Home"
     ]
@@ -1046,6 +1046,215 @@
     "crumbs": [
       "M1 · What an agent is, and how to design one",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html",
+    "href": "ch18/ep07-context-management/index.html",
+    "title": "EP07 Context Window Management",
+    "section": "",
+    "text": "Learning objectives\nBy the end of this episode you will be able to",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#learning-objectives",
+    "href": "ch18/ep07-context-management/index.html#learning-objectives",
+    "title": "EP07 Context Window Management",
+    "section": "",
+    "text": "explain what an agent harness does, and why the context window is the harness’s job\nwrite an agent’s context budget as five parts, and choose a fixed or a dynamic split\nexplain silent truncation and write a pre-flight token check with the model’s own tokenizer\ncompare ways to compress the history: FIFO, pinning, importance weights and summarizing the old part\nuse recursive context decomposition on a document bigger than the per-call budget\nassemble a prompt from blocks that change independently, and use LangChain’s SummarizationMiddleware",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#the-agent-that-forgot-its-first-instruction",
+    "href": "ch18/ep07-context-management/index.html#the-agent-that-forgot-its-first-instruction",
+    "title": "EP07 Context Window Management",
+    "section": "The agent that forgot its first instruction",
+    "text": "The agent that forgot its first instruction\nPicture this: we’ve been talking with a research assistant agent since nine in the morning. Our very first message said clearly: “Answer in Thai, and cite a paper every time.” Along the way we pasted in papers one by one, twelve of them. By eleven the agent answers in English, with no citations at all. The strange part: the log doesn’t show a single error. This episode explains what happened, and what the harness must do so it never happens again.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#the-agent-harness",
+    "href": "ch18/ep07-context-management/index.html#the-agent-harness",
+    "title": "EP07 Context Window Management",
+    "section": "The agent harness",
+    "text": "The agent harness\nThe textbook calls the structure wrapped around an LLM the agent harness. It turns the model from a text completer that remembers nothing into an agent with goals, many steps and tools (Roitman 2026, sec. 18.1). The model on its own is just a function from tokens to tokens: no memory, no API calls, no sense of time. So the textbook compares the harness to an operating system that gives the model a body.\nThe work splits cleanly. The thinking is the model’s; the harness handles tool calls, memory, message passing and logging every step. In our research assistant, Gemma does the thinking, but the harness calls search_papers, keeps the conversation and keeps the trace (EP06). The first piece of memory the harness must manage is the context window.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#the-context-window-is-a-desk",
+    "href": "ch18/ep07-context-management/index.html#the-context-window-is-a-desk",
+    "title": "EP07 Context Window Management",
+    "section": "The context window is a desk",
+    "text": "The context window is a desk\nThe context window is the agent’s working memory. Think of a desk: the model can read only the papers on the desk. A paper that isn’t on it, however important, is invisible to the model. And every paper on the desk has a cost: every token sent costs money and adds waiting time. Deciding what goes on the desk is one of the most consequential engineering decisions in agent design (Roitman 2026, sec. 18.2).",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#the-context-budget",
+    "href": "ch18/ep07-context-management/index.html#the-context-budget",
+    "title": "EP07 Context Window Management",
+    "section": "The context budget",
+    "text": "The context budget\nThe textbook writes the desk’s budget as one equation. The maximum context length \\(C\\) must hold five parts:\n\\[\nC \\;\\geq\\; S + M + T + H + R\n\\tag{7.1}\\]\n\n\n\nTable 7.1: Five parts share one context window\n\n\n\n\n\nPart\nWhat it is\nIn our research assistant\n\n\n\n\n\\(S\\)\nsystem prompt\n“Answer in Thai, cite a paper every time”\n\n\n\\(M\\)\nmemory or retrieved data (RAG)\nsaved paper notes\n\n\n\\(T\\)\ntool definitions\nthe schema of search_papers\n\n\n\\(H\\)\nconversation history\nevery message since nine o’clock\n\n\n\\(R\\)\nspace reserved for the answer\n10% of \\(C\\) (in Lab 1)\n\n\n\n\n\n\nThe problem: \\(C\\) is fixed, but \\(H\\) keeps growing, and sometimes a tool returns a huge result at once, like a whole web page. The first approach is a fixed budget, like splitting a salary into envelopes. The textbook’s example: \\(S\\) 10%, \\(M\\) 20%, \\(T\\) 10%, \\(H\\) 50% and \\(R\\) 10%. Simple and predictable, but it wastes space when an envelope isn’t full. The other approach is a dynamic split every turn, which in practice means filling the most important parts first, then compressing or cutting the less important ones.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#the-silent-truncation-trap",
+    "href": "ch18/ep07-context-management/index.html#the-silent-truncation-trap",
+    "title": "EP07 Context Window Management",
+    "section": "The silent truncation trap",
+    "text": "The silent truncation trap\nMany APIs, given input longer than the context, quietly drop part of it, from the middle or from the beginning. The textbook calls this silent truncation. The system prompt may be lost, earlier instructions forgotten, or the model may hallucinate from the missing data, with no error signal at all. In our research assistant, the first message, the one saying “answer in Thai and cite papers”, is exactly what was cut.\n\n\n\n\n\n\nImportantThe textbook’s rule\n\n\n\nCount tokens before every call, and handle overflow explicitly. Never let the API decide for you.\n\n\n\nIn Lab 1: we sent a conversation of about 270,000 tokens three ways. The pre-flight check stopped it before sending; sending it as is gave a clear 400 error; but OpenRouter’s middle-out option came back normally, 200 OK, while over 90,000 tokens from the middle were gone, so the model said there was no due date in the data. The harness caught it by comparing its own count before sending with the number of tokens the API said it really saw.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#compress-the-history-①-summarize",
+    "href": "ch18/ep07-context-management/index.html#compress-the-history-①-summarize",
+    "title": "EP07 Context Window Management",
+    "section": "Compress the history ① summarize",
+    "text": "Compress the history ① summarize\nWhen the history outgrows its budget, the harness must shorten it without losing what matters. The first approach summarizes the oldest \\(k\\) messages into one paragraph, placed before the recent messages, which stay word for word:\n\\[\nH' \\;=\\; \\text{Summarize}(H_{1:k}) \\,\\|\\, H_{k+1:n}\n\\tag{7.2}\\]\nLike not replaying a week of lecture recordings, but reading a one-page summary. The first ten messages of our research assistant might become “The user studies transformers for time series, wants answers in Thai with citations, and has read two papers.” The textbook says a summary is usually 5–10× shorter than the original, and a smaller, cheaper model can do the summarizing.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#compress-the-history-②-keep-what-matters",
+    "href": "ch18/ep07-context-management/index.html#compress-the-history-②-keep-what-matters",
+    "title": "EP07 Context Window Management",
+    "section": "Compress the history ② keep what matters",
+    "text": "Compress the history ② keep what matters\nThe second approach doesn’t summarize; it chooses what to keep. The textbook offers two ways:\n\nSelective retention: score each message by its relevance to the current question plus its recency, and keep the top \\(k\\). Measuring relevance needs tools we’ll meet in the RAG episodes.\nImportance-weighted truncation: give each message a weight \\(w_i\\) (user corrections and tool results weigh more, small talk less) and keep the set with the largest total weight that fits the budget:\n\n\\[\n\\max_{\\mathcal{K}} \\sum_{i \\in \\mathcal{K}} w_i \\quad \\text{subject to} \\quad \\sum_{i \\in \\mathcal{K}} |m_i| \\leq B_H\n\\tag{7.3}\\]\nLike packing a suitcase with a 20 kg limit: what’s most worth its weight goes in first. The textbook says this is a 0/1 knapsack problem, solved greedily by sorting messages by \\(w_i / |m_i|\\).",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#three-sliding-windows",
+    "href": "ch18/ep07-context-management/index.html#three-sliding-windows",
+    "title": "EP07 Context Window Management",
+    "section": "Three sliding windows",
+    "text": "Three sliding windows\nLooking at the whole window, the textbook compares three approaches:\n\n\n\nTable 7.2: Three sliding windows (adapted from Figure 18.2)\n\n\n\n\n\n\n\n\n\n\n\nApproach\nHow\nLike\nWeak spot\n\n\n\n\nFIFO\nwhen full, drop the oldest message\na full whiteboard erased from the top\nthe first message, usually the task, goes first\n\n\nPinned + importance\npin the system prompt and the user’s first message; choose the rest by score\na sticky note with the task in the board’s corner\nhelps only messages known in advance to matter\n\n\nHierarchical summary\nrecent messages word for word, older ones as paragraph summaries, the oldest as one abstract\na pyramid of summaries\nextra model calls to summarize\n\n\n\n\n\n\n\nIn Lab 2: one conversation, a 400-token budget, four methods. FIFO dropped both the task and the correction, so the answer included older papers the user had excluded. Pinning saved the task, but the later correction was still lost. Importance weights kept every instruction, but one long note didn’t fit: 5 of 6. Summarizing the old part, from 532 tokens to 156, got all 6, like the full history, with less than half the tokens.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#recursive-context-decomposition",
+    "href": "ch18/ep07-context-management/index.html#recursive-context-decomposition",
+    "title": "EP07 Context Window Management",
+    "section": "Recursive context decomposition",
+    "text": "Recursive context decomposition\nEvery method so far accepts the same constraint: everything must fit in one window. The textbook describes an idea that rejects it: a recursive language model (RLM), where the model calls itself on one part of the data at a time (Roitman 2026, sec. 18.2.5).\n\n\n\n\n\n\n\nflowchart TB\n  R[\"RLM(q, C)&lt;br/&gt;split + sub-questions\"] --&gt; A[\"RLM(q₁, C₁)\"]\n  R --&gt; B[\"RLM(q₂, C₂)&lt;br/&gt;still big → split again\"]\n  R --&gt; D[\"RLM(q₃, C₃)\"]\n  A & B & D --&gt; F[\"combine → answer\"]\n\n\n\n\nFigure 7.1: The root splits the context, calls itself on each chunk and combines the results; no call sees the full context (adapted from Figure 18.3)\n\n\n\n\n\nLike a lecturer facing a six-hundred-page thesis who has each teaching assistant summarize one chapter, then combines their notes. Why does it help? The textbook’s answer is context rot: a model’s accuracy drops as the context grows, even with a 128K-token window. Keeping each call short and focused avoids it. The textbook cites research where a recursive GPT-5-mini beat plain GPT-5 on difficult long-context benchmarks, while being cheaper per query.\n\nIn Lab 3: a research group’s meeting notes for a whole year, 52 weeks and 8,243 tokens, hide three decisions to drop a paper. We set a budget of 1,500 tokens per call (an assumption for this lab; the document would fit Gemma’s real window). Cutting it to fit and sending once saw only the start and found just one decision. The textbook’s recursive_summarize built a tree two levels deep, 15 calls, the largest 798 tokens, never over budget. But in the first run P04 had no week, every time, because the sub-chunks had no ## Week 27 heading line. Carrying the heading into every chunk found all three with their weeks. Each small chunk must make sense on its own.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#pre-flight-token-check",
+    "href": "ch18/ep07-context-management/index.html#pre-flight-token-check",
+    "title": "EP07 Context Window Management",
+    "section": "Pre-flight token check",
+    "text": "Pre-flight token check\nBefore every LLM call the harness runs a four-item checklist, like a pilot’s checklist before take-off (Roitman 2026, sec. 18.2.6):\n\n\n\n\n\n\n\nflowchart TB\n  A[\"① count the prompt's tokens&lt;br/&gt;with the model's tokenizer\"] --&gt; B{\"② prompt ≤ C − R ?\"}\n  B -- \"fits\" --&gt; D[\"✅ send + ④ log tokens per part\"]\n  B -- \"over\" --&gt; C[\"③ compress / cut&lt;br/&gt;or stop with a clear error\"]\n\n\n\n\nFigure 7.2: The pre-flight token check before every LLM call\n\n\n\n\n\nItem ④ shows what takes up the space. The textbook also warns that the “4 characters ≈ 1 token” rule can be off by 20–40% for code, JSON and languages other than English, Thai included.\n\nIn Lab 1: against Gemma’s tokenizer, the four-character rule guessed 19% too many for English, but too few for Thai (32%), Python (28%) and JSON (58%). Counting with Gemma’s tokenizer, chat format included, we counted 214 and the API counted 215: one token apart.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#prompt-architecture",
+    "href": "ch18/ep07-context-management/index.html#prompt-architecture",
+    "title": "EP07 Context Window Management",
+    "section": "Prompt architecture",
+    "text": "Prompt architecture\nThe textbook says the prompt is the main channel through which the harness talks to the model: it should be modular, composable and versioned (Roitman 2026, sec. 18.3). A production system prompt usually has four sections, identity, capabilities, constraints and output format, with blanks filled in at run time, such as the agent’s name, the tool list or today’s date.\nThe harness doesn’t keep the prompt as one block of text; it assembles it fresh every call from five blocks:\n\\[\n\\text{Prompt} \\;=\\; \\text{Concat}(\\text{System},\\ \\text{Memory},\\ \\text{Tools},\\ \\text{History},\\ \\text{Query})\n\\tag{7.4}\\]\nLike Lego: to change one piece, swap only that piece, and each piece has its own version number. Few-shot examples count against the budget too: the textbook suggests choosing only examples similar to the current question, within the \\(M\\) budget. Tool descriptions we wrote in EP06 Lab 1; what’s new here is including only the tools relevant to the task at hand, to save tokens and confuse the model less.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#write-it-yourself-vs.-a-framework",
+    "href": "ch18/ep07-context-management/index.html#write-it-yourself-vs.-a-framework",
+    "title": "EP07 Context Window Management",
+    "section": "Write it yourself vs. a framework",
+    "text": "Write it yourself vs. a framework\nIn Lab 4 we use LangChain’s SummarizationMiddleware (langchain==1.4.7) to do what we wrote ourselves in Lab 2:\n\n\n\nTable 7.3: SummarizationMiddleware next to our own code\n\n\n\n\n\nOur code (Lab 2)\nSummarizationMiddleware\n\n\n\n\nour own BUDGET check\ntrigger\n\n\nkeep_last recent messages kept\nkeep\n\n\nSUMMARY_PROMPT\nsummary_prompt\n\n\nmessage_tokens\ntoken_counter\n\n\n\n\n\n\nWhat the framework adds is checking the budget itself before every model call. But its default prompt wrote 410-token summaries that hit the cap, so it summarized again almost every turn. With our prompt from Lab 2, whose summaries stayed under 200 tokens, it summarized just once or twice and got all 6 papers. A framework saves code, but we need to know what it does inside.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#terms-in-this-episode",
+    "href": "ch18/ep07-context-management/index.html#terms-in-this-episode",
+    "title": "EP07 Context Window Management",
+    "section": "Terms in this episode",
+    "text": "Terms in this episode\n\n\n\nTable 7.4: Terms used in EP07\n\n\n\n\n\n\n\n\n\n\nTerm\nWhat it is\nExample\n\n\n\n\nagent harness\nthe structure around an LLM that handles tools, memory, messages and logging\nthe harness calls search_papers and keeps the conversation for Gemma\n\n\ncontext window\nthe most tokens a model can read in one call\na desk with room for only so many papers\n\n\ncontext budget\nsplitting \\(C\\) among the five parts \\(S, M, T, H, R\\)\nhistory gets 50% of the window\n\n\nreserved output (\\(R\\))\nspace left for the model’s answer\nLab 1 reserves 10% of \\(C\\) for the answer\n\n\nsilent truncation\nthe API quietly drops part of an overlong prompt, with no error\n“answer in Thai” is cut, so the agent answers in English\n\n\ntokenizer\nsplits text into tokens exactly as the model does\ntokenizers loads Gemma’s tokenizer to count on our machine\n\n\npre-flight token check\nchecking the token budget before every LLM call\nprompt + \\(R\\) &gt; \\(C\\) → summarize, or stop with an error\n\n\nsliding window (FIFO)\nkeep only recent messages; when full, drop the oldest\nkeep the last 8 messages; the task goes first\n\n\npinned message\na message pinned so it is never dropped\nthe system prompt and the user’s first message\n\n\nimportance-weighted truncation\ndrop the messages with the lowest weight per token first\na user correction weighs 10, small talk 0.1\n\n\nRLM\na model that calls itself on one chunk of context at a time, then combines\na year of meeting notes summarized in 15 calls\n\n\ncontext rot\na model’s accuracy drops as the context grows\nfacts in the middle of a long document get missed\n\n\nprompt template\na prompt with blanks filled in at run time\n{agent_name}, {tools}, {today}",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#lab",
+    "href": "ch18/ep07-context-management/index.html#lab",
+    "title": "EP07 Context Window Management",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nTable 7.5: EP07 notebooks (every lab has its own setup; the API key and the choice of model are explained in Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Count before you send\nColab\nColab\n\n\nLab 2 — When history outgrows the window\nColab\nColab\n\n\nLab 3 — Recursive context decomposition\nColab\nColab\n\n\nLab 4 — LangChain SummarizationMiddleware\nColab\nColab\n\n\n\n\n\n\nThe conversations and documents in the code are simulated for teaching; every model output in the videos is from a real run. Your own run may differ a little, for example in how many tokens middle-out drops or how often the middleware summarizes.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#review-questions",
+    "href": "ch18/ep07-context-management/index.html#review-questions",
+    "title": "EP07 Context Window Management",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhy does a model need a harness, and how is the context window the harness’s job?\nUsing Equation 7.1: if a tool returns a whole web page, which part of the budget gets squeezed, and what should the harness do?\nWhy is silent truncation more dangerous than getting a 400 error?\nWhy shouldn’t we use the “4 characters ≈ 1 token” rule for Thai or JSON?\nIn Lab 2, why did FIFO answer with papers the user had already excluded?\nIn Lab 3, why carry the heading line into every sub-chunk?\nWhich SummarizationMiddleware parameter matches the budget we checked ourselves in Lab 2, and why did the default prompt make it summarize almost every turn?",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#further-reading",
+    "href": "ch18/ep07-context-management/index.html#further-reading",
+    "title": "EP07 Context Window Management",
+    "section": "Further reading",
+    "text": "Further reading\n\nTextbook: §18.1–18.3 (Roitman 2026). Next, EP08 continues with the rest of the harness: handling tools, state and failure.\nTokenizers: review what a token is in EP01.\nDesign principles and the trace: EP06.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#references",
+    "href": "ch18/ep07-context-management/index.html#references",
+    "title": "EP07 Context Window Management",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
     ]
   }
 ]

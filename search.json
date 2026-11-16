@@ -34,7 +34,7 @@
     "href": "index.html#เสนทางการเรยน",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "เส้นทางการเรียน",
-    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP00\nยินดีต้อนรับสู่ซีรีส์ ดูก่อน · 1 นาที ▶ ซีรีส์นี้ให้อะไร · พื้นฐานที่ต้องมี · เริ่มที่ EP01 · วิดีโอ\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) พร้อมเรียน ▶ token · temperature · ชื่อ model · quantization · modality · §1.1–1.2, §1.12 · 3 lab\n\n\nEP02\nPrompt, structured output และ hallucination พร้อมเรียน ▶ ใบสั่งงาน · few-shot · JSON schema · validate · grounding · §1.12.11, §1.13, §1.16 · 4 lab\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent พร้อมเรียน ▶ agent loop · tool · harness · human-in-the-loop · LangChain · ch15 · 2 lab\n\n\nEP04\nWorkflow Patterns พร้อมเรียน ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 lab รวม LangGraph\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nDesign Principles และการเลือก pattern พร้อมเรียน ▶ หลักออกแบบ 6 ข้อ · ตาราง 19.3 · trace · ชุดทดสอบ · LangChain middleware · §19.3–19.4 · 4 lab\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext window management เร็วๆ นี้ sliding window, summarization เมื่อบทสนทนายาวเกิน context · §18.1–18.3\n\n\nEP08\nTools, state และ error handling เร็วๆ นี้ retry, guardrail, checkpoint · §18.4, 18.6–18.8\n\n\nEP09\nสร้าง production harness เร็วๆ นี้ รวมทุกอย่างเป็น harness ของ research agent · §18.10\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG พื้นฐาน เร็วๆ นี้ chunking และ retrieval บน paper · §16.1–16.4\n\n\nEP11\nAdvanced & Agentic RAG เร็วๆ นี้ agent ตัดสินใจเองว่าจะค้นอะไร เมื่อไร และวัดผล RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
+    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP00\nยินดีต้อนรับสู่ซีรีส์ ดูก่อน · 1 นาที ▶ ซีรีส์นี้ให้อะไร · พื้นฐานที่ต้องมี · เริ่มที่ EP01 · วิดีโอ\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) พร้อมเรียน ▶ token · temperature · ชื่อ model · quantization · modality · §1.1–1.2, §1.12 · 3 lab\n\n\nEP02\nPrompt, structured output และ hallucination พร้อมเรียน ▶ ใบสั่งงาน · few-shot · JSON schema · validate · grounding · §1.12.11, §1.13, §1.16 · 4 lab\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent พร้อมเรียน ▶ agent loop · tool · harness · human-in-the-loop · LangChain · ch15 · 2 lab\n\n\nEP04\nWorkflow Patterns พร้อมเรียน ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 lab รวม LangGraph\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nDesign Principles และการเลือก pattern พร้อมเรียน ▶ หลักออกแบบ 6 ข้อ · ตาราง 19.3 · trace · ชุดทดสอบ · LangChain middleware · §19.3–19.4 · 4 lab\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext Window Management พร้อมเรียน ▶ token budget · การตัดเงียบ · history window · สรุปแบบ recursive · LangChain SummarizationMiddleware · §18.1–18.3 · 4 lab\n\n\nEP08\nTools, state และ error handling เร็วๆ นี้ retry, guardrail, checkpoint · §18.4, 18.6–18.8\n\n\nEP09\nสร้าง production harness เร็วๆ นี้ รวมทุกอย่างเป็น harness ของ research agent · §18.10\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG พื้นฐาน เร็วๆ นี้ chunking และ retrieval บน paper · §16.1–16.4\n\n\nEP11\nAdvanced & Agentic RAG เร็วๆ นี้ agent ตัดสินใจเองว่าจะค้นอะไร เมื่อไร และวัดผล RAG · §16.5, 16.7–16.9\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -1046,6 +1046,215 @@
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>EP06 Design Principles and Choosing a Pattern</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html",
+    "href": "ch18/ep07-context-management/index.html",
+    "title": "EP07 Context Window Management",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#วตถประสงคการเรยนร",
+    "href": "ch18/ep07-context-management/index.html#วตถประสงคการเรยนร",
+    "title": "EP07 Context Window Management",
+    "section": "",
+    "text": "อธิบายได้ว่า agent harness ทำอะไร และทำไม context window จึงเป็นงานของ harness\nเขียน context budget ของ agent เป็นห้าส่วน และเลือกได้ว่าจะแบ่งงบแบบตายตัวหรือแบบ dynamic\nอธิบาย silent truncation และเขียน pre-flight token check ด้วย tokenizer ของ model เอง\nเปรียบเทียบวิธีบีบ history ได้แก่ FIFO การปักหมุด การให้น้ำหนักความสำคัญ และการสรุปของเก่า\nใช้ recursive context decomposition กับเอกสารที่ใหญ่กว่างบต่อ call\nประกอบ prompt จาก block ที่เปลี่ยนแยกกันได้ และใช้ SummarizationMiddleware ของ LangChain ได้",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#agent-ทลมคำสงแรก",
+    "href": "ch18/ep07-context-management/index.html#agent-ทลมคำสงแรก",
+    "title": "EP07 Context Window Management",
+    "section": "Agent ที่ลืมคำสั่งแรก",
+    "text": "Agent ที่ลืมคำสั่งแรก\nลองนึกภาพว่าเราคุยกับ research assistant agent มาตั้งแต่เก้าโมงเช้า ข้อความแรกสั่งไว้ชัดว่า “ตอบเป็นภาษาไทย และอ้างอิง paper ทุกครั้ง” ระหว่างนั้นเราแปะ paper เข้าไปทีละเรื่องจนครบสิบสองเรื่อง พอสิบเอ็ดโมง agent เริ่มตอบเป็นภาษาอังกฤษ และไม่อ้างอิงอะไรเลย ที่แปลกคือ log ไม่มี error สักบรรทัด ตอนนี้จะตอบว่าเกิดอะไรขึ้น และ harness ต้องทำอะไรเพื่อไม่ให้เกิดขึ้นอีก",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#agent-harness",
+    "href": "ch18/ep07-context-management/index.html#agent-harness",
+    "title": "EP07 Context Window Management",
+    "section": "Agent harness",
+    "text": "Agent harness\nตำราเรียกโครงสร้างที่ห่อ LLM ไว้ว่า agent harness มันเปลี่ยน model จากเครื่องเติมข้อความที่ไม่จำอะไร ให้เป็น agent ที่มีเป้าหมาย ทำงานหลายขั้น และใช้ tool ได้ (Roitman 2026, หมวด 18.1) ตัว model เป็นแค่ฟังก์ชันที่รับ token แล้วคืน token ไม่มีความจำ เรียก API ไม่ได้ และไม่รู้เวลา ตำราจึงเทียบ harness กับระบบปฏิบัติการที่ให้ร่างกายกับ model\nงานจึงแบ่งกันชัด การคิดเป็นของ model ส่วน harness ดูแลการเรียก tool ความจำ การส่งข้อความ และการบันทึกทุกขั้น ใน research assistant ของเรา Gemma เป็นคนคิด แต่ harness เป็นคนเรียก search_papers เก็บบทสนทนา และเก็บ trace (EP06) ความจำส่วนแรกที่ harness ต้องดูแลคือ context window",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#context-window-คอโตะทำงาน",
+    "href": "ch18/ep07-context-management/index.html#context-window-คอโตะทำงาน",
+    "title": "EP07 Context Window Management",
+    "section": "Context window คือโต๊ะทำงาน",
+    "text": "Context window คือโต๊ะทำงาน\nContext window คือ working memory ของ agent ลองนึกถึงโต๊ะทำงาน model อ่านได้เฉพาะกระดาษที่วางบนโต๊ะ กระดาษที่ไม่ได้วาง ต่อให้สำคัญแค่ไหน model ก็มองไม่เห็น และกระดาษทุกแผ่นบนโต๊ะมีต้นทุน ทุก token ที่ส่งไปต้องจ่ายเงินและทำให้รอนานขึ้น การจัดว่าอะไรควรอยู่บนโต๊ะจึงเป็นการตัดสินใจทางวิศวกรรมที่ส่งผลมากที่สุดเรื่องหนึ่งของการออกแบบ agent (Roitman 2026, หมวด 18.2)",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#context-budget",
+    "href": "ch18/ep07-context-management/index.html#context-budget",
+    "title": "EP07 Context Window Management",
+    "section": "Context budget",
+    "text": "Context budget\nตำราเขียนงบของโต๊ะเป็นสมการเดียว ความยาว context สูงสุด \\(C\\) ต้องรองรับห้าส่วน\n\\[\nC \\;\\geq\\; S + M + T + H + R\n\\tag{7.1}\\]\n\n\n\nตารางที่ 7.1: ห้าส่วนที่แบ่งกันใช้ context window เดียว\n\n\n\n\n\nส่วน\nคืออะไร\nตัวอย่างใน research assistant\n\n\n\n\n\\(S\\)\nsystem prompt\n“ตอบเป็นภาษาไทย อ้างอิง paper ทุกครั้ง”\n\n\n\\(M\\)\nความจำหรือข้อมูลที่ค้นมา (RAG)\nโน้ตสรุป paper ที่เก็บไว้\n\n\n\\(T\\)\nคำอธิบาย tool\nschema ของ search_papers\n\n\n\\(H\\)\nประวัติบทสนทนา\nทุกข้อความตั้งแต่เก้าโมง\n\n\n\\(R\\)\nที่เว้นไว้ให้ model ตอบ\n10% ของ \\(C\\) (ใน Lab 1)\n\n\n\n\n\n\nปัญหาคือ \\(C\\) คงที่ แต่ \\(H\\) ยาวขึ้นเรื่อยๆ และบางครั้ง tool คืนผลก้อนใหญ่มาทีเดียว เช่นหน้าเว็บทั้งหน้า วิธีแรกคือแบ่งงบตายตัวเหมือนแบ่งเงินเดือนใส่ซอง ตำราให้ตัวอย่างไว้ \\(S\\) 10% \\(M\\) 20% \\(T\\) 10% \\(H\\) 50% และ \\(R\\) 10% ง่ายและคาดเดาได้ แต่เสียพื้นที่เมื่อบางซองใช้ไม่เต็ม อีกวิธีคือแบ่งแบบ dynamic ทุกรอบ ในทางปฏิบัติคือเติมส่วนที่สำคัญที่สุดก่อน แล้วค่อยบีบหรือตัดส่วนที่สำคัญน้อยกว่า",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#กบดก-silent-truncation",
+    "href": "ch18/ep07-context-management/index.html#กบดก-silent-truncation",
+    "title": "EP07 Context Window Management",
+    "section": "กับดัก silent truncation",
+    "text": "กับดัก silent truncation\nAPI หลายตัวเมื่อได้ข้อความยาวเกิน context จะตัดบางส่วนทิ้งเงียบๆ อาจตัดตรงกลางหรือตั้งแต่ต้น ตำราเรียกว่า silent truncation ผลคือ system prompt อาจหาย model ลืมคำสั่งก่อนหน้า หรือ hallucinate จากข้อมูลที่ขาดไป โดยไม่มีสัญญาณ error ใดๆ ใน research assistant ของเรา ข้อความแรกที่สั่งให้ตอบภาษาไทยและอ้างอิง paper คือท่อนที่ถูกตัดทิ้ง\n\n\n\n\n\n\nสำคัญกฎจากตำรา\n\n\n\nนับ token ก่อนส่งทุกครั้ง และจัดการตอนที่ล้นให้ชัดเจน อย่าปล่อยให้ API ตัดสินใจแทนเรา\n\n\n\nใน Lab 1: เราส่งบทสนทนายาวราวสองแสนเจ็ดหมื่น token สามแบบ pre-flight check หยุดไว้ก่อนส่ง การส่งตรงๆ ได้ error 400 ที่ชัดเจน แต่ตัวเลือก middle-out ของ OpenRouter ตอบกลับมาปกติ 200 OK ทั้งที่ข้อความตรงกลางหายไปกว่าเก้าหมื่น token model จึงตอบว่าไม่มีข้อมูลกำหนดส่ง harness จับได้ด้วยการเทียบตัวเลขที่นับเองก่อนส่ง กับจำนวน token ที่ API บอกว่าเห็นจริง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#บบ-history-①-สรปของเกา",
+    "href": "ch18/ep07-context-management/index.html#บบ-history-①-สรปของเกา",
+    "title": "EP07 Context Window Management",
+    "section": "บีบ history ① สรุปของเก่า",
+    "text": "บีบ history ① สรุปของเก่า\nเมื่อ history เกินงบ harness ต้องบีบให้สั้นลงโดยไม่ทำข้อมูลสำคัญหาย วิธีแรกคือสรุปข้อความเก่าที่สุด \\(k\\) ข้อความเป็นย่อหน้าเดียว แล้ววางไว้หน้าข้อความล่าสุดที่ยังเก็บไว้ครบ\n\\[\nH' \\;=\\; \\text{Summarize}(H_{1:k}) \\,\\|\\, H_{k+1:n}\n\\tag{7.2}\\]\nเหมือนเราไม่ฟังเทปเลคเชอร์ทั้งสัปดาห์ซ้ำ แต่อ่านโน้ตสรุปหน้าเดียว เช่น สิบข้อความแรกของ research assistant อาจเหลือแค่ “ผู้ใช้ศึกษา transformer สำหรับ time series ต้องการคำตอบภาษาไทยพร้อมอ้างอิง อ่าน paper ไปแล้วสองเรื่อง” ตำราบอกว่าบทสรุปมักสั้นกว่าต้นฉบับ 5–10 เท่า และใช้ model ที่เล็กกว่า ถูกกว่า มาสรุปแทนก็ได้",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#บบ-history-②-เกบเฉพาะทสำคญ",
+    "href": "ch18/ep07-context-management/index.html#บบ-history-②-เกบเฉพาะทสำคญ",
+    "title": "EP07 Context Window Management",
+    "section": "บีบ history ② เก็บเฉพาะที่สำคัญ",
+    "text": "บีบ history ② เก็บเฉพาะที่สำคัญ\nวิธีที่สองไม่สรุป แต่เลือกเก็บ ตำราเสนอไว้สองแบบ\n\nSelective retention: ให้คะแนนแต่ละข้อความจากความเกี่ยวข้องกับคำถามตอนนี้บวกความใหม่ แล้วเก็บ \\(k\\) ข้อความที่คะแนนสูงสุด การวัดความเกี่ยวข้องต้องใช้เครื่องมือที่จะเรียนในตอน RAG\nImportance-weighted truncation: ให้น้ำหนัก \\(w_i\\) กับแต่ละข้อความ ข้อความที่ผู้ใช้แก้ agent หรือผลจาก tool ได้น้ำหนักสูง ส่วนคุยเล่นได้น้ำหนักต่ำ แล้วเลือกเก็บข้อความให้น้ำหนักรวมมากที่สุดภายในงบ\n\n\\[\n\\max_{\\mathcal{K}} \\sum_{i \\in \\mathcal{K}} w_i \\quad \\text{โดยที่} \\quad \\sum_{i \\in \\mathcal{K}} |m_i| \\leq B_H\n\\tag{7.3}\\]\nเหมือนจัดกระเป๋าเดินทางที่จำกัดน้ำหนักยี่สิบกิโล เราใส่ของที่คุ้มที่สุดต่อน้ำหนักก่อน ตำราบอกว่านี่คือโจทย์ 0/1 knapsack และแก้แบบ greedy ได้ โดยเรียงข้อความตาม \\(w_i / |m_i|\\)",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#sliding-window-สามแบบ",
+    "href": "ch18/ep07-context-management/index.html#sliding-window-สามแบบ",
+    "title": "EP07 Context Window Management",
+    "section": "Sliding window สามแบบ",
+    "text": "Sliding window สามแบบ\nถ้ามองทั้งหน้าต่าง ตำรามีสามแบบให้เทียบ\n\n\n\nตารางที่ 7.2: Sliding window สามแบบ (ดัดแปลงจากรูป 18.2)\n\n\n\n\n\n\n\n\n\n\n\nแบบ\nทำอย่างไร\nเปรียบเหมือน\nจุดอ่อน\n\n\n\n\nFIFO\nเต็มเมื่อไรก็ทิ้งข้อความเก่าที่สุด\nไวท์บอร์ดเต็มแล้วลบจากบนสุด\nข้อความแรก ซึ่งมักเป็นโจทย์ หายก่อน\n\n\nPinned + importance\nปักหมุด system prompt และข้อความแรกของผู้ใช้ไว้ ที่เหลือเลือกด้วยคะแนน\nแปะ post-it โจทย์ไว้มุมกระดาน\nช่วยเฉพาะข้อความที่รู้ล่วงหน้าว่าสำคัญ\n\n\nHierarchical summary\nล่าสุดเก็บครบ เก่ากว่าเป็นสรุปย่อหน้า เก่าที่สุดเป็นบทคัดย่อเดียว\nพีระมิดของบทสรุป\nต้องเรียก model เพื่อสรุปเพิ่ม\n\n\n\n\n\n\n\nใน Lab 2: บทสนทนาเดียวกัน งบ 400 token สี่วิธี FIFO ทิ้งทั้งโจทย์และการแก้โจทย์ คำตอบจึงมี paper เก่าที่ผู้ใช้สั่งตัดออก การปักหมุดรักษาโจทย์ได้ แต่การแก้โจทย์ที่มาทีหลังยังหาย การให้น้ำหนักเก็บคำสั่งได้ครบ แต่โน้ตยาวหนึ่งฉบับลงงบไม่ได้ จึงได้ 5 จาก 6 ส่วนการสรุปของเก่า จาก 532 token เหลือ 156 ได้ครบ 6 ฉบับ เหมือนใช้ history ทั้งหมด ด้วย token ไม่ถึงครึ่ง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#recursive-context-decomposition",
+    "href": "ch18/ep07-context-management/index.html#recursive-context-decomposition",
+    "title": "EP07 Context Window Management",
+    "section": "Recursive context decomposition",
+    "text": "Recursive context decomposition\nทุกวิธีที่ผ่านมายอมรับข้อจำกัดเดียวกัน คือทุกอย่างต้องอัดลงหน้าต่างเดียว ตำราเล่าถึงอีกแนวคิดที่ไม่ยอมรับข้อจำกัดนี้ คือ recursive language model (RLM) ให้ model เรียกตัวเองซ้ำบนข้อมูลทีละส่วน (Roitman 2026, หมวด 18.2.5)\n\n\n\n\n\n\n\nflowchart TB\n  R[\"RLM(q, C)&lt;br/&gt;แบ่ง + ตั้งคำถามย่อย\"] --&gt; A[\"RLM(q₁, C₁)\"]\n  R --&gt; B[\"RLM(q₂, C₂)&lt;br/&gt;ยังใหญ่ → แบ่งต่อ\"]\n  R --&gt; D[\"RLM(q₃, C₃)\"]\n  A & B & D --&gt; F[\"รวมผล → คำตอบ\"]\n\n\n\n\nรูปที่ 7.1: ตัวหลักแบ่ง context ส่งชิ้นย่อยให้ตัวเอง แล้วรวมผล ไม่มี call ไหนเห็น context ทั้งหมด (ดัดแปลงจากรูป 18.3)\n\n\n\n\n\nเหมือนอาจารย์ที่ต้องอ่านวิทยานิพนธ์หกร้อยหน้า แบ่งให้ผู้ช่วยสอนสรุปคนละบท แล้วรวมผลเอง ทำไมวิธีนี้ช่วยได้ ตำราอธิบายด้วย context rot คือความแม่นของ model ลดลงเมื่อ context ยาวขึ้น แม้ model จะรับได้ถึง 128K token ก็ตาม การทำให้แต่ละ call สั้นและตรงประเด็นจึงเลี่ยงปัญหานี้ได้ ตำรายกงานวิจัยที่พบว่า GPT-5-mini แบบ recursive ทำได้ดีกว่า GPT-5 แบบธรรมดาในโจทย์ context ยาวที่ยาก และยังถูกกว่าต่อคำถาม\n\nใน Lab 3: บันทึกการประชุมของกลุ่มวิจัยทั้งปี 52 สัปดาห์ ยาว 8,243 token ซ่อนการตัดสินใจตัด paper ไว้สามจุด เราตั้งงบต่อ call ไว้ 1,500 token (เป็นสมมติฐานของ lab ตัวเอกสารจริงๆ ลง window ของ Gemma ได้สบาย) ตัดให้พอดีแล้วส่งครั้งเดียวเห็นแค่ต้นเอกสาร เจอแค่จุดเดียว recursive_summarize ตามตำราแตกต้นไม้ลึกสองชั้น ใช้ 15 call ใหญ่สุด 798 token ไม่มี call ไหนเกินงบ แต่รอบแรก P04 ไม่มีสัปดาห์ทุกครั้ง เพราะชิ้นย่อยไม่มีบรรทัดหัวข้อ ## Week 27 พอพาหัวข้อไปกับทุกชิ้นก็เจอครบทั้งสามพร้อมสัปดาห์ ชิ้นเล็กแต่ละชิ้นต้องอ่านรู้เรื่องได้ด้วยตัวเอง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#pre-flight-token-check",
+    "href": "ch18/ep07-context-management/index.html#pre-flight-token-check",
+    "title": "EP07 Context Window Management",
+    "section": "Pre-flight token check",
+    "text": "Pre-flight token check\nก่อนเรียก LLM ทุกครั้ง harness ต้องทำ checklist สี่ข้อ เหมือน checklist ของนักบินก่อนขึ้นบิน (Roitman 2026, หมวด 18.2.6)\n\n\n\n\n\n\n\nflowchart TB\n  A[\"① นับ token ของ prompt&lt;br/&gt;ด้วย tokenizer ของ model\"] --&gt; B{\"② prompt ≤ C − R ?\"}\n  B -- \"ผ่าน\" --&gt; D[\"✅ ส่ง + ④ บันทึก token ทีละส่วน\"]\n  B -- \"เกิน\" --&gt; C[\"③ บีบ / ตัด&lt;br/&gt;หรือหยุดพร้อม error ที่ชัดเจน\"]\n\n\n\n\nรูปที่ 7.2: Pre-flight token check ก่อนเรียก LLM ทุกครั้ง\n\n\n\n\n\nข้อ ④ ช่วยให้รู้ว่าส่วนไหนกินพื้นที่ ตำราเตือนด้วยว่ากฎ “4 ตัวอักษร ≈ 1 token” อาจเพี้ยนได้ 20–40% สำหรับโค้ด JSON และภาษาที่ไม่ใช่ภาษาอังกฤษ ซึ่งรวมถึงภาษาไทยด้วย\n\nใน Lab 1: เทียบกับ tokenizer ของ Gemma กฎสี่ตัวอักษรเดาเกินกับภาษาอังกฤษ 19% แต่เดาขาดกับภาษาไทย 32% Python 28% และ JSON 58% พอนับด้วย tokenizer ของ Gemma รวมรูปแบบแชทด้วย เรานับได้ 214 ส่วน API นับได้ 215 ต่างกันแค่หนึ่ง token",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#prompt-architecture",
+    "href": "ch18/ep07-context-management/index.html#prompt-architecture",
+    "title": "EP07 Context Window Management",
+    "section": "Prompt architecture",
+    "text": "Prompt architecture\nตำราบอกว่า prompt คือช่องทางหลักที่ harness ใช้คุยกับ model ควรแยกเป็นส่วนๆ ประกอบกันได้ และมีเวอร์ชันกำกับ (Roitman 2026, หมวด 18.3) system prompt ที่ใช้จริงมักมีสี่ส่วน คือตัวตนของ agent สิ่งที่ทำได้ สิ่งที่ห้ามทำ และรูปแบบคำตอบ โดยเว้นช่องไว้ให้เติมตอนรัน เช่นชื่อ agent รายชื่อ tool หรือวันที่ของวันนี้\nharness ไม่เก็บ prompt เป็นข้อความก้อนเดียว แต่ประกอบใหม่ทุกครั้งจากห้า block\n\\[\n\\text{Prompt} \\;=\\; \\text{Concat}(\\text{System},\\ \\text{Memory},\\ \\text{Tools},\\ \\text{History},\\ \\text{Query})\n\\tag{7.4}\\]\nเหมือนต่อเลโก้ อยากเปลี่ยนก้อนไหนก็ถอดเฉพาะก้อนนั้น และแต่ละก้อนมีเลขเวอร์ชันของมันเอง ตัวอย่าง few-shot ก็อยู่ในงบเช่นกัน ตำราแนะนำให้เลือกเฉพาะตัวอย่างที่คล้ายคำถามตอนนี้ และไม่ให้เกินงบของส่วน \\(M\\) ส่วนคำอธิบาย tool ที่เราทำแล้วใน EP06 Lab 1 สิ่งที่เพิ่มตอนนี้คือใส่เฉพาะ tool ที่เกี่ยวกับงานตอนนั้น จะได้ประหยัด token และ model สับสนน้อยลง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#เขยนเอง-vs-framework",
+    "href": "ch18/ep07-context-management/index.html#เขยนเอง-vs-framework",
+    "title": "EP07 Context Window Management",
+    "section": "เขียนเอง vs framework",
+    "text": "เขียนเอง vs framework\nใน Lab 4 เราใช้ SummarizationMiddleware ของ LangChain (langchain==1.4.7) ทำสิ่งเดียวกับการสรุปของเก่าที่เขียนเองใน Lab 2\n\n\n\nตารางที่ 7.3: SummarizationMiddleware เทียบกับโค้ดที่เขียนเอง\n\n\n\n\n\nโค้ดที่เขียนเอง (Lab 2)\nSummarizationMiddleware\n\n\n\n\nตรวจ BUDGET เอง\ntrigger\n\n\nkeep_last ข้อความล่าสุดที่เก็บไว้\nkeep\n\n\nSUMMARY_PROMPT\nsummary_prompt\n\n\nmessage_tokens\ntoken_counter\n\n\n\n\n\n\nสิ่งที่ framework เพิ่มคือมันตรวจงบเองก่อนเรียก model ทุกครั้ง แต่ prompt ค่าเริ่มต้นเขียนบทสรุปยาว 410 token จนชนเพดาน แล้วต้องสรุปซ้ำแทบทุก turn พอใช้ prompt ของเราจาก Lab 2 ซึ่งได้บทสรุปไม่ถึง 200 token ก็สรุปแค่ครั้งหรือสองครั้ง และได้ครบ 6 ฉบับ framework ช่วยเขียนโค้ด แต่เราต้องรู้ว่าข้างในทำอะไร",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#คำศพทในตอนน",
+    "href": "ch18/ep07-context-management/index.html#คำศพทในตอนน",
+    "title": "EP07 Context Window Management",
+    "section": "คำศัพท์ในตอนนี้",
+    "text": "คำศัพท์ในตอนนี้\n\n\n\nตารางที่ 7.4: คำศัพท์ที่ใช้ใน EP07\n\n\n\n\n\n\n\n\n\n\nคำ\nคืออะไร\nตัวอย่าง\n\n\n\n\nagent harness\nโครงสร้างที่ห่อ LLM ไว้ ดูแล tool ความจำ ข้อความ และการบันทึก\nharness เรียก search_papers และเก็บบทสนทนาให้ Gemma\n\n\ncontext window\nจำนวน token สูงสุดที่ model อ่านได้ในหนึ่ง call\nโต๊ะทำงานที่วางกระดาษได้จำกัด\n\n\ncontext budget\nการแบ่ง \\(C\\) ให้ห้าส่วน \\(S, M, T, H, R\\)\nhistory 50% ของ window\n\n\nreserved output (\\(R\\))\nที่เว้นไว้ให้ model ตอบ\nLab 1 เว้น 10% ของ \\(C\\) ไว้สำหรับคำตอบ\n\n\nsilent truncation\nAPI ตัดข้อความที่ยาวเกินทิ้งเงียบๆ ไม่มี error\nคำสั่ง “ตอบภาษาไทย” ถูกตัด agent จึงตอบภาษาอังกฤษ\n\n\ntokenizer\nตัวแบ่งข้อความเป็น token แบบเดียวกับที่ model ใช้\ntokenizers โหลด tokenizer ของ Gemma มานับบนเครื่อง\n\n\npre-flight token check\nตรวจงบ token ก่อนเรียก LLM ทุกครั้ง\nprompt + \\(R\\) &gt; \\(C\\) → สรุป หรือหยุดพร้อม error\n\n\nsliding window (FIFO)\nเก็บแค่ข้อความล่าสุด เต็มแล้วทิ้งข้อความเก่าที่สุด\nเก็บ 8 ข้อความล่าสุด โจทย์ข้อแรกหายก่อน\n\n\npinned message\nข้อความที่ปักหมุดไว้ไม่ให้ถูกทิ้ง\nsystem prompt และข้อความแรกของผู้ใช้\n\n\nimportance-weighted truncation\nตัดข้อความที่น้ำหนักต่ำต่อ token ก่อน\nการแก้โจทย์ของผู้ใช้น้ำหนัก 10 คุยเล่น 0.1\n\n\nRLM\nmodel ที่เรียกตัวเองซ้ำบน context ทีละชิ้น แล้วรวมผล\nสรุปบันทึกการประชุมทั้งปีด้วย 15 call\n\n\ncontext rot\nความแม่นของ model ลดลงเมื่อ context ยาวขึ้น\nข้อมูลกลางเอกสารยาวมักถูกมองข้าม\n\n\nprompt template\nprompt ที่เว้นช่องไว้เติมตอนรัน\n{agent_name}, {tools}, {today}",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#lab",
+    "href": "ch18/ep07-context-management/index.html#lab",
+    "title": "EP07 Context Window Management",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 7.5: Notebook ของ EP07 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก model อธิบายใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — นับก่อนส่ง\nColab\nColab\n\n\nLab 2 — เมื่อ history ล้น window\nColab\nColab\n\n\nLab 3 — Recursive context decomposition\nColab\nColab\n\n\nLab 4 — LangChain SummarizationMiddleware\nColab\nColab\n\n\n\n\n\n\nบทสนทนาและเอกสารในโค้ดเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง ผลที่คุณรันเองจึงอาจต่างไปบ้าง เช่นจำนวน token ที่ middle-out ตัดทิ้ง หรือจำนวนครั้งที่ middleware สรุป",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#คำถามทบทวน",
+    "href": "ch18/ep07-context-management/index.html#คำถามทบทวน",
+    "title": "EP07 Context Window Management",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไม model จึงต้องมี harness และ context window เป็นงานของ harness อย่างไร\nจาก สมการ 7.1 ถ้า tool คืนหน้าเว็บทั้งหน้ามา ส่วนไหนของงบจะถูกเบียด และ harness ควรทำอะไร\nทำไม silent truncation จึงอันตรายกว่าการได้ error 400\nทำไมไม่ควรใช้กฎ “4 ตัวอักษร ≈ 1 token” กับภาษาไทยหรือ JSON\nใน Lab 2 ทำไม FIFO จึงตอบด้วย paper ที่ผู้ใช้สั่งตัดออกไปแล้ว\nใน Lab 3 ทำไมต้องพาบรรทัดหัวข้อไปกับทุกชิ้นย่อย\nParameter ไหนของ SummarizationMiddleware ตรงกับงบที่เราตรวจเองใน Lab 2 และทำไม prompt ค่าเริ่มต้นจึงทำให้สรุปซ้ำแทบทุก turn",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#อานเพมเตม",
+    "href": "ch18/ep07-context-management/index.html#อานเพมเตม",
+    "title": "EP07 Context Window Management",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: §18.1–18.3 (Roitman 2026) ตอนถัดไป EP08 จะต่อด้วยส่วนอื่นของ harness คือการจัดการ tool, state และความล้มเหลว\nTokenizer: ทบทวนว่า token คืออะไรใน EP01\nหลักออกแบบและ trace: EP06",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep07-context-management/index.html#เอกสารอางอง",
+    "href": "ch18/ep07-context-management/index.html#เอกสารอางอง",
+    "title": "EP07 Context Window Management",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
     ]
   }
 ]
