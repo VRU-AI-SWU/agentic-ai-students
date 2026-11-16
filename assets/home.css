@@ -91,3 +91,9 @@
   box-shadow: 0 6px 20px rgba(30, 40, 60, .14); background: #000; }
 .course-home .welcome-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .course-home .welcome .welcome-sub { display: block; font-size: .88rem; color: var(--home-muted); margin-top: .5rem; }
+
+/* ▶ icon on a live EP row: straight to the EP's first (theory) video on YouTube */
+.course-home .ep.live a.ep-video { display: inline-flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.1rem;
+  margin-left: .35rem; border-radius: 5px; background: #ff0033; color: #fff; font-size: .6rem; font-weight: 400;
+  text-decoration: none; vertical-align: .1rem; }
+.course-home .ep.live a.ep-video:hover { background: #c4001f; }
