@@ -6,7 +6,7 @@ Notebook ประกอบคลิป YouTube ชุด *Agentic AI ภาษ�
 
 📖 **อ่านเนื้อหาบทเรียนออนไลน์:** https://vru-ai-swu.github.io/agentic-ai-students/
 
-👋 **เริ่มที่นี่:** คลิปแนะนำซีรีส์ 1 นาที (EP00) — https://youtu.be/9rca27feC24
+👋 **เริ่มที่นี่:** คลิปแนะนำซีรีส์ 1 นาที (EP00, เสียงอังกฤษ ซับไทย · เลือกเสียงไทยได้ที่ ⚙️) — https://youtu.be/XWaOxZPzzF8
 
 แต่ละ lab มี 2 ไฟล์
 
