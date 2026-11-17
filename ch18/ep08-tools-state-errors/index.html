@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP08 Tools, State and Error Handling – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch18/ep07-context-management/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7835d1f0ca29b4e891ee73374c94434a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: ระบบปฏิบัติการของ agent</a></li><li class="breadcrumb-item"><a href="../../ch18/ep08-tools-state-errors/index.html"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: ระบบปฏิบัติการของ agent</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#วตถประสงคการเรยนร" id="toc-วตถประสงคการเรยนร" class="nav-link active" data-scroll-target="#วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</a></li>
+  <li><a href="#สามเรองทผดพลาด" id="toc-สามเรองทผดพลาด" class="nav-link" data-scroll-target="#สามเรองทผดพลาด">สามเรื่องที่ผิดพลาด</a></li>
+  <li><a href="#นยาม-tool" id="toc-นยาม-tool" class="nav-link" data-scroll-target="#นยาม-tool">นิยาม tool</a></li>
+  <li><a href="#ใครเลอก-tool" id="toc-ใครเลอก-tool" class="nav-link" data-scroll-target="#ใครเลอก-tool">ใครเลือก tool</a></li>
+  <li><a href="#จดการผลลพธของ-tool-สขน" id="toc-จดการผลลพธของ-tool-สขน" class="nav-link" data-scroll-target="#จดการผลลพธของ-tool-สขน">จัดการผลลัพธ์ของ tool สี่ขั้น</a></li>
+  <li><a href="#sandbox-และ-prompt-injection" id="toc-sandbox-และ-prompt-injection" class="nav-link" data-scroll-target="#sandbox-และ-prompt-injection">Sandbox และ prompt injection</a></li>
+  <li><a href="#state-สชน" id="toc-state-สชน" class="nav-link" data-scroll-target="#state-สชน">State สี่ชั้น</a></li>
+  <li><a href="#retry-ทฉลาดขน" id="toc-retry-ทฉลาดขน" class="nav-link" data-scroll-target="#retry-ทฉลาดขน">Retry ที่ฉลาดขึ้น</a></li>
+  <li><a href="#จบ-agent-ทวนซำ" id="toc-จบ-agent-ทวนซำ" class="nav-link" data-scroll-target="#จบ-agent-ทวนซำ">จับ agent ที่วนซ้ำ</a></li>
+  <li><a href="#ความเรวและตนทน" id="toc-ความเรวและตนทน" class="nav-link" data-scroll-target="#ความเรวและตนทน">ความเร็วและต้นทุน</a></li>
+  <li><a href="#เขยนเอง-vs-framework" id="toc-เขยนเอง-vs-framework" class="nav-link" data-scroll-target="#เขยนเอง-vs-framework">เขียนเอง vs framework</a></li>
+  <li><a href="#คำศพทในตอนน" id="toc-คำศพทในตอนน" class="nav-link" data-scroll-target="#คำศพทในตอนน">คำศัพท์ในตอนนี้</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#คำถามทบทวน" id="toc-คำถามทบทวน" class="nav-link" data-scroll-target="#คำถามทบทวน">คำถามทบทวน</a></li>
+  <li><a href="#อานเพมเตม" id="toc-อานเพมเตม" class="nav-link" data-scroll-target="#อานเพมเตม">อ่านเพิ่มเติม</a></li>
+  <li><a href="#เอกสารอางอง" id="toc-เอกสารอางอง" class="nav-link" data-scroll-target="#เอกสารอางอง">เอกสารอ้างอิง</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: ระบบปฏิบัติการของ agent</a></li><li class="breadcrumb-item"><a href="../../ch18/ep08-tools-state-errors/index.html"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP08 Tools, State and Error Handling</span></h1>
+<p class="subtitle lead">§18.4, §18.6–18.8 · tool call · ผลลัพธ์ของ tool · prompt injection · checkpoint · backoff · loop detection · prompt caching · ต้นทุน</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>🎬 วิดีโอและ notebook ประกอบ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>วิดีโอ:</strong> ทฤษฎี (≈12 นาที) → Lab 1–5 (6–11 นาที) → สรุป (≈4 นาที) ใน playlist <a href="https://www.youtube.com/playlist?list=PLIpXhIptkaSg">Cogito Learn · Agentic AI (EN/TH audio &amp; subs)</a> ทุกคลิปมีซับไทย เปิดได้ที่ ⚙️ → Subtitles เสียงภาษาไทยกำลังตามมา</li>
+<li><strong>Notebook:</strong> แต่ละ lab มีไฟล์ ✏️ starter (เติมเฉพาะจุด TODO) และ ✅ เฉลย ดูตาราง <a href="#lab">Lab</a> ท้ายหน้า</li>
+<li><strong>Model ใน lab:</strong> Gemma 4 26B (open weights) ผ่าน OpenRouter ล็อก provider ไว้ที่ Makora ซึ่งเป็นเจ้าเดียวที่เราพบว่ารายงาน cached token สม่ำเสมอ (Lab 4 ต้องใช้) ไม่ฟรี ต้องเติมเครดิตก่อน แต่ทั้ง Lab 1 ใช้ไปประมาณ 0.0045 ดอลลาร์ และ lab อื่นไม่ถึงหนึ่งเซ็นต์ ต้องมี OpenRouter API key (วิธีตั้งค่าอยู่ใน Lab 1)</li>
+</ul>
+</div>
+</div>
+<section id="วตถประสงคการเรยนร" class="level2">
+<h2 class="anchored" data-anchor-id="วตถประสงคการเรยนร">วัตถุประสงค์การเรียนรู้</h2>
+<p>เมื่อจบตอนนี้ ผู้เรียนจะสามารถ</p>
+<ol type="1">
+<li>นิยาม tool ให้ model และจับคู่ผลลัพธ์กับคำขอด้วย id ของ tool call</li>
+<li>รัน tool หลายตัวที่ model ขอในรอบเดียวพร้อมกัน และจัดการผลลัพธ์ของ tool สี่ขั้นก่อนส่งกลับเข้า context</li>
+<li>อธิบาย prompt injection ผ่านผลลัพธ์ของ tool และห่อผลลัพธ์ให้ model มองเป็นข้อมูล</li>
+<li>อธิบาย state สี่ชั้นของ agent และบันทึก checkpoint ให้งานทำต่อได้หลังพัง</li>
+<li>retry ด้วย exponential backoff และ jitter สลับไปใช้ fallback model จับ agent ที่วนซ้ำ และล้มอย่างมีมารยาท</li>
+<li>คำนวณต้นทุนของงานหนึ่งงาน ใช้ prompt caching และตั้ง token budget ต่องาน</li>
+<li>ทำ checkpoint การทำต่อ และการแตกกิ่ง ด้วย LangGraph</li>
+</ol>
+</section>
+<section id="สามเรองทผดพลาด" class="level2">
+<h2 class="anchored" data-anchor-id="สามเรองทผดพลาด">สามเรื่องที่ผิดพลาด</h2>
+<p>สมมติเราสั่ง research assistant ให้เขียนรายงานสองหน้าจาก paper สามเรื่อง งานนี้มีสิบขั้น แล้วเราเห็นสามเรื่อง หนึ่ง มันดึง paper ทีละเรื่อง รอเรื่องแรกกลับมาก่อนจึงขอเรื่องที่สอง สอง ที่ขั้นที่เจ็ด เน็ตหลุดไปครู่เดียว มันเริ่มใหม่ตั้งแต่ขั้นแรก สาม มันค้นคำเดิมหกรอบติดกัน และพอสิ้นวัน บิล API ก็ยาวกว่าที่คิด ทั้งสามเรื่องแก้ใน model ไม่ได้ แต่ harness ป้องกันได้ทั้งหมด</p>
+<p>EP07 เราดูความจำชนิดแรกที่ harness ดูแล คือ context window ตอนนี้ต่อด้วยสี่หัวข้อถัดไปในตำรา <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 18.4</a>, §18.6–18.8)</span> คือ <strong>tool</strong> (§18.4) <strong>state</strong> (§18.6) <strong>error</strong> (§18.7) และ <strong>ความเร็วกับต้นทุน</strong> (§18.8)</p>
+</section>
+<section id="นยาม-tool" class="level2">
+<h2 class="anchored" data-anchor-id="นยาม-tool">นิยาม tool</h2>
+<p>ก่อน model จะเรียก tool ได้ ต้องรู้ก่อนว่ามี tool อะไรบ้าง harness จึงส่งนิยาม tool ไปกับทุกคำขอ แต่ละผู้ให้บริการใช้รูปแบบต่างกันเล็กน้อย ของ OpenAI ใส่ argument ไว้ใต้ <code>parameters</code> ของ Anthropic ใช้ <code>input_schema</code> ข้างในเป็น JSON schema แบบเดียวกัน</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"type"</span>: <span class="st">"function"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"function"</span>: {<span class="st">"name"</span>: <span class="st">"get_paper"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"description"</span>: <span class="st">"Get a paper's title and abstract by its id."</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">"parameters"</span>: {<span class="st">"type"</span>: <span class="st">"object"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"properties"</span>: {<span class="st">"paper_id"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}},</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"required"</span>: [<span class="st">"paper_id"</span>]}}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>เมื่อ model อยากใช้ tool มันจะตอบกลับเป็นคำขอที่มี <strong>id</strong> ติดมา harness รัน tool แล้วส่งผลกลับพร้อม id เดิม เหมือนบัตรรับฝากเสื้อ ต้องยื่นเลขที่ตรงกันจึงได้เสื้อตัวที่ถูก ถ้ารันหลาย tool พร้อมกัน id นี้คือสิ่งที่บอกว่าผลไหนเป็นของคำขอไหน ส่วน MCP คือมาตรฐานกลางที่ทำให้เราไม่ต้องผูกกับรูปแบบของเจ้าใดเจ้าหนึ่ง จะเรียนเต็มๆ ใน EP13</p>
+</section>
+<section id="ใครเลอก-tool" class="level2">
+<h2 class="anchored" data-anchor-id="ใครเลอก-tool">ใครเลือก tool</h2>
+<p>model เป็นคนเลือก แต่ harness กำหนดการเลือกได้สามแบบ</p>
+<div id="tbl-tool-modes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tool-modes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;8.1: สามแบบของการเรียก tool
+</figcaption>
+<div aria-describedby="tbl-tool-modes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>แบบ</th>
+<th>เกิดอะไรขึ้น</th>
+<th>ใช้เมื่อ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>auto</td>
+<td>model ตัดสินเองว่าจะเรียก tool ไหม และตัวไหน</td>
+<td>ค่าเริ่มต้น</td>
+</tr>
+<tr class="even">
+<td>forced</td>
+<td>harness บังคับให้ model เรียก tool ตัวหนึ่ง</td>
+<td>ดึงข้อมูลเป็นโครงสร้าง</td>
+</tr>
+<tr class="odd">
+<td>parallel</td>
+<td>model ขอหลาย tool ในรอบเดียว harness รันพร้อมกัน</td>
+<td>งานค้นที่ไม่ขึ้นต่อกัน</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>parallel tool call ตอบปัญหาข้อแรก ขอ abstract ทั้งสามเรื่องในรอบเดียว แล้วรอแค่ตัวที่ช้าที่สุด เหมือนสั่งอาหารสามจานพร้อมกัน แทนที่จะรอกินจานแรกให้หมดก่อน</p>
+<p>ถ้ามี tool เป็นร้อยเป็นพัน ใส่นิยามทั้งหมดลงใน prompt จะเปลือง token และ model สับสน ตำราเสนอสองทาง ทางแรกค้นหา tool ที่เกี่ยวข้องที่สุดไม่กี่ตัวในแต่ละรอบ อย่าง Gorilla ที่เลือกจาก API นับพัน <span class="citation" data-cites="patil2024gorilla">(<a href="../../index.html#ref-patil2024gorilla" role="doc-biblioref">Patil และคณะ 2024</a>)</span> ทางที่สองฝึก model ให้เลือกเก่งขึ้น อย่าง ToolLLM ที่ฝึกกับ API กว่าหนึ่งหมื่นหกพันตัว <span class="citation" data-cites="qin2024toolllm">(<a href="../../index.html#ref-qin2024toolllm" role="doc-biblioref"><span class="nocase">Qin และคณะ</span> 2024</a>)</span> ในทางปฏิบัติใช้ทั้งสองทางร่วมกัน</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> model ขอ paper สามเรื่องในข้อความเดียว แต่ละคำขอมี id ของตัวเอง รันทีละตัวใช้ 4.5 วินาที รันพร้อมกันด้วย <code>ThreadPoolExecutor</code> ใช้ 1.5 วินาที เท่ากับตัวที่ช้าที่สุดตัวเดียว แล้วส่งผลแต่ละตัวกลับเป็นข้อความ <code>tool</code> พร้อม id ของคำขอ</p>
+</blockquote>
+</section>
+<section id="จดการผลลพธของ-tool-สขน" class="level2">
+<h2 class="anchored" data-anchor-id="จดการผลลพธของ-tool-สขน">จัดการผลลัพธ์ของ tool สี่ขั้น</h2>
+<p>ผลลัพธ์ดิบของ tool แทบไม่เคยพร้อมใส่ลง context ตรงๆ ตำราให้ harness ทำสี่ขั้น</p>
+<ol type="1">
+<li><strong>Parse และตรวจสอบ:</strong> ผลลัพธ์ตรงกับรูปแบบที่คาดไว้ไหม</li>
+<li><strong>ตัดผลลัพธ์ที่ใหญ่เกิน:</strong> หน้าเว็บ ผลรันโค้ด หรือผลจากฐานข้อมูลอาจใหญ่มาก โค้ดในตำราตัดแบบถูกๆ ก่อน และจะให้ model สรุปก็ต่อเมื่อผลใหญ่เกินสองเท่าของงบ นี่คืองบ <span class="math inline">\(T\)</span> จาก EP07</li>
+<li><strong>ทำ error ให้อยู่ในรูปแบบเดียว</strong> เพราะแต่ละเจ้าเขียน error ต่างกัน model จะได้อ่านเข้าใจ</li>
+<li><strong>Retry ความผิดพลาดชั่วคราว</strong> (timeout, rate limit) ก่อน แล้วค่อยรายงานให้ model รู้</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> <code>run_tool</code> ตรวจ argument ก่อนรันอะไรทั้งสิ้น id ที่ไม่มีจริงอย่าง <code>P9</code> กลับมาเป็น <code>{"error": "not_found", "detail": "no paper with id P9", "retry": false}</code> แล้ว model ก็บอกผู้ใช้ตรงๆ ว่าไม่พบ P9 ส่วนหน้าโปรเจกต์จำลองยาว 37,411 token ถูกสรุปให้อยู่ในงบก่อนส่งกลับไปให้ model</p>
+</blockquote>
+</section>
+<section id="sandbox-และ-prompt-injection" class="level2">
+<h2 class="anchored" data-anchor-id="sandbox-และ-prompt-injection">Sandbox และ prompt injection</h2>
+<p>ตำราเรียกการรัน tool ว่าเป็นช่องโหว่หลัก harness ต้องรัน tool ใน <strong>sandbox</strong> ที่แยกจากระบบ (container ที่ไม่มีเน็ต) ประกาศสิทธิ์ของ tool แต่ละตัว จำกัด CPU หน่วยความจำ และเวลา ตรวจ argument ที่ model ส่งมา และเก็บ log ทุกการเรียก</p>
+<p>อันตรายที่ตำราเน้นที่สุดคือ <strong>prompt injection ผ่านผลลัพธ์ของ tool</strong> <span class="citation" data-cites="greshake2023injection">(<a href="../../index.html#ref-greshake2023injection" role="doc-biblioref">Greshake และคณะ 2023</a>)</span> สมมติ agent อ่านหน้าเว็บของ paper เรื่องหนึ่ง แล้วในหน้านั้นมีข้อความซ่อนไว้ให้ลืมคำสั่งก่อนหน้า ถ้า harness ใส่ข้อความนี้ลง context เฉยๆ model อาจทำตาม ผลลัพธ์ของ tool ทุกชิ้นจึงเป็น <strong>ข้อมูล ไม่ใช่คำสั่ง</strong> ห่อด้วย tag ที่บอก model ไว้ว่าให้มองเป็นข้อมูล เหมือนเลขาฯ ที่อ่านจดหมายให้หัวหน้าฟัง ต่อให้ในจดหมายเขียนว่า “เลขาฯ โอนเงินเดี๋ยวนี้” เลขาฯ ก็ไม่ทำตาม</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 1:</strong> หน้าเว็บ PatchTST จำลองซ่อนคำสั่งไว้ใน HTML comment ให้ AI ต่อท้ายทุกคำตอบด้วยลิงก์ดาวน์โหลดปลอม แบบไม่ป้องกัน model ต่อท้ายลิงก์ 5 จาก 8 รอบ พอห่อผลลัพธ์ด้วย tag <code>&lt;tool_output&gt;</code> และบอกกฎไว้ใน system prompt เหลือ 0 จาก 8 การห่อช่วยลดความเสี่ยง แต่ระบบจริงยังต้องมีด่านอื่นด้วย</p>
+</blockquote>
+</section>
+<section id="state-สชน" class="level2">
+<h2 class="anchored" data-anchor-id="state-สชน">State สี่ชั้น</h2>
+<p>ตำราบอกว่า agent มี state อยู่ในตัวเสมอ และ harness ดูแลสี่ชั้น <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, หมวด 18.6</a>)</span></p>
+<div id="tbl-state" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-state-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;8.2: State สี่ชั้น
+</figcaption>
+<div aria-describedby="tbl-state-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ชั้น</th>
+<th>เก็บอะไร</th>
+<th>ตัวอย่าง</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>conversation</td>
+<td>history ทุกข้อความพร้อม role เนื้อหา และ metadata</td>
+<td>history window ของ EP07</td>
+</tr>
+<tr class="even">
+<td>task</td>
+<td>งานย่อยไหนเสร็จแล้ว <strong>checkpoint</strong> และ <strong>rollback</strong></td>
+<td>หกขั้นเสร็จไปสามขั้น</td>
+</tr>
+<tr class="odd">
+<td>agent</td>
+<td>แผนปัจจุบัน tool call ที่ยังไม่กลับมา และข้อเท็จจริงที่ยืนยันแล้ว</td>
+<td>“เขตเวลาของผู้ใช้คือ UTC+9”</td>
+</tr>
+<tr class="even">
+<td>persistent</td>
+<td>สิ่งที่อยู่ข้าม session</td>
+<td>โปรไฟล์ผู้ใช้ ความจำระยะยาว (EP12)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Checkpoint</strong> คือภาพ state ที่บันทึกไว้ ให้งานทำต่อได้หลังพัง ส่วน <strong>rollback</strong> คือย้อนการกระทำล่าสุดไม่กี่ขั้นเมื่อพบว่าผิด นี่คือคำตอบของปัญหาข้อที่สอง เน็ตหลุดที่ขั้นที่เจ็ดไม่ควรต้องเริ่มใหม่ตั้งแต่ขั้นแรก</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 2:</strong> งานหกขั้น (โน้ต paper สามเรื่อง เปรียบเทียบ ตั้งชื่อ เขียนรายงาน) แล้วเน็ตหลุดที่ขั้นที่สี่ ไม่มี checkpoint ต้องเริ่มใหม่ เรียก model 9 ครั้งสำหรับงานที่ต้องใช้แค่ 6 พอบันทึก dataclass <code>TaskState</code> หลังทุกขั้น (เขียนลงไฟล์ชั่วคราวก่อน แล้วสลับเข้าที่ด้วย <code>os.replace</code> ไฟล์จึงไม่มีวันเสียครึ่งๆ กลางๆ) ก็ทำต่อที่ <code>compare</code> ได้เลย รวม 6 ครั้งพอดี ส่วนการ rollback สองขั้นล่าสุดเพื่อเขียนย่อหน้าแรกใหม่ให้นักศึกษาปีหนึ่ง ใช้แค่ 2 ครั้ง</p>
+</blockquote>
+</section>
+<section id="retry-ทฉลาดขน" class="level2">
+<h2 class="anchored" data-anchor-id="retry-ทฉลาดขน">Retry ที่ฉลาดขึ้น</h2>
+<p>EP06 เรา retry โดยรอหนึ่งวินาที แล้วสองวินาที ตอนนี้ตำราให้สูตรเต็ม เวลารอก่อน retry ครั้งที่ <span class="math inline">\(k\)</span> คือ</p>
+<p><span id="eq-backoff"><span class="math display">\[
+t_k \;=\; \min\!\big(2^k \cdot t_0 + U(0,\, t_0),\ t_{\max}\big)
+\tag{8.1}\]</span></span></p>
+<p>ถ้า <span class="math inline">\(t_0 = 1\)</span> วินาที จะรอ 1, 2, 4, 8, 16 วินาที แล้วชนเพดาน นี่คือ <strong>exponential backoff</strong> เหมือนโทรหาเพื่อนที่สายไม่ว่าง ยิ่งโทรไม่ติดก็ยิ่งรอนานขึ้น ส่วนสุ่ม <span class="math inline">\(U(0, t_0)\)</span> คือ <strong>jitter</strong> ถ้า agent สิบตัวใช้ key เดียวกันโดน rate limit พร้อมกัน แล้วทุกตัวรอเท่ากันเป๊ะ ก็จะกลับมาพร้อมกันแล้วโดนอีก jitter ช่วยกระจายให้กลับมาไม่พร้อมกัน</p>
+<p>ตำราเพิ่มอีกสองทาง ถ้า model หลักใช้ไม่ได้ ให้สลับไปใช้ <strong>fallback model</strong> ถ้า tool ล่ม ให้บอก model ตรงๆ แล้วให้ทำงานต่อโดยไม่มี tool นั้น (<strong>graceful degradation</strong>)</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 3:</strong> API ค้นหาจำลองปฏิเสธด้วย 429 สามครั้ง ด้วย <span class="math inline">\(t_0 = 0.5\)</span> วินาที เวลารอคือ 0.75, 1.28 และ 2.40 วินาที แล้วครั้งที่สี่ก็ตอบ ไม่มี jitter agent สิบตัวกลับมาพร้อมกันที่ 0.5 วินาทีพอดี มี jitter กระจายไประหว่าง 0.63 ถึง 0.92 วินาที พอทำให้ model หลักใช้ไม่ได้ harness ลองสามครั้งแล้วสลับไปใช้ Gemma 3 12B ซึ่งตอบได้</p>
+</blockquote>
+</section>
+<section id="จบ-agent-ทวนซำ" class="level2">
+<h2 class="anchored" data-anchor-id="จบ-agent-ทวนซำ">จับ agent ที่วนซ้ำ</h2>
+<p>ปัญหาข้อที่สาม agent เรียก tool ตัวเดิมด้วย argument เดิมซ้ำไปเรื่อยๆ ตำราให้สามวิธี จำกัดจำนวนขั้น (ใช้มาตั้งแต่ EP03 แต่กว่าจะถึงขั้นที่ห้าสิบก็เสียเงินไปเยอะแล้ว) hash tool และ argument ของแต่ละการกระทำ และดูว่า state ยังขยับไหม ถ้าใช้ hash ถือว่าวน เมื่อมีสองขั้นที่ hash เท่ากันห่างกันไม่เกิน <span class="math inline">\(W\)</span> ขั้น</p>
+<p><span id="eq-loop"><span class="math display">\[
+\exists\, i &lt; j:\ h(a_i) = h(a_j) \ \wedge\ j - i \leq W
+\tag{8.2}\]</span></span></p>
+<p>เหมือนกดปุ่มลิฟต์ซ้ำๆ ทั้งที่ไฟติดอยู่แล้ว ทำซ้ำไม่ได้ทำให้อะไรเปลี่ยน</p>
+<p>บางงานก็ทำไม่สำเร็จจริงๆ agent ที่ดีจะ <strong>ล้มอย่างมีมารยาท</strong> สี่ส่วน คือ ทำอะไรไปแล้วบ้าง ทำไมไปต่อไม่ได้ ทางไปต่อคืออะไร และบันทึก state ไว้ให้ทำต่อได้ ส่วนการรู้ว่าเกิดอะไรขึ้น ตำราให้สามเสาหลัก คือ trace ของทุกการรัน log ที่มี token latency และต้นทุน และ metric อย่าง success rate และต้นทุนต่องาน เราสร้าง trace ไปแล้วใน EP06 Lab 2</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 3:</strong> tool แบบ polling ตอบซ้ำว่า “PDF ยังแปลงไม่เสร็จ เรียกใหม่อีกครั้ง” ถ้ามีแค่เพดานจำนวนขั้น agent เรียก model 12 ครั้ง ขอสิ่งเดิมทุกครั้ง <code>LoopGuard</code> ที่ hash ทุกการเรียกในหน้าต่างขนาด 5 หยุดมันได้ที่คำขอซ้ำครั้งที่สาม (3 ครั้ง) พร้อมข้อความสี่ส่วน และบันทึก state ไว้ใน <code>stuck_task.json</code></p>
+</blockquote>
+</section>
+<section id="ความเรวและตนทน" class="level2">
+<h2 class="anchored" data-anchor-id="ความเรวและตนทน">ความเร็วและต้นทุน</h2>
+<p>เรื่องความเร็ว ตำราให้สี่ทาง คือ parallel tool call การ stream คำตอบ speculative execution (เริ่ม tool call ที่น่าจะเกิดถัดไปล่วงหน้า) และ <strong>prompt caching</strong> ทุกขั้นของงานเราส่ง system prompt และนิยาม tool ชุดเดิม ผู้ให้บริการหลายเจ้าจึงเก็บงานที่ทำไปแล้วกับส่วนต้นที่ซ้ำกันไว้ ตำราบอกว่าส่วนที่ cache ได้ถูกลงและเร็วขึ้น 50–90% แต่ cache ใช้ได้กับส่วนต้นที่เหมือนกัน <em>เป๊ะ</em> เท่านั้น ถ้าใส่เวลาปัจจุบันไว้บรรทัดแรก ส่วนต้นก็ต่างกันทุกครั้ง กฎจึงง่ายๆ คือ <strong>ส่วนที่คงที่ไว้ก่อน ส่วนที่เปลี่ยนไว้ท้าย</strong></p>
+<p>เรื่องต้นทุน สมการของตำรารวมทุกการเรียก model และทุกการเรียก tool ในงานหนึ่งงาน</p>
+<p><span id="eq-cost"><span class="math display">\[
+\text{Cost} \;=\; \sum_{i} \big(p_{\text{in}} \cdot n_{\text{in},i} + p_{\text{out}} \cdot n_{\text{out},i}\big) \;+\; \sum_{j} c_j
+\tag{8.3}\]</span></span></p>
+<p>ตำราจึงแนะนำให้ตั้ง token budget ต่องาน ใช้ model เล็กราคาถูกกับขั้นง่าย และ cache ผลของ tool ที่ตอบเหมือนเดิมทุกครั้ง ถ้ามี agent หลายตัวใช้ key เดียวกัน ให้เพิ่ม rate limiter ที่ใช้ร่วมกัน คิวตามลำดับความสำคัญ และ <strong>backpressure</strong> คือพอคิวเต็มก็ปฏิเสธงานใหม่ตรงๆ ด้วย 503 แทนที่จะให้รอไปเรื่อยๆ</p>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 4:</strong> system prompt ยาวราว 4,600 token กับคำถามแปดข้อ วางส่วนที่คงที่ไว้ก่อน call แรกไม่ได้ cache แต่ได้ cache 5 จาก 8 และ call ที่ได้ cache ถูกลงเกือบครึ่ง ส่วนแบบวางเวลาไว้บรรทัดแรกของ system prompt ได้ 0 จาก 8 ย้ายบรรทัดเดียวประหยัดไป 27% ของทั้งหมด ส่วนลดของ Makora สำหรับ cached token อยู่ราว 46% ต่ำกว่า 50–90% ในตำรา ขึ้นกับผู้ให้บริการ พอนับค่า tool ด้วย (จำลองไว้ครั้งละ 0.001 ดอลลาร์) tool แพงกว่า model ราวสามเท่า และ <code>TokenBudget</code> 20,000 token เตือนที่คำถามข้อสี่ และหยุดงานที่ข้อห้า</p>
+</blockquote>
+</section>
+<section id="เขยนเอง-vs-framework" class="level2">
+<h2 class="anchored" data-anchor-id="เขยนเอง-vs-framework">เขียนเอง vs framework</h2>
+<p>ใน Lab 5 เราสร้างงานหกขั้นของ Lab 2 ใหม่ด้วย LangGraph (<code>langgraph==1.2.16</code>) และ checkpointer <code>SqliteSaver</code></p>
+<div id="tbl-langgraph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-langgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;8.3: LangGraph เทียบกับโค้ดที่เราเขียนเอง
+</figcaption>
+<div aria-describedby="tbl-langgraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>โค้ดของเรา (Lab 2)</th>
+<th>LangGraph</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dataclass <code>TaskState</code></td>
+<td><code>State(TypedDict)</code> ช่อง <code>results</code> รวมด้วย reducer <code>operator.or_</code></td>
+</tr>
+<tr class="even">
+<td><code>save_state</code> หลังทุกขั้น</td>
+<td>checkpointer บันทึกหลังทุก node</td>
+</tr>
+<tr class="odd">
+<td><code>load_state</code> + ข้ามขั้นที่เสร็จแล้ว</td>
+<td><code>graph.invoke(None, config)</code> ทำต่อใน thread เดิม</td>
+</tr>
+<tr class="even">
+<td><code>rollback(state, k)</code> ลบผลเก่าทิ้ง</td>
+<td><code>update_state</code> ที่ checkpoint เก่าแตกกิ่งใหม่ กิ่งเดิมยังอยู่</td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td><code>get_state_history</code> ดูได้ทุก checkpoint</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>ใน Lab 5:</strong> หลังพังที่ <code>compare</code> เราลบ graph แล้วสร้างใหม่จาก <code>report.db</code> <code>get_state</code> รู้ว่าสามขั้นแรกเสร็จแล้ว และ node ถัดไปคือ <code>compare</code> ทำต่อแล้วรวมเป็น 6 ครั้งเท่าเดิม ในประวัติมี 8 checkpoint คือก่อนเริ่ม ก่อนแต่ละ node ทั้งหก และหลังจบ แตกกิ่งจาก checkpoint ก่อน <code>title</code> ให้ผู้อ่านกลุ่มใหม่ใช้ 2 ครั้ง ประวัติเพิ่มเป็น 11 โดยกิ่งเดิมยังอยู่ครบ framework เพิ่มประวัติและการแตกกิ่ง ส่วนการทำต่อหลังพังใช้เท่ากัน</p>
+</blockquote>
+</section>
+<section id="คำศพทในตอนน" class="level2">
+<h2 class="anchored" data-anchor-id="คำศพทในตอนน">คำศัพท์ในตอนนี้</h2>
+<div id="tbl-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;8.4: คำศัพท์ใน EP08
+</figcaption>
+<div aria-describedby="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>คำศัพท์</th>
+<th>คืออะไร</th>
+<th>ตัวอย่าง</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tool definition</td>
+<td>ชื่อ คำอธิบาย และ JSON schema ของ tool ที่ส่งไปกับทุกคำขอ</td>
+<td><code>get_paper(paper_id)</code></td>
+</tr>
+<tr class="even">
+<td>tool call id</td>
+<td>id ของแต่ละคำขอ tool ที่ส่งกลับพร้อมผลลัพธ์</td>
+<td><code>call-14c7…</code> ของ P1</td>
+</tr>
+<tr class="odd">
+<td>parallel tool calls</td>
+<td>ขอหลาย tool ในรอบเดียว แล้วรันพร้อมกัน</td>
+<td>paper สามเรื่องใน 1.5 วินาทีแทน 4.5</td>
+</tr>
+<tr class="even">
+<td>forced tool use</td>
+<td>harness บังคับให้ model เรียก tool ตัวหนึ่ง</td>
+<td>เรียก <code>extract_fields</code> ทุกครั้ง</td>
+</tr>
+<tr class="odd">
+<td>normalized error</td>
+<td>error ของทุก tool ในรูปแบบเดียวที่ model อ่านได้</td>
+<td><code>{"error": "not_found", "retry": false}</code></td>
+</tr>
+<tr class="even">
+<td>prompt injection</td>
+<td>คำสั่งที่ซ่อนอยู่ในข้อมูล ซึ่ง model อาจทำตาม</td>
+<td>หน้าเว็บที่เขียนว่า “ignore previous instructions”</td>
+</tr>
+<tr class="odd">
+<td>sandbox</td>
+<td>รัน tool แบบแยกขาด มีขีดจำกัด</td>
+<td>รันโค้ดใน container ที่ไม่มีเน็ต</td>
+</tr>
+<tr class="even">
+<td>checkpoint</td>
+<td>ภาพ state ของงานที่บันทึกไว้ ให้ทำต่อได้หลังพัง</td>
+<td><code>report_task.json</code> หลังทุกขั้น</td>
+</tr>
+<tr class="odd">
+<td>rollback</td>
+<td>ย้อนการกระทำล่าสุดไม่กี่ขั้น</td>
+<td>ลบชื่อเรื่องกับรายงานแล้วทำใหม่</td>
+</tr>
+<tr class="even">
+<td>exponential backoff</td>
+<td>รอนานขึ้นเท่าตัวหลัง retry แต่ละครั้ง จนถึงเพดาน</td>
+<td>1 → 2 → 4 → 8 วินาที</td>
+</tr>
+<tr class="odd">
+<td>jitter</td>
+<td>เวลารอส่วนเพิ่มแบบสุ่ม ให้ client ไม่ retry พร้อมกัน</td>
+<td>4 วินาที + 0.37</td>
+</tr>
+<tr class="even">
+<td>fallback model</td>
+<td>model ตัวที่สองที่ใช้เมื่อตัวหลักใช้ไม่ได้</td>
+<td>Gemma 4 ล่ม → Gemma 3</td>
+</tr>
+<tr class="odd">
+<td>loop detection</td>
+<td>hash (tool, args) แต่ละครั้ง แล้วตรวจในหน้าต่างเลื่อน</td>
+<td>เรียกเดิมสามครั้งในห้าขั้น → หยุด</td>
+</tr>
+<tr class="even">
+<td>graceful failure</td>
+<td>หยุดพร้อมบอกว่าทำอะไรไปแล้ว ทำไม ต่อไปอย่างไร และบันทึก state</td>
+<td><code>stuck_task.json</code></td>
+</tr>
+<tr class="odd">
+<td>prompt caching</td>
+<td>ผู้ให้บริการใช้งานเดิมซ้ำกับส่วนต้นของ prompt ที่เหมือนกัน</td>
+<td>cache ได้ 4,480 token ต่อ call</td>
+</tr>
+<tr class="even">
+<td>token budget</td>
+<td>เพดาน token ที่งานหนึ่งงานใช้ได้</td>
+<td>เตือนที่ 80% หยุดที่ 20,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+ตารางที่&nbsp;8.5: Notebook ของ EP08 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก provider อธิบายใน Lab 1)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ เฉลย</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — Tool call ที่ไว้ใจได้</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab1-trusted-tool-calls.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab1-trusted-tool-calls.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — Checkpoint และการทำต่อ</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab2-checkpoint-resume.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab2-checkpoint-resume.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 3 — เมื่อทุกอย่างล้มเหลวได้</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab3-when-things-fail.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab3-when-things-fail.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 4 — ต้นทุนและ prompt caching</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab4-cost-and-caching.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab4-cost-and-caching.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 5 — LangGraph durable execution</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab5-langgraph-durable.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep08-tools-state-errors/ep08-lab5-langgraph-durable.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>paper หน้าเว็บ เน็ตหลุด ระบบล่ม และราคา tool ในโค้ดเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง ผลที่คุณรันเองจึงอาจต่างไปบ้าง เช่นจำนวนรอบที่ลิงก์ปลอมหลุดรอด หรือจำนวน call ที่ได้ cache</p>
+</section>
+<section id="คำถามทบทวน" class="level2">
+<h2 class="anchored" data-anchor-id="คำถามทบทวน">คำถามทบทวน</h2>
+<ol type="1">
+<li>ทำไมผลของ tool แต่ละตัวต้องส่งกลับพร้อม id ของคำขอ และสำคัญที่สุดเมื่อไร</li>
+<li>ขั้นไหนในสี่ขั้นของการจัดการผลลัพธ์ที่จะจับหน้าเว็บยาว 37,411 token ได้ และโค้ดในตำราทำอะไรกับมัน</li>
+<li>ทำไมการห่อผลลัพธ์ของ tool ด้วย tag จึงลดความเสี่ยงของ prompt injection และทำไมยังไม่พอถ้าใช้อย่างเดียว</li>
+<li>ใน Lab 2 ทำไมแบบไม่มี checkpoint จึงเรียก model เก้าครั้ง และทำไมต้องเขียน checkpoint ผ่านไฟล์ชั่วคราว</li>
+<li>จาก <a href="#eq-backoff" class="quarto-xref">สมการ&nbsp;<span>8.1</span></a> ส่วน jitter แก้ปัญหาอะไรที่การเพิ่มเป็นเท่าตัวอย่างเดียวแก้ไม่ได้</li>
+<li>จาก <a href="#eq-loop" class="quarto-xref">สมการ&nbsp;<span>8.2</span></a> ทำไม agent ที่ค้นด้วยคำที่เปลี่ยนไปนิดหน่อยทุกครั้ง อาจหลุดการตรวจวนด้วย hash</li>
+<li>ทำไมการใส่เวลาปัจจุบันไว้บรรทัดแรกของ system prompt จึงทำให้ prompt caching ไม่ได้ผลเลย</li>
+<li>LangGraph เพิ่มอะไรจากโค้ด Lab 2 ของเรา และอะไรที่ยังเหมือนเดิม</li>
+</ol>
+</section>
+<section id="อานเพมเตม" class="level2">
+<h2 class="anchored" data-anchor-id="อานเพมเตม">อ่านเพิ่มเติม</h2>
+<ul>
+<li><strong>ตำรา:</strong> §18.4, §18.6–18.8 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>)</span></li>
+<li><strong>การค้นหา tool และการฝึกให้ใช้ tool:</strong> Gorilla <span class="citation" data-cites="patil2024gorilla">(<a href="../../index.html#ref-patil2024gorilla" role="doc-biblioref">Patil และคณะ 2024</a>)</span> และ ToolLLM <span class="citation" data-cites="qin2024toolllm">(<a href="../../index.html#ref-qin2024toolllm" role="doc-biblioref"><span class="nocase">Qin และคณะ</span> 2024</a>)</span></li>
+<li><strong>Prompt injection ผ่านผลลัพธ์ของ tool:</strong> <span class="citation" data-cites="greshake2023injection">Greshake และคณะ (<a href="../../index.html#ref-greshake2023injection" role="doc-biblioref">2023</a>)</span></li>
+<li><strong>Context window และงบ <span class="math inline">\(T\)</span>:</strong> <a href="../../ch18/ep07-context-management/index.html">EP07</a> <strong>การ retry แบบพื้นฐานและ trace:</strong> <a href="../../ch19/ep06-design-principles/index.html">EP06</a></li>
+</ul>
+</section>
+<section id="เอกสารอางอง" class="level2">
+<h2 class="anchored" data-anchor-id="เอกสารอางอง">เอกสารอ้างอิง</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-greshake2023injection" class="csl-entry" role="listitem">
+Greshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, และ Mario Fritz. 2023. <span>“Not What You’ve Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection”</span>. <em>ACM Workshop on Artificial Intelligence and Security (AISec)</em>. <a href="https://arxiv.org/abs/2302.12173">https://arxiv.org/abs/2302.12173</a>.
+</div>
+<div id="ref-patil2024gorilla" class="csl-entry" role="listitem">
+Patil, Shishir G., Tianjun Zhang, Xin Wang, และ Joseph E. Gonzalez. 2024. <span>“Gorilla: Large Language Model Connected with Massive <span>APIs</span>”</span>. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/2305.15334">https://arxiv.org/abs/2305.15334</a>.
+</div>
+<div id="ref-qin2024toolllm" class="csl-entry" role="listitem">
+<span class="nocase">Qin, Yujia, Shihao Liang, Yining Ye, และคณะ</span>. 2024. <span>“<span>ToolLLM</span>: Facilitating Large Language Models to Master 16000+ Real-world <span>APIs</span>”</span>. <em>International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2307.16789">https://arxiv.org/abs/2307.16789</a>.
+</div>
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch18/ep07-context-management/index.html" class="pagination-link" aria-label="EP07 Context Window Management">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP07 Context Window Management</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -64,7 +64,7 @@
     "href": "index.html#เอกสารอางอง",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "เอกสารอ้างอิง",
-    "text": "เอกสารอ้างอิง\n\n\nAnthropic. 2025. Writing Effective Tools for AI\nAgents—with Agents. Anthropic Engineering. https://www.anthropic.com/engineering/writing-tools-for-agents.\n\n\nBrown, Tom B., Benjamin Mann, Nick Ryder, et\nal. 2020. “Language Models Are Few-Shot Learners.”\nAdvances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2005.14165.\n\n\nDettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022.\n“LLM.int8(): 8-Bit Matrix\nMultiplication for Transformers at Scale.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2208.07339.\n\n\nFedus, William, Barret Zoph, and Noam Shazeer. 2022. “Switch\nTransformers: Scaling to Trillion Parameter Models with Simple and\nEfficient Sparsity.” Journal of Machine Learning\nResearch. https://arxiv.org/abs/2101.03961.\n\n\nGreshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,\nThorsten Holz, and Mario Fritz. 2023. “Not What You’ve Signed up\nfor: Compromising Real-World LLM-Integrated Applications with Indirect\nPrompt Injection.” ACM Workshop on Artificial Intelligence\nand Security (AISec). https://arxiv.org/abs/2302.12173.\n\n\nHoltzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020.\n“The Curious Case of Neural Text Degeneration.”\nInternational Conference on Learning Representations (ICLR). https://arxiv.org/abs/1904.09751.\n\n\nHugging Face. 2023. Mixture of Experts Explained. Hugging Face\nblog. https://huggingface.co/blog/moe.\n\n\nHugging Face. 2025a. Chat Templates. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/chat_templating.\n\n\nHugging Face. 2025b. Quantization Overview. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/quantization/overview.\n\n\nJi, Ziwei, Nayeon Lee, Rita Frieske, et al.\n2023. “Survey of Hallucination in Natural Language\nGeneration.” ACM Computing Surveys 55 (12). https://arxiv.org/abs/2202.03629.\n\n\nJiang, Albert Q., Alexandre Sablayrolles, Antoine\nRoux, et al. 2024. Mixtral of Experts. https://arxiv.org/abs/2401.04088.\n\n\nKadavath, Saurav, Tom Conerly, Amanda Askell, et\nal. 2022. Language Models (Mostly) Know What They Know.\narXiv:2207.05221. https://arxiv.org/abs/2207.05221.\n\n\nKarpathy, Andrej. 2024. Let’s Build the GPT Tokenizer. YouTube\nvideo. https://www.youtube.com/watch?v=zduSFxRajkE.\n\n\nKim, Sehoon, Suhong Moon, Ryan Tabrizi, et\nal. 2024. “An LLM Compiler for Parallel\nFunction Calling.” International Conference on Machine\nLearning (ICML). https://arxiv.org/abs/2312.04511.\n\n\nKojima, Takeshi, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and\nYusuke Iwasawa. 2022. “Large Language Models Are Zero-Shot\nReasoners.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2205.11916.\n\n\nLangChain. 2025. Workflows and Agents. LangGraph documentation.\nhttps://langchain-ai.github.io/langgraph/tutorials/workflows/.\n\n\nLewis, Patrick, Ethan Perez, Aleksandra Piktus, et\nal. 2020. “Retrieval-Augmented Generation for\nKnowledge-Intensive NLP Tasks.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2005.11401.\n\n\nMadaan, Aman, Niket Tandon, Prakhar Gupta, et\nal. 2023. “Self-Refine: Iterative Refinement with\nSelf-Feedback.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2303.17651.\n\n\nManakul, Potsawee, Adian Liusie, and Mark J. F. Gales. 2023.\n“SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for\nGenerative Large Language Models.” Conference on Empirical\nMethods in Natural Language Processing (EMNLP). https://arxiv.org/abs/2303.08896.\n\n\nNguyen, Minh Nhat, Andrew Baker, Clement Neo, et\nal. 2025. “Turning up the Heat: Min-p Sampling for Creative\nand Coherent LLM Outputs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2407.01082.\n\n\nOuyang, Long, Jeff Wu, Xu Jiang, et al.\n2022. “Training Language Models to Follow Instructions with Human\nFeedback.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2203.02155.\n\n\nPlaten, Patrick von. 2020. How to Generate Text: Using Different\nDecoding Methods for Language Generation with Transformers. Hugging\nFace blog. https://huggingface.co/blog/how-to-generate.\n\n\nPydantic. 2026. Pydantic Documentation: Models and Validators.\nhttps://docs.pydantic.dev/latest/.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSchick, Timo, Jane Dwivedi-Yu, Roberto Dessì, et\nal. 2023. “Toolformer: Language Models Can Teach Themselves\nto Use Tools.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2302.04761.\n\n\nSchluntz, Erik, and Barry Zhang. 2024. Building Effective\nAgents. Anthropic. https://www.anthropic.com/research/building-effective-agents.\n\n\nSennrich, Rico, Barry Haddow, and Alexandra Birch. 2016. “Neural\nMachine Translation of Rare Words with Subword Units.”\nProceedings of the 54th Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/1508.07909.\n\n\nShinn, Noah, Federico Cassano, Edward Berman, et\nal. 2023. “Reflexion: Language Agents with Verbal\nReinforcement Learning.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2303.11366.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et\nal. 2017. “Attention Is All You Need.” Advances\nin Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762.\n\n\nWang, Lei, Chen Ma, Xueyang Feng, et al.\n2024. “A Survey on Large Language Model Based Autonomous\nAgents.” Frontiers of Computer Science. https://arxiv.org/abs/2308.11432.\n\n\nWang, Lei, Wanyu Xu, Yihuai Lan, et al.\n2023. “Plan-and-Solve Prompting: Improving Zero-Shot\nChain-of-Thought Reasoning by Large Language Models.”\nProceedings of the 61st Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/2305.04091.\n\n\nWang, Xuezhi, Jason Wei, Dale Schuurmans, et\nal. 2023. “Self-Consistency Improves Chain of Thought\nReasoning in Language Models.” International Conference on\nLearning Representations (ICLR). https://arxiv.org/abs/2203.11171.\n\n\nWei, Jason, Xuezhi Wang, Dale Schuurmans, et\nal. 2022. “Chain-of-Thought Prompting Elicits Reasoning in\nLarge Language Models.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2201.11903.\n\n\nWeng, Lilian. 2023. LLM Powered Autonomous Agents.\nLil’Log. https://lilianweng.github.io/posts/2023-06-23-agent/.\n\n\nWillard, Brandon T., and Rémi Louf. 2023. Efficient Guided\nGeneration for Large Language Models. arXiv:2307.09702. https://arxiv.org/abs/2307.09702.\n\n\nXu, Binfeng, Zhiyuan Peng, Bowen Lei, et al.\n2023. ReWOO: Decoupling Reasoning from Observations for\nEfficient Augmented Language Models. https://arxiv.org/abs/2305.18323.\n\n\nYao, Shunyu, Jeffrey Zhao, Dian Yu, et al.\n2023. “ReAct: Synergizing Reasoning and Acting in\nLanguage Models.” International Conference on Learning\nRepresentations (ICLR). https://arxiv.org/abs/2210.03629.",
+    "text": "เอกสารอ้างอิง\n\n\nAnthropic. 2025. Writing Effective Tools for AI\nAgents—with Agents. Anthropic Engineering. https://www.anthropic.com/engineering/writing-tools-for-agents.\n\n\nBrown, Tom B., Benjamin Mann, Nick Ryder, et\nal. 2020. “Language Models Are Few-Shot Learners.”\nAdvances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2005.14165.\n\n\nDettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022.\n“LLM.int8(): 8-Bit Matrix\nMultiplication for Transformers at Scale.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2208.07339.\n\n\nFedus, William, Barret Zoph, and Noam Shazeer. 2022. “Switch\nTransformers: Scaling to Trillion Parameter Models with Simple and\nEfficient Sparsity.” Journal of Machine Learning\nResearch. https://arxiv.org/abs/2101.03961.\n\n\nGreshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,\nThorsten Holz, and Mario Fritz. 2023. “Not What You’ve Signed up\nfor: Compromising Real-World LLM-Integrated Applications with Indirect\nPrompt Injection.” ACM Workshop on Artificial Intelligence\nand Security (AISec). https://arxiv.org/abs/2302.12173.\n\n\nHoltzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020.\n“The Curious Case of Neural Text Degeneration.”\nInternational Conference on Learning Representations (ICLR). https://arxiv.org/abs/1904.09751.\n\n\nHugging Face. 2023. Mixture of Experts Explained. Hugging Face\nblog. https://huggingface.co/blog/moe.\n\n\nHugging Face. 2025a. Chat Templates. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/chat_templating.\n\n\nHugging Face. 2025b. Quantization Overview. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/quantization/overview.\n\n\nJi, Ziwei, Nayeon Lee, Rita Frieske, et al.\n2023. “Survey of Hallucination in Natural Language\nGeneration.” ACM Computing Surveys 55 (12). https://arxiv.org/abs/2202.03629.\n\n\nJiang, Albert Q., Alexandre Sablayrolles, Antoine\nRoux, et al. 2024. Mixtral of Experts. https://arxiv.org/abs/2401.04088.\n\n\nKadavath, Saurav, Tom Conerly, Amanda Askell, et\nal. 2022. Language Models (Mostly) Know What They Know.\narXiv:2207.05221. https://arxiv.org/abs/2207.05221.\n\n\nKarpathy, Andrej. 2024. Let’s Build the GPT Tokenizer. YouTube\nvideo. https://www.youtube.com/watch?v=zduSFxRajkE.\n\n\nKim, Sehoon, Suhong Moon, Ryan Tabrizi, et\nal. 2024. “An LLM Compiler for Parallel\nFunction Calling.” International Conference on Machine\nLearning (ICML). https://arxiv.org/abs/2312.04511.\n\n\nKojima, Takeshi, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and\nYusuke Iwasawa. 2022. “Large Language Models Are Zero-Shot\nReasoners.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2205.11916.\n\n\nLangChain. 2025. Workflows and Agents. LangGraph documentation.\nhttps://langchain-ai.github.io/langgraph/tutorials/workflows/.\n\n\nLewis, Patrick, Ethan Perez, Aleksandra Piktus, et\nal. 2020. “Retrieval-Augmented Generation for\nKnowledge-Intensive NLP Tasks.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2005.11401.\n\n\nMadaan, Aman, Niket Tandon, Prakhar Gupta, et\nal. 2023. “Self-Refine: Iterative Refinement with\nSelf-Feedback.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2303.17651.\n\n\nManakul, Potsawee, Adian Liusie, and Mark J. F. Gales. 2023.\n“SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for\nGenerative Large Language Models.” Conference on Empirical\nMethods in Natural Language Processing (EMNLP). https://arxiv.org/abs/2303.08896.\n\n\nNguyen, Minh Nhat, Andrew Baker, Clement Neo, et\nal. 2025. “Turning up the Heat: Min-p Sampling for Creative\nand Coherent LLM Outputs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2407.01082.\n\n\nOuyang, Long, Jeff Wu, Xu Jiang, et al.\n2022. “Training Language Models to Follow Instructions with Human\nFeedback.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2203.02155.\n\n\nPatil, Shishir G., Tianjun Zhang, Xin Wang, and Joseph E. Gonzalez.\n2024. “Gorilla: Large Language Model Connected with Massive\nAPIs.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2305.15334.\n\n\nPlaten, Patrick von. 2020. How to Generate Text: Using Different\nDecoding Methods for Language Generation with Transformers. Hugging\nFace blog. https://huggingface.co/blog/how-to-generate.\n\n\nPydantic. 2026. Pydantic Documentation: Models and Validators.\nhttps://docs.pydantic.dev/latest/.\n\n\nQin, Yujia, Shihao Liang, Yining Ye, et al.\n2024. “ToolLLM: Facilitating Large Language Models to\nMaster 16000+ Real-World APIs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2307.16789.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSchick, Timo, Jane Dwivedi-Yu, Roberto Dessì, et\nal. 2023. “Toolformer: Language Models Can Teach Themselves\nto Use Tools.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2302.04761.\n\n\nSchluntz, Erik, and Barry Zhang. 2024. Building Effective\nAgents. Anthropic. https://www.anthropic.com/research/building-effective-agents.\n\n\nSennrich, Rico, Barry Haddow, and Alexandra Birch. 2016. “Neural\nMachine Translation of Rare Words with Subword Units.”\nProceedings of the 54th Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/1508.07909.\n\n\nShinn, Noah, Federico Cassano, Edward Berman, et\nal. 2023. “Reflexion: Language Agents with Verbal\nReinforcement Learning.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2303.11366.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et\nal. 2017. “Attention Is All You Need.” Advances\nin Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762.\n\n\nWang, Lei, Chen Ma, Xueyang Feng, et al.\n2024. “A Survey on Large Language Model Based Autonomous\nAgents.” Frontiers of Computer Science. https://arxiv.org/abs/2308.11432.\n\n\nWang, Lei, Wanyu Xu, Yihuai Lan, et al.\n2023. “Plan-and-Solve Prompting: Improving Zero-Shot\nChain-of-Thought Reasoning by Large Language Models.”\nProceedings of the 61st Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/2305.04091.\n\n\nWang, Xuezhi, Jason Wei, Dale Schuurmans, et\nal. 2023. “Self-Consistency Improves Chain of Thought\nReasoning in Language Models.” International Conference on\nLearning Representations (ICLR). https://arxiv.org/abs/2203.11171.\n\n\nWei, Jason, Xuezhi Wang, Dale Schuurmans, et\nal. 2022. “Chain-of-Thought Prompting Elicits Reasoning in\nLarge Language Models.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2201.11903.\n\n\nWeng, Lilian. 2023. LLM Powered Autonomous Agents.\nLil’Log. https://lilianweng.github.io/posts/2023-06-23-agent/.\n\n\nWillard, Brandon T., and Rémi Louf. 2023. Efficient Guided\nGeneration for Large Language Models. arXiv:2307.09702. https://arxiv.org/abs/2307.09702.\n\n\nXu, Binfeng, Zhiyuan Peng, Bowen Lei, et al.\n2023. ReWOO: Decoupling Reasoning from Observations for\nEfficient Augmented Language Models. https://arxiv.org/abs/2305.18323.\n\n\nYao, Shunyu, Jeffrey Zhao, Dian Yu, et al.\n2023. “ReAct: Synergizing Reasoning and Acting in\nLanguage Models.” International Conference on Learning\nRepresentations (ICLR). https://arxiv.org/abs/2210.03629.",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -745,7 +745,7 @@
     "href": "ch19/ep04-workflow-patterns/index.html#คำถามทบทวน",
     "title": "EP04 Workflow Patterns",
     "section": "คำถามทบทวน",
-    "text": "คำถามทบทวน\n\nทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent\nใน รูปที่ 4.1 ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป\nทำไม classifier ใน รูปที่ 4.2 จึงตอบเป็น enum ด้วย temperature 0\nจาก สมการ 4.1 ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร\nOrchestrator-workers ต่างจาก sectioning ตรงไหน\nถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน รูปที่ 4.4 จะเกิดอะไรขึ้น\nใน ตารางที่ 5.5 ทำไม orchestrator-workers ต้องใช้ Send แทนการวาด edge ไว้ล่วงหน้าแบบ parallelization",
+    "text": "คำถามทบทวน\n\nทำไมผู้ช่วยอาจารย์ที่ตอบคำถามนักศึกษาจึงใช้ workflow ก็พอ ไม่ต้องใช้ agent\nใน รูปที่ 4.1 ถ้าไม่มี gate หลังขั้น 1 ข้อผิดพลาดแบบไหนจะไหลไปถึงสรุป\nทำไม classifier ใน รูปที่ 4.2 จึงตอบเป็น enum ด้วย temperature 0\nจาก สมการ 4.1 ถ้าเพิ่มผู้ตรวจด้านที่สี่ เวลาแบบพร้อมกันจะเปลี่ยนไปอย่างไร\nOrchestrator-workers ต่างจาก sectioning ตรงไหน\nถ้าตั้ง threshold เป็น 10 และ budget เป็น 1 ใน รูปที่ 4.4 จะเกิดอะไรขึ้น\nใน ตารางที่ 8.3 ทำไม orchestrator-workers ต้องใช้ Send แทนการวาด edge ไว้ล่วงหน้าแบบ parallelization",
     "crumbs": [
       "M1 · Agent คืออะไร และออกแบบอย่างไร",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>EP04 Workflow Patterns</span>"
@@ -1255,6 +1255,193 @@
     "crumbs": [
       "M2 · Harness: ระบบปฏิบัติการของ agent",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>EP07 Context Window Management</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html",
+    "href": "ch18/ep08-tools-state-errors/index.html",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#วตถประสงคการเรยนร",
+    "href": "ch18/ep08-tools-state-errors/index.html#วตถประสงคการเรยนร",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "",
+    "text": "นิยาม tool ให้ model และจับคู่ผลลัพธ์กับคำขอด้วย id ของ tool call\nรัน tool หลายตัวที่ model ขอในรอบเดียวพร้อมกัน และจัดการผลลัพธ์ของ tool สี่ขั้นก่อนส่งกลับเข้า context\nอธิบาย prompt injection ผ่านผลลัพธ์ของ tool และห่อผลลัพธ์ให้ model มองเป็นข้อมูล\nอธิบาย state สี่ชั้นของ agent และบันทึก checkpoint ให้งานทำต่อได้หลังพัง\nretry ด้วย exponential backoff และ jitter สลับไปใช้ fallback model จับ agent ที่วนซ้ำ และล้มอย่างมีมารยาท\nคำนวณต้นทุนของงานหนึ่งงาน ใช้ prompt caching และตั้ง token budget ต่องาน\nทำ checkpoint การทำต่อ และการแตกกิ่ง ด้วย LangGraph",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#สามเรองทผดพลาด",
+    "href": "ch18/ep08-tools-state-errors/index.html#สามเรองทผดพลาด",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "สามเรื่องที่ผิดพลาด",
+    "text": "สามเรื่องที่ผิดพลาด\nสมมติเราสั่ง research assistant ให้เขียนรายงานสองหน้าจาก paper สามเรื่อง งานนี้มีสิบขั้น แล้วเราเห็นสามเรื่อง หนึ่ง มันดึง paper ทีละเรื่อง รอเรื่องแรกกลับมาก่อนจึงขอเรื่องที่สอง สอง ที่ขั้นที่เจ็ด เน็ตหลุดไปครู่เดียว มันเริ่มใหม่ตั้งแต่ขั้นแรก สาม มันค้นคำเดิมหกรอบติดกัน และพอสิ้นวัน บิล API ก็ยาวกว่าที่คิด ทั้งสามเรื่องแก้ใน model ไม่ได้ แต่ harness ป้องกันได้ทั้งหมด\nEP07 เราดูความจำชนิดแรกที่ harness ดูแล คือ context window ตอนนี้ต่อด้วยสี่หัวข้อถัดไปในตำรา (Roitman 2026, หมวด 18.4, §18.6–18.8) คือ tool (§18.4) state (§18.6) error (§18.7) และ ความเร็วกับต้นทุน (§18.8)",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#นยาม-tool",
+    "href": "ch18/ep08-tools-state-errors/index.html#นยาม-tool",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "นิยาม tool",
+    "text": "นิยาม tool\nก่อน model จะเรียก tool ได้ ต้องรู้ก่อนว่ามี tool อะไรบ้าง harness จึงส่งนิยาม tool ไปกับทุกคำขอ แต่ละผู้ให้บริการใช้รูปแบบต่างกันเล็กน้อย ของ OpenAI ใส่ argument ไว้ใต้ parameters ของ Anthropic ใช้ input_schema ข้างในเป็น JSON schema แบบเดียวกัน\n{\"type\": \"function\",\n \"function\": {\"name\": \"get_paper\",\n              \"description\": \"Get a paper's title and abstract by its id.\",\n              \"parameters\": {\"type\": \"object\",\n                             \"properties\": {\"paper_id\": {\"type\": \"string\"}},\n                             \"required\": [\"paper_id\"]}}}\nเมื่อ model อยากใช้ tool มันจะตอบกลับเป็นคำขอที่มี id ติดมา harness รัน tool แล้วส่งผลกลับพร้อม id เดิม เหมือนบัตรรับฝากเสื้อ ต้องยื่นเลขที่ตรงกันจึงได้เสื้อตัวที่ถูก ถ้ารันหลาย tool พร้อมกัน id นี้คือสิ่งที่บอกว่าผลไหนเป็นของคำขอไหน ส่วน MCP คือมาตรฐานกลางที่ทำให้เราไม่ต้องผูกกับรูปแบบของเจ้าใดเจ้าหนึ่ง จะเรียนเต็มๆ ใน EP13",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#ใครเลอก-tool",
+    "href": "ch18/ep08-tools-state-errors/index.html#ใครเลอก-tool",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "ใครเลือก tool",
+    "text": "ใครเลือก tool\nmodel เป็นคนเลือก แต่ harness กำหนดการเลือกได้สามแบบ\n\n\n\nตารางที่ 8.1: สามแบบของการเรียก tool\n\n\n\n\n\n\n\n\n\n\nแบบ\nเกิดอะไรขึ้น\nใช้เมื่อ\n\n\n\n\nauto\nmodel ตัดสินเองว่าจะเรียก tool ไหม และตัวไหน\nค่าเริ่มต้น\n\n\nforced\nharness บังคับให้ model เรียก tool ตัวหนึ่ง\nดึงข้อมูลเป็นโครงสร้าง\n\n\nparallel\nmodel ขอหลาย tool ในรอบเดียว harness รันพร้อมกัน\nงานค้นที่ไม่ขึ้นต่อกัน\n\n\n\n\n\n\nparallel tool call ตอบปัญหาข้อแรก ขอ abstract ทั้งสามเรื่องในรอบเดียว แล้วรอแค่ตัวที่ช้าที่สุด เหมือนสั่งอาหารสามจานพร้อมกัน แทนที่จะรอกินจานแรกให้หมดก่อน\nถ้ามี tool เป็นร้อยเป็นพัน ใส่นิยามทั้งหมดลงใน prompt จะเปลือง token และ model สับสน ตำราเสนอสองทาง ทางแรกค้นหา tool ที่เกี่ยวข้องที่สุดไม่กี่ตัวในแต่ละรอบ อย่าง Gorilla ที่เลือกจาก API นับพัน (Patil และคณะ 2024) ทางที่สองฝึก model ให้เลือกเก่งขึ้น อย่าง ToolLLM ที่ฝึกกับ API กว่าหนึ่งหมื่นหกพันตัว (Qin และคณะ 2024) ในทางปฏิบัติใช้ทั้งสองทางร่วมกัน\n\nใน Lab 1: model ขอ paper สามเรื่องในข้อความเดียว แต่ละคำขอมี id ของตัวเอง รันทีละตัวใช้ 4.5 วินาที รันพร้อมกันด้วย ThreadPoolExecutor ใช้ 1.5 วินาที เท่ากับตัวที่ช้าที่สุดตัวเดียว แล้วส่งผลแต่ละตัวกลับเป็นข้อความ tool พร้อม id ของคำขอ",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#จดการผลลพธของ-tool-สขน",
+    "href": "ch18/ep08-tools-state-errors/index.html#จดการผลลพธของ-tool-สขน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "จัดการผลลัพธ์ของ tool สี่ขั้น",
+    "text": "จัดการผลลัพธ์ของ tool สี่ขั้น\nผลลัพธ์ดิบของ tool แทบไม่เคยพร้อมใส่ลง context ตรงๆ ตำราให้ harness ทำสี่ขั้น\n\nParse และตรวจสอบ: ผลลัพธ์ตรงกับรูปแบบที่คาดไว้ไหม\nตัดผลลัพธ์ที่ใหญ่เกิน: หน้าเว็บ ผลรันโค้ด หรือผลจากฐานข้อมูลอาจใหญ่มาก โค้ดในตำราตัดแบบถูกๆ ก่อน และจะให้ model สรุปก็ต่อเมื่อผลใหญ่เกินสองเท่าของงบ นี่คืองบ \\(T\\) จาก EP07\nทำ error ให้อยู่ในรูปแบบเดียว เพราะแต่ละเจ้าเขียน error ต่างกัน model จะได้อ่านเข้าใจ\nRetry ความผิดพลาดชั่วคราว (timeout, rate limit) ก่อน แล้วค่อยรายงานให้ model รู้\n\n\nใน Lab 1: run_tool ตรวจ argument ก่อนรันอะไรทั้งสิ้น id ที่ไม่มีจริงอย่าง P9 กลับมาเป็น {\"error\": \"not_found\", \"detail\": \"no paper with id P9\", \"retry\": false} แล้ว model ก็บอกผู้ใช้ตรงๆ ว่าไม่พบ P9 ส่วนหน้าโปรเจกต์จำลองยาว 37,411 token ถูกสรุปให้อยู่ในงบก่อนส่งกลับไปให้ model",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#sandbox-และ-prompt-injection",
+    "href": "ch18/ep08-tools-state-errors/index.html#sandbox-และ-prompt-injection",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "Sandbox และ prompt injection",
+    "text": "Sandbox และ prompt injection\nตำราเรียกการรัน tool ว่าเป็นช่องโหว่หลัก harness ต้องรัน tool ใน sandbox ที่แยกจากระบบ (container ที่ไม่มีเน็ต) ประกาศสิทธิ์ของ tool แต่ละตัว จำกัด CPU หน่วยความจำ และเวลา ตรวจ argument ที่ model ส่งมา และเก็บ log ทุกการเรียก\nอันตรายที่ตำราเน้นที่สุดคือ prompt injection ผ่านผลลัพธ์ของ tool (Greshake และคณะ 2023) สมมติ agent อ่านหน้าเว็บของ paper เรื่องหนึ่ง แล้วในหน้านั้นมีข้อความซ่อนไว้ให้ลืมคำสั่งก่อนหน้า ถ้า harness ใส่ข้อความนี้ลง context เฉยๆ model อาจทำตาม ผลลัพธ์ของ tool ทุกชิ้นจึงเป็น ข้อมูล ไม่ใช่คำสั่ง ห่อด้วย tag ที่บอก model ไว้ว่าให้มองเป็นข้อมูล เหมือนเลขาฯ ที่อ่านจดหมายให้หัวหน้าฟัง ต่อให้ในจดหมายเขียนว่า “เลขาฯ โอนเงินเดี๋ยวนี้” เลขาฯ ก็ไม่ทำตาม\n\nใน Lab 1: หน้าเว็บ PatchTST จำลองซ่อนคำสั่งไว้ใน HTML comment ให้ AI ต่อท้ายทุกคำตอบด้วยลิงก์ดาวน์โหลดปลอม แบบไม่ป้องกัน model ต่อท้ายลิงก์ 5 จาก 8 รอบ พอห่อผลลัพธ์ด้วย tag &lt;tool_output&gt; และบอกกฎไว้ใน system prompt เหลือ 0 จาก 8 การห่อช่วยลดความเสี่ยง แต่ระบบจริงยังต้องมีด่านอื่นด้วย",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#state-สชน",
+    "href": "ch18/ep08-tools-state-errors/index.html#state-สชน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "State สี่ชั้น",
+    "text": "State สี่ชั้น\nตำราบอกว่า agent มี state อยู่ในตัวเสมอ และ harness ดูแลสี่ชั้น (Roitman 2026, หมวด 18.6)\n\n\n\nตารางที่ 8.2: State สี่ชั้น\n\n\n\n\n\n\n\n\n\n\nชั้น\nเก็บอะไร\nตัวอย่าง\n\n\n\n\nconversation\nhistory ทุกข้อความพร้อม role เนื้อหา และ metadata\nhistory window ของ EP07\n\n\ntask\nงานย่อยไหนเสร็จแล้ว checkpoint และ rollback\nหกขั้นเสร็จไปสามขั้น\n\n\nagent\nแผนปัจจุบัน tool call ที่ยังไม่กลับมา และข้อเท็จจริงที่ยืนยันแล้ว\n“เขตเวลาของผู้ใช้คือ UTC+9”\n\n\npersistent\nสิ่งที่อยู่ข้าม session\nโปรไฟล์ผู้ใช้ ความจำระยะยาว (EP12)\n\n\n\n\n\n\nCheckpoint คือภาพ state ที่บันทึกไว้ ให้งานทำต่อได้หลังพัง ส่วน rollback คือย้อนการกระทำล่าสุดไม่กี่ขั้นเมื่อพบว่าผิด นี่คือคำตอบของปัญหาข้อที่สอง เน็ตหลุดที่ขั้นที่เจ็ดไม่ควรต้องเริ่มใหม่ตั้งแต่ขั้นแรก\n\nใน Lab 2: งานหกขั้น (โน้ต paper สามเรื่อง เปรียบเทียบ ตั้งชื่อ เขียนรายงาน) แล้วเน็ตหลุดที่ขั้นที่สี่ ไม่มี checkpoint ต้องเริ่มใหม่ เรียก model 9 ครั้งสำหรับงานที่ต้องใช้แค่ 6 พอบันทึก dataclass TaskState หลังทุกขั้น (เขียนลงไฟล์ชั่วคราวก่อน แล้วสลับเข้าที่ด้วย os.replace ไฟล์จึงไม่มีวันเสียครึ่งๆ กลางๆ) ก็ทำต่อที่ compare ได้เลย รวม 6 ครั้งพอดี ส่วนการ rollback สองขั้นล่าสุดเพื่อเขียนย่อหน้าแรกใหม่ให้นักศึกษาปีหนึ่ง ใช้แค่ 2 ครั้ง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#retry-ทฉลาดขน",
+    "href": "ch18/ep08-tools-state-errors/index.html#retry-ทฉลาดขน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "Retry ที่ฉลาดขึ้น",
+    "text": "Retry ที่ฉลาดขึ้น\nEP06 เรา retry โดยรอหนึ่งวินาที แล้วสองวินาที ตอนนี้ตำราให้สูตรเต็ม เวลารอก่อน retry ครั้งที่ \\(k\\) คือ\n\\[\nt_k \\;=\\; \\min\\!\\big(2^k \\cdot t_0 + U(0,\\, t_0),\\ t_{\\max}\\big)\n\\tag{8.1}\\]\nถ้า \\(t_0 = 1\\) วินาที จะรอ 1, 2, 4, 8, 16 วินาที แล้วชนเพดาน นี่คือ exponential backoff เหมือนโทรหาเพื่อนที่สายไม่ว่าง ยิ่งโทรไม่ติดก็ยิ่งรอนานขึ้น ส่วนสุ่ม \\(U(0, t_0)\\) คือ jitter ถ้า agent สิบตัวใช้ key เดียวกันโดน rate limit พร้อมกัน แล้วทุกตัวรอเท่ากันเป๊ะ ก็จะกลับมาพร้อมกันแล้วโดนอีก jitter ช่วยกระจายให้กลับมาไม่พร้อมกัน\nตำราเพิ่มอีกสองทาง ถ้า model หลักใช้ไม่ได้ ให้สลับไปใช้ fallback model ถ้า tool ล่ม ให้บอก model ตรงๆ แล้วให้ทำงานต่อโดยไม่มี tool นั้น (graceful degradation)\n\nใน Lab 3: API ค้นหาจำลองปฏิเสธด้วย 429 สามครั้ง ด้วย \\(t_0 = 0.5\\) วินาที เวลารอคือ 0.75, 1.28 และ 2.40 วินาที แล้วครั้งที่สี่ก็ตอบ ไม่มี jitter agent สิบตัวกลับมาพร้อมกันที่ 0.5 วินาทีพอดี มี jitter กระจายไประหว่าง 0.63 ถึง 0.92 วินาที พอทำให้ model หลักใช้ไม่ได้ harness ลองสามครั้งแล้วสลับไปใช้ Gemma 3 12B ซึ่งตอบได้",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#จบ-agent-ทวนซำ",
+    "href": "ch18/ep08-tools-state-errors/index.html#จบ-agent-ทวนซำ",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "จับ agent ที่วนซ้ำ",
+    "text": "จับ agent ที่วนซ้ำ\nปัญหาข้อที่สาม agent เรียก tool ตัวเดิมด้วย argument เดิมซ้ำไปเรื่อยๆ ตำราให้สามวิธี จำกัดจำนวนขั้น (ใช้มาตั้งแต่ EP03 แต่กว่าจะถึงขั้นที่ห้าสิบก็เสียเงินไปเยอะแล้ว) hash tool และ argument ของแต่ละการกระทำ และดูว่า state ยังขยับไหม ถ้าใช้ hash ถือว่าวน เมื่อมีสองขั้นที่ hash เท่ากันห่างกันไม่เกิน \\(W\\) ขั้น\n\\[\n\\exists\\, i &lt; j:\\ h(a_i) = h(a_j) \\ \\wedge\\ j - i \\leq W\n\\tag{8.2}\\]\nเหมือนกดปุ่มลิฟต์ซ้ำๆ ทั้งที่ไฟติดอยู่แล้ว ทำซ้ำไม่ได้ทำให้อะไรเปลี่ยน\nบางงานก็ทำไม่สำเร็จจริงๆ agent ที่ดีจะ ล้มอย่างมีมารยาท สี่ส่วน คือ ทำอะไรไปแล้วบ้าง ทำไมไปต่อไม่ได้ ทางไปต่อคืออะไร และบันทึก state ไว้ให้ทำต่อได้ ส่วนการรู้ว่าเกิดอะไรขึ้น ตำราให้สามเสาหลัก คือ trace ของทุกการรัน log ที่มี token latency และต้นทุน และ metric อย่าง success rate และต้นทุนต่องาน เราสร้าง trace ไปแล้วใน EP06 Lab 2\n\nใน Lab 3: tool แบบ polling ตอบซ้ำว่า “PDF ยังแปลงไม่เสร็จ เรียกใหม่อีกครั้ง” ถ้ามีแค่เพดานจำนวนขั้น agent เรียก model 12 ครั้ง ขอสิ่งเดิมทุกครั้ง LoopGuard ที่ hash ทุกการเรียกในหน้าต่างขนาด 5 หยุดมันได้ที่คำขอซ้ำครั้งที่สาม (3 ครั้ง) พร้อมข้อความสี่ส่วน และบันทึก state ไว้ใน stuck_task.json",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#ความเรวและตนทน",
+    "href": "ch18/ep08-tools-state-errors/index.html#ความเรวและตนทน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "ความเร็วและต้นทุน",
+    "text": "ความเร็วและต้นทุน\nเรื่องความเร็ว ตำราให้สี่ทาง คือ parallel tool call การ stream คำตอบ speculative execution (เริ่ม tool call ที่น่าจะเกิดถัดไปล่วงหน้า) และ prompt caching ทุกขั้นของงานเราส่ง system prompt และนิยาม tool ชุดเดิม ผู้ให้บริการหลายเจ้าจึงเก็บงานที่ทำไปแล้วกับส่วนต้นที่ซ้ำกันไว้ ตำราบอกว่าส่วนที่ cache ได้ถูกลงและเร็วขึ้น 50–90% แต่ cache ใช้ได้กับส่วนต้นที่เหมือนกัน เป๊ะ เท่านั้น ถ้าใส่เวลาปัจจุบันไว้บรรทัดแรก ส่วนต้นก็ต่างกันทุกครั้ง กฎจึงง่ายๆ คือ ส่วนที่คงที่ไว้ก่อน ส่วนที่เปลี่ยนไว้ท้าย\nเรื่องต้นทุน สมการของตำรารวมทุกการเรียก model และทุกการเรียก tool ในงานหนึ่งงาน\n\\[\n\\text{Cost} \\;=\\; \\sum_{i} \\big(p_{\\text{in}} \\cdot n_{\\text{in},i} + p_{\\text{out}} \\cdot n_{\\text{out},i}\\big) \\;+\\; \\sum_{j} c_j\n\\tag{8.3}\\]\nตำราจึงแนะนำให้ตั้ง token budget ต่องาน ใช้ model เล็กราคาถูกกับขั้นง่าย และ cache ผลของ tool ที่ตอบเหมือนเดิมทุกครั้ง ถ้ามี agent หลายตัวใช้ key เดียวกัน ให้เพิ่ม rate limiter ที่ใช้ร่วมกัน คิวตามลำดับความสำคัญ และ backpressure คือพอคิวเต็มก็ปฏิเสธงานใหม่ตรงๆ ด้วย 503 แทนที่จะให้รอไปเรื่อยๆ\n\nใน Lab 4: system prompt ยาวราว 4,600 token กับคำถามแปดข้อ วางส่วนที่คงที่ไว้ก่อน call แรกไม่ได้ cache แต่ได้ cache 5 จาก 8 และ call ที่ได้ cache ถูกลงเกือบครึ่ง ส่วนแบบวางเวลาไว้บรรทัดแรกของ system prompt ได้ 0 จาก 8 ย้ายบรรทัดเดียวประหยัดไป 27% ของทั้งหมด ส่วนลดของ Makora สำหรับ cached token อยู่ราว 46% ต่ำกว่า 50–90% ในตำรา ขึ้นกับผู้ให้บริการ พอนับค่า tool ด้วย (จำลองไว้ครั้งละ 0.001 ดอลลาร์) tool แพงกว่า model ราวสามเท่า และ TokenBudget 20,000 token เตือนที่คำถามข้อสี่ และหยุดงานที่ข้อห้า",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#เขยนเอง-vs-framework",
+    "href": "ch18/ep08-tools-state-errors/index.html#เขยนเอง-vs-framework",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "เขียนเอง vs framework",
+    "text": "เขียนเอง vs framework\nใน Lab 5 เราสร้างงานหกขั้นของ Lab 2 ใหม่ด้วย LangGraph (langgraph==1.2.16) และ checkpointer SqliteSaver\n\n\n\nตารางที่ 8.3: LangGraph เทียบกับโค้ดที่เราเขียนเอง\n\n\n\n\n\n\n\n\n\nโค้ดของเรา (Lab 2)\nLangGraph\n\n\n\n\ndataclass TaskState\nState(TypedDict) ช่อง results รวมด้วย reducer operator.or_\n\n\nsave_state หลังทุกขั้น\ncheckpointer บันทึกหลังทุก node\n\n\nload_state + ข้ามขั้นที่เสร็จแล้ว\ngraph.invoke(None, config) ทำต่อใน thread เดิม\n\n\nrollback(state, k) ลบผลเก่าทิ้ง\nupdate_state ที่ checkpoint เก่าแตกกิ่งใหม่ กิ่งเดิมยังอยู่\n\n\n—\nget_state_history ดูได้ทุก checkpoint\n\n\n\n\n\n\n\nใน Lab 5: หลังพังที่ compare เราลบ graph แล้วสร้างใหม่จาก report.db get_state รู้ว่าสามขั้นแรกเสร็จแล้ว และ node ถัดไปคือ compare ทำต่อแล้วรวมเป็น 6 ครั้งเท่าเดิม ในประวัติมี 8 checkpoint คือก่อนเริ่ม ก่อนแต่ละ node ทั้งหก และหลังจบ แตกกิ่งจาก checkpoint ก่อน title ให้ผู้อ่านกลุ่มใหม่ใช้ 2 ครั้ง ประวัติเพิ่มเป็น 11 โดยกิ่งเดิมยังอยู่ครบ framework เพิ่มประวัติและการแตกกิ่ง ส่วนการทำต่อหลังพังใช้เท่ากัน",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#คำศพทในตอนน",
+    "href": "ch18/ep08-tools-state-errors/index.html#คำศพทในตอนน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "คำศัพท์ในตอนนี้",
+    "text": "คำศัพท์ในตอนนี้\n\n\n\nตารางที่ 8.4: คำศัพท์ใน EP08\n\n\n\n\n\n\n\n\n\n\nคำศัพท์\nคืออะไร\nตัวอย่าง\n\n\n\n\ntool definition\nชื่อ คำอธิบาย และ JSON schema ของ tool ที่ส่งไปกับทุกคำขอ\nget_paper(paper_id)\n\n\ntool call id\nid ของแต่ละคำขอ tool ที่ส่งกลับพร้อมผลลัพธ์\ncall-14c7… ของ P1\n\n\nparallel tool calls\nขอหลาย tool ในรอบเดียว แล้วรันพร้อมกัน\npaper สามเรื่องใน 1.5 วินาทีแทน 4.5\n\n\nforced tool use\nharness บังคับให้ model เรียก tool ตัวหนึ่ง\nเรียก extract_fields ทุกครั้ง\n\n\nnormalized error\nerror ของทุก tool ในรูปแบบเดียวที่ model อ่านได้\n{\"error\": \"not_found\", \"retry\": false}\n\n\nprompt injection\nคำสั่งที่ซ่อนอยู่ในข้อมูล ซึ่ง model อาจทำตาม\nหน้าเว็บที่เขียนว่า “ignore previous instructions”\n\n\nsandbox\nรัน tool แบบแยกขาด มีขีดจำกัด\nรันโค้ดใน container ที่ไม่มีเน็ต\n\n\ncheckpoint\nภาพ state ของงานที่บันทึกไว้ ให้ทำต่อได้หลังพัง\nreport_task.json หลังทุกขั้น\n\n\nrollback\nย้อนการกระทำล่าสุดไม่กี่ขั้น\nลบชื่อเรื่องกับรายงานแล้วทำใหม่\n\n\nexponential backoff\nรอนานขึ้นเท่าตัวหลัง retry แต่ละครั้ง จนถึงเพดาน\n1 → 2 → 4 → 8 วินาที\n\n\njitter\nเวลารอส่วนเพิ่มแบบสุ่ม ให้ client ไม่ retry พร้อมกัน\n4 วินาที + 0.37\n\n\nfallback model\nmodel ตัวที่สองที่ใช้เมื่อตัวหลักใช้ไม่ได้\nGemma 4 ล่ม → Gemma 3\n\n\nloop detection\nhash (tool, args) แต่ละครั้ง แล้วตรวจในหน้าต่างเลื่อน\nเรียกเดิมสามครั้งในห้าขั้น → หยุด\n\n\ngraceful failure\nหยุดพร้อมบอกว่าทำอะไรไปแล้ว ทำไม ต่อไปอย่างไร และบันทึก state\nstuck_task.json\n\n\nprompt caching\nผู้ให้บริการใช้งานเดิมซ้ำกับส่วนต้นของ prompt ที่เหมือนกัน\ncache ได้ 4,480 token ต่อ call\n\n\ntoken budget\nเพดาน token ที่งานหนึ่งงานใช้ได้\nเตือนที่ 80% หยุดที่ 20,000",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#lab",
+    "href": "ch18/ep08-tools-state-errors/index.html#lab",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 8.5: Notebook ของ EP08 (ทุก lab มีส่วนติดตั้งของตัวเอง วิธีตั้งค่า API key และเหตุผลที่เลือก provider อธิบายใน Lab 1)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — Tool call ที่ไว้ใจได้\nColab\nColab\n\n\nLab 2 — Checkpoint และการทำต่อ\nColab\nColab\n\n\nLab 3 — เมื่อทุกอย่างล้มเหลวได้\nColab\nColab\n\n\nLab 4 — ต้นทุนและ prompt caching\nColab\nColab\n\n\nLab 5 — LangGraph durable execution\nColab\nColab\n\n\n\n\n\n\npaper หน้าเว็บ เน็ตหลุด ระบบล่ม และราคา tool ในโค้ดเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง ผลที่คุณรันเองจึงอาจต่างไปบ้าง เช่นจำนวนรอบที่ลิงก์ปลอมหลุดรอด หรือจำนวน call ที่ได้ cache",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#คำถามทบทวน",
+    "href": "ch18/ep08-tools-state-errors/index.html#คำถามทบทวน",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไมผลของ tool แต่ละตัวต้องส่งกลับพร้อม id ของคำขอ และสำคัญที่สุดเมื่อไร\nขั้นไหนในสี่ขั้นของการจัดการผลลัพธ์ที่จะจับหน้าเว็บยาว 37,411 token ได้ และโค้ดในตำราทำอะไรกับมัน\nทำไมการห่อผลลัพธ์ของ tool ด้วย tag จึงลดความเสี่ยงของ prompt injection และทำไมยังไม่พอถ้าใช้อย่างเดียว\nใน Lab 2 ทำไมแบบไม่มี checkpoint จึงเรียก model เก้าครั้ง และทำไมต้องเขียน checkpoint ผ่านไฟล์ชั่วคราว\nจาก สมการ 8.1 ส่วน jitter แก้ปัญหาอะไรที่การเพิ่มเป็นเท่าตัวอย่างเดียวแก้ไม่ได้\nจาก สมการ 8.2 ทำไม agent ที่ค้นด้วยคำที่เปลี่ยนไปนิดหน่อยทุกครั้ง อาจหลุดการตรวจวนด้วย hash\nทำไมการใส่เวลาปัจจุบันไว้บรรทัดแรกของ system prompt จึงทำให้ prompt caching ไม่ได้ผลเลย\nLangGraph เพิ่มอะไรจากโค้ด Lab 2 ของเรา และอะไรที่ยังเหมือนเดิม",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#อานเพมเตม",
+    "href": "ch18/ep08-tools-state-errors/index.html#อานเพมเตม",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: §18.4, §18.6–18.8 (Roitman 2026)\nการค้นหา tool และการฝึกให้ใช้ tool: Gorilla (Patil และคณะ 2024) และ ToolLLM (Qin และคณะ 2024)\nPrompt injection ผ่านผลลัพธ์ของ tool: Greshake และคณะ (2023)\nContext window และงบ \\(T\\): EP07 การ retry แบบพื้นฐานและ trace: EP06",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep08-tools-state-errors/index.html#เอกสารอางอง",
+    "href": "ch18/ep08-tools-state-errors/index.html#เอกสารอางอง",
+    "title": "EP08 Tools, State and Error Handling",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nGreshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, และ Mario Fritz. 2023. “Not What You’ve Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection”. ACM Workshop on Artificial Intelligence and Security (AISec). https://arxiv.org/abs/2302.12173.\n\n\nPatil, Shishir G., Tianjun Zhang, Xin Wang, และ Joseph E. Gonzalez. 2024. “Gorilla: Large Language Model Connected with Massive APIs”. Advances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2305.15334.\n\n\nQin, Yujia, Shihao Liang, Yining Ye, และคณะ. 2024. “ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs”. International Conference on Learning Representations (ICLR). https://arxiv.org/abs/2307.16789.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
     ]
   }
 ]
