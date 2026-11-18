@@ -1443,5 +1443,181 @@
       "M2 · Harness: ระบบปฏิบัติการของ agent",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
     ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html",
+    "href": "ch18/ep09-production-harness/index.html",
+    "title": "EP09 Building a Production Harness",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#วตถประสงคการเรยนร",
+    "href": "ch18/ep09-production-harness/index.html#วตถประสงคการเรยนร",
+    "title": "EP09 Building a Production Harness",
+    "section": "",
+    "text": "อ่าน Listing 18.1 ซึ่งเป็น harness ระดับ production ในไฟล์เดียวของตำรา และบอกได้ว่าห้าส่วนของมันทำอะไร\nให้งบแต่ละส่วนของ context และตัดประวัติโดยไม่ทิ้งผลของ tool ไว้โดยไม่มีคำขอ\nรัน tool อย่างไม่ไว้ใจ: ขออนุมัติ จำกัดเวลา ลองใหม่แบบ backoff และจำกัดขนาด output\nจับ agent ที่ทำซ้ำเดิม และอธิบายได้ว่าการตรวจวนด้วย hash เห็นอะไรและไม่เห็นอะไร\nทดสอบ harness โดยไม่เรียก model ด้วย mock LLM, unit test และของพังๆ ที่จงใจส่งเข้าไป\nเก็บ prompt เป็นไฟล์ที่มีเวอร์ชัน และเล่นงานเดิมซ้ำเพื่อจับ regression\nสร้าง harness ตัวเดิมด้วย LangChain middleware และบอกได้ว่าเมื่อไรควรใช้ framework เมื่อไรควรเขียนเอง",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#ชนสวนบนพนโรงรถ",
+    "href": "ch18/ep09-production-harness/index.html#ชนสวนบนพนโรงรถ",
+    "title": "EP09 Building a Production Harness",
+    "section": "ชิ้นส่วนบนพื้นโรงรถ",
+    "text": "ชิ้นส่วนบนพื้นโรงรถ\nสองตอนที่ผ่านมา เราได้ชิ้นส่วนของ harness ครบแล้ว งบ context การรัน tool การ retry การจับ agent ที่วนซ้ำ และ checkpoint แต่ชิ้นส่วนรถที่วางเรียงบนพื้นโรงรถ ยังไม่ใช่รถที่ขับได้ ตอนนี้ตอบสองคำถาม ชิ้นส่วนทั้งหมดต่อกันเป็นโปรแกรมเดียวอย่างไร และเมื่อประกอบเสร็จ เราจะรู้ได้อย่างไรว่ามันทำงานถูก ก่อนส่งให้คนอื่นใช้\nตำราตอบคำถามแรกด้วย Listing 18.1 harness ครบทั้งตัวในไฟล์ Python ไฟล์เดียว และตอบคำถามที่สองด้วยการทดสอบ agent ห้าวิธี (Roitman 2026, หมวด 18.10) ตัวอย่างหลักยังเป็น research assistant จาก EP07–EP08 มันค้นคลัง paper เล็กๆ อ่านบทคัดย่อ และบันทึกรายงาน แต่ต้องมีคนอนุมัติก่อน",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#listing-18.1-ไฟลเดยว-หาสวน",
+    "href": "ch18/ep09-production-harness/index.html#listing-18.1-ไฟลเดยว-หาสวน",
+    "title": "EP09 Building a Production Harness",
+    "section": "Listing 18.1: ไฟล์เดียว ห้าส่วน",
+    "text": "Listing 18.1: ไฟล์เดียว ห้าส่วน\n\n\n\nตารางที่ 9.1: ส่วนต่างๆ ของ Listing 18.1\n\n\n\n\n\n\n\n\n\nส่วน\nหน้าที่\n\n\n\n\nMessage · ToolDefinition\nข้อมูลสองชนิด: ข้อความหนึ่งข้อความในบทสนทนา และบัตรประจำตัวของ tool\n\n\nContextManager\nงบของแต่ละส่วนใน context การตัดประวัติ และการตรวจก่อนเรียก model ทุกครั้ง\n\n\nToolExecutor\nรัน tool อย่างไม่ไว้ใจ: ขออนุมัติ จำกัดเวลา ลองใหม่ จำกัดขนาด output\n\n\nLoopDetector\nลายนิ้วมือของแต่ละการกระทำ เพื่อสังเกตว่า agent ทำซ้ำเดิม\n\n\nAgentHarness\nลูป ReAct ที่ผูกทุกส่วนเข้าด้วยกัน พร้อม run_id ในทุกบรรทัดของ log\n\n\n\n\n\n\nToolDefinition มีห้าช่อง สามช่องส่งให้ model คือ name, description และ JSON schema ของ parameters อีกสองช่อง model ไม่เคยเห็น คือฟังก์ชัน Python ที่ทำงานจริง (handler) และ requires_approval ที่บอกว่าต้องมีคนอนุมัติก่อนหรือไม่",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#contextmanager-ตรวจงบทกครงทเพมขอความ",
+    "href": "ch18/ep09-production-harness/index.html#contextmanager-ตรวจงบทกครงทเพมขอความ",
+    "title": "EP09 Building a Production Harness",
+    "section": "ContextManager: ตรวจงบทุกครั้งที่เพิ่มข้อความ",
+    "text": "ContextManager: ตรวจงบทุกครั้งที่เพิ่มข้อความ\nListing แบ่ง context window เป็นห้าส่วน:\n\n\n\nตารางที่ 9.2: งบของ context ใน Listing 18.1\n\n\n\n\n\nส่วน\nสัดส่วน\n\n\n\n\nsystem prompt\n10%\n\n\nmemory\n20%\n\n\nนิยาม tool\n10%\n\n\nประวัติบทสนทนา\n50%\n\n\nกันไว้ให้คำตอบ\n10%\n\n\n\n\n\n\nทุกครั้งที่เพิ่มข้อความ ประวัติจะถูกตรวจกับงบของมัน ถ้าเกิน ข้อความเก่าสุดออกก่อน แต่ข้อความแรก (คำถามของผู้ใช้) เก็บไว้เสมอ และมีรายละเอียดหนึ่งที่สำคัญมาก ถ้าข้อความที่ทิ้งเป็นคำขอเรียก tool ผลของ tool ทุกตัวที่ตามมาต้องออกไปด้วย ผลของ tool ที่ค้างอยู่โดยไม่มีคำขอนำหน้า ทำให้คำขอทั้งชุดใช้กับ API ไม่ได้ ก่อนเรียก model ทุกครั้ง preflight check รวม system prompt นิยาม tool และประวัติ แล้วเทียบกับขนาด window ลบส่วนที่กันไว้\n\nใน Lab 1 เรานับ token ด้วย tokenizer ของ Gemma เอง แทน tiktoken ของ GPT-4o ที่ใช้ใน listing ตามที่บทสรุปของตำราบอก ว่าต้องนับด้วย tokenizer ของ model ที่ใช้จริง ใน Lab 2 unit test ตัดประวัติเล็กๆ แล้วยืนยันว่าที่เหลือคือคำถาม คำขอตัวหลัง และผลของมัน คำขอตัวแรกออกไปพร้อมผลทั้งสองของมัน",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#toolexecutor-รน-tool-อยางไมไวใจ",
+    "href": "ch18/ep09-production-harness/index.html#toolexecutor-รน-tool-อยางไมไวใจ",
+    "title": "EP09 Building a Production Harness",
+    "section": "ToolExecutor: รัน tool อย่างไม่ไว้ใจ",
+    "text": "ToolExecutor: รัน tool อย่างไม่ไว้ใจ\nทุกคำขอเรียก tool ผ่านสี่ขั้น:\n\ntool ที่ไม่มีอยู่ → ส่งข้อความ error กลับให้ model ไม่ใช่โปรแกรมล่ม\nการอนุมัติ: ถ้า tool นั้น requires_approval ถามคนก่อน ถ้าไม่อนุมัติ model ได้ข้อความ “Action rejected by human reviewer.” แล้วหาทางอื่นเอง\nรันโดยจำกัดเวลา (30 วินาที) ถ้าหมดเวลาหรือเกิด error ก็รอแล้วลองใหม่ 1 วินาที แล้ว 2 วินาที ไม่เกินสามครั้ง ตำราให้ retry อยู่ที่ระดับ tool เพราะ tool พังบ่อยกว่า และส่วนใหญ่ลองใหม่แล้วหาย\nจำกัดขนาด output ไว้ที่ 2,000 token พร้อมบอกว่าตัดไปแล้ว\n\nทุกทางออกเป็นข้อความที่ส่งกลับไปให้ model ไม่มีทางไหนทำให้โปรแกรมล่ม",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#loopdetector-ลายนวมอของการกระทำ",
+    "href": "ch18/ep09-production-harness/index.html#loopdetector-ลายนวมอของการกระทำ",
+    "title": "EP09 Building a Production Harness",
+    "section": "LoopDetector: ลายนิ้วมือของการกระทำ",
+    "text": "LoopDetector: ลายนิ้วมือของการกระทำ\nทุกครั้งที่เรียก tool ตัวตรวจจะทำลายนิ้วมือ MD5 จากชื่อ tool กับ argument (เรียง key แล้ว) และเก็บห้าตัวล่าสุด เจอลายนิ้วมือเดิมสองครั้งในหน้าต่างนั้น → งานหยุดพร้อมข้อความสุภาพ\n\nใน Lab 2 การทดสอบด้วยของพังๆ พบสามเรื่องในโค้ดของตำรา คำค้นที่เรียบเรียงใหม่ (“time series transformer” กับ “transformers for time series”) ไม่ถูกนับว่าวน เพราะต่างกันตัวอักษรเดียว ลายนิ้วมือก็คนละอัน แม้ตำราจะบอกว่าจับการทำเกือบซ้ำได้ด้วย การตรวจวนเกิดหลังรัน tool แล้ว save_report ที่ขอซ้ำจึงถูกรันไปสองครั้งก่อนจะถูกหยุด และ argument ที่เป็น JSON ไม่ครบทำให้ run() ล่ม เพราะการตรวจวนแปลง argument อีกครั้งโดยไม่มี try เราจึงแก้เป็น SaferHarness",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#agentharness.run-ลป-react-ทงเสน",
+    "href": "ch18/ep09-production-harness/index.html#agentharness.run-ลป-react-ทงเสน",
+    "title": "EP09 Building a Production Harness",
+    "section": "AgentHarness.run: ลูป ReAct ทั้งเส้น",
+    "text": "AgentHarness.run: ลูป ReAct ทั้งเส้น\n\n\n\n\n\n\nflowchart TD\n  A[preflight check] --&gt; B[เรียก model]\n  B --&gt;|ขอ tool| C[รัน tool พร้อมกัน&lt;br/&gt;asyncio.gather]\n  C --&gt; D[ตรวจวน · เพิ่มผล]\n  D --&gt; A\n  B --&gt;|ตอบ| E[จบ]\n\n\n\n\n\n\nแต่ละงานได้ run_id สั้นๆ ประทับไว้ในทุกบรรทัดของ log จึงตามงานหนึ่งงานใน log ที่ปนกันได้ tool ที่ model ขอในรอบเดียวรันพร้อมกันด้วย asyncio.gather และมีทางออกพิเศษสามทาง แต่ละทางเป็นข้อความสุภาพ คือ context เต็ม agent ติดวน หรือครบห้าสิบรอบ\n\nใน Lab 1 research assistant ค้นก่อน แล้วขอ read_paper สามเรื่องในรอบเดียว “3 tool(s) done in 1.5s” ไม่ใช่ 4.5 วินาที มันขออนุมัติก่อน save_report และจบในสี่รอบ ใช้ไปราว 0.0003 ดอลลาร์ เมื่อเราไม่อนุมัติ บางรอบ model ขอซ้ำด้วย argument เดิม แล้ว LoopDetector หยุดมันไว้ บางรอบมันตอบสรุปในแชตแทน",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#ทดสอบ-agent-หาวธ",
+    "href": "ch18/ep09-production-harness/index.html#ทดสอบ-agent-หาวธ",
+    "title": "EP09 Building a Production Harness",
+    "section": "ทดสอบ agent ห้าวิธี",
+    "text": "ทดสอบ agent ห้าวิธี\nตำราบอกว่า การทดสอบ agent ต่างจากการทดสอบโปรแกรมทั่วไปโดยพื้นฐาน เพราะ model ตอบไม่เหมือนเดิมทุกรอบ จึงเสนอห้าวิธี:\n\n\n\nตารางที่ 9.3: การทดสอบ agent harness ห้าวิธี\n\n\n\n\n\nวิธี\nคืออะไร\nในตอนนี้\n\n\n\n\n① unit test\nตรวจแต่ละส่วนแยกกัน\nLab 2\n\n\n② mock LLM\nทดสอบ harness ทั้งตัวกับตัวแทน model ที่ตอบตามบท\nLab 2\n\n\n③ evaluation\nงานที่มีเฉลย → อัตราสำเร็จ\nEP06 Lab 2\n\n\n④ adversarial\nจงใจส่งของพัง: JSON ไม่ครบ tool ที่ค้าง tool ที่พัง\nLab 2\n\n\n⑤ regression\nเล่นงานเดิมซ้ำหลังแก้ แล้วดูว่าไม่มีอะไรแย่ลง\nLab 3\n\n\n\n\n\n\n\nใน Lab 2 harness ทั้งตัวผ่านการตรวจสี่ข้อกับ mock LLM ในไม่ถึงครึ่งวินาที ไม่ใช้ API key และไม่เสียเงิน tool ที่พังทุกครั้งถูกลองสามครั้ง (3 วินาที) tool ที่ค้างหมดเวลาสามครั้ง (4.5 วินาที) ก่อนที่ model จะได้ข้อความ error โปรแกรมไม่เคยล่ม",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#prompt-คอ-code",
+    "href": "ch18/ep09-production-harness/index.html#prompt-คอ-code",
+    "title": "EP09 Building a Production Harness",
+    "section": "Prompt คือ code",
+    "text": "Prompt คือ code\nในบทสรุปของบทมีประโยคสั้นๆ หนึ่งประโยค prompt ต้องเก็บเวอร์ชัน ต้องทดสอบ และประกอบจากส่วนย่อย แก้ system prompt แค่ประโยคเดียว พฤติกรรมของ agent อาจเปลี่ยนทั้งตัว\n\nใน Lab 3 system prompt ประกอบจากไฟล์ส่วนย่อย (role · rules · cite · format) มี id เป็นชื่อเวอร์ชันกับ hash ของข้อความ บันทึกงานจริงห้างานด้วย v1 ซึ่งอ่าน paper ถูก แต่ไม่อ้างอิงเลยสักงาน เล่นซ้ำด้วย v2 ที่เพิ่ม “Always cite paper ids like [P2].” ดีขึ้นทั้งห้างาน ไม่มีอะไรแย่ลง ค่าใช้จ่ายแทบเท่าเดิม ส่วน v3 ที่ “ประหยัด” กว่า ให้ตอบประโยคเดียว token ขาออกลดราวหนึ่งในสาม แต่แย่ลงสองงาน งานหนึ่งอ้างอิงครบแต่รวมในวงเล็บเดียว [P1, P4] ซึ่งตัวตรวจของเรานับไม่ได้ อีกงานตอบโดยไม่อ่าน paper เลย การเปิด trace อ่านเอง ทำให้แยกได้ว่าอะไรพังจริง อะไรต้องแก้ตัวตรวจ และมีรอบหนึ่งที่ v3 แย่ลงแค่งานเดียว จึงควรเล่นซ้ำมากกว่าหนึ่งรอบก่อนตัดสินใจ",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#framework-หรอเขยนเอง",
+    "href": "ch18/ep09-production-harness/index.html#framework-หรอเขยนเอง",
+    "title": "EP09 Building a Production Harness",
+    "section": "Framework หรือเขียนเอง",
+    "text": "Framework หรือเขียนเอง\nตำราเทียบ framework หลักๆ (Roitman 2026, หมวด 18.9) และให้หลักง่ายๆ ใช้ framework เมื่อกำลังทำต้นแบบ เมื่องานเข้ากับรูปแบบที่ framework ออกแบบไว้ หรือเมื่อต้องเชื่อม tool จำนวนมากให้เร็ว เขียนเอง เมื่อมีข้อกำหนดเรื่องความเร็วหรือต้นทุนที่เข้มงวด เมื่อสิ่งที่ framework ซ่อนไว้รั่วออกมาจนเกิด bug เมื่อต้องคุม context ละเอียดๆ หรือเมื่อ harness คือจุดเด่นของผลิตภัณฑ์เรา\n\n\n\nตารางที่ 9.4: harness ของเราเทียบกับ LangChain\n\n\n\n\n\n\n\n\n\nharness ของเรา (Lab 1)\nLangChain (Lab 4)\n\n\n\n\nToolDefinition\n@tool (schema จาก type hint และ docstring)\n\n\napproval callback\nHumanInTheLoopMiddleware + checkpointer ทำต่อด้วย Command(resume=...)\n\n\nretry + backoff\nToolRetryMiddleware\n\n\nContextManager\nContextEditingMiddleware (ล้างผลของ tool รุ่นเก่า)\n\n\nMAX_ITERATIONS\nModelCallLimitMiddleware\n\n\nLoopDetector\n— เขียนเองด้วย @wrap_tool_call\n\n\n\n\n\n\n\nใน Lab 4 LangChain เรียก model สี่ครั้งเท่ากับ harness ของเรา การนับ token ค่าเริ่มต้นเป็นการประมาณที่คลาดทั้งสองทาง (18 กับ 14 token บนประโยคภาษาอังกฤษ 14 กับ 24 บน JSON สั้นๆ) เราจึงส่ง tokenizer ของ Gemma เข้าไป เมื่อใส่ retry ไว้ก่อน loop_detector การขออ่าน paper P9 ที่ไม่มีอยู่ ถูกบอกว่าวนตั้งแต่ครั้งแรก เพราะการลองใหม่วิ่งผ่านตัวตรวจของเราอีกรอบ สลับลำดับแล้ว มันลองสามครั้ง และ model ตอบว่าไม่มี P9 ไม่มีบรรทัดไหนผิด แค่ลำดับใน list\n\nอีกเรื่องที่เห็นในทั้งสองแบบ: หลังเราไม่อนุมัติ save_report บางรอบ คำตอบสุดท้ายของ model บอกว่าบันทึกรายงานแล้ว ทั้งที่ไม่มีอะไรถูกบันทึก harness จึงควรดูสถานะของระบบจริง ไม่เชื่อคำพูดของ model ว่าทำอะไรไปแล้ว",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#คำศพทในตอนน",
+    "href": "ch18/ep09-production-harness/index.html#คำศพทในตอนน",
+    "title": "EP09 Building a Production Harness",
+    "section": "คำศัพท์ในตอนนี้",
+    "text": "คำศัพท์ในตอนนี้\n\n\n\nตารางที่ 9.5: คำศัพท์ใน EP09\n\n\n\n\n\n\n\n\n\n\nคำ\nคืออะไร\nตัวอย่าง\n\n\n\n\nToolDefinition\nบัตรประจำตัวของ tool: ชื่อ คำอธิบาย schema ฟังก์ชัน และต้องอนุมัติหรือไม่\nsave_report, requires_approval=True\n\n\napproval gate\nต้องมีคนอนุมัติก่อน tool ที่เปลี่ยนของจริงจะถูกรัน\n🔒 save_report รออนุมัติ\n\n\npreflight check\nก่อนเรียก model ทุกครั้ง ตรวจว่าทุกอย่างยังอยู่ใน window\nsystem + tool + ประวัติ ≤ 256,000 − 10%\n\n\nasync / await\nเริ่มงานที่ช้า แล้วทำอย่างอื่นระหว่างรอ\nอ่าน paper สามเรื่องพร้อมกันด้วย asyncio.gather\n\n\nrun_id\nid สั้นๆ ประทับในทุกบรรทัดของ log ของงานเดียวกัน\n[a3f9c2d1] Tool call: read_paper(P2)\n\n\nmock LLM\nตัวแทน model ที่ตอบตามบทที่เราเขียน\nรอบ 1 → ค้น รอบ 2 → ตอบ\n\n\nunit test\nการตรวจอัตโนมัติเล็กๆ ของส่วนเดียว\nทิ้งคำขอเรียก tool → ผลของมันออกไปด้วย\n\n\nregression test\nรันงานเดิมซ้ำหลังแก้ เพื่อดูว่าไม่มีอะไรแย่ลง\nเล่นงานที่บันทึกไว้ห้างานด้วย prompt v2\n\n\ntrace\nบันทึกของงานหนึ่งงาน\nprompt id, tool, paper ที่อ่านและอ้างอิง, token\n\n\nmiddleware\nโค้ดที่ framework เรียกครอบการเรียก model หรือ tool ทุกครั้ง\nToolRetryMiddleware",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#lab",
+    "href": "ch18/ep09-production-harness/index.html#lab",
+    "title": "EP09 Building a Production Harness",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 9.6: Notebook ของ EP09 (ทุก lab มีส่วนติดตั้งของตัวเอง Lab 2 ไม่ต้องใช้ API key)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — สร้าง harness ทั้งไฟล์\nColab\nColab\n\n\nLab 2 — ทดสอบโดยไม่เรียก model\nColab\nColab\n\n\nLab 3 — Prompt คือ code: เวอร์ชันและการเล่นซ้ำ\nColab\nColab\n\n\nLab 4 — harness ตัวเดิมด้วย LangChain\nColab\nColab\n\n\n\n\n\n\nคลัง paper และ tool ในโค้ดเป็นข้อมูลจำลองเพื่อการสอน ส่วน output ของ model ในวิดีโอมาจากการรันจริง ผลที่คุณรันเองจึงอาจต่างไปบ้าง เช่นสิ่งที่ model ทำหลังถูกปฏิเสธ หรือ v3 แย่ลงหนึ่งหรือสองงาน",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#คำถามทบทวน",
+    "href": "ch18/ep09-production-harness/index.html#คำถามทบทวน",
+    "title": "EP09 Building a Production Harness",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nทำไมผลของ tool ต้องออกจากประวัติพร้อมคำขอที่ขอมัน\nขั้นไหนในสี่ขั้นของ ToolExecutor ที่กัน model ไม่ให้บันทึกไฟล์ที่เราไม่ได้อนุมัติ และ model ได้อะไรแทน\nทำไมคำค้นที่เรียบเรียงใหม่จึงหลุด LoopDetector และทำไม save_report ที่ขอซ้ำจึงถูกรันสองครั้งก่อนถูกหยุด\nmock LLM ทดสอบอะไรได้ที่ model จริงทดสอบไม่ได้ และทดสอบอะไรไม่ได้\nใน Lab 3 regression ตัวไหนของ v3 คือพฤติกรรมที่เปลี่ยนจริง และตัวไหนที่ต้องแก้ตัวตรวจ\nทำไมการสลับ middleware สองตัวใน LangChain จึงทำให้ paper ที่ไม่มีอยู่กลายเป็น “การวน”\nหลังถูกปฏิเสธ ทำไม harness ควรดูสถานะของตัวเอง แทนการเชื่อคำตอบสุดท้ายของ model",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#อานเพมเตม",
+    "href": "ch18/ep09-production-harness/index.html#อานเพมเตม",
+    "title": "EP09 Building a Production Harness",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: §18.9–18.10 และบทสรุปของบท (Roitman 2026)\nชิ้นส่วนที่ประกอบเป็น harness นี้: EP07 (context window) และ EP08 (tool, state และ error)\nEvaluation ด้วยงานที่มีเฉลย: EP06 Lab 2",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#เอกสารอางอง",
+    "href": "ch18/ep09-production-harness/index.html#เอกสารอางอง",
+    "title": "EP09 Building a Production Harness",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M2 · Harness: ระบบปฏิบัติการของ agent",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
   }
 ]

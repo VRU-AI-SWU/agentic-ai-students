@@ -1443,5 +1443,181 @@
       "M2 · Harness: the agent's operating system",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>EP08 Tools, State and Error Handling</span>"
     ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html",
+    "href": "ch18/ep09-production-harness/index.html",
+    "title": "EP09 Building a Production Harness",
+    "section": "",
+    "text": "Learning objectives\nBy the end of this episode you will be able to",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#learning-objectives",
+    "href": "ch18/ep09-production-harness/index.html#learning-objectives",
+    "title": "EP09 Building a Production Harness",
+    "section": "",
+    "text": "read Listing 18.1, the textbook’s production harness in one file, and say what each of its five parts does\ngive every part of the context a budget, and trim history without leaving a tool result behind without its request\nrun tools without trusting them: approval, a time limit, retries with backoff, and a cap on the output\ncatch an agent that repeats itself, and explain what a hash-based loop check can and can’t see\ntest a harness without calling a model, with a mock LLM, unit tests and broken inputs\nkeep prompts as versioned files, and replay saved tasks to catch a regression\nbuild the same harness with LangChain middleware, and say when to use a framework and when to build your own",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#parts-on-the-garage-floor",
+    "href": "ch18/ep09-production-harness/index.html#parts-on-the-garage-floor",
+    "title": "EP09 Building a Production Harness",
+    "section": "Parts on the garage floor",
+    "text": "Parts on the garage floor\nOver EP07 and EP08 we collected every part of the harness: the context budget, running tools, retries, catching an agent that loops, and checkpoints. But car parts laid out on the garage floor are not a car you can drive. This episode answers two questions: how do all these parts fit into one program, and once it’s built, how do we know it works before we hand it to anyone else?\nThe textbook answers the first with Listing 18.1, a complete harness in one Python file, and the second with five ways to test an agent (Roitman 2026, sec. 18.10). Our running example is the research assistant from EP07–EP08: it searches a small paper library, reads abstracts, and saves a report, but only after a person approves.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#listing-18.1-one-file-five-parts",
+    "href": "ch18/ep09-production-harness/index.html#listing-18.1-one-file-five-parts",
+    "title": "EP09 Building a Production Harness",
+    "section": "Listing 18.1: one file, five parts",
+    "text": "Listing 18.1: one file, five parts\n\n\n\nTable 9.1: The parts of Listing 18.1\n\n\n\n\n\n\n\n\n\nPart\nIts job\n\n\n\n\nMessage · ToolDefinition\nthe two data types: one message in the conversation, and a tool’s ID card\n\n\nContextManager\na budget for every part of the context, trimming, and a check before each model call\n\n\nToolExecutor\nruns tools without trusting them: approval, a time limit, retries, a cap on the output\n\n\nLoopDetector\na fingerprint per action, to notice the agent repeating itself\n\n\nAgentHarness\nthe ReAct loop that ties them together, with a run_id on every log line\n\n\n\n\n\n\nA ToolDefinition has five fields. Three go to the model: name, description and the JSON schema of its parameters. Two the model never sees: the Python function that does the work (handler), and requires_approval, which says whether a person must say yes first.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#contextmanager-a-budget-on-every-message",
+    "href": "ch18/ep09-production-harness/index.html#contextmanager-a-budget-on-every-message",
+    "title": "EP09 Building a Production Harness",
+    "section": "ContextManager: a budget on every message",
+    "text": "ContextManager: a budget on every message\nThe listing splits the context window into five shares:\n\n\n\nTable 9.2: The context budget in Listing 18.1\n\n\n\n\n\nPart\nShare\n\n\n\n\nsystem prompt\n10%\n\n\nmemory\n20%\n\n\ntool definitions\n10%\n\n\nconversation history\n50%\n\n\nreserved for the answer\n10%\n\n\n\n\n\n\nEvery time a message is added, the history is checked against its share. Over budget, the oldest message goes first, but the first message (the user’s question) always stays. And one detail matters a lot: if a dropped message asked for tools, every tool result that follows it must go too. A tool result left behind without its request makes the whole request invalid for the API. Before each model call, a preflight check adds up the system prompt, the tool definitions and the history and compares them with the window minus the reserved share.\n\nIn Lab 1 we counted tokens with Gemma’s own tokenizer instead of the listing’s tiktoken for GPT-4o, as the textbook’s summary says: count with the tokenizer of the model you actually use. In Lab 2 a unit test trimmed a small history and confirmed that what was left was the question, the later request and its result: the first request left together with both of its results.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#toolexecutor-run-tools-without-trusting-them",
+    "href": "ch18/ep09-production-harness/index.html#toolexecutor-run-tools-without-trusting-them",
+    "title": "EP09 Building a Production Harness",
+    "section": "ToolExecutor: run tools without trusting them",
+    "text": "ToolExecutor: run tools without trusting them\nEvery tool request passes through four steps:\n\nUnknown tool → an error message back to the model, not a crash.\nApproval: if the tool requires_approval, ask a person first; if they say no, the model gets “Action rejected by human reviewer.” and finds another way.\nRun with a time limit (30 s); on a timeout or an error, wait and try again, 1 s then 2 s, at most three attempts. The textbook puts retries at the tool level, because tools fail more often and usually recover on a second try.\nCap the output at 2,000 tokens, with a note saying it was cut.\n\nEvery way out is a text message back to the model; none of them crashes the program.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#loopdetector-a-fingerprint-per-action",
+    "href": "ch18/ep09-production-harness/index.html#loopdetector-a-fingerprint-per-action",
+    "title": "EP09 Building a Production Harness",
+    "section": "LoopDetector: a fingerprint per action",
+    "text": "LoopDetector: a fingerprint per action\nFor every tool call, the detector takes an MD5 fingerprint of the tool’s name and its arguments (with sorted keys) and keeps the last five. The same fingerprint twice in that window → the run stops with a polite message.\n\nIn Lab 2 testing with broken inputs found three things in the book’s code. A reworded search (“time series transformer” vs “transformers for time series”) is not a loop, because one different character gives a different fingerprint, though the textbook says the check catches near-repeats too. The loop check runs after the tools, so a repeated save_report had already run twice before the detector stopped it. And half-finished JSON arguments crashed run(), because the loop check parses the arguments again without a try; we fixed it as SaferHarness.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#agentharness.run-the-whole-react-loop",
+    "href": "ch18/ep09-production-harness/index.html#agentharness.run-the-whole-react-loop",
+    "title": "EP09 Building a Production Harness",
+    "section": "AgentHarness.run: the whole ReAct loop",
+    "text": "AgentHarness.run: the whole ReAct loop\n\n\n\n\n\n\nflowchart TD\n  A[preflight check] --&gt; B[call the model]\n  B --&gt;|asks for tools| C[run tools at once&lt;br/&gt;asyncio.gather]\n  C --&gt; D[loop check · add results]\n  D --&gt; A\n  B --&gt;|answers| E[done]\n\n\n\n\n\n\nEach run gets a short run_id stamped on every log line, so one run can be followed through mixed logs. The tools a model asks for in one turn run at the same time with asyncio.gather. And there are three special exits, each a polite message: the context is full, the agent is stuck in a loop, or it reached 50 iterations.\n\nIn Lab 1 the research assistant searched, then asked for three read_paper calls in one turn: “3 tool(s) done in 1.5s”, not 4.5 s. It asked for approval before save_report, and finished in 4 rounds for about $0.0003. When we said no, in some runs the model asked again with the same arguments and the LoopDetector stopped it; in others it gave its summary in the chat instead.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#five-ways-to-test-an-agent",
+    "href": "ch18/ep09-production-harness/index.html#five-ways-to-test-an-agent",
+    "title": "EP09 Building a Production Harness",
+    "section": "Five ways to test an agent",
+    "text": "Five ways to test an agent\nThe textbook says testing agents is fundamentally different from testing ordinary software: the model doesn’t answer the same way every time. It suggests five strategies:\n\n\n\nTable 9.3: Five ways to test an agent harness\n\n\n\n\n\n\n\n\n\n\nStrategy\nWhat it is\nIn this EP\n\n\n\n\n① unit tests\neach part checked on its own\nLab 2\n\n\n② mock LLM\nthe whole harness against a stand-in that replies from a script\nLab 2\n\n\n③ evaluation\ntasks with known answers → a success rate\nEP06 Lab 2\n\n\n④ adversarial\nbroken inputs on purpose: bad JSON, a tool that hangs, a tool that fails\nLab 2\n\n\n⑤ regression\nreplay past runs after a change and check nothing got worse\nLab 3\n\n\n\n\n\n\n\nIn Lab 2 the whole harness passed four checks against a mock LLM in under half a second, with no API key and no cost. A tool that always fails was tried three times (3 s), and one that hangs timed out three times (4.5 s), before the model got an error message; the program never crashed.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#prompts-are-code",
+    "href": "ch18/ep09-production-harness/index.html#prompts-are-code",
+    "title": "EP09 Building a Production Harness",
+    "section": "Prompts are code",
+    "text": "Prompts are code\nOne short line in the chapter summary: prompts should be version-controlled, tested, and assembled from components. One changed sentence in a system prompt can change the agent’s whole behaviour.\n\nIn Lab 3 the system prompt was built from part files (role · rules · cite · format), with an id made of the version and a hash of its text. Five real tasks were recorded with v1, which read the right papers but never cited one. Replayed with v2, which adds “Always cite paper ids like [P2].”, all five improved and nothing got worse, at about the same cost. A “cheaper” v3 that answers in one sentence cut output tokens by about a third, but two tasks regressed: one cited both papers in a single bracket, [P1, P4], which our checker didn’t count, and one answered without reading a paper at all. Reading the traces told a real regression from a checker that needed fixing, and in one of our runs v3 regressed only one task, so replay more than once before you decide.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#framework-or-build-your-own",
+    "href": "ch18/ep09-production-harness/index.html#framework-or-build-your-own",
+    "title": "EP09 Building a Production Harness",
+    "section": "Framework or build your own",
+    "text": "Framework or build your own\nThe textbook compares the main frameworks (Roitman 2026, sec. 18.9) and gives a rule of thumb. Use a framework when you’re prototyping, when your use case fits its abstractions, or when you need to integrate many tools quickly. Build your own when you have strict latency or cost requirements, when the framework’s abstractions leak in ways that cause bugs, when you need fine-grained control over the context, or when the harness is what sets your product apart.\n\n\n\nTable 9.4: Our harness next to LangChain\n\n\n\n\n\n\n\n\n\nOur harness (Lab 1)\nLangChain (Lab 4)\n\n\n\n\nToolDefinition\n@tool (schema from type hints and the docstring)\n\n\napproval callback\nHumanInTheLoopMiddleware + a checkpointer, resumed with Command(resume=...)\n\n\nretry + backoff\nToolRetryMiddleware\n\n\nContextManager\nContextEditingMiddleware (clears old tool results)\n\n\nMAX_ITERATIONS\nModelCallLimitMiddleware\n\n\nLoopDetector\n— written ourselves with @wrap_tool_call\n\n\n\n\n\n\n\nIn Lab 4 LangChain made the same four model calls as our harness. Its default token count is an estimate that was off both ways (18 vs 14 tokens on an English sentence, 14 vs 24 on a short JSON), so we passed in Gemma’s tokenizer. With retry listed before loop_detector, reading the missing paper P9 was called a loop on the very first try, because the retry passed through our detector a second time; in the other order it tried three times and the model said P9 doesn’t exist. No line was wrong, only the order in the list.\n\nOne more thing both harnesses showed: after we rejected save_report, in some runs the model’s final answer said the report had been saved, though nothing was. So a harness should check the system’s real state, not take the model’s word for what it did.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#terms-in-this-episode",
+    "href": "ch18/ep09-production-harness/index.html#terms-in-this-episode",
+    "title": "EP09 Building a Production Harness",
+    "section": "Terms in this episode",
+    "text": "Terms in this episode\n\n\n\nTable 9.5: Terms used in EP09\n\n\n\n\n\n\n\n\n\n\nTerm\nWhat it is\nExample\n\n\n\n\nToolDefinition\na tool’s ID card: name, description, schema, the function, and whether it needs approval\nsave_report, requires_approval=True\n\n\napproval gate\na person must say yes before a tool that changes something runs\n🔒 save_report waits for approval\n\n\npreflight check\nbefore each model call, check everything fits in the window\nsystem + tools + history ≤ 256,000 − 10%\n\n\nasync / await\nstart a slow task and do other work while it waits\nread 3 papers at once with asyncio.gather\n\n\nrun_id\na short id stamped on every log line of one run\n[a3f9c2d1] Tool call: read_paper(P2)\n\n\nmock LLM\na stand-in for the model that returns replies we wrote\nturn 1 → search, turn 2 → answer\n\n\nunit test\na small automatic check of one part on its own\ndrop a tool call → its results go too\n\n\nregression test\nre-run past tasks after a change to see nothing got worse\nreplay 5 saved tasks with prompt v2\n\n\ntrace\nthe record of one run\nprompt id, tools, papers read and cited, tokens\n\n\nmiddleware\ncode a framework runs around every model or tool call\nToolRetryMiddleware",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#lab",
+    "href": "ch18/ep09-production-harness/index.html#lab",
+    "title": "EP09 Building a Production Harness",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nTable 9.6: EP09 notebooks (every lab has its own setup; Lab 2 needs no API key)\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — Build the whole harness\nColab\nColab\n\n\nLab 2 — Test without a model\nColab\nColab\n\n\nLab 3 — Prompts are code: versions and replay\nColab\nColab\n\n\nLab 4 — The same harness with LangChain\nColab\nColab\n\n\n\n\n\n\nThe paper library and the tools in the code are simulated for teaching; every model output in the videos is from a real run. Your own run may differ a little, for example in what the model does after a rejection, or whether v3 regresses one task or two.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#review-questions",
+    "href": "ch18/ep09-production-harness/index.html#review-questions",
+    "title": "EP09 Building a Production Harness",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhy must a tool result leave the history together with the request that asked for it?\nWhich of the ToolExecutor’s four steps would stop a model from saving a file you didn’t approve, and what does the model get instead?\nWhy did a reworded search slip past the LoopDetector, and why did a repeated save_report run twice before it was stopped?\nWhat can a mock LLM test that a real model can’t, and what can’t it test?\nIn Lab 3, which v3 regression was a real change in behaviour, and which one needed a better checker?\nWhy did swapping two middleware in LangChain turn a missing paper into a “loop”?\nAfter a rejection, why should a harness check its own state rather than the model’s final answer?",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#further-reading",
+    "href": "ch18/ep09-production-harness/index.html#further-reading",
+    "title": "EP09 Building a Production Harness",
+    "section": "Further reading",
+    "text": "Further reading\n\nTextbook: §18.9–18.10 and the chapter summary (Roitman 2026).\nThe parts this harness is made of: EP07 (the context window) and EP08 (tools, state and errors).\nEvaluation with known answers: EP06, Lab 2.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
+  },
+  {
+    "objectID": "ch18/ep09-production-harness/index.html#references",
+    "href": "ch18/ep09-production-harness/index.html#references",
+    "title": "EP09 Building a Production Harness",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M2 · Harness: the agent's operating system",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
+    ]
   }
 ]
