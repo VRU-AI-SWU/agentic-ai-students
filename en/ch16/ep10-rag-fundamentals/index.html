@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EP10 RAG Fundamentals – Agentic AI: From Foundations to Systems</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch18/ep09-production-harness/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-163ef9275c2a66b11cebe983e0e85afc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · Knowledge: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html"><span class="chapter-title">EP10 RAG Fundamentals</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: From Foundations to Systems</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · Before you start: the LLM basics agent builders need</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 How LLMs Work — for Agent Builders</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompts, Structured Output and Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · What an agent is, and how to design one</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 From Chatbot to Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: the agent’s operating system</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · Knowledge: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#can-the-model-answer-from-our-book" id="toc-can-the-model-answer-from-our-book" class="nav-link" data-scroll-target="#can-the-model-answer-from-our-book">Can the model answer from our book?</a></li>
+  <li><a href="#three-limits-two-kinds-of-knowledge" id="toc-three-limits-two-kinds-of-knowledge" class="nav-link" data-scroll-target="#three-limits-two-kinds-of-knowledge">Three limits, two kinds of knowledge</a></li>
+  <li><a href="#rag-fine-tuning-or-long-context" id="toc-rag-fine-tuning-or-long-context" class="nav-link" data-scroll-target="#rag-fine-tuning-or-long-context">RAG, fine-tuning or long context</a></li>
+  <li><a href="#two-pipelines-index-once-answer-any-question" id="toc-two-pipelines-index-once-answer-any-question" class="nav-link" data-scroll-target="#two-pipelines-index-once-answer-any-question">Two pipelines: index once, answer any question</a></li>
+  <li><a href="#embeddings-and-cosine-similarity" id="toc-embeddings-and-cosine-similarity" class="nav-link" data-scroll-target="#embeddings-and-cosine-similarity">Embeddings and cosine similarity</a></li>
+  <li><a href="#generation-answer-only-from-the-documents" id="toc-generation-answer-only-from-the-documents" class="nav-link" data-scroll-target="#generation-answer-only-from-the-documents">Generation: answer only from the documents</a></li>
+  <li><a href="#sparse-dense-and-hybrid-retrieval" id="toc-sparse-dense-and-hybrid-retrieval" class="nav-link" data-scroll-target="#sparse-dense-and-hybrid-retrieval">Sparse, dense and hybrid retrieval</a></li>
+  <li><a href="#chunking" id="toc-chunking" class="nav-link" data-scroll-target="#chunking">Chunking</a></li>
+  <li><a href="#the-same-rag-with-langchain" id="toc-the-same-rag-with-langchain" class="nav-link" data-scroll-target="#the-same-rag-with-langchain">The same RAG with LangChain</a></li>
+  <li><a href="#terms-in-this-episode" id="toc-terms-in-this-episode" class="nav-link" data-scroll-target="#terms-in-this-episode">Terms in this episode</a></li>
+  <li><a href="#lab" id="toc-lab" class="nav-link" data-scroll-target="#lab">Lab</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions">Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · Knowledge: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html"><span class="chapter-title">EP10 RAG Fundamentals</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">EP10 RAG Fundamentals</span></h1>
+<p class="subtitle lead">§16.1–16.4 · parametric vs non-parametric knowledge · indexing and retrieval · embeddings · BM25 · dense · hybrid with RRF · chunking</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🎬 Videos and notebooks
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Videos:</strong> theory (≈10 min) → Labs 1–4 (7–11 min) → recap (≈5 min) in the playlist <a href="https://www.youtube.com/playlist?list=PLIpXhIptkaSg">Cogito Learn · Agentic AI (EN/TH audio &amp; subs)</a>. Every video has English audio and English and Thai subtitles (⚙️ → Subtitles); the Thai audio track is coming soon.</li>
+<li><strong>Notebooks:</strong> each lab has a ✏️ starter (fill in only the TODOs) and a ✅ solution; see the <a href="#lab">Lab</a> table at the end of the page.</li>
+<li><strong>Models in the labs:</strong> Gemma 4 26B (open weights) answers, pinned to the Makora provider, and Qwen3 Embedding 8B embeds, pinned to Nebius, both through OpenRouter with one key. It isn’t free, so add credit first, but each lab costs under one cent.</li>
+<li><strong>Our library:</strong> the textbook itself (CC BY-SA 4.0), pages 292–374. It came out in 2026, after the model was trained, so the model can’t know it from memory.</li>
+</ul>
+</div>
+</div>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this episode you will be able to</p>
+<ol type="1">
+<li>explain the three limits of what a model knows, and what RAG adds: a library card for a scholar who graduated years ago</li>
+<li>choose between RAG, fine-tuning and long context for a given task</li>
+<li>describe the two RAG pipelines: indexing once, and retrieve-then-generate for every question</li>
+<li>use embeddings and cosine similarity to find the top-k chunks for a question</li>
+<li>write a prompt that makes the model answer only from the documents, cite them, and say when they don’t contain the answer</li>
+<li>compare sparse (BM25) and dense retrieval, and merge them with Reciprocal Rank Fusion</li>
+<li>choose a chunking strategy (fixed size with overlap, structure-aware, parent-child) and measure it, instead of guessing</li>
+</ol>
+</section>
+<section id="can-the-model-answer-from-our-book" class="level2">
+<h2 class="anchored" data-anchor-id="can-the-model-answer-from-our-book">Can the model answer from our book?</h2>
+<p>In EP09 Lab 3 we asked about a paper in our library, and the model never opened it: it answered from the title and what it already knew. The answer sounded fine, but we had no idea where it came from. This episode starts module M3 · RAG with one question: how do we make the model really answer from our own documents, and tell us which page each answer came from?</p>
+</section>
+<section id="three-limits-two-kinds-of-knowledge" class="level2">
+<h2 class="anchored" data-anchor-id="three-limits-two-kinds-of-knowledge">Three limits, two kinds of knowledge</h2>
+<p>A model stores its knowledge in its weights, compressed during training. The textbook names three limits that come with this <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 16.1</a>)</span>:</p>
+<ol type="1">
+<li><strong>Hallucination</strong> (EP02): asked beyond what it reliably knows, it still answers confidently.</li>
+<li><strong>Staleness:</strong> the training data has a cutoff date. Our textbook came out in 2026, after our model was trained.</li>
+<li><strong>Domain specificity:</strong> a general model has never seen your company’s documents, your university’s regulations or your code.</li>
+</ol>
+<p>Knowledge in the weights is <strong>parametric</strong>; knowledge in documents outside the model is <strong>non-parametric</strong>. The textbook’s picture: a plain model is a scholar who memorized an enormous library but graduated years ago. <strong>RAG</strong> (retrieval-augmented generation) gives that scholar a library card: look things up, cite the source, and admit when a reference needs checking instead of guessing from memory.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 1</strong>, asked without RAG which analogy the book uses to explain RAG, Gemma answered confidently: “an open-book exam”. The phrase is on no page of the book. With RAG it answered “the library card”, citing Doc 2, page 295.</p>
+</blockquote>
+</section>
+<section id="rag-fine-tuning-or-long-context" class="level2">
+<h2 class="anchored" data-anchor-id="rag-fine-tuning-or-long-context">RAG, fine-tuning or long context</h2>
+<div id="tbl-when" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-when-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.1: When to use RAG, fine-tuning or long context (after Table 16.1)
+</figcaption>
+<div aria-describedby="tbl-when-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>Fits when</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RAG</td>
+<td>knowledge changes often, you need citations, or the corpus is large</td>
+<td>university regulations that change every semester</td>
+</tr>
+<tr class="even">
+<td>Fine-tuning</td>
+<td>you want to change the style or format of the answers</td>
+<td>always reply in the faculty’s report format</td>
+</tr>
+<tr class="odd">
+<td>Long context</td>
+<td>the corpus is small enough to fit in the context window</td>
+<td>one short policy document</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>RAG is not a replacement for fine-tuning: fine-tuning teaches the model <em>how</em> to reason and respond; RAG provides <em>what</em> to reason about. Like training a chef, and delivering fresh ingredients every morning.</p>
+</section>
+<section id="two-pipelines-index-once-answer-any-question" class="level2">
+<h2 class="anchored" data-anchor-id="two-pipelines-index-once-answer-any-question">Two pipelines: index once, answer any question</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+
+<pre class="mermaid mermaid-js">flowchart TD
+  A["① once: load documents&lt;br/&gt;+ metadata"] --&gt; B[split into chunks] --&gt; C[embed each chunk&lt;br/&gt;store with its text]
+  D["② every question:&lt;br/&gt;embed it"] --&gt; E[top-k closest chunks] --&gt; F[prompt + chunks&lt;br/&gt;→ answer with citations]
+  C -.-&gt; E
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>Keep the <strong>metadata</strong> (which file, which page): it is what lets the answer cite its source later. Like a library, the catalogue cards are made once, when a book arrives, and then used for everyone who comes to ask.</p>
+</section>
+<section id="embeddings-and-cosine-similarity" class="level2">
+<h2 class="anchored" data-anchor-id="embeddings-and-cosine-similarity">Embeddings and cosine similarity</h2>
+<p>An <strong>embedding model</strong> turns a text into a list of numbers that stands for its meaning; ours returns 4,096. Texts with similar meanings get vectors that point the same way. <strong>Cosine similarity</strong> measures how much two vectors point in the same direction, and <strong>top-k</strong> keeps the k chunks with the highest score for a question.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 1</strong> car·automobile scored ≈ 0.95, but car·banana still scored ≈ 0.58, not zero. Unrelated texts often score fairly high, so what we really use is the <strong>order</strong>, not a single number.</p>
+</blockquote>
+</section>
+<section id="generation-answer-only-from-the-documents" class="level2">
+<h2 class="anchored" data-anchor-id="generation-answer-only-from-the-documents">Generation: answer only from the documents</h2>
+<p>Listing 16.1 gives a prompt with three rules: answer using only the provided context; if the context isn’t enough, say so explicitly; cite sources as [Doc n]. Each chunk in the prompt is labelled with its Doc number, its file and its page. “The documents don’t say” is not a failure: it is exactly what we want.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 1</strong>, asked for the capital of Australia, the model said the context doesn’t contain it, even though it knows the answer. Our library doesn’t mention Australia, so it didn’t answer from memory.</p>
+</blockquote>
+</section>
+<section id="sparse-dense-and-hybrid-retrieval" class="level2">
+<h2 class="anchored" data-anchor-id="sparse-dense-and-hybrid-retrieval">Sparse, dense and hybrid retrieval</h2>
+<p><strong>Sparse</strong> retrieval scores a chunk by the query’s words it contains, like the index at the back of a book. The most widely used is <strong>BM25</strong>: rare words weigh more, repeating a word helps but levels off, and very long chunks lose a little. It wins on error codes, proper nouns and rare or new terms, needs no GPU, and is easy to explain, but “car” won’t find “automobile”.</p>
+<p><strong>Dense</strong> retrieval uses embeddings (the textbook’s example is DPR, with one encoder for questions and one for passages). It finds meaning: ask how to split a long document, and it finds the chunk about chunking. At millions of chunks the search is approximate (for example with FAISS). Table 16.2 compares more methods; the cross-encoder is the most accurate but slow, so it re-ranks chunks already retrieved (EP11).</p>
+<p><strong>Hybrid</strong> uses both and merges the results. The two scores are on different scales, so the textbook uses <strong>Reciprocal Rank Fusion</strong>, which looks only at ranks:</p>
+<p><span class="math display">\[\text{RRF}(d) = \sum_{\text{lists}} \frac{1}{60 + \text{rank}(d)}\]</span></p>
+<p>Rank 3 in BM25 and rank 7 in dense gives 1/63 + 1/67 ≈ 0.0308; first in both gives ≈ 0.0328. The 60 keeps the top ranks from dominating.</p>
+<blockquote class="blockquote">
+<p><strong>In Lab 2</strong> we wrote BM25 and RRF ourselves, and RRF matched the book’s 0.0308 and 0.0328. “What is PLAID?”: BM25 found it at rank 1, dense around rank 99. Asked about parent-child chunking in other words, dense found pages 302–303 and BM25 missed them. On 10 questions, hit@3 was BM25 4, dense 4, hybrid <strong>8</strong>. Better overall, but not on every question: two got worse.</p>
+</blockquote>
+</section>
+<section id="chunking" class="level2">
+<h2 class="anchored" data-anchor-id="chunking">Chunking</h2>
+<p>The textbook calls chunking one of the highest-impact decisions in a RAG system <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026, sec. 16.4</a>)</span>. A good chunk is small enough for the embedding model, about one topic, and makes sense on its own.</p>
+<ul>
+<li><strong>Fixed size with overlap:</strong> cut every W tokens, neighbours sharing O tokens, so a sentence cut at a boundary is whole in one of them. A 1,000-token document with W = 512 and O = 64 gives ⌈(1000 − 64) / (512 − 64)⌉ = 3 chunks (Equation 16.19).</li>
+<li><strong>Semantic:</strong> cut where neighbouring sentences stop being similar.</li>
+<li><strong>Structure-aware:</strong> split at headers, functions or classes, and never split a table mid-row.</li>
+<li><strong>Parent-child:</strong> search with small chunks (precise), but send the model the bigger chunk around the match (enough context).</li>
+</ul>
+<div id="tbl-chunking" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-chunking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.2: Lab 3 results: only the chunking changes
+</figcaption>
+<div aria-describedby="tbl-chunking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Chunking (dense, 20 questions)</th>
+<th>Chunks</th>
+<th>hit@3</th>
+<th>Context per question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fixed 512 / overlap 64 (Lab 1)</td>
+<td>141</td>
+<td>12</td>
+<td>≈ 1,050 tokens</td>
+</tr>
+<tr class="even">
+<td>Fixed 128 / overlap 16</td>
+<td>431</td>
+<td>14</td>
+<td>≈ 340 tokens, but chunks start mid-sentence</td>
+</tr>
+<tr class="odd">
+<td>Split at the book’s headings</td>
+<td>184</td>
+<td>16</td>
+<td>≈ 440 tokens</td>
+</tr>
+<tr class="even">
+<td>Parent-child (128-token children → section)</td>
+<td>461 children</td>
+<td><strong>17</strong></td>
+<td>≈ 740 tokens</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>In Lab 3</strong> Equation 16.19 matched our Lab 1 loop on every page. In the exercise, no overlap at all scored higher than overlap on these questions: no rule replaces measuring.</p>
+</blockquote>
+</section>
+<section id="the-same-rag-with-langchain" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-rag-with-langchain">The same RAG with LangChain</h2>
+<div id="tbl-langchain" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-langchain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.3: Our code next to LangChain
+</figcaption>
+<div aria-describedby="tbl-langchain-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ours (Labs 1–3)</th>
+<th>LangChain 1.x (Lab 4)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>page dict</td>
+<td><code>Document</code> (with <code>metadata</code>)</td>
+</tr>
+<tr class="even">
+<td><code>chunk_page</code></td>
+<td><code>RecursiveCharacterTextSplitter</code></td>
+</tr>
+<tr class="odd">
+<td><code>embed</code> + cosine search</td>
+<td><code>OpenAIEmbeddings</code> + <code>InMemoryVectorStore</code></td>
+</tr>
+<tr class="even">
+<td><code>bm25_rank</code></td>
+<td>our own <code>BaseRetriever</code> (langchain-community is being sunset)</td>
+</tr>
+<tr class="odd">
+<td><code>rrf</code></td>
+<td><code>EnsembleRetriever</code></td>
+</tr>
+<tr class="even">
+<td>parent lookup</td>
+<td><code>ParentDocumentRetriever</code></td>
+</tr>
+<tr class="odd">
+<td><code>rag()</code></td>
+<td><code>prompt | llm | StrOutputParser()</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><strong>In Lab 4</strong> three defaults raised no error. Listing 16.2 as written counts characters, not tokens: 408 chunks of ≈ 115 tokens instead of 141. <code>OpenAIEmbeddings</code> sends token ids, which OpenRouter rejects with a 400 unless <code>check_embedding_ctx_length=False</code>. And <code>EnsembleRetriever</code> only merges what each retriever returns: 3 per list gave 13/20, 60 per list gave <strong>17/20</strong>. We caught all three because we knew what was inside and measured every time.</p>
+</blockquote>
+<p><strong>One question missed every method:</strong> the analogy question asked longer, with the author’s name and the book’s title. The library-card chunk was at rank 8 with dense, 5 with hybrid, and 17 with parent-child. The words in the question pull it towards other pages; the fix, transforming the question before searching, is in EP11.</p>
+</section>
+<section id="terms-in-this-episode" class="level2">
+<h2 class="anchored" data-anchor-id="terms-in-this-episode">Terms in this episode</h2>
+<div id="tbl-terms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.4: Terms used in EP10
+</figcaption>
+<div aria-describedby="tbl-terms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>What it is</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RAG</td>
+<td>find relevant documents first, then let the model answer from them</td>
+<td>the library card, Doc 2 · p.&nbsp;295</td>
+</tr>
+<tr class="even">
+<td>parametric / non-parametric</td>
+<td>knowledge in the weights / in documents outside the model</td>
+<td>what Gemma memorized / our textbook</td>
+</tr>
+<tr class="odd">
+<td>chunk</td>
+<td>a small piece of a document, the unit we search</td>
+<td>512 tokens of one page</td>
+</tr>
+<tr class="even">
+<td>metadata</td>
+<td>facts about a chunk kept for filtering and citing</td>
+<td><code>{"page": 295}</code></td>
+</tr>
+<tr class="odd">
+<td>embedding</td>
+<td>a list of numbers that stands for a text’s meaning</td>
+<td>4,096 numbers per chunk</td>
+</tr>
+<tr class="even">
+<td>cosine similarity</td>
+<td>how much two vectors point the same way</td>
+<td>car·automobile ≈ 0.95</td>
+</tr>
+<tr class="odd">
+<td>top-k</td>
+<td>keep the k best-scoring chunks</td>
+<td>top-3</td>
+</tr>
+<tr class="even">
+<td>BM25</td>
+<td>a sparse score from word matches, rare words weighing more</td>
+<td>PLAID found at rank 1</td>
+</tr>
+<tr class="odd">
+<td>RRF</td>
+<td>merge rankings by summing 1 / (60 + rank)</td>
+<td>≈ 0.0308 for ranks 3 and 7</td>
+</tr>
+<tr class="even">
+<td>hit@3</td>
+<td>share of questions whose right page is in the top 3</td>
+<td>hybrid 8/10</td>
+</tr>
+<tr class="odd">
+<td>parent-child</td>
+<td>search small chunks, send the bigger one around them</td>
+<td>128-token child → its section</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="lab" class="level2">
+<h2 class="anchored" data-anchor-id="lab">Lab</h2>
+<div id="tbl-labs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10.5: EP10 notebooks (every lab has its own setup)
+</figcaption>
+<div aria-describedby="tbl-labs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Lab</th>
+<th>✏️ Starter</th>
+<th>✅ Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Lab 1 — RAG from scratch</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab1-rag-from-scratch.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab1-rag-from-scratch.en.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 2 — Sparse vs dense vs hybrid</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab2-sparse-dense-hybrid.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab2-sparse-dense-hybrid.en.ipynb">Colab</a></td>
+</tr>
+<tr class="odd">
+<td>Lab 3 — Chunking strategies</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab3-chunking.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab3-chunking.en.ipynb">Colab</a></td>
+</tr>
+<tr class="even">
+<td>Lab 4 — RAG with LangChain</td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab4-langchain-rag.en.student.ipynb">Colab</a></td>
+<td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep10-rag-fundamentals/ep10-lab4-langchain-rag.en.ipynb">Colab</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Every model output in the videos is from a real run. Your own run may differ a little: embeddings from an API are not bit-for-bit identical every time, so a question right on the line (Lab 4’s parent-child, 14 or 15 of 20) can flip.</p>
+</section>
+<section id="review-questions" class="level2">
+<h2 class="anchored" data-anchor-id="review-questions">Review questions</h2>
+<ol type="1">
+<li>Which of the three limits does a book published after the model was trained show, and how does RAG get around it?</li>
+<li>A team wants answers that always follow the faculty’s report format. RAG, fine-tuning or long context, and why?</li>
+<li>Why does car·banana scoring 0.58 not break top-k?</li>
+<li>Why is “the documents don’t contain this” a good answer from a RAG system?</li>
+<li>Give a question BM25 answers better than dense retrieval, and one where dense wins.</li>
+<li>Why does RRF use ranks instead of adding the two scores?</li>
+<li>Parent-child got the best hit@3 in Lab 3. What does it trade for that?</li>
+<li>In Lab 4, what did changing 3 per list to 60 per list change, and why didn’t LangChain warn us?</li>
+</ol>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<ul>
+<li><strong>Textbook:</strong> §16.1–16.4 <span class="citation" data-cites="roitman2026hitchhiker">(<a href="../../index.html#ref-roitman2026hitchhiker" role="doc-biblioref">Roitman 2026</a>)</span>; RAG-Fusion with RRF is Listing 16.8.</li>
+<li><strong>Hallucination:</strong> <a href="../../ch01/ep02-prompt-structured-output/index.html">EP02</a>.</li>
+<li><strong>Where the missed question came from:</strong> <a href="../../ch18/ep09-production-harness/index.html">EP09</a>, Lab 3.</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-roitman2026hitchhiker" class="csl-entry" role="listitem">
+Roitman, Haggai. 2026. <em>The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</em>. <a href="https://doi.org/10.48550/arXiv.2606.24937">https://doi.org/10.48550/arXiv.2606.24937</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch18/ep09-production-harness/index.html" class="pagination-link" aria-label="EP09 Building a Production Harness">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">EP09 Building a Production Harness</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

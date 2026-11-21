@@ -1619,5 +1619,181 @@
       "M2 · Harness: the agent's operating system",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
     ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html",
+    "href": "ch16/ep10-rag-fundamentals/index.html",
+    "title": "EP10 RAG Fundamentals",
+    "section": "",
+    "text": "Learning objectives\nBy the end of this episode you will be able to",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#learning-objectives",
+    "href": "ch16/ep10-rag-fundamentals/index.html#learning-objectives",
+    "title": "EP10 RAG Fundamentals",
+    "section": "",
+    "text": "explain the three limits of what a model knows, and what RAG adds: a library card for a scholar who graduated years ago\nchoose between RAG, fine-tuning and long context for a given task\ndescribe the two RAG pipelines: indexing once, and retrieve-then-generate for every question\nuse embeddings and cosine similarity to find the top-k chunks for a question\nwrite a prompt that makes the model answer only from the documents, cite them, and say when they don’t contain the answer\ncompare sparse (BM25) and dense retrieval, and merge them with Reciprocal Rank Fusion\nchoose a chunking strategy (fixed size with overlap, structure-aware, parent-child) and measure it, instead of guessing",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#can-the-model-answer-from-our-book",
+    "href": "ch16/ep10-rag-fundamentals/index.html#can-the-model-answer-from-our-book",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Can the model answer from our book?",
+    "text": "Can the model answer from our book?\nIn EP09 Lab 3 we asked about a paper in our library, and the model never opened it: it answered from the title and what it already knew. The answer sounded fine, but we had no idea where it came from. This episode starts module M3 · RAG with one question: how do we make the model really answer from our own documents, and tell us which page each answer came from?",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#three-limits-two-kinds-of-knowledge",
+    "href": "ch16/ep10-rag-fundamentals/index.html#three-limits-two-kinds-of-knowledge",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Three limits, two kinds of knowledge",
+    "text": "Three limits, two kinds of knowledge\nA model stores its knowledge in its weights, compressed during training. The textbook names three limits that come with this (Roitman 2026, sec. 16.1):\n\nHallucination (EP02): asked beyond what it reliably knows, it still answers confidently.\nStaleness: the training data has a cutoff date. Our textbook came out in 2026, after our model was trained.\nDomain specificity: a general model has never seen your company’s documents, your university’s regulations or your code.\n\nKnowledge in the weights is parametric; knowledge in documents outside the model is non-parametric. The textbook’s picture: a plain model is a scholar who memorized an enormous library but graduated years ago. RAG (retrieval-augmented generation) gives that scholar a library card: look things up, cite the source, and admit when a reference needs checking instead of guessing from memory.\n\nIn Lab 1, asked without RAG which analogy the book uses to explain RAG, Gemma answered confidently: “an open-book exam”. The phrase is on no page of the book. With RAG it answered “the library card”, citing Doc 2, page 295.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#rag-fine-tuning-or-long-context",
+    "href": "ch16/ep10-rag-fundamentals/index.html#rag-fine-tuning-or-long-context",
+    "title": "EP10 RAG Fundamentals",
+    "section": "RAG, fine-tuning or long context",
+    "text": "RAG, fine-tuning or long context\n\n\n\nTable 10.1: When to use RAG, fine-tuning or long context (after Table 16.1)\n\n\n\n\n\n\n\n\n\n\nApproach\nFits when\nExample\n\n\n\n\nRAG\nknowledge changes often, you need citations, or the corpus is large\nuniversity regulations that change every semester\n\n\nFine-tuning\nyou want to change the style or format of the answers\nalways reply in the faculty’s report format\n\n\nLong context\nthe corpus is small enough to fit in the context window\none short policy document\n\n\n\n\n\n\nRAG is not a replacement for fine-tuning: fine-tuning teaches the model how to reason and respond; RAG provides what to reason about. Like training a chef, and delivering fresh ingredients every morning.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#two-pipelines-index-once-answer-any-question",
+    "href": "ch16/ep10-rag-fundamentals/index.html#two-pipelines-index-once-answer-any-question",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Two pipelines: index once, answer any question",
+    "text": "Two pipelines: index once, answer any question\n\n\n\n\n\n\nflowchart TD\n  A[\"① once: load documents&lt;br/&gt;+ metadata\"] --&gt; B[split into chunks] --&gt; C[embed each chunk&lt;br/&gt;store with its text]\n  D[\"② every question:&lt;br/&gt;embed it\"] --&gt; E[top-k closest chunks] --&gt; F[prompt + chunks&lt;br/&gt;→ answer with citations]\n  C -.-&gt; E\n\n\n\n\n\n\nKeep the metadata (which file, which page): it is what lets the answer cite its source later. Like a library, the catalogue cards are made once, when a book arrives, and then used for everyone who comes to ask.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#embeddings-and-cosine-similarity",
+    "href": "ch16/ep10-rag-fundamentals/index.html#embeddings-and-cosine-similarity",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Embeddings and cosine similarity",
+    "text": "Embeddings and cosine similarity\nAn embedding model turns a text into a list of numbers that stands for its meaning; ours returns 4,096. Texts with similar meanings get vectors that point the same way. Cosine similarity measures how much two vectors point in the same direction, and top-k keeps the k chunks with the highest score for a question.\n\nIn Lab 1 car·automobile scored ≈ 0.95, but car·banana still scored ≈ 0.58, not zero. Unrelated texts often score fairly high, so what we really use is the order, not a single number.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#generation-answer-only-from-the-documents",
+    "href": "ch16/ep10-rag-fundamentals/index.html#generation-answer-only-from-the-documents",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Generation: answer only from the documents",
+    "text": "Generation: answer only from the documents\nListing 16.1 gives a prompt with three rules: answer using only the provided context; if the context isn’t enough, say so explicitly; cite sources as [Doc n]. Each chunk in the prompt is labelled with its Doc number, its file and its page. “The documents don’t say” is not a failure: it is exactly what we want.\n\nIn Lab 1, asked for the capital of Australia, the model said the context doesn’t contain it, even though it knows the answer. Our library doesn’t mention Australia, so it didn’t answer from memory.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#sparse-dense-and-hybrid-retrieval",
+    "href": "ch16/ep10-rag-fundamentals/index.html#sparse-dense-and-hybrid-retrieval",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Sparse, dense and hybrid retrieval",
+    "text": "Sparse, dense and hybrid retrieval\nSparse retrieval scores a chunk by the query’s words it contains, like the index at the back of a book. The most widely used is BM25: rare words weigh more, repeating a word helps but levels off, and very long chunks lose a little. It wins on error codes, proper nouns and rare or new terms, needs no GPU, and is easy to explain, but “car” won’t find “automobile”.\nDense retrieval uses embeddings (the textbook’s example is DPR, with one encoder for questions and one for passages). It finds meaning: ask how to split a long document, and it finds the chunk about chunking. At millions of chunks the search is approximate (for example with FAISS). Table 16.2 compares more methods; the cross-encoder is the most accurate but slow, so it re-ranks chunks already retrieved (EP11).\nHybrid uses both and merges the results. The two scores are on different scales, so the textbook uses Reciprocal Rank Fusion, which looks only at ranks:\n\\[\\text{RRF}(d) = \\sum_{\\text{lists}} \\frac{1}{60 + \\text{rank}(d)}\\]\nRank 3 in BM25 and rank 7 in dense gives 1/63 + 1/67 ≈ 0.0308; first in both gives ≈ 0.0328. The 60 keeps the top ranks from dominating.\n\nIn Lab 2 we wrote BM25 and RRF ourselves, and RRF matched the book’s 0.0308 and 0.0328. “What is PLAID?”: BM25 found it at rank 1, dense around rank 99. Asked about parent-child chunking in other words, dense found pages 302–303 and BM25 missed them. On 10 questions, hit@3 was BM25 4, dense 4, hybrid 8. Better overall, but not on every question: two got worse.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#chunking",
+    "href": "ch16/ep10-rag-fundamentals/index.html#chunking",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Chunking",
+    "text": "Chunking\nThe textbook calls chunking one of the highest-impact decisions in a RAG system (Roitman 2026, sec. 16.4). A good chunk is small enough for the embedding model, about one topic, and makes sense on its own.\n\nFixed size with overlap: cut every W tokens, neighbours sharing O tokens, so a sentence cut at a boundary is whole in one of them. A 1,000-token document with W = 512 and O = 64 gives ⌈(1000 − 64) / (512 − 64)⌉ = 3 chunks (Equation 16.19).\nSemantic: cut where neighbouring sentences stop being similar.\nStructure-aware: split at headers, functions or classes, and never split a table mid-row.\nParent-child: search with small chunks (precise), but send the model the bigger chunk around the match (enough context).\n\n\n\n\nTable 10.2: Lab 3 results: only the chunking changes\n\n\n\n\n\n\n\n\n\n\n\nChunking (dense, 20 questions)\nChunks\nhit@3\nContext per question\n\n\n\n\nFixed 512 / overlap 64 (Lab 1)\n141\n12\n≈ 1,050 tokens\n\n\nFixed 128 / overlap 16\n431\n14\n≈ 340 tokens, but chunks start mid-sentence\n\n\nSplit at the book’s headings\n184\n16\n≈ 440 tokens\n\n\nParent-child (128-token children → section)\n461 children\n17\n≈ 740 tokens\n\n\n\n\n\n\n\nIn Lab 3 Equation 16.19 matched our Lab 1 loop on every page. In the exercise, no overlap at all scored higher than overlap on these questions: no rule replaces measuring.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#the-same-rag-with-langchain",
+    "href": "ch16/ep10-rag-fundamentals/index.html#the-same-rag-with-langchain",
+    "title": "EP10 RAG Fundamentals",
+    "section": "The same RAG with LangChain",
+    "text": "The same RAG with LangChain\n\n\n\nTable 10.3: Our code next to LangChain\n\n\n\n\n\n\n\n\n\nOurs (Labs 1–3)\nLangChain 1.x (Lab 4)\n\n\n\n\npage dict\nDocument (with metadata)\n\n\nchunk_page\nRecursiveCharacterTextSplitter\n\n\nembed + cosine search\nOpenAIEmbeddings + InMemoryVectorStore\n\n\nbm25_rank\nour own BaseRetriever (langchain-community is being sunset)\n\n\nrrf\nEnsembleRetriever\n\n\nparent lookup\nParentDocumentRetriever\n\n\nrag()\nprompt | llm | StrOutputParser()\n\n\n\n\n\n\n\nIn Lab 4 three defaults raised no error. Listing 16.2 as written counts characters, not tokens: 408 chunks of ≈ 115 tokens instead of 141. OpenAIEmbeddings sends token ids, which OpenRouter rejects with a 400 unless check_embedding_ctx_length=False. And EnsembleRetriever only merges what each retriever returns: 3 per list gave 13/20, 60 per list gave 17/20. We caught all three because we knew what was inside and measured every time.\n\nOne question missed every method: the analogy question asked longer, with the author’s name and the book’s title. The library-card chunk was at rank 8 with dense, 5 with hybrid, and 17 with parent-child. The words in the question pull it towards other pages; the fix, transforming the question before searching, is in EP11.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#terms-in-this-episode",
+    "href": "ch16/ep10-rag-fundamentals/index.html#terms-in-this-episode",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Terms in this episode",
+    "text": "Terms in this episode\n\n\n\nTable 10.4: Terms used in EP10\n\n\n\n\n\n\n\n\n\n\nTerm\nWhat it is\nExample\n\n\n\n\nRAG\nfind relevant documents first, then let the model answer from them\nthe library card, Doc 2 · p. 295\n\n\nparametric / non-parametric\nknowledge in the weights / in documents outside the model\nwhat Gemma memorized / our textbook\n\n\nchunk\na small piece of a document, the unit we search\n512 tokens of one page\n\n\nmetadata\nfacts about a chunk kept for filtering and citing\n{\"page\": 295}\n\n\nembedding\na list of numbers that stands for a text’s meaning\n4,096 numbers per chunk\n\n\ncosine similarity\nhow much two vectors point the same way\ncar·automobile ≈ 0.95\n\n\ntop-k\nkeep the k best-scoring chunks\ntop-3\n\n\nBM25\na sparse score from word matches, rare words weighing more\nPLAID found at rank 1\n\n\nRRF\nmerge rankings by summing 1 / (60 + rank)\n≈ 0.0308 for ranks 3 and 7\n\n\nhit@3\nshare of questions whose right page is in the top 3\nhybrid 8/10\n\n\nparent-child\nsearch small chunks, send the bigger one around them\n128-token child → its section",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#lab",
+    "href": "ch16/ep10-rag-fundamentals/index.html#lab",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nTable 10.5: EP10 notebooks (every lab has its own setup)\n\n\n\n\n\nLab\n✏️ Starter\n✅ Solution\n\n\n\n\nLab 1 — RAG from scratch\nColab\nColab\n\n\nLab 2 — Sparse vs dense vs hybrid\nColab\nColab\n\n\nLab 3 — Chunking strategies\nColab\nColab\n\n\nLab 4 — RAG with LangChain\nColab\nColab\n\n\n\n\n\n\nEvery model output in the videos is from a real run. Your own run may differ a little: embeddings from an API are not bit-for-bit identical every time, so a question right on the line (Lab 4’s parent-child, 14 or 15 of 20) can flip.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#review-questions",
+    "href": "ch16/ep10-rag-fundamentals/index.html#review-questions",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Review questions",
+    "text": "Review questions\n\nWhich of the three limits does a book published after the model was trained show, and how does RAG get around it?\nA team wants answers that always follow the faculty’s report format. RAG, fine-tuning or long context, and why?\nWhy does car·banana scoring 0.58 not break top-k?\nWhy is “the documents don’t contain this” a good answer from a RAG system?\nGive a question BM25 answers better than dense retrieval, and one where dense wins.\nWhy does RRF use ranks instead of adding the two scores?\nParent-child got the best hit@3 in Lab 3. What does it trade for that?\nIn Lab 4, what did changing 3 per list to 60 per list change, and why didn’t LangChain warn us?",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#further-reading",
+    "href": "ch16/ep10-rag-fundamentals/index.html#further-reading",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Further reading",
+    "text": "Further reading\n\nTextbook: §16.1–16.4 (Roitman 2026); RAG-Fusion with RRF is Listing 16.8.\nHallucination: EP02.\nWhere the missed question came from: EP09, Lab 3.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#references",
+    "href": "ch16/ep10-rag-fundamentals/index.html#references",
+    "title": "EP10 RAG Fundamentals",
+    "section": "References",
+    "text": "References\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M3 · Knowledge: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
   }
 ]

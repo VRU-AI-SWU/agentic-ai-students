@@ -1619,5 +1619,181 @@
       "M2 · Harness: ระบบปฏิบัติการของ agent",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>EP09 Building a Production Harness</span>"
     ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html",
+    "href": "ch16/ep10-rag-fundamentals/index.html",
+    "title": "EP10 RAG Fundamentals",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#วตถประสงคการเรยนร",
+    "href": "ch16/ep10-rag-fundamentals/index.html#วตถประสงคการเรยนร",
+    "title": "EP10 RAG Fundamentals",
+    "section": "",
+    "text": "อธิบายสามข้อจำกัดของความรู้ใน model และสิ่งที่ RAG เพิ่มให้ คือบัตรห้องสมุดของนักวิชาการที่เรียนจบมาหลายปีแล้ว\nเลือกระหว่าง RAG, fine-tuning และ long context ให้เหมาะกับงาน\nอธิบายสองสายงานของ RAG: indexing ครั้งเดียว และค้นแล้วตอบสำหรับทุกคำถาม\nใช้ embedding และ cosine similarity หาชิ้นเอกสาร top-k ของคำถาม\nเขียน prompt ที่บังคับให้ model ตอบจากเอกสารเท่านั้น อ้างที่มา และบอกเมื่อเอกสารไม่มีคำตอบ\nเปรียบเทียบ sparse (BM25) กับ dense retrieval และรวมสองแบบด้วย Reciprocal Rank Fusion\nเลือกวิธีตัดชิ้น (ขนาดคงที่ + overlap, ตามโครงสร้าง, parent-child) และวัดผลแทนการเดา",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#model-ตอบจากตำราของเราไดไหม",
+    "href": "ch16/ep10-rag-fundamentals/index.html#model-ตอบจากตำราของเราไดไหม",
+    "title": "EP10 RAG Fundamentals",
+    "section": "model ตอบจากตำราของเราได้ไหม",
+    "text": "model ตอบจากตำราของเราได้ไหม\nใน EP09 Lab 3 เราถามถึง paper ในคลังของเรา แต่ model ไม่ได้เปิดอ่านเลย มันตอบจากชื่อ paper กับสิ่งที่รู้มาเอง คำตอบฟังดูดี แต่เราไม่รู้ว่ามาจากไหน ตอนนี้เริ่มโมดูล M3 · RAG ด้วยคำถามเดียว: จะทำให้ model ตอบจากเอกสารของเราจริงๆ และบอกได้ว่าคำตอบมาจากหน้าไหน ได้อย่างไร",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#สามขอจำกด-และความรสองแบบ",
+    "href": "ch16/ep10-rag-fundamentals/index.html#สามขอจำกด-และความรสองแบบ",
+    "title": "EP10 RAG Fundamentals",
+    "section": "สามข้อจำกัด และความรู้สองแบบ",
+    "text": "สามข้อจำกัด และความรู้สองแบบ\nmodel เก็บความรู้ไว้ใน weight ของมันเอง ซึ่งถูกบีบอัดมาตอนฝึก ตำราบอกว่าสิ่งนี้มาพร้อมสามข้อจำกัด (Roitman 2026, หมวด 16.1):\n\nHallucination (EP02): ถามเกินสิ่งที่มันรู้แน่ มันก็ยังตอบอย่างมั่นใจ\nความรู้เก่า (staleness): ข้อมูลที่ใช้ฝึกมีวันตัด ตำราที่เราเรียนออกปี 2026 หลังจากที่ model ของเราถูกฝึก\nไม่รู้เรื่องเฉพาะทาง (domain specificity): model ทั่วไปไม่เคยเห็นเอกสารภายในบริษัท ระเบียบของมหาวิทยาลัย หรือ code ของเรา\n\nความรู้ใน weight เรียกว่า parametric ความรู้ในเอกสารนอก model เรียกว่า non-parametric ตำราให้ภาพที่จำง่าย: model ธรรมดาเหมือนนักวิชาการที่จำห้องสมุดทั้งห้องได้ แต่เรียนจบมาหลายปีแล้ว RAG (retrieval-augmented generation) ให้บัตรห้องสมุดกับนักวิชาการคนนั้น ค้นได้ทันที อ้างที่มาได้ และยอมรับว่าต้องไปเปิดดูก่อน แทนที่จะเดาจากความจำ\n\nใน Lab 1 ถามโดยไม่มี RAG ว่าตำราใช้อุปมาอะไรอธิบาย RAG, Gemma ตอบอย่างมั่นใจว่า “การสอบแบบเปิดตำรา” ซึ่งไม่มีอยู่ในหน้าไหนของตำราเลย พอมี RAG มันตอบว่า “บัตรห้องสมุด” อ้าง Doc 2 หน้า 295",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#rag-fine-tuning-หรอ-long-context",
+    "href": "ch16/ep10-rag-fundamentals/index.html#rag-fine-tuning-หรอ-long-context",
+    "title": "EP10 RAG Fundamentals",
+    "section": "RAG, fine-tuning หรือ long context",
+    "text": "RAG, fine-tuning หรือ long context\n\n\n\nตารางที่ 10.1: เมื่อไรใช้ RAG, fine-tuning หรือ long context (ดัดแปลงจาก Table 16.1)\n\n\n\n\n\n\n\n\n\n\nวิธี\nเหมาะเมื่อ\nตัวอย่าง\n\n\n\n\nRAG\nความรู้เปลี่ยนบ่อย ต้องอ้างที่มา หรือคลังเอกสารใหญ่\nระเบียบมหาวิทยาลัยที่เปลี่ยนทุกเทอม\n\n\nFine-tuning\nอยากเปลี่ยนสไตล์หรือรูปแบบของคำตอบ\nตอบเป็นรูปแบบรายงานของคณะเสมอ\n\n\nLong context\nคลังเล็กพอที่จะใส่ใน context window ได้ทั้งหมด\nเอกสารนโยบายสั้นๆ ฉบับเดียว\n\n\n\n\n\n\nRAG ไม่ได้มาแทน fine-tuning: fine-tuning สอนให้ model รู้ว่าจะคิดและตอบอย่างไร ส่วน RAG ให้สิ่งที่จะเอามาคิด เหมือนฝึกพ่อครัว กับส่งวัตถุดิบสดทุกเช้า ทั้งสองอย่างทำงานด้วยกัน",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#สองสายงาน-เตรยมคลงครงเดยว-ตอบไดทกคำถาม",
+    "href": "ch16/ep10-rag-fundamentals/index.html#สองสายงาน-เตรยมคลงครงเดยว-ตอบไดทกคำถาม",
+    "title": "EP10 RAG Fundamentals",
+    "section": "สองสายงาน: เตรียมคลังครั้งเดียว ตอบได้ทุกคำถาม",
+    "text": "สองสายงาน: เตรียมคลังครั้งเดียว ตอบได้ทุกคำถาม\n\n\n\n\n\n\nflowchart TD\n  A[\"① ครั้งเดียว: โหลดเอกสาร&lt;br/&gt;+ metadata\"] --&gt; B[ตัดเป็นชิ้น] --&gt; C[ทำ embedding ทุกชิ้น&lt;br/&gt;เก็บพร้อมข้อความ]\n  D[\"② ทุกคำถาม:&lt;br/&gt;ทำ embedding คำถาม\"] --&gt; E[ชิ้นที่ใกล้ที่สุด top-k] --&gt; F[prompt + ชิ้นเอกสาร&lt;br/&gt;→ ตอบพร้อมอ้างที่มา]\n  C -.-&gt; E\n\n\n\n\n\n\nเก็บ metadata (ไฟล์ไหน หน้าไหน) ไว้ด้วย เพราะเป็นสิ่งที่ทำให้คำตอบอ้างที่มาได้ เหมือนห้องสมุด บัตรรายการทำครั้งเดียวตอนหนังสือเข้ามา แล้วใช้ตอบทุกคนที่มาถาม",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#embedding-และ-cosine-similarity",
+    "href": "ch16/ep10-rag-fundamentals/index.html#embedding-และ-cosine-similarity",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Embedding และ cosine similarity",
+    "text": "Embedding และ cosine similarity\nEmbedding model แปลงข้อความเป็นรายการตัวเลขที่แทนความหมาย ของเราได้ 4,096 ตัว ข้อความที่ความหมายใกล้กันได้เวกเตอร์ที่ชี้ไปทางเดียวกัน Cosine similarity วัดว่าสองเวกเตอร์ชี้ไปทางเดียวกันแค่ไหน แล้ว top-k เก็บ k ชิ้นที่ได้คะแนนสูงสุดของคำถามนั้น\n\nใน Lab 1 car·automobile ได้ราว 0.95 แต่ car·banana ก็ยังได้ราว 0.58 ไม่ใช่ศูนย์ ข้อความที่ไม่เกี่ยวกันมักได้คะแนนค่อนข้างสูง สิ่งที่เราใช้จริงจึงเป็นลำดับ ไม่ใช่ตัวเลขตัวเดียว",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#generation-ตอบจากเอกสารเทานน",
+    "href": "ch16/ep10-rag-fundamentals/index.html#generation-ตอบจากเอกสารเทานน",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Generation: ตอบจากเอกสารเท่านั้น",
+    "text": "Generation: ตอบจากเอกสารเท่านั้น\nListing 16.1 ให้ prompt ที่มีสามกฎ: ตอบจาก context ที่ให้เท่านั้น ถ้า context ไม่พอให้บอกตรงๆ และอ้างที่มาเป็น [Doc n] แต่ละชิ้นใน prompt มีเลข Doc ชื่อไฟล์ และเลขหน้ากำกับ คำตอบว่า “เอกสารไม่ได้บอก” ไม่ใช่ความล้มเหลว แต่เป็นสิ่งที่เราต้องการพอดี\n\nใน Lab 1 ถามเมืองหลวงของออสเตรเลีย model ตอบว่า context ไม่มีข้อมูลนี้ ทั้งที่มันรู้คำตอบ คลังของเราไม่ได้พูดถึงออสเตรเลีย มันจึงไม่ตอบจากความจำ",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#sparse-dense-และ-hybrid-retrieval",
+    "href": "ch16/ep10-rag-fundamentals/index.html#sparse-dense-และ-hybrid-retrieval",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Sparse, dense และ hybrid retrieval",
+    "text": "Sparse, dense และ hybrid retrieval\nSparse retrieval ให้คะแนนชิ้นเอกสารจากคำในคำถามที่ปรากฏในชิ้นนั้น เหมือนดัชนีท้ายเล่ม ตัวที่ใช้กันมากที่สุดคือ BM25: คำหายากมีน้ำหนักมากกว่า คำที่ซ้ำหลายครั้งช่วยได้แต่ค่อยๆ อิ่มตัว และชิ้นที่ยาวมากเสียคะแนนนิดหน่อย มันชนะเรื่องรหัส error ชื่อเฉพาะ และคำหายากหรือคำใหม่ ไม่ต้องใช้ GPU และอธิบายได้ง่าย แต่ถ้าคำถามว่า “car” มันจะหา “automobile” ไม่เจอ\nDense retrieval ใช้ embedding (ตัวอย่างในตำราคือ DPR ที่มี encoder ของคำถามกับของเนื้อหาแยกกัน) มันจับความหมายได้ ถามว่าจะแบ่งเอกสารยาวอย่างไร มันก็เจอชิ้นที่พูดถึง chunking เมื่อมีหลายล้านชิ้นก็ค้นแบบประมาณ (เช่นด้วย FAISS) Table 16.2 เทียบวิธีอื่นๆ อีกหลายวิธี cross-encoder แม่นที่สุดแต่ช้า จึงใช้เรียงลำดับใหม่หลังค้นมาแล้ว (EP11)\nHybrid ใช้ทั้งสองแบบแล้วรวมผล แต่คะแนนของสองระบบอยู่คนละสเกล ตำราจึงใช้ Reciprocal Rank Fusion ที่ดูแค่อันดับ:\n\\[\\text{RRF}(d) = \\sum_{\\text{lists}} \\frac{1}{60 + \\text{rank}(d)}\\]\nอันดับ 3 ใน BM25 และอันดับ 7 ใน dense ได้ 1/63 + 1/67 ≈ 0.0308 อันดับหนึ่งทั้งสองฝั่งได้ ≈ 0.0328 เลข 60 ช่วยไม่ให้อันดับต้นๆ มีน้ำหนักมากเกินไป\n\nใน Lab 2 เราเขียน BM25 และ RRF เอง RRF ได้ 0.0308 และ 0.0328 ตรงกับตำรา “What is PLAID?”: BM25 เจอที่อันดับ 1 แต่ dense ให้ไว้ราวอันดับ 99 ส่วนคำถามเรื่อง parent-child ที่ถามด้วยคำอื่น dense เจอหน้า 302–303 แต่ BM25 พลาด วัด hit@3 บน 10 คำถาม: BM25 4, dense 4, hybrid 8 ดีขึ้นโดยรวม แต่ไม่ใช่ทุกข้อ มีสองข้อที่แย่ลง",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#chunking",
+    "href": "ch16/ep10-rag-fundamentals/index.html#chunking",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Chunking",
+    "text": "Chunking\nตำราบอกว่าการตัดชิ้นเป็นหนึ่งในการตัดสินใจที่มีผลมากที่สุดในระบบ RAG (Roitman 2026, หมวด 16.4) ชิ้นที่ดีควรเล็กพอสำหรับ embedding model พูดเรื่องเดียว และอ่านแยกออกมาแล้วยังเข้าใจได้\n\nขนาดคงที่ + overlap: ตัดทุก W token ชิ้นติดกันใช้ O token ร่วมกัน ประโยคที่ถูกตัดตรงรอยต่อจะครบในชิ้นใดชิ้นหนึ่ง เอกสาร 1,000 token ที่ W = 512 และ O = 64 ได้ ⌈(1000 − 64) / (512 − 64)⌉ = 3 ชิ้น (สมการ 16.19)\nตามความหมาย (semantic): ตัดตรงที่ประโยคข้างเคียงเริ่มไม่คล้ายกัน\nตามโครงสร้าง: ตัดที่หัวข้อ ฟังก์ชัน หรือ class และไม่ตัดตารางกลางแถว\nParent-child: ค้นด้วยชิ้นเล็ก (แม่น) แต่ส่งชิ้นใหญ่ที่ครอบอยู่ให้ model (บริบทพอ)\n\n\n\n\nตารางที่ 10.2: ผลของ Lab 3: เปลี่ยนแค่วิธีตัดชิ้น\n\n\n\n\n\n\n\n\n\n\n\nวิธีตัดชิ้น (dense, 20 คำถาม)\nจำนวนชิ้น\nhit@3\ncontext ต่อคำถาม\n\n\n\n\nขนาดคงที่ 512 / overlap 64 (Lab 1)\n141\n12\n≈ 1,050 token\n\n\nขนาดคงที่ 128 / overlap 16\n431\n14\n≈ 340 token แต่ชิ้นเริ่มกลางประโยค\n\n\nตัดตามหัวข้อของตำรา\n184\n16\n≈ 440 token\n\n\nParent-child (ชิ้นลูก 128 token → section)\nชิ้นลูก 461\n17\n≈ 740 token\n\n\n\n\n\n\n\nใน Lab 3 สมการ 16.19 ตรงกับลูปของเราใน Lab 1 ทุกหน้า และในแบบฝึกหัด การไม่ใช้ overlap เลยกลับได้คะแนนสูงกว่าบนคำถามชุดนี้ ไม่มีกฎข้อไหนแทนการวัดผลได้",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#rag-ตวเดมดวย-langchain",
+    "href": "ch16/ep10-rag-fundamentals/index.html#rag-ตวเดมดวย-langchain",
+    "title": "EP10 RAG Fundamentals",
+    "section": "RAG ตัวเดิมด้วย LangChain",
+    "text": "RAG ตัวเดิมด้วย LangChain\n\n\n\nตารางที่ 10.3: code ของเราเทียบกับ LangChain\n\n\n\n\n\n\n\n\n\nของเรา (Lab 1–3)\nLangChain 1.x (Lab 4)\n\n\n\n\ndict ของแต่ละหน้า\nDocument (มี metadata)\n\n\nchunk_page\nRecursiveCharacterTextSplitter\n\n\nembed + ค้นด้วย cosine\nOpenAIEmbeddings + InMemoryVectorStore\n\n\nbm25_rank\nBaseRetriever ที่เราเขียนเอง (langchain-community กำลังจะเลิกพัฒนา)\n\n\nrrf\nEnsembleRetriever\n\n\nหา parent\nParentDocumentRetriever\n\n\nrag()\nprompt | llm | StrOutputParser()\n\n\n\n\n\n\n\nใน Lab 4 มีค่าเริ่มต้นสามจุดที่ไม่ขึ้น error เลย Listing 16.2 ตามที่เขียนนับเป็นตัวอักษร ไม่ใช่ token ได้ 408 ชิ้น ราว 115 token แทนที่จะเป็น 141 ชิ้น OpenAIEmbeddings ส่ง token id ไป ซึ่ง OpenRouter ตอบกลับเป็น 400 ถ้าไม่ตั้ง check_embedding_ctx_length=False และ EnsembleRetriever รวมได้แค่สิ่งที่ retriever แต่ละตัวส่งมา list ละ 3 ได้ 13/20 list ละ 60 ได้ 17/20 เราจับได้ทั้งสามจุดเพราะรู้ว่าข้างในทำงานอย่างไร และวัดผลทุกครั้ง\n\nมีคำถามหนึ่งที่พลาดทุกวิธี: คำถามเรื่องอุปมาแบบยาว ที่มีชื่อผู้แต่งและชื่อตำราอยู่ด้วย ชิ้นที่มีบัตรห้องสมุดอยู่อันดับ 8 ด้วย dense อันดับ 5 ด้วย hybrid และอันดับ 17 ด้วย parent-child คำในคำถามดึงมันไปหาหน้าอื่น วิธีแก้คือแปลงคำถามก่อนค้น ซึ่งอยู่ใน EP11",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#ศพทในตอนน",
+    "href": "ch16/ep10-rag-fundamentals/index.html#ศพทในตอนน",
+    "title": "EP10 RAG Fundamentals",
+    "section": "ศัพท์ในตอนนี้",
+    "text": "ศัพท์ในตอนนี้\n\n\n\nตารางที่ 10.4: ศัพท์ที่ใช้ใน EP10\n\n\n\n\n\n\n\n\n\n\nคำ\nคืออะไร\nตัวอย่าง\n\n\n\n\nRAG\nค้นเอกสารที่เกี่ยวข้องก่อน แล้วให้ model ตอบจากเอกสารนั้น\nบัตรห้องสมุด Doc 2 · หน้า 295\n\n\nparametric / non-parametric\nความรู้ใน weight / ความรู้ในเอกสารนอก model\nสิ่งที่ Gemma จำมา / ตำราของเรา\n\n\nchunk\nชิ้นเล็กๆ ของเอกสาร เป็นหน่วยที่เราค้น\n512 token ของหนึ่งหน้า\n\n\nmetadata\nข้อมูลประกอบของชิ้น เก็บไว้กรองและอ้างที่มา\n{\"page\": 295}\n\n\nembedding\nรายการตัวเลขที่แทนความหมายของข้อความ\nชิ้นละ 4,096 ตัว\n\n\ncosine similarity\nสองเวกเตอร์ชี้ไปทางเดียวกันแค่ไหน\ncar·automobile ≈ 0.95\n\n\ntop-k\nเก็บ k ชิ้นที่ได้คะแนนสูงสุด\ntop-3\n\n\nBM25\nคะแนนแบบ sparse จากคำที่ตรงกัน คำหายากมีน้ำหนักมาก\nเจอ PLAID ที่อันดับ 1\n\n\nRRF\nรวมอันดับด้วยผลรวมของ 1 / (60 + อันดับ)\n≈ 0.0308 สำหรับอันดับ 3 และ 7\n\n\nhit@3\nสัดส่วนคำถามที่หน้าที่ถูกอยู่ใน top 3\nhybrid 8/10\n\n\nparent-child\nค้นด้วยชิ้นเล็ก ส่งชิ้นใหญ่ที่ครอบอยู่\nชิ้นลูก 128 token → section ของมัน",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#lab",
+    "href": "ch16/ep10-rag-fundamentals/index.html#lab",
+    "title": "EP10 RAG Fundamentals",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 10.5: Notebook ของ EP10 (ทุก lab มีขั้นตั้งค่าของตัวเอง)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — RAG ตั้งแต่ศูนย์\nColab\nColab\n\n\nLab 2 — Sparse, dense และ hybrid\nColab\nColab\n\n\nLab 3 — วิธีตัดชิ้น\nColab\nColab\n\n\nLab 4 — RAG ด้วย LangChain\nColab\nColab\n\n\n\n\n\n\noutput ของ model ทุกอันในคลิปมาจากการรันจริง ผลที่ผู้เรียนรันเองอาจต่างไปเล็กน้อย เพราะ embedding จาก API ไม่ได้เหมือนเดิมทุกบิตทุกครั้ง คำถามที่อยู่ตรงเส้นพอดี (parent-child ใน Lab 4 ได้ 14 หรือ 15 จาก 20) จึงพลิกได้",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#คำถามทบทวน",
+    "href": "ch16/ep10-rag-fundamentals/index.html#คำถามทบทวน",
+    "title": "EP10 RAG Fundamentals",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nตำราที่ออกหลังจากที่ model ถูกฝึก เป็นตัวอย่างของข้อจำกัดข้อไหน และ RAG แก้อย่างไร\nทีมหนึ่งอยากให้คำตอบออกมาตามรูปแบบรายงานของคณะเสมอ ควรใช้ RAG, fine-tuning หรือ long context เพราะอะไร\nทำไม car·banana ได้ 0.58 แล้ว top-k ยังใช้ได้\nทำไมคำตอบว่า “เอกสารไม่มีข้อมูลนี้” จึงเป็นคำตอบที่ดีของระบบ RAG\nยกตัวอย่างคำถามที่ BM25 ตอบได้ดีกว่า dense และคำถามที่ dense ชนะ\nทำไม RRF ใช้อันดับ แทนการเอาคะแนนสองฝั่งมาบวกกัน\nParent-child ได้ hit@3 ดีที่สุดใน Lab 3 มันแลกกับอะไร\nใน Lab 4 การเปลี่ยนจาก list ละ 3 เป็น list ละ 60 เปลี่ยนอะไร และทำไม LangChain ไม่เตือนเรา",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#อานเพมเตม",
+    "href": "ch16/ep10-rag-fundamentals/index.html#อานเพมเตม",
+    "title": "EP10 RAG Fundamentals",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: §16.1–16.4 (Roitman 2026) ส่วน RAG-Fusion ด้วย RRF อยู่ใน Listing 16.8\nHallucination: EP02\nที่มาของคำถามที่พลาด: EP09, Lab 3",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep10-rag-fundamentals/index.html#เอกสารอางอง",
+    "href": "ch16/ep10-rag-fundamentals/index.html#เอกสารอางอง",
+    "title": "EP10 RAG Fundamentals",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
   }
 ]
