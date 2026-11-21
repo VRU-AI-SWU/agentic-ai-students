@@ -24,7 +24,7 @@
     "href": "index.html#capstone-research-assistant-agent",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "Capstone: Research Assistant Agent",
-    "text": "Capstone: Research Assistant Agent\nทั้งซีรีส์สร้างโปรเจกต์เดียวกันต่อเนื่อง คือ agent ผู้ช่วยค้นคว้างานวิจัยที่ค้นหาและอ่าน paper แล้วเขียนรายงานให้ แต่ละ module เพิ่มความสามารถให้มันหนึ่งอย่าง\n\nEP05 · tool-use + ReAct ✓ → M2 · harness → M3 · RAG → M4 · memory → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
+    "text": "Capstone: Research Assistant Agent\nทั้งซีรีส์สร้างโปรเจกต์เดียวกันต่อเนื่อง คือ agent ผู้ช่วยค้นคว้างานวิจัยที่ค้นหาและอ่าน paper แล้วเขียนรายงานให้ แต่ละ module เพิ่มความสามารถให้มันหนึ่งอย่าง\n\nEP05 · tool-use + ReAct ✓ → M2 · harness ✓ → M3 · RAG → M4 · memory → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
     "crumbs": [
       "หน้าแรก"
     ]
