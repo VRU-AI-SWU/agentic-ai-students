@@ -24,7 +24,7 @@
     "href": "index.html#capstone-research-assistant-agent",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "Capstone: Research Assistant Agent",
-    "text": "Capstone: Research Assistant Agent\nทั้งซีรีส์สร้างโปรเจกต์เดียวกันต่อเนื่อง คือ agent ผู้ช่วยค้นคว้างานวิจัยที่ค้นหาและอ่าน paper แล้วเขียนรายงานให้ แต่ละ module เพิ่มความสามารถให้มันหนึ่งอย่าง\n\nEP05 · tool-use + ReAct ✓ → M2 · harness ✓ → M3 · RAG ✓ → M4 · memory → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
+    "text": "Capstone: Research Assistant Agent\nทั้งซีรีส์สร้างโปรเจกต์เดียวกันต่อเนื่อง คือ agent ผู้ช่วยค้นคว้างานวิจัยที่ค้นหาและอ่าน paper แล้วเขียนรายงานให้ แต่ละ module เพิ่มความสามารถให้มันหนึ่งอย่าง\n\nEP05 · tool-use + ReAct ✓ → M2 · harness ✓ → M3 · RAG ✓ → M4 · memory ✓ → M5 · MCP + skills → M6 · multi-agent → M7 · eval → M8 · UI",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -34,7 +34,7 @@
     "href": "index.html#เสนทางการเรยน",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "เส้นทางการเรียน",
-    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP00\nยินดีต้อนรับสู่ซีรีส์ ดูก่อน · 1 นาที ▶ ซีรีส์นี้ให้อะไร · พื้นฐานที่ต้องมี · เริ่มที่ EP01 · วิดีโอ\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) พร้อมเรียน ▶ token · temperature · ชื่อ model · quantization · modality · §1.1–1.2, §1.12 · 3 lab\n\n\nEP02\nPrompt, structured output และ hallucination พร้อมเรียน ▶ ใบสั่งงาน · few-shot · JSON schema · validate · grounding · §1.12.11, §1.13, §1.16 · 4 lab\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent พร้อมเรียน ▶ agent loop · tool · harness · human-in-the-loop · LangChain · ch15 · 2 lab\n\n\nEP04\nWorkflow Patterns พร้อมเรียน ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 lab รวม LangGraph\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nDesign Principles และการเลือก pattern พร้อมเรียน ▶ หลักออกแบบ 6 ข้อ · ตาราง 19.3 · trace · ชุดทดสอบ · LangChain middleware · §19.3–19.4 · 4 lab\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext Window Management พร้อมเรียน ▶ token budget · การตัดเงียบ · history window · สรุปแบบ recursive · LangChain SummarizationMiddleware · §18.1–18.3 · 4 lab\n\n\nEP08\nTools, State and Error Handling พร้อมเรียน ▶ parallel tool call · prompt injection · checkpoint · backoff + jitter · loop guard · prompt caching · LangGraph · §18.4, 18.6–18.8 · 5 lab\n\n\nEP09\nBuilding a Production Harness พร้อมเรียน ▶ Listing 18.1 · ContextManager · ToolExecutor · LoopDetector · mock LLM · prompt คือ code · replay · LangChain middleware · §18.9–18.10 · 4 lab\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG Fundamentals พร้อมเรียน ▶ บัตรห้องสมุด · embedding · cosine top-k · BM25 · dense · hybrid ด้วย RRF · chunking · parent-child · LangChain · §16.1–16.4 · 4 lab\n\n\nEP11\nAdvanced & Agentic RAG พร้อมเรียน ▶ HyDE · RAG-Fusion · re-rank ด้วย cross-encoder · CRAG · router · วงวน agentic RAG · ไล่สารบัญ · Recall · MRR · NDCG · faithfulness · LangGraph · §16.5, 16.7–16.9 · 4 lab\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent memory เร็วๆ นี้ ความจำระยะสั้น ระยะยาว episodic และการเก็บ ค้น ลืม · ch17\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
+    "text": "เส้นทางการเรียน\nเรียงตามลำดับที่แนะนำ ตอนที่ยังไม่เปิดจะทยอยออกทาง playlist · เลข § ในวงเล็บคือ section ในตำรา\n\n\n\nM0 ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้ พื้นฐานที่จำเป็น ข้ามได้ถ้าเคยใช้ LLM API มาแล้ว\n\n\nEP00\nยินดีต้อนรับสู่ซีรีส์ ดูก่อน · 1 นาที ▶ ซีรีส์นี้ให้อะไร · พื้นฐานที่ต้องมี · เริ่มที่ EP01 · วิดีโอ\n\n\nEP01\nLLM ทำงานอย่างไร (ฉบับคนสร้าง agent) พร้อมเรียน ▶ token · temperature · ชื่อ model · quantization · modality · §1.1–1.2, §1.12 · 3 lab\n\n\nEP02\nPrompt, structured output และ hallucination พร้อมเรียน ▶ ใบสั่งงาน · few-shot · JSON schema · validate · grounding · §1.12.11, §1.13, §1.16 · 4 lab\n\n\n\n\nM1 Agent คืออะไร และออกแบบอย่างไร จบ module แล้วเลือกได้ว่างานไหนใช้ workflow พอ งานไหนต้องเป็น agent\n\n\nEP03\nจาก chatbot สู่ agent พร้อมเรียน ▶ agent loop · tool · harness · human-in-the-loop · LangChain · ch15 · 2 lab\n\n\nEP04\nWorkflow Patterns พร้อมเรียน ▶ chaining · routing · parallelization · orchestrator-workers · evaluator-optimizer · §19.1 · 6 lab รวม LangGraph\n\n\nEP05\nAutonomous Agent Patterns พร้อมเรียน ▶ ReAct · planning · reflection · tool-use · LangGraph · §19.2 · 5 lab\n\n\nEP06\nDesign Principles และการเลือก pattern พร้อมเรียน ▶ หลักออกแบบ 6 ข้อ · ตาราง 19.3 · trace · ชุดทดสอบ · LangChain middleware · §19.3–19.4 · 4 lab\n\n\n\n\nM2 Harness: ระบบปฏิบัติการของ agent สร้าง harness ตัวแรกของ capstone\n\n\nEP07\nContext Window Management พร้อมเรียน ▶ token budget · การตัดเงียบ · history window · สรุปแบบ recursive · LangChain SummarizationMiddleware · §18.1–18.3 · 4 lab\n\n\nEP08\nTools, State and Error Handling พร้อมเรียน ▶ parallel tool call · prompt injection · checkpoint · backoff + jitter · loop guard · prompt caching · LangGraph · §18.4, 18.6–18.8 · 5 lab\n\n\nEP09\nBuilding a Production Harness พร้อมเรียน ▶ Listing 18.1 · ContextManager · ToolExecutor · LoopDetector · mock LLM · prompt คือ code · replay · LangChain middleware · §18.9–18.10 · 4 lab\n\n\n\n\nM3 ความรู้: RAG ให้ agent ตอบจากเอกสารของเราเอง\n\n\nEP10\nRAG Fundamentals พร้อมเรียน ▶ บัตรห้องสมุด · embedding · cosine top-k · BM25 · dense · hybrid ด้วย RRF · chunking · parent-child · LangChain · §16.1–16.4 · 4 lab\n\n\nEP11\nAdvanced & Agentic RAG พร้อมเรียน ▶ HyDE · RAG-Fusion · re-rank ด้วย cross-encoder · CRAG · router · วงวน agentic RAG · ไล่สารบัญ · Recall · MRR · NDCG · faithfulness · LangGraph · §16.5, 16.7–16.9 · 4 lab\n\n\n\n\nM4 ความจำ agent ที่จำสิ่งที่ทำมาแล้วได้\n\n\nEP12\nAgent Memory พร้อมเรียน ▶ ความจำสี่ชนิด · MemGPT ร้อน อุ่น เย็น · importance · temporal decay · ADD / DUPLICATE / UPDATE · ลืม · Reflexion · memory tools · memory recall · abstention · LangGraph checkpointer + Store · ch17 · 4 lab\n\n\n\n\nM5 เชื่อมโลกภายนอก: MCP และ Skills ต่อ agent เข้ากับ tool และความรู้แบบมาตรฐาน\n\n\nEP13\nMCP เร็วๆ นี้ ทำไมต้องมีมาตรฐาน tool และสร้าง MCP server สำหรับค้น paper · ch21\n\n\nEP14\nAgent Skills เร็วๆ นี้ skill ต่างจาก tool และ fine-tuning อย่างไร · ch22\n\n\n\n\nM6 หลาย agent ทำงานร่วมกัน แบ่งงานให้ทีม agent\n\n\nEP15\nMulti-agent systems เร็วๆ นี้ เมื่อไรควรใช้หลาย agent และ architecture แบบ supervisor + workers · ch24\n\n\nEP16\nA2A protocol เร็วๆ นี้ agent คุยกันข้ามระบบอย่างไร และ A2A ต่างจาก MCP ตรงไหน · ch23\n\n\n\n\nM7 วัดผลและความน่าเชื่อถือ รู้ได้อย่างไรว่า agent ดีขึ้นจริง\n\n\nEP17\nประเมิน agent เร็วๆ นี้ metric สำหรับงานหลายขั้นและ LLM-as-judge · ch14, ch20\n\n\nEP18\nTesting & observability เร็วๆ นี้ debug agent ที่ทำไม่เหมือนเดิมทุกรอบด้วย trace และ test suite · §25.5–25.6\n\n\n\n\nM8 Framework, production และ UI ปิดท้ายด้วย capstone ที่มี UI ใช้งานได้จริง\n\n\nEP19\nAgent frameworks เร็วๆ นี้ เลือก framework ไหน ต่างกันอย่างไร · ch25\n\n\nEP20\nAgentic UI เร็วๆ นี้ streaming และ human-in-the-loop · research agent พร้อม UI · ch26",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -5952,6 +5952,622 @@
     "crumbs": [
       "M3 · ความรู้: RAG",
       "<span class='chapter-number'>56</span>  <span class='chapter-title'>Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html",
+    "href": "ch17/ep12-agent-memory/index.html",
+    "title": "EP12 Agent Memory",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#วตถประสงคการเรยนร",
+    "href": "ch17/ep12-agent-memory/index.html#วตถประสงคการเรยนร",
+    "title": "EP12 Agent Memory",
+    "section": "",
+    "text": "อธิบายว่าทำไม LLM ที่ไม่มีสถานะต้องมีความจำ และสามแบบที่ agent พังเมื่อไม่มี\nแยกความจำสี่ชนิด (working, episodic, semantic, procedural) พร้อมตัวอย่าง\nเปรียบเทียบที่เก็บความจำแบบ RAG, สรุป, กราฟความรู้ และชั้นร้อน อุ่น เย็นของ MemGPT\nเขียนคลังความจำที่เก็บพร้อมความสำคัญและเวลา ค้นด้วยความเหมือนบวกความใหม่ และลบเมื่อเต็ม\nให้ LLM ช่วยตัดสินว่าอะไรควรจำ ความจำซ้ำหรือขัดกัน ลืมเมื่อผู้ใช้ขอ และทบทวนความล้มเหลวเป็นบทเรียน\nสร้าง agent ที่เรียกความจำเองผ่าน tool และวัดด้วย memory recall และ abstention\nใช้ checkpointer และ Store ของ LangGraph แยกความจำใน thread กับความจำข้าม thread และแยกผู้ใช้ด้วย namespace",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#เมอวานเราคยอะไรกน",
+    "href": "ch17/ep12-agent-memory/index.html#เมอวานเราคยอะไรกน",
+    "title": "EP12 Agent Memory",
+    "section": "เมื่อวานเราคุยอะไรกัน",
+    "text": "เมื่อวานเราคุยอะไรกัน\nวันจันทร์ผู้ใช้บอก research assistant ว่ากำลังเขียนรายงานเรื่อง transformer สำหรับ time series และขอคำตอบสั้นๆ วันอังคารกลับมาถามว่ามี paper ใหม่ไหม agent ถามกลับว่ารายงานไหน แล้วตอบยาวสามย่อหน้า ตอนนี้ตอบคำถามที่ EP11 ทิ้งไว้: agent ควรจำอะไร และเก็บ ค้น และลืมอย่างไร",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#ทำไม-agent-ตองมความจำ",
+    "href": "ch17/ep12-agent-memory/index.html#ทำไม-agent-ตองมความจำ",
+    "title": "EP12 Agent Memory",
+    "section": "ทำไม agent ต้องมีความจำ",
+    "text": "ทำไม agent ต้องมีความจำ\nLLM เป็นฟังก์ชันที่ไม่มีสถานะ ทุกครั้งที่เรียก มันเห็นแค่ context window (Roitman 2026, หมวด 17.1) EP07 จัดการ context ในบทสนทนาเดียว แต่ agent ที่ทำงานหลายวันสะสมข้อมูลมากกว่าที่หน้าต่างไหนจะจุได้ (ตำรายกตัวอย่าง context 128,000 token เทียบหนังสือหนึ่งเล่มราว 670,000 token) ถ้าไม่มีความจำ agent จะ\n\nลืมบริบท: สิ่งที่เลื่อนออกจากหน้าต่างหายไปเลย\nเรียนรู้จากประสบการณ์ไม่ได้: ทุกงานเหมือนครั้งแรก ทำผิดซ้ำ\nไม่รู้จักผู้ใช้: เริ่มใหม่ทุก session\n\nเหมือนหมอที่ไม่มีแฟ้มประวัติคนไข้ ทุกครั้งที่ไปหาคือครั้งแรก ตำราจึงเขียน agent เป็นวงจร: ค้นความจำก่อนทำ \\(c_t = R(o_t, M)\\) ทำ แล้วเขียนสิ่งที่เรียนรู้กลับไป \\(M \\leftarrow W(M, (o_t, a_t, r_t))\\)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#ความจำสชนด",
+    "href": "ch17/ep12-agent-memory/index.html#ความจำสชนด",
+    "title": "EP12 Agent Memory",
+    "section": "ความจำสี่ชนิด",
+    "text": "ความจำสี่ชนิด\n\n\n\nตารางที่ 57.1: ความจำสี่ชนิด ตาม Fig. 17.1\n\n\n\n\n\n\n\n\n\n\nชนิด\nคืออะไร\nตัวอย่างจาก agent ช่วยเขียนโค้ด\n\n\n\n\nworking\nสิ่งที่อยู่ใน context ตอนนี้ เร็ว แต่หายเมื่อล้าง context\nไฟล์ที่กำลังแก้ error ที่เพิ่งได้\n\n\nepisodic\nเหตุการณ์ที่เคยเกิด ทั้งสำเร็จและล้มเหลว\nสัปดาห์ก่อนแก้ NullPointerException ด้วยการเช็ก null\n\n\nsemantic\nข้อเท็จจริงที่ไม่ผูกกับเหตุการณ์\nasyncio.gather รัน coroutine พร้อมกัน\n\n\nprocedural\nวิธีทำงาน ลำดับขั้นจนเป็นนิสัย (รวมถึง weight ของ model)\nทำซ้ำ → แยกปัญหา → ตั้งสมมุติฐาน → ทดสอบ → แก้",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#เกบไวทไหน",
+    "href": "ch17/ep12-agent-memory/index.html#เกบไวทไหน",
+    "title": "EP12 Agent Memory",
+    "section": "เก็บไว้ที่ไหน",
+    "text": "เก็บไว้ที่ไหน\n\nRAG-based: แบบ EP10 แต่สิ่งที่อยู่ในคลังคือความจำของ agent เอง ต้องเก็บแหล่งที่มาและเวลาไว้กับทุกชิ้น เพราะความจำที่เก่าหรือผิดทำให้ตอบผิดอย่างมั่นใจได้\nสรุป: อัปเดตสรุปเดิมทุกครั้งที่มีข้อมูลใหม่ ขนาดคงที่แต่รายละเอียดหาย ตัวเลข โค้ด และคำพูดของผู้ใช้ให้เก็บคำต่อคำ เรื่องเล่าสรุปได้ tool ที่ล้มเหลวโดยไม่ได้ข้อมูลอะไรให้ทิ้ง\nกราฟความรู้: เก็บเป็น (h, r, t) ถ้าใส่ช่วงเวลา ก็ถามได้ว่า “ใครเป็น CEO ของ OpenAI ในปี 2023”\nKey-value: ค้นด้วย attention ซึ่ง attention ใน transformer เป็นกรณีพิเศษของแบบนี้\nMemGPT: แบ่งความจำเป็นชั้นเหมือน virtual memory ของระบบปฏิบัติการ ชั้นร้อนอยู่ใน context ชั้นอุ่นอยู่ใน vector store ชั้นเย็นคือ archive agent ย้ายของเข้า (page-in) และออก (page-out) ตามความใหม่ ความเกี่ยว และความสำคัญ และตัว LLM เองเป็นคนเรียก function ค้น เพิ่ม ลบ (Roitman 2026, หมวด 17.3)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#สงานของความจำ",
+    "href": "ch17/ep12-agent-memory/index.html#สงานของความจำ",
+    "title": "EP12 Agent Memory",
+    "section": "สี่งานของความจำ",
+    "text": "สี่งานของความจำ\nWrite. ไม่ใช่ทุกอย่างควรถูกจำ \\(\\text{Write}(e) = \\mathbb{1}[\\text{importance}(e) &gt; \\tau]\\) คะแนนมาจากความไม่คาดคิด รางวัล หรือให้ LLM ให้คะแนน 1–10 ก่อนเขียนต้องตรวจว่าขัดกับของเก่าไหม แล้วเลือกจะเขียนทับ เก็บทั้งคู่พร้อมเวลา หรือส่งให้คนตัดสิน และตำราให้หลักว่า เก็บละเอียดที่สุดเท่าที่จ่ายไหว แล้วค่อยสรุป เพราะสรุปจากข้อเท็จจริงได้เสมอ แต่ย้อนจากสรุปกลับไปไม่ได้ (Table 17.1)\nRead. คะแนนรวมความเหมือนกับความใหม่ \\(\\text{score} = \\lambda \\cdot \\text{sim}(q, v_d) + (1-\\lambda)\\,e^{-(t - t_d)/\\tau_\\text{decay}}\\) ความจำเก่าที่ถูกแทนที่แล้วจะจางลง\nUpdate. รวมความจำที่คล้ายกันเป็นชิ้นเดียว และลืม: LRU (ลบชิ้นที่ไม่ได้ใช้นานที่สุด) ลืมตามความสำคัญ หรือ spaced repetition (ใช้บ่อย อยู่นาน)\nReflect. อ่านจาก episodic คิดใน working แล้วเขียนเป็น semantic ตำรายกตัวอย่าง Reflexion: ล้มเหลวสามครั้ง ได้บทเรียนว่า “ฉันลืมเช็ก list ว่างทุกครั้ง” (Roitman 2026, หมวด 17.4)\n\nใน Lab 1 ประโยคที่ซ้ำคำต่อคำถูกข้าม (1.00) แต่ “The user wants answers kept brief.” ได้ 0.94 ต่ำกว่าเกณฑ์ 0.95 ของตำราจึงถูกเก็บ ถามเรื่อง editor ความเหมือนอย่างเดียวได้ทั้ง VS Code 0.77 และ vim 0.74 ที่ขัดกัน พอบวกความใหม่ vim ที่เก่าสองปีก็หลุด และวันอังคารที่ค้นสามชิ้น ความจำซ้ำกินสองช่อง หัวข้อรายงานหลุด model ยังถามหัวข้อ ค้นสี่ชิ้นถึงตอบได้\n\n\nใน Lab 2 model ให้คะแนน “Thanks!” 1, “I live in Bangkok” 1, กำหนดส่ง 10 (ถ้าไม่บอกเกณฑ์ใน prompt คะแนนกำหนดส่งแกว่ง 3–5) จับคำขอคำตอบสั้นครั้งที่สองเป็น DUPLICATE กำหนดส่งที่เลื่อนจากวันศุกร์เป็นวันพุธเป็น UPDATE โดยเก็บวันศุกร์เป็นประวัติ ลืมได้ทั้งปัจจุบันและประวัติเมื่อผู้ใช้ขอ และฟังก์ชันที่ model เขียนพังกับ [] สามครั้ง ทบทวนได้บทเรียนเดียว งานใหม่จากพัง 0/3 เป็นผ่าน 3/3",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#ความจำขาม-session-ความเปนสวนตว-และหลาย-agent",
+    "href": "ch17/ep12-agent-memory/index.html#ความจำขาม-session-ความเปนสวนตว-และหลาย-agent",
+    "title": "EP12 Agent Memory",
+    "section": "ความจำข้าม session ความเป็นส่วนตัว และหลาย agent",
+    "text": "ความจำข้าม session ความเป็นส่วนตัว และหลาย agent\nตำราให้เก็บแฟ้มผู้ใช้ (ความชอบที่บอก ความชอบที่เดาจากพฤติกรรม ระดับความรู้ งานที่ทำ) แล้ว session continuity สามขั้น: เริ่ม session ด้วยแฟ้มและสรุปของ session ก่อน ใส่ใน system prompt และจบ session ด้วยการสรุปแล้วอัปเดตแฟ้ม (Roitman 2026, หมวด 17.5) ความเป็นส่วนตัว: ต้องขอความยินยอม ให้ผู้ใช้ดูและลบได้ คุมสิทธิ์ระหว่างผู้ใช้ และทำตามกฎหมายเก็บข้อมูล\nเมื่อหลาย agent ทำงานด้วยกัน ความจำกลางแบบ blackboard ให้ทุกตัวอ่านและเขียนแทนการส่งข้อความหากัน และต้องมีกติกาเมื่อเขียนขัดกัน (ใครเขียนทีหลังชนะ เก็บทุกเวอร์ชัน โหวต กำหนดเจ้าของ) — ลงลึกใน EP15",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#วดผลความจำ",
+    "href": "ch17/ep12-agent-memory/index.html#วดผลความจำ",
+    "title": "EP12 Agent Memory",
+    "section": "วัดผลความจำ",
+    "text": "วัดผลความจำ\nLongMemEval แบ่งความสามารถเป็นห้าข้อ: ดึงข้อเท็จจริงได้ โยงข้าม session ได้ แยกเวลาได้ ตามทันเมื่อข้อมูลเปลี่ยน และ abstention กล้าตอบว่าไม่รู้แทนการแต่งความจำ metric มีระดับความจำ (memory recall, precision, latency, token ต่อคำถาม) ระดับคำตอบ (ความถูกต้อง faithfulness อัตราขัดแย้ง) และระดับการทำงาน (เขียนบ่อยแค่ไหน ดึงของเก่ามาบ่อยไหม ความจำโตเร็วแค่ไหน) (Roitman 2026, หมวด 17.9)\n\nใน Lab 3 agent สามชั้นที่เรียก memory_search / memory_write เอง รับปากว่าจะตอบสั้นแต่ไม่บันทึกเลย (5 ใน 5 รอบ) memory recall ไม่ถึง 1 (รอบที่อัดได้ 0.5) ดึงอัตโนมัติจากทุกข้อความแบบ Mem0 ได้ 1.0 และวันอังคาร agent ตัวใหม่ที่เริ่มด้วย page-in ผ่านทั้งสามข้อ: ไม่แนะนำ PatchTST ซ้ำ บอกกำหนดส่งถูก และตอบว่าไม่รู้ชื่อสุนัขที่ไม่เคยถูกบอก\n\n\nใน Lab 4 LangGraph แยก checkpointer (history ต่อ thread) กับ Store (ความจำข้าม thread) thread ใหม่เริ่มว่างแต่ตอบได้ครบจาก Store namespace ต่อผู้ใช้ทำให้บ็อบไม่เห็นความจำของอลิซ และหลัง store.delete thread ใหม่ไม่รู้กำหนดส่งแล้ว แต่ thread เดิมยังตอบจาก checkpoint — จะลืมให้หมดต้องลบทั้งสองที่",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#งานใหม",
+    "href": "ch17/ep12-agent-memory/index.html#งานใหม",
+    "title": "EP12 Agent Memory",
+    "section": "งานใหม่",
+    "text": "งานใหม่\n\nCoALA: ภาษาออกแบบ แยก agent เป็นความจำสี่ชนิด action ภายใน/ภายนอก และวงจรตัดสินใจ\nMem0: ดึงข้อเท็จจริงอัตโนมัติ โยงเป็นกราฟ รวมข้อเท็จจริงที่ล้าสมัย ตำรารายงานว่าบน LOCOMO ดีกว่า baseline ของ OpenAI 26% เชิงสัมพัทธ์ และลด token ได้มากกว่า 90% เทียบกับใส่บทสนทนาทั้งหมด\nSleep-time compute: ใช้เวลาว่างคาดคำถามและคิดเตรียมไว้ ลดการคำนวณตอนตอบราว 5 เท่า\nA-MEM: โน้ตแบบ Zettelkasten ที่มีคำสำคัญ ป้าย และลิงก์ โน้ตใหม่ปรับโน้ตเก่าได้ (Roitman 2026, หมวด 17.11)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#ศพทในตอนน",
+    "href": "ch17/ep12-agent-memory/index.html#ศพทในตอนน",
+    "title": "EP12 Agent Memory",
+    "section": "ศัพท์ในตอนนี้",
+    "text": "ศัพท์ในตอนนี้\n\n\n\nตารางที่ 57.2: ศัพท์ที่ใช้ใน EP12\n\n\n\n\n\n\n\n\n\n\nศัพท์\nคืออะไร\nตัวอย่าง\n\n\n\n\nworking / episodic / semantic / procedural memory\nความจำสี่ชนิด\nดู ตารางที่ 57.1\n\n\nvirtual context (MemGPT)\nความจำเป็นชั้น ร้อน อุ่น เย็น\nโต๊ะ ตู้เอกสาร ห้องเก็บของ\n\n\npage-in / page-out\nดึงความจำเข้า context / ย้ายออก\npage-out “likes Python” (LRU)\n\n\nimportance score\nคะแนนว่าควรจำไหม\n“Thanks!” 1 · กำหนดส่ง 10\n\n\natomic fact\nข้อเท็จจริงสั้นหนึ่งข้อ\n“The user prefers short answers.”\n\n\ncontradiction detection\nตรวจก่อนเขียนว่าขัดกับของเก่าไหม\nวันศุกร์ → วันพุธ: UPDATE\n\n\ntemporal decay\nคะแนนความจำลดลงตามอายุ\nvim สองปีหลุด\n\n\nconsolidation\nรวมความจำที่คล้ายกันเป็นชิ้นเดียว\nขอตอบสั้นห้าครั้ง → หนึ่งชิ้น\n\n\nLRU eviction\nลบชิ้นที่ไม่ได้ใช้นานที่สุด\nลบ “said thanks”\n\n\ninsight\nบทเรียนทั่วไปจากหลายเหตุการณ์\n“handle empty inputs”\n\n\nsession continuity\nเริ่ม session ด้วยความจำ จบด้วยการสรุป\nวันอังคาร page-in สี่ข้อ\n\n\nblackboard\nความจำกลางของหลาย agent\nsearcher แปะ writer อ่าน\n\n\nmemory recall\nสัดส่วนข้อเท็จจริงที่ค้นจากความจำได้\nmodel เขียนเอง &lt; 1 · Mem0 1.0\n\n\nabstention\nไม่มีความจำ ต้องตอบว่าไม่รู้\nชื่อสุนัข → “I don’t know”",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#lab",
+    "href": "ch17/ep12-agent-memory/index.html#lab",
+    "title": "EP12 Agent Memory",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 57.3: Notebook ของ EP12 (ทุก lab มีขั้นตั้งค่าของตัวเอง)\n\n\n\n\n\nLab\n📖 อ่านบนเว็บ\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — คลังความจำ เขียนเอง\nเฉลย + output\nColab\nColab\n\n\nLab 2 — เขียน อัปเดต ลืม และทบทวน\nเฉลย + output\nColab\nColab\n\n\nLab 3 — agent ที่มีความจำ\nเฉลย + output\nColab\nColab\n\n\nLab 4 — agent ตัวเดิมด้วย LangGraph\nเฉลย + output\nColab\nColab\n\n\n\n\n\n\noutput ของ model ทุกอันในคลิปมาจากการรันจริง เวลาของความจำใน Lab 1 เป็นเวลาจำลอง (“เมื่อวาน”, “สองปีก่อน”) ผลที่ผู้เรียนรันเองอาจต่างไป โดยเฉพาะ Lab 3 ที่ model เลือกเองว่าจะบันทึกอะไร (memory recall ระหว่าง 0.5 ถึง 0.75 ในรอบที่เราลอง) ส่วนที่ 8 ของ Lab 2 รันโค้ดที่ model เขียนด้วย exec ทำได้ในการทดลองนี้ ระบบจริงต้องรันใน sandbox",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#คำถามทบทวน",
+    "href": "ch17/ep12-agent-memory/index.html#คำถามทบทวน",
+    "title": "EP12 Agent Memory",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nยกตัวอย่างความจำทั้งสี่ชนิดของ research assistant ที่ช่วยคุณทำรายงาน\nทำไมการกันซ้ำด้วยเกณฑ์ cosine 0.95 จึงพลาดใน Lab 1 และ Lab 2 แก้ได้อย่างไร\nถ้าตั้ง decay_rate ให้จางเร็วมาก จะเกิดอะไรกับความจำที่สำคัญแต่เก่า\nทำไมตำราให้เก็บวันศุกร์ไว้เป็นประวัติ แทนการเขียนทับ\nบทเรียนจากการทบทวนควรเก็บเป็นความจำชนิดไหน เพราะอะไร\nใน Lab 3 ทำไมการให้ model เขียนความจำเองจึงได้ memory recall ต่ำกว่าการดึงอัตโนมัติ และต้องแลกกับอะไร\nผู้ใช้ขอให้ลืมข้อมูลหนึ่ง ใน LangGraph คุณต้องลบที่ไหนบ้าง\nออกแบบคำถามทดสอบ abstention หนึ่งข้อสำหรับ agent ของคุณ",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#อานเพมเตม",
+    "href": "ch17/ep12-agent-memory/index.html#อานเพมเตม",
+    "title": "EP12 Agent Memory",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: ch.17 Agentic Memory Systems (Roitman 2026)\nContext window (หน้าต่างที่ความจำต้องแก้): EP07\nReflexion และ LangGraph: EP05\nRAG ที่คลังความจำต่อยอด: EP10 · EP11",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/index.html#เอกสารอางอง",
+    "href": "ch17/ep12-agent-memory/index.html#เอกสารอางอง",
+    "title": "EP12 Agent Memory",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>57</span>  <span class='chapter-title'>EP12 Agent Memory</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "",
+    "text": "0. เตรียมเครื่องก่อนเริ่ม\nคลิปทฤษฎีเปิดด้วย research assistant ที่วันอังคารจำเรื่องวันจันทร์ไม่ได้เลย Lab นี้เราจะเห็นปัญหานั้นจริง แล้วเขียน คลังความจำ ตาม Listing 17.1 ของตำรา (§17.4)\nสิ่งที่จะได้ทำ\nเวลาของความจำเป็นเวลาจำลอง (“เมื่อวาน”, “สองปีก่อน”) ส่วนคำตอบของ model ทุกคำตอบมาจากการรันจริง\nใส่ API key\n⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ .env",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#เตรยมเครองกอนเรม",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#เตรยมเครองกอนเรม",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "",
+    "text": "สิ่งที่ต้องมี\nรายละเอียด\n\n\n\n\nPython 3.10 ขึ้นไป\nหรือใช้ Google Colab ซึ่งมีให้แล้ว\n\n\nOpenRouter API key\nสมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ไม่ถึง 0.1 เซ็นต์ดอลลาร์)\n\n\nPackages\nopenai, python-dotenv, numpy (ติดตั้งใน cell ถัดไป)\n\n\n\n\n\nColab: ไอคอน 🔑 Secrets → ชื่อ OPENROUTER_API_KEY → เปิด Notebook access\nเครื่องตัวเอง: สร้างไฟล์ .env ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด OPENROUTER_API_KEY=sk-or-...\n\n\n%pip install -q \"openai&gt;=1.50\" python-dotenv numpy",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#model-สองตว-ตวตอบ-และตวทำ-embedding",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#model-สองตว-ตวตอบ-และตวทำ-embedding",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "1. Model สองตัว: ตัวตอบ และตัวทำ embedding",
+    "text": "1. Model สองตัว: ตัวตอบ และตัวทำ embedding\nตัวตอบ google/gemma-4-26b-a4b-it — model เดียวกับทุก EP ล็อก provider เป็น Makora ราคา 0.09 ดอลลาร์ต่อล้าน token ขาเข้า และ 0.28 ต่อล้าน token ขาออก · รุ่น :free ใช้ไม่ได้ (ทดสอบ 2026-11-22: 3 ใน 3 ครั้งได้ 429 “rate-limited”)\nตัวทำ embedding qwen/qwen3-embedding-8b — ตัวเดียวกับ EP10–EP11 ล็อก provider เป็น Nebius — ความจำแต่ละชิ้นกลายเป็นเวกเตอร์ เพื่อค้นด้วยความหมาย\nค่าใช้จ่ายจริงของทุกคำขอรวมไว้ใน COST\nimport os\nfrom dataclasses import dataclass, field\nfrom datetime import datetime, timedelta\nimport numpy as np\nfrom openai import OpenAI\n\ndef load_key():\n    try:  # Google Colab Secrets\n        from google.colab import userdata\n        return userdata.get(\"OPENROUTER_API_KEY\")\n    except ImportError:\n        pass\n    from dotenv import load_dotenv\n    load_dotenv()\n    return os.environ[\"OPENROUTER_API_KEY\"]\nMODEL = \"google/gemma-4-26b-a4b-it\"\nEXTRA = {\"reasoning\": {\"enabled\": False},\n         \"provider\": {\"order\": [\"makora\"], \"allow_fallbacks\": False}}\nEMBED_MODEL = \"qwen/qwen3-embedding-8b\"\nEMBED_EXTRA = {\"provider\": {\"order\": [\"nebius\"], \"allow_fallbacks\": False}}\nKEY = load_key()\nclient = OpenAI(base_url=\"https://openrouter.ai/api/v1\", api_key=KEY, max_retries=5)\nCOST = {\"chat\": 0.0, \"embed\": 0.0}\n\ndef chat(messages):\n    r = client.chat.completions.create(model=MODEL, temperature=0, extra_body=EXTRA,\n                                       messages=messages)\n    COST[\"chat\"] += r.usage.cost\n    return r.choices[0].message.content\n\ndef embed(text):\n    r = client.embeddings.create(model=EMBED_MODEL, input=[text], extra_body=EMBED_EXTRA)\n    COST[\"embed\"] += r.usage.cost\n    v = np.array(r.data[0].embedding)\n    return v / np.linalg.norm(v)                         # length 1: dot product = cosine",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#วนจนทร-และวนองคาร-ไมมความจำ",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#วนจนทร-และวนองคาร-ไมมความจำ",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "2. วันจันทร์ และวันอังคาร — ไม่มีความจำ",
+    "text": "2. วันจันทร์ และวันอังคาร — ไม่มีความจำ\nLLM ไม่มีสถานะ (§17.1): ทุกครั้งที่เรียก มันเห็นแค่ข้อความที่เราส่งไปในครั้งนั้น วันอังคารคือ session ใหม่ — รายการข้อความเริ่มจากว่าง\nmonday = [{\"role\": \"user\", \"content\": \"I'm writing a report on transformers for time series. \"\n                                      \"Please keep your answers short.\"}]\nprint(chat(monday))\nUnderstood. I will provide concise, technical answers. Please ask your first question.\ntuesday = [{\"role\": \"user\", \"content\": \"Any new papers for my report?\"}]\nprint(chat(tuesday)[:600])\nTo provide you with the most relevant papers for your report, I need to know your **topic of interest**.\n\nSince my knowledge cutoff is **January 2025**, I can suggest significant research and trends that emerged leading up to that time. Please let me know which field you are focusing on.\n\nFor example, are you looking for papers in:\n\n*   **Artificial Intelligence:** (e.g., Multimodal LLMs, Agentic workflows, efficient fine-tuning, or AI safety?)\n*   **Medicine/Biology:** (e.g., CRISPR advancements, protein folding, or new oncology treatments?)\n*   **Climate Science:** (e.g., Carbon capture tech",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#ความจำหนงชน-memoryentry",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#ความจำหนงชน-memoryentry",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "3. ความจำหนึ่งชิ้น: MemoryEntry",
+    "text": "3. ความจำหนึ่งชิ้น: MemoryEntry\nตาม Listing 17.1: ข้อความ, embedding, เวลา ที่เขียน, ความสำคัญ (0–1), จำนวนครั้งที่ถูกเรียก และแหล่งที่มา\n@dataclass\nclass MemoryEntry:\n    content: str\n    embedding: np.ndarray\n    timestamp: datetime = field(default_factory=datetime.now)\n    importance: float = 0.5\n    access_count: int = 0\n    last_accessed: datetime | None = None\n    source: str = \"conversation\"",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คลงความจำ-vectormemorystore",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คลงความจำ-vectormemorystore",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "4. คลังความจำ: VectorMemoryStore",
+    "text": "4. คลังความจำ: VectorMemoryStore\n\n\n\nmethod\nทำอะไร\n\n\n\n\nsimilarities(q)\ncosine ของเวกเตอร์ q กับทุกความจำ\n\n\nrecency(entry, now)\nความใหม่ exp(−decay × ชั่วโมง) — 1 คือเพิ่งเขียน\n\n\nwrite(...)\nข้ามถ้าซ้ำ (cosine &gt; 0.95) · ถ้าเต็ม → evict() · แล้วเก็บ\n\n\nevict()\nลบชิ้นที่ importance × 0.7 + recency × 0.3 ต่ำสุด\n\n\nretrieve(q, k)\nคะแนน 0.7 × sim + 0.3 × recency → k ชิ้นแรก\n\n\n\ndecay_rate ของตำราคือ 0.01 ต่อชั่วโมง (ครึ่งหนึ่งใน ~3 วัน) — ความจำของเรากินเวลาเป็นปี จึงใช้ 0.001 (ครึ่งหนึ่งใน ~29 วัน)\nclass VectorMemoryStore:\n    def __init__(self, embed_fn, max_entries=10_000, decay_rate=0.001, recency_weight=0.3):\n        self.embed_fn = embed_fn            # text -&gt; unit vector\n        self.max_entries = max_entries\n        self.decay_rate = decay_rate        # per hour (the book uses 0.01)\n        self.recency_weight = recency_weight\n        self.entries = []\n\n    # ✏️ TODO 1 (▶ วิดีโอ 3:57): เรียงเวกเตอร์ของทุกความจำเป็นเมทริกซ์ แล้วคูณกับ q ได้ cosine ทุกชิ้นพร้อมกัน\n\n    def similarities(self, q):\n        return ___\n\n    # ✏️ TODO 2 (▶ วิดีโอ 4:12): คิดอายุเป็นชั่วโมง แล้วคืน exp(−decay_rate × ชั่วโมง)\n\n    def recency(self, entry, now):\n        hours = ___\n        return ___\n\n    def write(self, content, importance=0.5, when=None, check_duplicates=True):\n        emb = self.embed_fn(content)\n        closest = self.similarities(emb).max() if self.entries else 0.0\n        if check_duplicates and closest &gt; 0.95:\n            print(f\"skip   (closest {closest:.2f}): {content}\")\n            return None\n        if len(self.entries) &gt;= self.max_entries:\n            self.evict()\n        entry = MemoryEntry(content, emb, when or datetime.now(), importance)\n        self.entries.append(entry)\n        print(f\"stored (closest {closest:.2f}): {content}\")\n        return entry\n\n    def evict(self):\n        now, w = datetime.now(), self.recency_weight\n        scores = [e.importance * (1 - w) + self.recency(e, now) * w for e in self.entries]\n        # ✏️ TODO 3 (▶ วิดีโอ 5:14): ลบความจำที่คะแนนต่ำสุดออกจาก self.entries\n        gone = ___\n        print(f\"evict  (score {min(scores):.2f}): {gone.content}\")\n\n    # ✏️ TODO 4 (▶ วิดีโอ 5:19): คะแนนรวม = (1 − w) × ความเหมือน + w × ความใหม่ (หรือความเหมือนอย่างเดียว ถ้าปิด recency_boost)\n\n    def retrieve(self, query, k=5, recency_boost=True):\n        sims = self.similarities(self.embed_fn(query))\n        now, w = datetime.now(), self.recency_weight\n        scores = [___ if recency_boost else s\n                  for e, s in zip(self.entries, sims)]\n        top = list(np.argsort(scores)[::-1][:k])\n        for i in top:\n            self.entries[i].access_count += 1\n            self.entries[i].last_accessed = now\n        return [(scores[i], sims[i], self.entries[i]) for i in top]\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nclass VectorMemoryStore:\n    def __init__(self, embed_fn, max_entries=10_000, decay_rate=0.001, recency_weight=0.3):\n        self.embed_fn = embed_fn            # text -&gt; unit vector\n        self.max_entries = max_entries\n        self.decay_rate = decay_rate        # per hour (the book uses 0.01)\n        self.recency_weight = recency_weight\n        self.entries = []\n\n    def similarities(self, q):\n        return np.stack([e.embedding for e in self.entries]) @ q   # unit vectors: dot = cosine\n\n    def recency(self, entry, now):\n        hours = (now - entry.timestamp).total_seconds() / 3600\n        return np.exp(-self.decay_rate * hours)\n\n    def write(self, content, importance=0.5, when=None, check_duplicates=True):\n        emb = self.embed_fn(content)\n        closest = self.similarities(emb).max() if self.entries else 0.0\n        if check_duplicates and closest &gt; 0.95:\n            print(f\"skip   (closest {closest:.2f}): {content}\")\n            return None\n        if len(self.entries) &gt;= self.max_entries:\n            self.evict()\n        entry = MemoryEntry(content, emb, when or datetime.now(), importance)\n        self.entries.append(entry)\n        print(f\"stored (closest {closest:.2f}): {content}\")\n        return entry\n\n    def evict(self):\n        now, w = datetime.now(), self.recency_weight\n        scores = [e.importance * (1 - w) + self.recency(e, now) * w for e in self.entries]\n        gone = self.entries.pop(int(np.argmin(scores)))\n        print(f\"evict  (score {min(scores):.2f}): {gone.content}\")\n\n    def retrieve(self, query, k=5, recency_boost=True):\n        sims = self.similarities(self.embed_fn(query))\n        now, w = datetime.now(), self.recency_weight\n        scores = [(1 - w) * s + w * self.recency(e, now) if recency_boost else s\n                  for e, s in zip(self.entries, sims)]\n        top = list(np.argsort(scores)[::-1][:k])\n        for i in top:\n            self.entries[i].access_count += 1\n            self.entries[i].last_accessed = now\n        return [(scores[i], sims[i], self.entries[i]) for i in top]\n\n\n\ndef show(hits):\n    for score, sim, e in hits:\n        age = (datetime.now() - e.timestamp).days\n        print(f\"{score:.2f}  sim {sim:.2f}  {age:&gt;3} days  {e.content}\")",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#เขยนความจำของวนจนทร",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#เขยนความจำของวนจนทร",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "5. เขียนความจำของวันจันทร์",
+    "text": "5. เขียนความจำของวันจันทร์\nคลังขนาดเล็ก (max_entries=6) เพื่อให้เห็นการลบเมื่อเต็ม · เวลาเป็นเวลาจำลอง: เมื่อวาน ความสำคัญเราตั้งเองไปก่อน — Lab 2 ให้ model ให้คะแนนเอง\nmem = VectorMemoryStore(embed, max_entries=6)\nyesterday = datetime.now() - timedelta(days=1)               # simulated: Monday\nmem.write(\"The user is writing a report on transformers for time series.\", importance=0.9, when=yesterday)\nmem.write(\"The user prefers short answers.\", importance=0.8, when=yesterday)\nmem.write(\"The user said thanks.\", importance=0.1, when=yesterday)\nmem.write(\"The user prefers short answers.\", importance=0.8, when=yesterday)\nmem.write(\"The user wants answers kept brief.\", importance=0.8, when=yesterday)\nprint(len(mem.entries), \"memories\")\nstored (closest 0.00): The user is writing a report on transformers for time series.\nstored (closest 0.48): The user prefers short answers.\nstored (closest 0.63): The user said thanks.\nskip   (closest 1.00): The user prefers short answers.\nstored (closest 0.94): The user wants answers kept brief.\n4 memories",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คนดวยความเหมอน-ความใหม",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คนดวยความเหมอน-ความใหม",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "6. ค้นด้วยความเหมือน + ความใหม่",
+    "text": "6. ค้นด้วยความเหมือน + ความใหม่\nสองความจำเรื่อง editor: vim (สองปีก่อน) และ VS Code (สัปดาห์ก่อน) — ข้อเท็จจริงเก่าที่ถูกแทนที่แล้ว\nmem.write(\"The user's code editor is vim.\", importance=0.6,\n          when=datetime.now() - timedelta(days=730))\nmem.write(\"The user switched their code editor to VS Code.\", importance=0.6,\n          when=datetime.now() - timedelta(days=7))\nshow(mem.retrieve(\"Which code editor do I use?\", k=2, recency_boost=False))\nprint()\nshow(mem.retrieve(\"Which code editor do I use?\", k=2))\nstored (closest 0.50): The user's code editor is vim.\nstored (closest 0.69): The user switched their code editor to VS Code.\n0.77  sim 0.77    7 days  The user switched their code editor to VS Code.\n0.74  sim 0.74  730 days  The user's code editor is vim.\n\n0.79  sim 0.77    7 days  The user switched their code editor to VS Code.\n0.64  sim 0.49    1 days  The user prefers short answers.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คลงเตม-ลบชนททงไมสำคญและเกา",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#คลงเตม-ลบชนททงไมสำคญและเกา",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "7. คลังเต็ม: ลบชิ้นที่ทั้งไม่สำคัญและเก่า",
+    "text": "7. คลังเต็ม: ลบชิ้นที่ทั้งไม่สำคัญและเก่า\nตอนนี้มี 6 ชิ้น = max_entries · ชิ้นที่ 7 ทำให้ต้องลบหนึ่งชิ้น\nmem.write(\"The user's report is due on Friday.\", importance=0.8)\nprint(len(mem.entries), \"memories\")\nevict  (score 0.36): The user said thanks.\nstored (closest 0.56): The user's report is due on Friday.\n6 memories",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#วนองคาร-พรอมความจำ-session-continuity-17.5.2",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#วนองคาร-พรอมความจำ-session-continuity-17.5.2",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "8. วันอังคาร — พร้อมความจำ (session continuity, §17.5.2)",
+    "text": "8. วันอังคาร — พร้อมความจำ (session continuity, §17.5.2)\nก่อนตอบ: ค้นความจำที่เกี่ยวกับคำถาม → ใส่ใน system prompt → ถาม model\ndef tuesday(question, k):\n    hits = mem.retrieve(question, k=k)\n    show(hits)\n    # ✏️ TODO 5 (▶ วิดีโอ 8:14): ใส่ความจำที่ค้นได้ลงใน system prompt บรรทัดละชิ้น แล้วถาม model\n    system = \"What you remember about this user:\\n\" + ___\n    return chat([{\"role\": \"system\", \"content\": system},\n                 {\"role\": \"user\", \"content\": question}])\n\nprint(tuesday(\"Any new papers for my report?\", k=3))\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\ndef tuesday(question, k):\n    hits = mem.retrieve(question, k=k)\n    show(hits)\n    system = \"What you remember about this user:\\n\" + \"\\n\".join(f\"- {e.content}\" for _, _, e in hits)\n    return chat([{\"role\": \"system\", \"content\": system},\n                 {\"role\": \"user\", \"content\": question}])\n\nprint(tuesday(\"Any new papers for my report?\", k=3))\n\n\n\n0.71  sim 0.59    1 days  The user wants answers kept brief.\n0.70  sim 0.58    0 days  The user's report is due on Friday.\n0.70  sim 0.58    1 days  The user prefers short answers.\nI need to know your **topic** or **field of study** to provide relevant papers. Please specify the subject.\nprint(tuesday(\"Any new papers for my report?\", k=4))\n0.71  sim 0.59    1 days  The user wants answers kept brief.\n0.70  sim 0.58    0 days  The user's report is due on Friday.\n0.70  sim 0.58    1 days  The user prefers short answers.\n0.69  sim 0.57    1 days  The user is writing a report on transformers for time series.\nSince you are focusing on **Transformers for Time Series**, here are three significant recent papers:\n\n1.  **PatchTST (ICLR 2023):** Uses \"patching\" (grouping time steps) to capture local semantic information and reduces complexity. Highly influential.\n2.  **iTransformer (ICLR 2024):** Flips the standard approach by applying the Transformer to the *dimension* axis rather than the *time* axis, significantly improving multivariate forecasting.\n3.  **TimeGPT (2023/2024):** One of the first large-scale foundation models specifically for time series, focusing on zero-shot forecasting capabilities.\n\n**Recommendation:** Focus on **iTransformer** if you want to discuss the latest architectural shifts.\nprint({k: f\"${v:.5f}\" for k, v in COST.items()})\n{'chat': '$0.00015', 'embed': '$0.00000'}",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#สรป",
+    "href": "ch17/ep12-agent-memory/ep12-lab1-memory-store.html#สรป",
+    "title": "Lab 1 — คลังความจำ เขียนเอง",
+    "section": "สรุป",
+    "text": "สรุป\n\n\n\n\n\n\n\nขั้น\nสิ่งที่เห็น\n\n\n\n\nวันอังคาร ไม่มีความจำ\nถามหัวข้อ + ตอบยาว — ลืมทั้งสองเรื่อง\n\n\nwrite: ซ้ำคำต่อคำ\nข้าม (closest 1.00)\n\n\nwrite: คนละคำ ความหมายเดียวกัน\nเก็บ (closest 0.94 &lt; 0.95)\n\n\nถาม editor, ความเหมือนอย่างเดียว\nVS Code 0.77 · vim 0.74 — ข้อมูลขัดกัน\n\n\nถาม editor, + ความใหม่\nVS Code อันดับ 1 · vim หลุด (แต่ “short answers” ขึ้นมาแทน)\n\n\nคลังเต็ม\nลบ “said thanks” (0.36)\n\n\nวันอังคาร k=3\nหัวข้อหลุด — ความจำซ้ำกินสองช่อง → ยังถามหัวข้อ\n\n\nวันอังคาร k=4\nตอบเรื่อง transformer สำหรับ time series สั้นๆ\n\n\n\nแบบฝึกหัด\n\nตั้ง decay_rate=0.01 (ค่าของตำรา) แล้วถามเรื่อง editor อีกครั้ง — อะไรขึ้นมาบ้าง และทำไม\nลดเกณฑ์กันซ้ำเป็น 0.90 — “wants answers kept brief” ถูกข้ามไหม แล้วความจำเรื่อง vim กับ VS Code ถูกข้ามด้วยหรือเปล่า\nเขียน get_stats() ตามตำรา: จำนวนความจำ ความสำคัญเฉลี่ย และความจำที่เก่าที่สุด\n\nถัดไป — Lab 2: ให้ model ตัดสินเองว่าอะไรควรจำ ดึงเป็นข้อเท็จจริงสั้นๆ รวมความจำที่ซ้ำ จัดการความจำที่ขัดกัน และทบทวนเป็นบทเรียน",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>58</span>  <span class='chapter-title'>Lab 1 — คลังความจำ เขียนเอง</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "",
+    "text": "0. เตรียมเครื่องก่อนเริ่ม\nLab 1 จบด้วยปัญหา: ความจำเรื่องเดียวกันที่ใช้คำต่างกัน หลุดการกันซ้ำ แล้วเบียดหัวข้อรายงานออกไป Lab นี้ให้ model ช่วยจัดการความจำ ทั้งสี่งาน (§17.4)\nสิ่งที่จะได้ทำ\nคำตอบของ model ทุกคำตอบมาจากการรันจริง\nใส่ API key\n⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ .env",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#เตรยมเครองกอนเรม",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#เตรยมเครองกอนเรม",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "",
+    "text": "สิ่งที่ต้องมี\nรายละเอียด\n\n\n\n\nPython 3.10 ขึ้นไป\nหรือใช้ Google Colab ซึ่งมีให้แล้ว\n\n\nOpenRouter API key\nสมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ไม่ถึง 0.1 เซ็นต์ดอลลาร์)\n\n\nPackages\nopenai, python-dotenv, numpy (ติดตั้งใน cell ถัดไป)\n\n\n\n\n\nColab: ไอคอน 🔑 Secrets → ชื่อ OPENROUTER_API_KEY → เปิด Notebook access\nเครื่องตัวเอง: สร้างไฟล์ .env ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด OPENROUTER_API_KEY=sk-or-...\n\n\n%pip install -q \"openai&gt;=1.50\" python-dotenv numpy",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#model-และฟงกชนชวย",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#model-และฟงกชนชวย",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "1. Model และฟังก์ชันช่วย",
+    "text": "1. Model และฟังก์ชันช่วย\nGemma 4 26B (Makora) ตอบ · Qwen3 Embedding 8B (Nebius) ทำ embedding — เหมือน Lab 1 (เหตุผลที่เลือก model อยู่ใน Lab 1) ใหม่: ask_json — ขอคำตอบเป็น JSON ตาม schema (structured output จาก EP02)\nimport os, json, re\nfrom dataclasses import dataclass, field\nfrom datetime import datetime, timedelta\nimport numpy as np\nfrom openai import OpenAI\n\ndef load_key():\n    try:  # Google Colab Secrets\n        from google.colab import userdata\n        return userdata.get(\"OPENROUTER_API_KEY\")\n    except ImportError:\n        pass\n    from dotenv import load_dotenv\n    load_dotenv()\n    return os.environ[\"OPENROUTER_API_KEY\"]\n\nMODEL = \"google/gemma-4-26b-a4b-it\"\nEXTRA = {\"reasoning\": {\"enabled\": False},\n         \"provider\": {\"order\": [\"makora\"], \"allow_fallbacks\": False}}\nEMBED_MODEL = \"qwen/qwen3-embedding-8b\"\nEMBED_EXTRA = {\"provider\": {\"order\": [\"nebius\"], \"allow_fallbacks\": False}}\n\nclient = OpenAI(base_url=\"https://openrouter.ai/api/v1\", api_key=load_key(), max_retries=5)\nCOST = {\"chat\": 0.0, \"embed\": 0.0}\n\ndef chat(messages):\n    r = client.chat.completions.create(model=MODEL, temperature=0, extra_body=EXTRA,\n                                       messages=messages)\n    COST[\"chat\"] += r.usage.cost\n    return r.choices[0].message.content\n\ndef embed(text):\n    r = client.embeddings.create(model=EMBED_MODEL, input=[text], extra_body=EMBED_EXTRA)\n    COST[\"embed\"] += r.usage.cost\n    v = np.array(r.data[0].embedding)\n    return v / np.linalg.norm(v)\ndef ask_json(prompt, schema):\n    r = client.chat.completions.create(\n        model=MODEL, temperature=0, extra_body=EXTRA,\n        messages=[{\"role\": \"user\", \"content\": prompt}],\n        response_format={\"type\": \"json_schema\",\n                         \"json_schema\": {\"name\": \"reply\", \"strict\": True, \"schema\": schema}})\n    COST[\"chat\"] += r.usage.cost\n    return json.loads(r.choices[0].message.content)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#คลงความจำ-valid_until",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#คลงความจำ-valid_until",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "2. คลังความจำ + valid_until",
+    "text": "2. คลังความจำ + valid_until\nMemoryEntry ของ Lab 1 เพิ่มหนึ่งช่อง: valid_until — ข้อเท็จจริงที่ถูกแทนที่ ไม่ถูกลบ แต่ถูกปิดด้วยเวลา (“เก็บทั้งคู่พร้อมเวลา” — หนึ่งในสามทางเลือกของตำราเมื่อความจำขัดกัน, §17.4.1) ค้นแบบย่อ: ความเหมือนอย่างเดียว เฉพาะความจำที่ยังจริงอยู่\n@dataclass\nclass MemoryEntry:\n    content: str\n    embedding: np.ndarray\n    timestamp: datetime = field(default_factory=datetime.now)\n    importance: float = 0.5\n    valid_until: datetime | None = None          # set when a newer fact replaces this one\n\n# ✏️ TODO 1 (▶ วิดีโอ 1:35): คืนเฉพาะความจำที่ยังจริงอยู่ (valid_until เป็น None)\n\nclass MemoryStore:\n    def __init__(self):\n        self.entries = []\n\n    def current(self):\n        return ___\n\n    def search(self, q, k=3, everything=False):\n        pool = self.entries if everything else self.current()\n        if not pool:\n            return []\n        sims = np.stack([e.embedding for e in pool]) @ q\n        return [(sims[i], pool[i]) for i in np.argsort(-sims)[:k]]\n\nmem = MemoryStore()\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\n@dataclass\nclass MemoryEntry:\n    content: str\n    embedding: np.ndarray\n    timestamp: datetime = field(default_factory=datetime.now)\n    importance: float = 0.5\n    valid_until: datetime | None = None          # set when a newer fact replaces this one\n\nclass MemoryStore:\n    def __init__(self):\n        self.entries = []\n\n    def current(self):\n        return [e for e in self.entries if e.valid_until is None]\n\n    def search(self, q, k=3, everything=False):\n        pool = self.entries if everything else self.current()\n        if not pool:\n            return []\n        sims = np.stack([e.embedding for e in pool]) @ q\n        return [(sims[i], pool[i]) for i in np.argsort(-sims)[:k]]\n\nmem = MemoryStore()",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#write-model-ใหคะแนนความสำคญ",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#write-model-ใหคะแนนความสำคญ",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "3. Write: model ให้คะแนนความสำคัญ",
+    "text": "3. Write: model ให้คะแนนความสำคัญ\nWrite(e) = 1[importance(e) &gt; τ] (§17.4.1) — ใช้ “LLM self-assessment” ให้คะแนน 1–10 · เก็บถ้าได้ ≥ τ = 5\nIMPORTANCE = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"reason\", \"importance\"],\n              \"properties\": {\"reason\": {\"type\": \"string\"},\n                             \"importance\": {\"type\": \"integer\", \"minimum\": 1, \"maximum\": 10}}}\n\ndef rate(message):\n    return ask_json(\"You manage the long-term memory of a research assistant. \"\n                    \"Facts about the user's work, deadlines and preferences matter in future sessions; \"\n                    \"small talk and personal details unrelated to the work do not. \"\n                    \"Rate from 1 to 10 how important it is to remember this user message \"\n                    \"(10 = essential, 1 = small talk).\\nMessage: \" + message,\n                    IMPORTANCE)[\"importance\"]",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#ดงขอเทจจรง-แลวตดสนวา-add-duplicate-update",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#ดงขอเทจจรง-แลวตดสนวา-add-duplicate-update",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "4. ดึงข้อเท็จจริง แล้วตัดสินว่า ADD / DUPLICATE / UPDATE",
+    "text": "4. ดึงข้อเท็จจริง แล้วตัดสินว่า ADD / DUPLICATE / UPDATE\nแบบ Mem0 (§17.11.2): ดึงข้อเท็จจริงจากบทสนทนาเอง แล้วเทียบกับความจำที่ใกล้ที่สุด 3 ชิ้น | action | ทำอะไร | |—|—| | ADD | ข้อมูลใหม่ → เก็บ | | DUPLICATE | มีอยู่แล้ว → ไม่เก็บ (แก้ปัญหาของ Lab 1) | | UPDATE | แทนของเก่าที่ไม่จริงแล้ว → ปิดของเก่าด้วย valid_until แล้วเก็บของใหม่ |\nFACTS = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"facts\"],\n         \"properties\": {\"facts\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}}\n\ndef extract(message):\n    return ask_json(\"Extract the facts about the user worth remembering from this message, \"\n                    \"as short standalone sentences that start with 'The user'. \"\n                    \"One fact per sentence.\\nMessage: \" + message, FACTS)[\"facts\"]\n\nDECISION = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"action\", \"target\"],\n            \"properties\": {\"action\": {\"type\": \"string\", \"enum\": [\"ADD\", \"DUPLICATE\", \"UPDATE\"]},\n                           \"target\": {\"type\": \"integer\"}}}\n\ndef decide(fact, candidates):\n    listing = \"\\n\".join(f\"{i}. {e.content}\" for i, (_, e) in enumerate(candidates)) or \"(none)\"\n    return ask_json(f\"New fact about the user: {fact}\\nExisting memories:\\n{listing}\\n\"\n                    \"Choose one action:\\n\"\n                    \"ADD - the new fact is new information.\\n\"\n                    \"DUPLICATE - an existing memory already says the same thing.\\n\"\n                    \"UPDATE - an existing memory gives a different value for the same detail \"\n                    \"(for example an old deadline and a new deadline), so it is no longer true.\\n\"\n                    \"Set target to the number of that existing memory, or -1 for ADD.\", DECISION)\n# ✏️ TODO 2 (▶ วิดีโอ 3:36): ถ้าคะแนนต่ำกว่าเกณฑ์ tau ไม่ต้องจำ\ndef remember(message, when=None, tau=5):\n    score = rate(message)\n    print(f\"[{score:&gt;2}] {message}\")\n    if ___:\n        return                                         # not worth remembering\n    for fact in extract(message):\n        emb = embed(fact)\n        candidates = mem.search(emb)\n        d = decide(fact, candidates)\n        old = candidates[d[\"target\"]][1] if 0 &lt;= d[\"target\"] &lt; len(candidates) else None\n        print(f\"     {d['action']:&lt;9} {fact}\" + (f\"  ← {old.content}\" if old else \"\"))\n        # ✏️ TODO 3 (▶ วิดีโอ 3:56): ถ้าเป็น UPDATE ปิดความจำเดิม (old) ด้วยเวลา when หรือเวลาตอนนี้\n        if d[\"action\"] == \"DUPLICATE\":\n            continue\n        if d[\"action\"] == \"UPDATE\" and old:\n            ___\n        mem.entries.append(MemoryEntry(fact, emb, when or datetime.now(), score / 10))\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\ndef remember(message, when=None, tau=5):\n    score = rate(message)\n    print(f\"[{score:&gt;2}] {message}\")\n    if score &lt; tau:\n        return                                         # not worth remembering\n    for fact in extract(message):\n        emb = embed(fact)\n        candidates = mem.search(emb)\n        d = decide(fact, candidates)\n        old = candidates[d[\"target\"]][1] if 0 &lt;= d[\"target\"] &lt; len(candidates) else None\n        print(f\"     {d['action']:&lt;9} {fact}\" + (f\"  ← {old.content}\" if old else \"\"))\n        if d[\"action\"] == \"DUPLICATE\":\n            continue\n        if d[\"action\"] == \"UPDATE\" and old:\n            old.valid_until = when or datetime.now()  # keep it, mark it as past\n        mem.entries.append(MemoryEntry(fact, emb, when or datetime.now(), score / 10))",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#วนจนทร-วนองคาร",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#วนจนทร-วนองคาร",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "5. วันจันทร์ → วันอังคาร",
+    "text": "5. วันจันทร์ → วันอังคาร\nข้อความหกข้อของวันจันทร์ (เวลาจำลอง: เมื่อวาน) แล้วข้อความใหม่ของวันอังคาร\nyesterday = datetime.now() - timedelta(days=1)\nmonday = [\"Hi! I'm writing a report on transformers for time series.\",\n          \"Please keep your answers short.\",\n          \"Thanks!\",\n          \"By the way, I live in Bangkok.\",\n          \"My report deadline is Friday.\",\n          \"Short answers, please. Bullet points are fine.\"]\nfor message in monday:\n    remember(message, when=yesterday)\n[ 7] Hi! I'm writing a report on transformers for time series.\n     ADD       The user is writing a report on transformers for time series.\n[ 8] Please keep your answers short.\n     ADD       The user prefers short answers.\n[ 1] Thanks!\n[ 1] By the way, I live in Bangkok.\n[10] My report deadline is Friday.\n     ADD       The user has a report deadline on Friday.\n[ 9] Short answers, please. Bullet points are fine.\n     DUPLICATE The user prefers short answers.  ← The user prefers short answers.\n     ADD       The user is fine with bullet points.\nremember(\"My report deadline moved to next Wednesday.\")\nprint()\nfor e in mem.entries:\n    until = e.valid_until.strftime(\"%a %d %b\") if e.valid_until else \"now\"\n    print(f\"{e.timestamp:%a %d %b} → {until:&lt;10}  {e.importance:.1f}  {e.content}\")\n[10] My report deadline moved to next Wednesday.\n     UPDATE    The user has a report deadline next Wednesday.  ← The user has a report deadline on Friday.\n\nSat 21 Nov → now         0.7  The user is writing a report on transformers for time series.\nSat 21 Nov → now         0.8  The user prefers short answers.\nSat 21 Nov → Sun 22 Nov  1.0  The user has a report deadline on Friday.\nSat 21 Nov → now         0.9  The user is fine with bullet points.\nSun 22 Nov → now         1.0  The user has a report deadline next Wednesday.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#ใชความจำตอบ",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#ใชความจำตอบ",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "6. ใช้ความจำตอบ",
+    "text": "6. ใช้ความจำตอบ\ndef answer(question, k=3):\n    hits = mem.search(embed(question), k)\n    for sim, e in hits:\n        print(f\"{sim:.2f}  {e.content}\")\n    system = \"What you remember about this user (follow their preferences):\\n\" + \\\n             \"\\n\".join(f\"- {e.content}\" for _, e in hits)\n    return chat([{\"role\": \"system\", \"content\": system}, {\"role\": \"user\", \"content\": question}])\n\nprint(answer(\"When is my report due?\"))\n0.74  The user has a report deadline next Wednesday.\n0.55  The user prefers short answers.\n0.53  The user is writing a report on transformers for time series.\nYour report is due next Wednesday.\nprint(answer(\"Any new papers for my report?\")[:500])\n0.60  The user has a report deadline next Wednesday.\n0.58  The user prefers short answers.\n0.57  The user is writing a report on transformers for time series.\nSince you are focusing on **Transformers for Time Series**, here are three recent/impactful papers to consider:\n\n1.  **PatchTST (ICLR 2023):** Uses \"patching\" to group time steps, significantly improving long-term forecasting by capturing local semantic information.\n2.  **iTransformer (ICLR 2024):** Flips the standard approach by applying attention across *dimensions* rather than time steps, proving highly effective for multivariate data.\n3.  **TimesNet (ICIA 2023):** Transforms 1D time series i",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#forget-ลบเมอผใชขอ",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#forget-ลบเมอผใชขอ",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "7. Forget: ลบเมื่อผู้ใช้ขอ",
+    "text": "7. Forget: ลบเมื่อผู้ใช้ขอ\nตำรา (§17.5 Privacy): ผู้ใช้ต้อง ดูและลบ ความจำของตัวเองได้ — ลบทั้งของปัจจุบัน และประวัติ\nFORGET = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"delete\"],\n          \"properties\": {\"delete\": {\"type\": \"array\", \"items\": {\"type\": \"integer\"}}}}\n\ndef forget(request):\n    candidates = mem.search(embed(request), k=5, everything=True)\n    listing = \"\\n\".join(f\"{i}. {e.content}\" for i, (_, e) in enumerate(candidates))\n    out = ask_json(f\"The user asks: {request}\\nMemories:\\n{listing}\\n\"\n                   \"Which memories must be deleted to respect this request? Give their numbers.\", FORGET)\n    # ✏️ TODO 4 (▶ วิดีโอ 6:12): ลบความจำที่ model เลือกออกจาก mem.entries\n    for i in out[\"delete\"]:\n        print(\"deleted:\", candidates[i][1].content)\n        ___\n\nforget(\"Please forget everything about my deadline.\")\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nFORGET = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"delete\"],\n          \"properties\": {\"delete\": {\"type\": \"array\", \"items\": {\"type\": \"integer\"}}}}\n\ndef forget(request):\n    candidates = mem.search(embed(request), k=5, everything=True)\n    listing = \"\\n\".join(f\"{i}. {e.content}\" for i, (_, e) in enumerate(candidates))\n    out = ask_json(f\"The user asks: {request}\\nMemories:\\n{listing}\\n\"\n                   \"Which memories must be deleted to respect this request? Give their numbers.\", FORGET)\n    for i in out[\"delete\"]:\n        print(\"deleted:\", candidates[i][1].content)\n        mem.entries.remove(candidates[i][1])\n\nforget(\"Please forget everything about my deadline.\")\n\n\n\ndeleted: The user has a report deadline on Friday.\ndeleted: The user has a report deadline next Wednesday.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#reflect-จากความลมเหลว-สบทเรยน-17.4.4",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#reflect-จากความลมเหลว-สบทเรยน-17.4.4",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "8. Reflect: จากความล้มเหลว สู่บทเรียน (§17.4.4)",
+    "text": "8. Reflect: จากความล้มเหลว สู่บทเรียน (§17.4.4)\nให้ model เขียนฟังก์ชันสามข้อ แล้วทดสอบกับ list ว่าง → เก็บผลเป็น episodic memory → ทบทวนเป็นบทเรียนหนึ่งข้อ (semantic memory) → งานใหม่ ไม่มี / มี บทเรียน\n⚠️ cell นี้รันโค้ดที่ model เขียน (exec) บนเครื่องเราเอง — ทำได้ในการทดลองนี้เท่านั้น ระบบจริงต้องรันใน sandbox\ndef try_empty(code, fn):\n    ns = {}\n    try:\n        exec(code, ns)\n        return f\"ok → {ns[fn]([])!r}\"\n    except Exception as e:\n        return f\"{type(e).__name__}: {e}\"\n\ndef attempt(fn, desc, lessons=()):\n    messages = [{\"role\": \"user\", \"content\": f\"Write a Python function {fn}(xs) that {desc}. Code only.\"}]\n    if lessons:\n        messages.insert(0, {\"role\": \"system\", \"content\": \"Lessons from your past attempts:\\n\" +\n                            \"\\n\".join(\"- \" + l for l in lessons)})\n    code = re.search(r\"```(?:python)?\\n(.*?)```\", chat(messages), re.S).group(1)\n    return try_empty(code, fn)\nepisodes = []\nfor fn, desc in [(\"mean\", \"returns the mean of a list of numbers\"),\n                 (\"first_last\", \"returns a tuple of the first and last items of a list\"),\n                 (\"range_of\", \"returns max minus min of a list of numbers\")]:\n    episodes.append(f\"Task: write {fn}(xs). Test {fn}([]): {attempt(fn, desc)}\")\n    print(episodes[-1])\nTask: write mean(xs). Test mean([]): ZeroDivisionError: division by zero\nTask: write first_last(xs). Test first_last([]): IndexError: list index out of range\nTask: write range_of(xs). Test range_of([]): ValueError: max() iterable argument is empty\nINSIGHT = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"insight\"],\n           \"properties\": {\"insight\": {\"type\": \"string\"}}}\n\ndef reflect(episodes):\n    return ask_json(\"These are past attempts of a coding agent:\\n\" +\n                    \"\\n\".join(\"- \" + e for e in episodes) +\n                    \"\\nWhat one general lesson should the agent remember for future tasks? \"\n                    \"One sentence.\", INSIGHT)[\"insight\"]\n\n# ✏️ TODO 5 (▶ วิดีโอ 7:36): เก็บบทเรียนลงคลัง mem เป็น MemoryEntry (ทำ embedding ด้วย) ความสำคัญ 0.9\n\ninsight = \"[INSIGHT] \" + reflect(episodes)\n___\nprint(insight)\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nINSIGHT = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"insight\"],\n           \"properties\": {\"insight\": {\"type\": \"string\"}}}\n\ndef reflect(episodes):\n    return ask_json(\"These are past attempts of a coding agent:\\n\" +\n                    \"\\n\".join(\"- \" + e for e in episodes) +\n                    \"\\nWhat one general lesson should the agent remember for future tasks? \"\n                    \"One sentence.\", INSIGHT)[\"insight\"]\n\ninsight = \"[INSIGHT] \" + reflect(episodes)\nmem.entries.append(MemoryEntry(insight, embed(insight), importance=0.9))\nprint(insight)\n\n\n\n[INSIGHT] Always account for edge cases involving empty input sequences to prevent runtime errors.\ntask = (\"largest\", \"returns the largest number in a list\")\nhits = mem.search(embed(f\"Write a Python function {task[0]}(xs) that {task[1]}.\"), k=1)\nprint(f\"retrieved: {hits[0][1].content}\\n\")\nfor run in range(3):\n    print(\"no memory   \", attempt(*task))\n    print(\"with lesson \", attempt(*task, lessons=[hits[0][1].content]))\nretrieved: [INSIGHT] Always account for edge cases involving empty input sequences to prevent runtime errors.\n\nno memory    ValueError: max() iterable argument is empty\nwith lesson  ok → None\nno memory    ValueError: max() iterable argument is empty\nwith lesson  ok → None\nno memory    ValueError: max() iterable argument is empty\nwith lesson  ok → None\nprint({k: f\"${v:.5f}\" for k, v in COST.items()})\n{'chat': '$0.00050', 'embed': '$0.00000'}",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#สรป",
+    "href": "ch17/ep12-agent-memory/ep12-lab2-memory-operations.html#สรป",
+    "title": "Lab 2 — เขียน อัปเดต ลืม และทบทวน",
+    "section": "สรุป",
+    "text": "สรุป\n\n\n\n\n\n\n\n\nงาน\nวิธี\nสิ่งที่เห็น\n\n\n\n\nWrite\nmodel ให้คะแนน 1–10, τ = 5\n“Thanks!” 1 · “I live in Bangkok” 1 → ไม่จำ · กำหนดส่ง 10\n\n\nExtract\natomic facts แบบ Mem0\nข้อความเดียว → สองข้อเท็จจริง\n\n\nUpdate\nADD / DUPLICATE / UPDATE\nคำขอคำตอบสั้นครั้งที่สอง → DUPLICATE · วันพุธ → UPDATE วันศุกร์ (เก็บไว้เป็นประวัติ)\n\n\nRead\nค้นเฉพาะความจำที่ยังจริง\n“When is my report due?” → วันพุธหน้า · หัวข้อรายงานกลับมาในสามชิ้นแรก\n\n\nForget\nลบเมื่อผู้ใช้ขอ รวมประวัติ\nลบทั้งวันพุธและวันศุกร์\n\n\nReflect\nepisodic → insight → semantic\nlargest([]) ไม่มีบทเรียน: พัง 3/3 · มีบทเรียน: ผ่าน 3/3\n\n\n\nแบบฝึกหัด\n\nตั้ง tau=8 — ข้อความไหนหายไปบ้าง แล้ววันอังคารยังตอบได้ไหม\nลบประโยคเกณฑ์ (“Facts about the user’s work…”) ออกจาก rate แล้วรันซ้ำหลายรอบ — คะแนนของกำหนดส่งนิ่งไหม\nเขียน history(question) ที่ค้นด้วย everything=True แล้วตอบว่า “เดิมรายงานต้องส่งเมื่อไร” (ทำก่อน forget)\n\nถัดไป — Lab 3: agent ที่มีความจำสามชั้น (hot / warm / cold) และเรียกความจำเองผ่าน tool — แล้ววัดผล",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>59</span>  <span class='chapter-title'>Lab 2 — เขียน อัปเดต ลืม และทบทวน</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "",
+    "text": "0. เตรียมเครื่องก่อนเริ่ม\nLab 1–2 เราเป็นคนเรียก write / retrieve เอง — Lab นี้ agent จัดการความจำเอง แบบ MemGPT (§17.3.5)\nสิ่งที่จะได้ทำ\nคำตอบของ model ทุกคำตอบมาจากการรันจริง\nใส่ API key\n⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ .env",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#เตรยมเครองกอนเรม",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#เตรยมเครองกอนเรม",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "",
+    "text": "สิ่งที่ต้องมี\nรายละเอียด\n\n\n\n\nPython 3.10 ขึ้นไป\nหรือใช้ Google Colab ซึ่งมีให้แล้ว\n\n\nOpenRouter API key\nสมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ราว 0.2 เซ็นต์ดอลลาร์)\n\n\nPackages\nopenai, python-dotenv, numpy (ติดตั้งใน cell ถัดไป)\n\n\n\n\n\nColab: ไอคอน 🔑 Secrets → ชื่อ OPENROUTER_API_KEY → เปิด Notebook access\nเครื่องตัวเอง: สร้างไฟล์ .env ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด OPENROUTER_API_KEY=sk-or-...\n\n\n%pip install -q \"openai&gt;=1.50\" python-dotenv numpy",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#model-และฟงกชนชวย",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#model-และฟงกชนชวย",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "1. Model และฟังก์ชันช่วย",
+    "text": "1. Model และฟังก์ชันช่วย\nGemma 4 26B (Makora) ตอบและเรียก tool · Qwen3 Embedding 8B (Nebius) ทำ embedding — เหมือน Lab 1 (เหตุผลที่เลือก model อยู่ใน Lab 1)\nimport os, json\nfrom collections import OrderedDict\nfrom dataclasses import dataclass, field\nfrom datetime import datetime\nimport numpy as np\nfrom openai import OpenAI\n\ndef load_key():\n    try:  # Google Colab Secrets\n        from google.colab import userdata\n        return userdata.get(\"OPENROUTER_API_KEY\")\n    except ImportError:\n        pass\n    from dotenv import load_dotenv\n    load_dotenv()\n    return os.environ[\"OPENROUTER_API_KEY\"]\n\nMODEL = \"google/gemma-4-26b-a4b-it\"\nEXTRA = {\"reasoning\": {\"enabled\": False},\n         \"provider\": {\"order\": [\"makora\"], \"allow_fallbacks\": False}}\nEMBED_MODEL = \"qwen/qwen3-embedding-8b\"\nEMBED_EXTRA = {\"provider\": {\"order\": [\"nebius\"], \"allow_fallbacks\": False}}\n\nclient = OpenAI(base_url=\"https://openrouter.ai/api/v1\", api_key=load_key(), max_retries=5)\nCOST = {\"chat\": 0.0, \"embed\": 0.0}\n\ndef embed(text):\n    r = client.embeddings.create(model=EMBED_MODEL, input=[text], extra_body=EMBED_EXTRA)\n    COST[\"embed\"] += r.usage.cost\n    v = np.array(r.data[0].embedding)\n    return v / np.linalg.norm(v)\n\ndef ask_json(prompt, schema):\n    r = client.chat.completions.create(\n        model=MODEL, temperature=0, extra_body=EXTRA,\n        messages=[{\"role\": \"user\", \"content\": prompt}],\n        response_format={\"type\": \"json_schema\",\n                         \"json_schema\": {\"name\": \"reply\", \"strict\": True, \"schema\": schema}})\n    COST[\"chat\"] += r.usage.cost\n    return json.loads(r.choices[0].message.content)\n\n@dataclass\nclass MemoryEntry:\n    content: str\n    embedding: np.ndarray\n    timestamp: datetime = field(default_factory=datetime.now)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#ความจำสามชน-listing-17.2",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#ความจำสามชน-listing-17.2",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "2. ความจำสามชั้น (Listing 17.2)",
+    "text": "2. ความจำสามชั้น (Listing 17.2)\n\n\n\nชั้น\nเก็บที่\nใช้อย่างไร\n\n\n\n\n🔥 hot\nOrderedDict (LRU) จุได้ไม่กี่ชิ้น\nใส่ใน system prompt ทุกรอบ\n\n\n🌤 warm\nlist ของ MemoryEntry + embedding\nค้นด้วยความหมาย\n\n\n🧊 cold\nบทสนทนาคำต่อคำ (ไม่มี embedding)\narchive ไว้ตรวจสอบย้อนหลัง\n\n\n\npage-in = ดึงจาก warm ขึ้น hot · เมื่อ hot เต็ม → page-out ชิ้นที่ไม่ได้ใช้นานที่สุด (LRU)\nclass TieredMemory:\n    def __init__(self, hot_capacity=4):\n        self.hot = OrderedDict()          # content -&gt; entry, least recently used first\n        self.hot_capacity = hot_capacity\n        self.warm = []                    # MemoryEntry with embeddings\n        self.cold = []                    # raw transcript lines, never searched\n\n    def write(self, content):\n        self.warm.append(MemoryEntry(content, embed(content)))\n\n    def archive(self, role, text):\n        self.cold.append(f\"{role}: {text}\")\n\n    def page_in(self, query, k=3):\n        if not self.warm:\n            return []\n        sims = np.stack([e.embedding for e in self.warm]) @ embed(query)\n        found = [self.warm[i] for i in np.argsort(-sims)[:k]]\n        # ✏️ TODO 1 (▶ วิดีโอ 1:49): ยกความจำขึ้นชั้นร้อน ย้ายไปท้ายสุด และถ้าเกินความจุ ตัดตัวที่ไม่ได้ใช้นานที่สุดออก\n        for e in found:\n            self.hot[e.content] = e\n            ___                                              # just used\n            if len(self.hot) &gt; self.hot_capacity:\n                gone, _ = ___                                # least recently used\n                print(f\"      page-out: {gone}\")\n        return found\n\n    def hot_context(self):\n        return \"\\n\".join(f\"- {c}\" for c in self.hot) or \"(empty)\"\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nclass TieredMemory:\n    def __init__(self, hot_capacity=4):\n        self.hot = OrderedDict()          # content -&gt; entry, least recently used first\n        self.hot_capacity = hot_capacity\n        self.warm = []                    # MemoryEntry with embeddings\n        self.cold = []                    # raw transcript lines, never searched\n\n    def write(self, content):\n        self.warm.append(MemoryEntry(content, embed(content)))\n\n    def archive(self, role, text):\n        self.cold.append(f\"{role}: {text}\")\n\n    def page_in(self, query, k=3):\n        if not self.warm:\n            return []\n        sims = np.stack([e.embedding for e in self.warm]) @ embed(query)\n        found = [self.warm[i] for i in np.argsort(-sims)[:k]]\n        for e in found:\n            self.hot[e.content] = e\n            self.hot.move_to_end(e.content)                  # just used\n            if len(self.hot) &gt; self.hot_capacity:\n                gone, _ = self.hot.popitem(last=False)       # least recently used\n                print(f\"      page-out: {gone}\")\n        return found\n\n    def hot_context(self):\n        return \"\\n\".join(f\"- {c}\" for c in self.hot) or \"(empty)\"\n\n\n\ndemo = TieredMemory(hot_capacity=2)\nfor fact in [\"The user likes Python.\", \"The user works at night.\", \"The user's cat is called Mochi.\"]:\n    demo.write(fact)\nfor query in [\"programming language\", \"working hours\", \"pets\"]:\n    demo.page_in(query, k=1)\nprint(demo.hot_context())\n      page-out: The user likes Python.\n- The user works at night.\n- The user's cat is called Mochi.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#agent-ทเรยกความจำเองผาน-tool-listing-17.3",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#agent-ทเรยกความจำเองผาน-tool-listing-17.3",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "3. Agent ที่เรียกความจำเองผ่าน tool (Listing 17.3)",
+    "text": "3. Agent ที่เรียกความจำเองผ่าน tool (Listing 17.3)\nตำราใช้คำสั่งพิเศษในข้อความ ([MEMORY_SEARCH: …]) — เราใช้ tool calling ที่เรียนใน EP03 แทน ซึ่งทำหน้าที่เดียวกัน วงจร: read (hot tier ใน prompt + memory_search) → act (ตอบ) → write (memory_write) · ทุกบรรทัดลง cold\nTOOLS = [\n    {\"type\": \"function\", \"function\": {\n        \"name\": \"memory_search\",\n        \"description\": \"Search your long-term memory about this user. Use it before answering anything \"\n                       \"that depends on what the user told you in earlier sessions.\",\n        \"parameters\": {\"type\": \"object\", \"properties\": {\"query\": {\"type\": \"string\"}}, \"required\": [\"query\"]}}},\n    {\"type\": \"function\", \"function\": {\n        \"name\": \"memory_write\",\n        \"description\": \"Save one short fact about the user (their work, deadlines, preferences) \"\n                       \"for future sessions. Do not save small talk.\",\n        \"parameters\": {\"type\": \"object\", \"properties\": {\"fact\": {\"type\": \"string\"}}, \"required\": [\"fact\"]}}},\n]\n\nSYSTEM = \"\"\"You are a research assistant with long-term memory across sessions.\nMemory in your context right now (hot tier):\n{hot}\nUse memory_search before answering questions that depend on earlier sessions.\nUse memory_write to save important new facts the user tells you.\nFollow the user's preferences in your memory. If your memory has nothing about something, say you don't know.\"\"\"\nclass Agent:\n    def __init__(self, memory, auto_extract=False):\n        self.memory, self.auto_extract = memory, auto_extract\n        self.history = []                                       # working memory: this session only\n\n    def step(self, user):\n        self.memory.archive(\"user\", user)\n        self.history.append({\"role\": \"user\", \"content\": user})\n        if self.auto_extract:\n            for fact in extract(user):\n                self.memory.write(fact)\n                print(f\"   📝 auto: {fact}\")\n        tools = TOOLS[:1] if self.auto_extract else TOOLS             # auto mode: search only\n        for _ in range(5):                                               # at most 5 model calls per turn\n            messages = [{\"role\": \"system\", \"content\": SYSTEM.format(hot=self.memory.hot_context())}]\n            r = client.chat.completions.create(model=MODEL, temperature=0, extra_body=EXTRA,\n                                               messages=messages + self.history[-8:], tools=tools)\n            COST[\"chat\"] += r.usage.cost\n            msg = r.choices[0].message\n            if not msg.tool_calls:                                       # a final answer\n                self.history.append({\"role\": \"assistant\", \"content\": msg.content})\n                self.memory.archive(\"assistant\", msg.content)\n                return msg.content\n            self.history.append({\"role\": \"assistant\", \"content\": msg.content or \"\",\n                                 \"tool_calls\": [tc.model_dump() for tc in msg.tool_calls]})\n            # ✏️ TODO 2 (▶ วิดีโอ 4:10): memory_search → page_in แล้วรวมข้อความที่เจอ · memory_write → เขียนลงชั้นอุ่น\n            for tc in msg.tool_calls:\n                args = json.loads(tc.function.arguments)\n                if tc.function.name == \"memory_search\":\n                    result = ___ or \"(nothing found)\"\n                else:\n                    ___\n                    result = \"saved\"\n                print(f\"   🔧 {tc.function.name}({next(iter(args.values()))!r})\")\n                self.history.append({\"role\": \"tool\", \"tool_call_id\": tc.id, \"content\": result})\n        return \"(no answer after 5 calls)\"\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nclass Agent:\n    def __init__(self, memory, auto_extract=False):\n        self.memory, self.auto_extract = memory, auto_extract\n        self.history = []                                       # working memory: this session only\n\n    def step(self, user):\n        self.memory.archive(\"user\", user)\n        self.history.append({\"role\": \"user\", \"content\": user})\n        if self.auto_extract:\n            for fact in extract(user):\n                self.memory.write(fact)\n                print(f\"   📝 auto: {fact}\")\n        tools = TOOLS[:1] if self.auto_extract else TOOLS             # auto mode: search only\n        for _ in range(5):                                               # at most 5 model calls per turn\n            messages = [{\"role\": \"system\", \"content\": SYSTEM.format(hot=self.memory.hot_context())}]\n            r = client.chat.completions.create(model=MODEL, temperature=0, extra_body=EXTRA,\n                                               messages=messages + self.history[-8:], tools=tools)\n            COST[\"chat\"] += r.usage.cost\n            msg = r.choices[0].message\n            if not msg.tool_calls:                                       # a final answer\n                self.history.append({\"role\": \"assistant\", \"content\": msg.content})\n                self.memory.archive(\"assistant\", msg.content)\n                return msg.content\n            self.history.append({\"role\": \"assistant\", \"content\": msg.content or \"\",\n                                 \"tool_calls\": [tc.model_dump() for tc in msg.tool_calls]})\n            for tc in msg.tool_calls:\n                args = json.loads(tc.function.arguments)\n                if tc.function.name == \"memory_search\":\n                    result = \"\\n\".join(e.content for e in self.memory.page_in(args[\"query\"])) or \"(nothing found)\"\n                else:\n                    self.memory.write(args[\"fact\"])\n                    result = \"saved\"\n                print(f\"   🔧 {tc.function.name}({next(iter(args.values()))!r})\")\n                self.history.append({\"role\": \"tool\", \"tool_call_id\": tc.id, \"content\": result})\n        return \"(no answer after 5 calls)\"",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วนจนทร-ให-model-เลอกเองวาจะเขยนอะไร",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วนจนทร-ให-model-เลอกเองวาจะเขยนอะไร",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "4. วันจันทร์: ให้ model เลือกเองว่าจะเขียนอะไร",
+    "text": "4. วันจันทร์: ให้ model เลือกเองว่าจะเขียนอะไร\nmonday = [\"Hi! I'm writing a report on transformers for time series.\",\n          \"Please keep your answers short.\",\n          \"My report deadline is next Wednesday.\",\n          \"I already read the PatchTST paper, so don't suggest it again.\",\n          \"Thanks, that's all for today!\"]\n\nself_mem = TieredMemory()\nagent = Agent(self_mem)\nfor user in monday:\n    print(\"USER:\", user)\n    print(\"AGENT:\", agent.step(user)[:120].replace(\"\\n\", \" \"), \"\\n\")\nUSER: Hi! I'm writing a report on transformers for time series.\nAGENT: That sounds like a fascinating topic! Transformers have fundamentally changed how we approach sequence modeling, and the \n\nUSER: Please keep your answers short.\nAGENT: Understood. I will keep my responses concise. How can I help with your report? \n\nUSER: My report deadline is next Wednesday.\n   🔧 memory_write(\"The user's report deadline is next Wednesday.\")\nAGENT: Noted. I've recorded that deadline. What's our first task? \n\nUSER: I already read the PatchTST paper, so don't suggest it again.\n   🔧 memory_write('The user has already read the PatchTST paper and does not want it suggested again.')\nAGENT: Understood. I'll skip PatchTST. What should we look into instead? \n\nUSER: Thanks, that's all for today!\nAGENT: You're very welcome! Have a great rest of your day. I'll be here whenever you're ready to dive back in.",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วดผล-memory-recall-17.9.3",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วดผล-memory-recall-17.9.3",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "5. วัดผล: memory recall (§17.9.3)",
+    "text": "5. วัดผล: memory recall (§17.9.3)\nmemory recall = ข้อเท็จจริงที่ค้นจากความจำได้ / ข้อเท็จจริงทั้งหมดที่ควรจำ — ใช้ model ตัดสินว่าความจำมีข้อเท็จจริงนั้นไหม\nGOLD = [\"The user is writing a report on transformers for time series.\",\n        \"The user prefers short answers.\",\n        \"The user's report deadline is next Wednesday.\",\n        \"The user has already read PatchTST.\"]\nYES_NO = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"answer\"],\n          \"properties\": {\"answer\": {\"type\": \"string\", \"enum\": [\"yes\", \"no\"]}}}\n\n# ✏️ TODO 3 (▶ วิดีโอ 5:17): memory recall = จำนวนข้อที่ตอบ yes หารด้วยจำนวนข้อเท็จจริงทั้งหมด\n\ndef memory_recall(memory):\n    listing = \"\\n\".join(\"- \" + e.content for e in memory.warm)\n    found = [ask_json(f\"Memories:\\n{listing}\\nDo these memories state this fact: {g}\\nAnswer yes or no.\",\n                      YES_NO)[\"answer\"] == \"yes\" for g in GOLD]\n    print(found)\n    return ___\n\nprint(\"memory recall:\", memory_recall(self_mem))\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nGOLD = [\"The user is writing a report on transformers for time series.\",\n        \"The user prefers short answers.\",\n        \"The user's report deadline is next Wednesday.\",\n        \"The user has already read PatchTST.\"]\nYES_NO = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"answer\"],\n          \"properties\": {\"answer\": {\"type\": \"string\", \"enum\": [\"yes\", \"no\"]}}}\n\ndef memory_recall(memory):\n    listing = \"\\n\".join(\"- \" + e.content for e in memory.warm)\n    found = [ask_json(f\"Memories:\\n{listing}\\nDo these memories state this fact: {g}\\nAnswer yes or no.\",\n                      YES_NO)[\"answer\"] == \"yes\" for g in GOLD]\n    print(found)\n    return sum(found) / len(GOLD)\n\nprint(\"memory recall:\", memory_recall(self_mem))\n\n\n\n[False, False, True, True]\nmemory recall: 0.5",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#ดงอตโนมตแบบ-mem0-17.11.2",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#ดงอตโนมตแบบ-mem0-17.11.2",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "6. ดึงอัตโนมัติแบบ Mem0 (§17.11.2)",
+    "text": "6. ดึงอัตโนมัติแบบ Mem0 (§17.11.2)\nไม่รอ model สั่งเขียน — ทุกข้อความของผู้ใช้ ดึงข้อเท็จจริงเอง (รวม rate + extract ของ Lab 2 ไว้ใน prompt เดียว)\nFACTS = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"facts\"],\n         \"properties\": {\"facts\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}}\n\ndef extract(message):\n    return ask_json(\"You manage the long-term memory of a research assistant. From this user message, \"\n                    \"extract the facts about the user's work, deadlines and preferences worth remembering \"\n                    \"in future sessions, as short sentences that start with 'The user'. \"\n                    \"Return an empty list for small talk.\\nMessage: \" + message, FACTS)[\"facts\"]\n\nauto_mem = TieredMemory()\nagent = Agent(auto_mem, auto_extract=True)\nfor user in monday:\n    agent.step(user)\nprint(\"\\nmemory recall:\", memory_recall(auto_mem))\n   📝 auto: The user is writing a report on transformers for time series.\n   📝 auto: The user prefers short answers.\n   📝 auto: The user has a report deadline next Wednesday.\n   📝 auto: The user has already read the PatchTST paper.\n[True, True, True, True]\n\nmemory recall: 1.0",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วนองคาร-session-ใหม-17.5.2-session-continuity",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#วนองคาร-session-ใหม-17.5.2-session-continuity",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "7. วันอังคาร: session ใหม่ (§17.5.2 session continuity)",
+    "text": "7. วันอังคาร: session ใหม่ (§17.5.2 session continuity)\nชั้นร้อนว่าง → page-in ตอนเริ่ม session (งาน กำหนดส่ง ความชอบ) → agent ใหม่ (history ว่าง) → สามคำถาม\n# ✏️ TODO 4 (▶ วิดีโอ 6:36): เริ่ม session: page_in ความจำเรื่องงาน กำหนดส่ง และความชอบ 4 ชิ้น\nauto_mem.hot.clear()\n___\nprint(auto_mem.hot_context())\ntuesday_agent = Agent(auto_mem, auto_extract=True)\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nauto_mem.hot.clear()\nauto_mem.page_in(\"the user's work, deadlines and preferences\", k=4)\nprint(auto_mem.hot_context())\ntuesday_agent = Agent(auto_mem, auto_extract=True)\n\n\n\n- The user has a report deadline next Wednesday.\n- The user prefers short answers.\n- The user is writing a report on transformers for time series.\n- The user has already read the PatchTST paper.\nCHECKS = {\"Any papers I should read next for my report?\": \"It does not recommend PatchTST as a paper to read.\",\n          \"When is my report due?\": \"It says the report is due next Wednesday.\",\n          \"What's my dog's name?\": \"It says it does not know the dog's name.\"}\n\nfor question, check in CHECKS.items():\n    answer = tuesday_agent.step(question)\n    ok = ask_json(f\"Question: {question}\\nAnswer: {answer}\\nIs this true of the answer: {check}\\n\"\n                  \"Answer yes or no.\", YES_NO)[\"answer\"]\n    print(f\"USER: {question}\\nAGENT: {answer[:200]}\\n   {len(answer.split())} words · {check} → {ok}\\n\")\nUSER: Any papers I should read next for my report?\nAGENT: Since you've already read **PatchTST**, you have a good grasp of the \"patching\" concept which helps with local semantic information. To build a comprehensive report, I recommend reading these next, ca\n   222 words · It does not recommend PatchTST as a paper to read. → yes\n\nUSER: When is my report due?\nAGENT: Your report is due next Wednesday.\n   6 words · It says the report is due next Wednesday. → yes\n\nUSER: What's my dog's name?\nAGENT: I don't know your dog's name.\n   6 words · It says it does not know the dog's name. → yes\nprint(len(auto_mem.cold), \"lines in cold ·\", len(auto_mem.warm), \"facts in warm ·\", len(auto_mem.hot), \"in hot\")\nprint({k: f\"${v:.5f}\" for k, v in COST.items()})\n16 lines in cold · 4 facts in warm · 4 in hot\n{'chat': '$0.00133', 'embed': '$0.00000'}",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#สรป",
+    "href": "ch17/ep12-agent-memory/ep12-lab3-memory-agent.html#สรป",
+    "title": "Lab 3 — Agent ที่มีความจำ",
+    "section": "สรุป",
+    "text": "สรุป\n\n\n\n\n\n\n\nขั้น\nสิ่งที่เห็น\n\n\n\n\nชั้นร้อนจุ 2\npage-in เรื่องที่ 3 → page-out “likes Python” (LRU)\n\n\nmodel เขียนเอง (memory_write)\nบันทึก 2 ครั้ง ไม่บันทึก “keep answers short” (5/5 รอบ) → memory recall 0.5–0.75\n\n\nดึงอัตโนมัติ (Mem0)\n4 ข้อเท็จจริง · “Thanks” → ไม่มี → memory recall 1.0\n\n\nวันอังคาร: page-in ตอนเริ่ม\nชั้นร้อนมีครบ 4 ข้อ\n\n\nสามคำถาม\nไม่แนะนำ PatchTST ซ้ำ ✓ · วันพุธหน้า ✓ · ชื่อสุนัข “ไม่รู้” ✓ (abstention)\n\n\n\nแบบฝึกหัด\n\nตั้ง hot_capacity=2 ในวันอังคาร — page-out ชิ้นไหน แล้วคำถามเรื่อง paper ยังผ่านไหม\nใช้ self_mem (ที่ขาด “short answers”) กับวันอังคาร — คำตอบยาวกว่าเดิมไหม (นับคำ)\nเพิ่ม tool memory_forget(query) ตาม Lab 2 แล้วลองขอให้ agent ลืมกำหนดส่ง\n\nถัดไป — Lab 4: agent ตัวเดียวกันด้วย LangGraph — checkpointer (ความจำใน thread) + Store (ความจำข้าม thread)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>60</span>  <span class='chapter-title'>Lab 3 — Agent ที่มีความจำ</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "",
+    "text": "0. เตรียมเครื่องก่อนเริ่ม\nLab 3 เราเขียนความจำเองทุกชั้น — Lab นี้สร้าง agent แบบ Mem0 ตัวเดิมด้วย LangGraph\nคำตอบของ model ทุกคำตอบมาจากการรันจริง\nใส่ API key\n⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ .env",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#เตรยมเครองกอนเรม",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#เตรยมเครองกอนเรม",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "",
+    "text": "สิ่งที่ต้องมี\nรายละเอียด\n\n\n\n\nPython 3.10 ขึ้นไป\nหรือใช้ Google Colab ซึ่งมีให้แล้ว\n\n\nOpenRouter API key\nสมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ไม่ถึง 0.1 เซ็นต์ดอลลาร์)\n\n\nPackages\nlanggraph==1.2.16 (เวอร์ชันเดียวกับ EP11), openai, python-dotenv, numpy\n\n\n\n\n\nColab: ไอคอน 🔑 Secrets → ชื่อ OPENROUTER_API_KEY → เปิด Notebook access\nเครื่องตัวเอง: สร้างไฟล์ .env ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด OPENROUTER_API_KEY=sk-or-...\n\n\n%pip install -q \"langgraph==1.2.16\" \"openai&gt;=1.50\" python-dotenv numpy",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#model-และฟงกชนชวยจาก-lab-3",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#model-และฟงกชนชวยจาก-lab-3",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "1. Model และฟังก์ชันช่วยจาก Lab 3",
+    "text": "1. Model และฟังก์ชันช่วยจาก Lab 3\nGemma 4 26B (Makora) · Qwen3 Embedding 8B (Nebius) — เหตุผลที่เลือก model อยู่ใน Lab 1 extract() คือฟังก์ชันดึงข้อเท็จจริงแบบ Mem0 จาก Lab 3 ทุกตัวอักษร\nimport os, json, operator, uuid\nfrom typing import Annotated, TypedDict\nfrom openai import OpenAI\n\ndef load_key():\n    try:  # Google Colab Secrets\n        from google.colab import userdata\n        return userdata.get(\"OPENROUTER_API_KEY\")\n    except ImportError:\n        pass\n    from dotenv import load_dotenv\n    load_dotenv()\n    return os.environ[\"OPENROUTER_API_KEY\"]\n\nMODEL = \"google/gemma-4-26b-a4b-it\"\nEXTRA = {\"reasoning\": {\"enabled\": False},\n         \"provider\": {\"order\": [\"makora\"], \"allow_fallbacks\": False}}\nEMBED_MODEL = \"qwen/qwen3-embedding-8b\"\nEMBED_EXTRA = {\"provider\": {\"order\": [\"nebius\"], \"allow_fallbacks\": False}}\n\nclient = OpenAI(base_url=\"https://openrouter.ai/api/v1\", api_key=load_key(), max_retries=5)\nCOST = {\"chat\": 0.0, \"embed\": 0.0}\n\ndef chat(messages):\n    r = client.chat.completions.create(model=MODEL, temperature=0, extra_body=EXTRA,\n                                       messages=messages)\n    COST[\"chat\"] += r.usage.cost\n    return r.choices[0].message.content\n\ndef ask_json(prompt, schema):\n    r = client.chat.completions.create(\n        model=MODEL, temperature=0, extra_body=EXTRA,\n        messages=[{\"role\": \"user\", \"content\": prompt}],\n        response_format={\"type\": \"json_schema\",\n                         \"json_schema\": {\"name\": \"reply\", \"strict\": True, \"schema\": schema}})\n    COST[\"chat\"] += r.usage.cost\n    return json.loads(r.choices[0].message.content)\n\nFACTS = {\"type\": \"object\", \"additionalProperties\": False, \"required\": [\"facts\"],\n         \"properties\": {\"facts\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}}\n\ndef extract(message):\n    return ask_json(\"You manage the long-term memory of a research assistant. From this user message, \"\n                    \"extract the facts about the user's work, deadlines and preferences worth remembering \"\n                    \"in future sessions, as short sentences that start with 'The user'. \"\n                    \"Return an empty list for small talk.\\nMessage: \" + message, FACTS)[\"facts\"]\ndef embed_texts(texts):\n    r = client.embeddings.create(model=EMBED_MODEL, input=list(texts), extra_body=EMBED_EXTRA)\n    COST[\"embed\"] += r.usage.cost\n    return [d.embedding for d in r.data]",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#store-ความจำขาม-thread",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#store-ความจำขาม-thread",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "2. Store: ความจำข้าม thread",
+    "text": "2. Store: ความจำข้าม thread\nInMemoryStore(index=…) — เก็บ value (dict) ไว้ใต้ namespace และ key · index ทำ embedding ของ field text ให้ค้นด้วยความหมายได้ (ระบบจริงใช้ PostgresStore แทน — API เดียวกัน)\nfrom langgraph.store.memory import InMemoryStore\n\nstore = InMemoryStore(index={\"embed\": embed_texts, \"dims\": 4096, \"fields\": [\"text\"]})",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#graph-สอง-node-remember-respond",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#graph-สอง-node-remember-respond",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "3. Graph สอง node: remember → respond",
+    "text": "3. Graph สอง node: remember → respond\nnode ใน LangGraph ขอ config (มี thread_id, user_id) และ store ได้ — framework ส่งให้เอง\nclass State(TypedDict):\n    messages: Annotated[list[dict], operator.add]\n\n# ✏️ TODO 1 (▶ วิดีโอ 1:55): เก็บข้อเท็จจริงลง Store ใต้ namespace ของผู้ใช้ ด้วย key ไม่ซ้ำ และ value {'text': fact}\n\ndef remember(state, config, *, store):\n    namespace = (\"memories\", config[\"configurable\"][\"user_id\"])\n    for fact in extract(state[\"messages\"][-1][\"content\"]):\n        ___\n        print(\"   📝\", fact)\n    return {}\n\nSYSTEM = \"\"\"You are a research assistant with long-term memory across sessions.\nWhat you remember about this user:\n{memories}\nFollow the user's preferences in your memory. If your memory has nothing about something, say you don't know.\"\"\"\n\n# ✏️ TODO 2 (▶ วิดีโอ 2:19): ค้น Store ใต้ namespace ของผู้ใช้ ด้วยข้อความล่าสุด เอา 4 ชิ้น\n\ndef respond(state, config, *, store):\n    namespace = (\"memories\", config[\"configurable\"][\"user_id\"])\n    hits = ___\n    memories = \"\\n\".join(f\"- {h.value['text']}\" for h in hits) or \"(nothing)\"\n    answer = chat([{\"role\": \"system\", \"content\": SYSTEM.format(memories=memories)}] + state[\"messages\"][-8:])\n    return {\"messages\": [{\"role\": \"assistant\", \"content\": answer}]}\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nclass State(TypedDict):\n    messages: Annotated[list[dict], operator.add]\n\ndef remember(state, config, *, store):\n    namespace = (\"memories\", config[\"configurable\"][\"user_id\"])\n    for fact in extract(state[\"messages\"][-1][\"content\"]):\n        store.put(namespace, str(uuid.uuid4()), {\"text\": fact})\n        print(\"   📝\", fact)\n    return {}\n\nSYSTEM = \"\"\"You are a research assistant with long-term memory across sessions.\nWhat you remember about this user:\n{memories}\nFollow the user's preferences in your memory. If your memory has nothing about something, say you don't know.\"\"\"\n\ndef respond(state, config, *, store):\n    namespace = (\"memories\", config[\"configurable\"][\"user_id\"])\n    hits = store.search(namespace, query=state[\"messages\"][-1][\"content\"], limit=4)\n    memories = \"\\n\".join(f\"- {h.value['text']}\" for h in hits) or \"(nothing)\"\n    answer = chat([{\"role\": \"system\", \"content\": SYSTEM.format(memories=memories)}] + state[\"messages\"][-8:])\n    return {\"messages\": [{\"role\": \"assistant\", \"content\": answer}]}\n\n\n\nfrom langgraph.graph import StateGraph, START, END\nfrom langgraph.checkpoint.memory import InMemorySaver\n\ngraph = StateGraph(State)\ngraph.add_node(\"remember\", remember)\ngraph.add_node(\"respond\", respond)\ngraph.add_edge(START, \"remember\")\ngraph.add_edge(\"remember\", \"respond\")\ngraph.add_edge(\"respond\", END)\n\n# ✏️ TODO 3 (▶ วิดีโอ 2:43): compile โดยใส่ checkpointer (InMemorySaver) และ store\n\napp = ___\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nfrom langgraph.graph import StateGraph, START, END\nfrom langgraph.checkpoint.memory import InMemorySaver\n\ngraph = StateGraph(State)\ngraph.add_node(\"remember\", remember)\ngraph.add_node(\"respond\", respond)\ngraph.add_edge(START, \"remember\")\ngraph.add_edge(\"remember\", \"respond\")\ngraph.add_edge(\"respond\", END)\n\napp = graph.compile(checkpointer=InMemorySaver(), store=store)\n\n\n\ndef say(text, thread, user=\"alice\"):\n    config = {\"configurable\": {\"thread_id\": thread, \"user_id\": user}}\n    out = app.invoke({\"messages\": [{\"role\": \"user\", \"content\": text}]}, config)\n    return out[\"messages\"][-1][\"content\"]",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#วนจนทร-thread-monday",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#วนจนทร-thread-monday",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "4. วันจันทร์ — thread \"monday\"",
+    "text": "4. วันจันทร์ — thread \"monday\"\nmonday = [\"Hi! I'm writing a report on transformers for time series.\",\n          \"Please keep your answers short.\",\n          \"My report deadline is next Wednesday.\",\n          \"I already read the PatchTST paper, so don't suggest it again.\",\n          \"Thanks, that's all for today!\"]\nfor text in monday:\n    print(\"USER:\", text)\n    print(\"AGENT:\", say(text, \"monday\")[:120].replace(\"\\n\", \" \"), \"\\n\")\nUSER: Hi! I'm writing a report on transformers for time series.\n   📝 The user is writing a report on transformers for time series.\nAGENT: Hello! It's good to see you working on that report again.  Since we are picking up on your project regarding **transform \n\nUSER: Please keep your answers short.\n   📝 The user prefers short answers.\nAGENT: Understood. I will keep my responses brief. How can I help with your report? \n\nUSER: My report deadline is next Wednesday.\n   📝 The user has a report deadline next Wednesday.\nAGENT: Noted. I'll keep that in mind to help you stay on track. What's next on your agenda? \n\nUSER: I already read the PatchTST paper, so don't suggest it again.\n   📝 The user has already read the PatchTST paper.\nAGENT: Understood. I will skip PatchTST and focus on other architectures or concepts. What are we looking at next? \n\nUSER: Thanks, that's all for today!\nAGENT: You're welcome! Good luck with the writing. See you next time.\nprint(len(app.get_state({\"configurable\": {\"thread_id\": \"monday\"}}).values[\"messages\"]), \"messages in 'monday'\")\nprint(app.get_state({\"configurable\": {\"thread_id\": \"tuesday\"}}).values)\n10 messages in 'monday'\n{}",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#วนองคาร-thread-ใหม-ความจำเดม",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#วนองคาร-thread-ใหม-ความจำเดม",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "5. วันอังคาร — thread ใหม่ ความจำเดิม",
+    "text": "5. วันอังคาร — thread ใหม่ ความจำเดิม\nfor q in [\"Any papers I should read next for my report?\", \"When is my report due?\", \"What's my dog's name?\"]:\n    answer = say(q, \"tuesday\")\n    print(f\"USER: {q}\\nAGENT: {answer[:200]}\\n   ({len(answer.split())} words)\\n\")\nUSER: Any papers I should read next for my report?\nAGENT: Since you've read **PatchTST**, I recommend these to show the evolution of the field:\n\n1.  **Informer** (ProbSparse Attention): A foundational paper for long-sequence forecasting.\n2.  **Autoformer** (\n   (75 words)\n\nUSER: When is my report due?\nAGENT: Your report is due next Wednesday.\n   (6 words)\n\nUSER: What's my dog's name?\nAGENT: I don't know.\n   (3 words)",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "6. สิ่งที่ framework เพิ่มให้: namespace แยกผู้ใช้ (§17.5 Privacy)",
+    "text": "6. สิ่งที่ framework เพิ่มให้: namespace แยกผู้ใช้ (§17.5 Privacy)\nตำรา: ระบบหลายผู้ใช้ต้อง คุมสิทธิ์ — ความจำของคนหนึ่งต้องไม่รั่วไปถึงอีกคน · และผู้ใช้ต้อง ดูและลบ ความจำของตัวเองได้\nprint(say(\"When is my report due?\", \"bob-1\", user=\"bob\"))\nI don't know when your report is due. I don't have access to your personal calendar, emails, or specific project details unless you have shared them with me in this conversation.\nitems = store.search((\"memories\", \"alice\"), limit=10)\nfor it in items:\n    print(it.key[:8], it.value[\"text\"])\n\n# ✏️ TODO 4 (▶ วิดีโอ 4:51): ลบความจำเรื่องกำหนดส่งออกจาก Store ด้วย namespace และ key\n\ndeadline = next(it for it in items if \"deadline\" in it.value[\"text\"])\n___\nprint(\"tuesday:  \", say(\"When is my report due?\", \"tuesday\"))\nprint(\"new thread:\", say(\"When is my report due?\", \"wednesday\"))\n\n\n\n\n\n\nเคล็ดลับดูเฉลย\n\n\n\n\n\nitems = store.search((\"memories\", \"alice\"), limit=10)\nfor it in items:\n    print(it.key[:8], it.value[\"text\"])\n\ndeadline = next(it for it in items if \"deadline\" in it.value[\"text\"])\nstore.delete((\"memories\", \"alice\"), deadline.key)\nprint(\"tuesday:  \", say(\"When is my report due?\", \"tuesday\"))\nprint(\"new thread:\", say(\"When is my report due?\", \"wednesday\"))\n\n\n\nc146e5d6 The user is writing a report on transformers for time series.\nff69f770 The user prefers short answers.\n147c4d1e The user has a report deadline next Wednesday.\nf384dbd5 The user has already read the PatchTST paper.\ntuesday:   Your report is due next Wednesday.\nnew thread: I don't know.\nprint({k: f\"${v:.5f}\" for k, v in COST.items()})\n{'chat': '$0.00048', 'embed': '$0.00000'}",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
+    ]
+  },
+  {
+    "objectID": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#สรป",
+    "href": "ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html#สรป",
+    "title": "Lab 4 — Agent ตัวเดิมด้วย LangGraph",
+    "section": "สรุป",
+    "text": "สรุป\n\n\n\n\n\n\n\n\nLab 3 (เขียนเอง)\nLangGraph\nสิ่งที่เห็น\n\n\n\n\nhistory\ncheckpointer + thread_id\n“monday” 10 ข้อความ · “tuesday” ว่าง\n\n\nชั้นอุ่น + page_in\nStore + store.search\nวันอังคารตอบได้ทั้งสามข้อ\n\n\nextract()\nnode remember\n4 ข้อเท็จจริง\n\n\n—\nnamespace ต่อผู้ใช้\nบ็อบ “ไม่รู้” — ความจำของอลิซไม่รั่ว\n\n\n—\nstore.search(ns) / store.delete\nดูและลบได้ — แต่ history ใน checkpointer ต้องลบแยก\n\n\n\nแบบฝึกหัด\n\nใส่ tool memory_search แบบ Lab 3 ให้ node respond แล้วเพิ่ม node tools กับ conditional edge\nใช้ get_state_history ของ thread “monday” (EP05 Lab 5) — checkpointer เก็บไว้กี่ checkpoint\nลองลบ thread ทั้ง thread ด้วย app.checkpointer.delete_thread(\"tuesday\") แล้วถามกำหนดส่งอีกครั้ง\n\nถัดไป — EP12 Recap: ความจำของ agent ในคลิปเดียว",
+    "crumbs": [
+      "M4 · ความจำ",
+      "<span class='chapter-number'>61</span>  <span class='chapter-title'>Lab 4 — Agent ตัวเดิมด้วย LangGraph</span>"
     ]
   }
 ]

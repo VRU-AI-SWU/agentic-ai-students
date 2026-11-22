@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 4 — Agent ตัวเดิมด้วย LangGraph – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch17/ep12-agent-memory/ep12-lab3-memory-agent.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3caa969feb8e49ddcef6d176463099d7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-68b7391b274030fb6ebc187d75d43024.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3caa969feb8e49ddcef6d176463099d7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch17/ep12-agent-memory/index.html">M4 · ความจำ</a></li><li class="breadcrumb-item"><a href="../../ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html"><span class="chapter-title">Lab 4 — Agent ตัวเดิมด้วย LangGraph</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab1-tokens.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tokens</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab2-decoding.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Decoding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab3-model-names.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — ชื่อ model, provider, quantization และ modality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab1-prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab2-structured-output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Structured output</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab3-hallucination.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab4-langchain.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab1-agent-loop.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — จาก chatbot เป็น agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — ผู้ช่วยตัวเดิมด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab1-chaining.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompt Chaining + Validation Gates (§19.1.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab2-routing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Routing: คัดแยกครั้งเดียว แล้วส่งต่อผู้เชี่ยวชาญ (§19.1.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab3-parallel.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Parallelization: sectioning + voting (§19.1.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab4-orchestrator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Orchestrator-Workers: ให้ LLM เป็นคนแบ่งงาน (§19.1.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab5-evaluator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — Evaluator-Optimizer: แปล abstract จนผ่านเกณฑ์ (§19.1.5)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab6-langgraph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 6 — Workflow Patterns ด้วย LangGraph (§19.1, §25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab1-react.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — ReAct Loop (§19.2.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab2-planning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Planning Agent (§19.2.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab3-reflexion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab4-tool-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Tool-Use Patterns (§19.2.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab5-langgraph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — จาก Scratch สู่ LangGraph (§25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab1-good-tools.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — tool ที่ดี + รับมือความล้มเหลว</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab2-trace-and-test.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — trace + ทดสอบด้วย input หลายแบบ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab3-choose-pattern.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — เลือก pattern จากตาราง 19.3: วัดก่อน แล้วค่อยลง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab4-langchain-middleware.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — หลักออกแบบชุดเดิม ด้วย LangChain middleware</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: ระบบปฏิบัติการของ agent</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab1-count-before-send.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — นับก่อนส่ง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab2-history-window.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — เมื่อ history ล้นหน้าต่าง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab3-recursive-context.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — แบ่ง context แล้วเรียกซ้ำ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab4-langchain-summarization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — สรุปของเก่าด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab1-trusted-tool-calls.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tool call ที่ไว้ใจได้</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab2-checkpoint-resume.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — บันทึก checkpoint แล้วทำต่อจากจุดเดิม</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab3-when-things-fail.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — เมื่อทุกอย่างพัง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab4-cost-and-caching.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — ค่าใช้จ่ายของงาน และ prompt caching</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab5-langgraph-durable.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — checkpoint ด้วย LangGraph</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab1-build-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — สร้าง harness ทั้งไฟล์</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab2-test-without-llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — ทดสอบ harness โดยไม่เรียก model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab3-prompts-and-replay.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Prompt คือ code: เก็บเป็นเวอร์ชัน แล้วเล่นงานเดิมซ้ำ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab4-langchain-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — harness ตัวเดิมด้วย LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · ความรู้: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab1-rag-from-scratch.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — สร้าง RAG เองทั้งเส้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab2-sparse-dense-hybrid.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Sparse vs dense vs hybrid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab3-chunking.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — วิธีตัดชิ้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab4-langchain-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — RAG ด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — แปลงคำถาม + จัดลำดับใหม่</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">M4 · ความจำ</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch17/ep12-agent-memory/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP12 Agent Memory</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch17/ep12-agent-memory/ep12-lab1-memory-store.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — คลังความจำ เขียนเอง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch17/ep12-agent-memory/ep12-lab2-memory-operations.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — เขียน อัปเดต ลืม และทบทวน</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch17/ep12-agent-memory/ep12-lab3-memory-agent.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Agent ที่มีความจำ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 4 — Agent ตัวเดิมด้วย LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#เตรยมเครองกอนเรม" id="toc-เตรยมเครองกอนเรม" class="nav-link active" data-scroll-target="#เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</a></li>
+  <li><a href="#model-และฟงกชนชวยจาก-lab-3" id="toc-model-และฟงกชนชวยจาก-lab-3" class="nav-link" data-scroll-target="#model-และฟงกชนชวยจาก-lab-3">1. Model และฟังก์ชันช่วยจาก Lab 3</a></li>
+  <li><a href="#store-ความจำขาม-thread" id="toc-store-ความจำขาม-thread" class="nav-link" data-scroll-target="#store-ความจำขาม-thread">2. Store: ความจำข้าม thread</a></li>
+  <li><a href="#graph-สอง-node-remember-respond" id="toc-graph-สอง-node-remember-respond" class="nav-link" data-scroll-target="#graph-สอง-node-remember-respond">3. Graph สอง node: <code>remember</code> → <code>respond</code></a></li>
+  <li><a href="#วนจนทร-thread-monday" id="toc-วนจนทร-thread-monday" class="nav-link" data-scroll-target="#วนจนทร-thread-monday">4. วันจันทร์ — thread <code>"monday"</code></a></li>
+  <li><a href="#วนองคาร-thread-ใหม-ความจำเดม" id="toc-วนองคาร-thread-ใหม-ความจำเดม" class="nav-link" data-scroll-target="#วนองคาร-thread-ใหม-ความจำเดม">5. วันอังคาร — thread ใหม่ ความจำเดิม</a></li>
+  <li><a href="#สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy" id="toc-สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy" class="nav-link" data-scroll-target="#สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy">6. สิ่งที่ framework เพิ่มให้: namespace แยกผู้ใช้ (§17.5 Privacy)</a></li>
+  <li><a href="#สรป" id="toc-สรป" class="nav-link" data-scroll-target="#สรป">สรุป</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch17/ep12-agent-memory/index.html">M4 · ความจำ</a></li><li class="breadcrumb-item"><a href="../../ch17/ep12-agent-memory/ep12-lab4-langgraph-memory.html"><span class="chapter-title">Lab 4 — Agent ตัวเดิมด้วย LangGraph</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Lab 4 — Agent ตัวเดิมด้วย LangGraph</span></h1>
+<p class="subtitle lead">Lab walkthrough · EP12 Agent Memory</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- generated by cogito-learn/tools/build_lab_pages.py from ep12-lab4-langgraph-memory.beats.yaml — edit the yaml, not this page -->
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">หมายเหตุ</span>วิธีใช้หน้านี้
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>หน้านี้คือ notebook เฉลยของ lab นี้ทีละ cell พร้อม output จากการรันจริงตอนอัดคลิป ไว้อ่านทวนก่อนหรือหลังลงมือ cell ที่มี <code>✏️ TODO</code> แสดงโค้ดแบบใน starter notebook ส่วนเฉลยเต็มอยู่ในกล่อง <strong>ดูเฉลย</strong> ลองเขียนเองก่อนค่อยเปิด</p>
+<p><a href="https://youtu.be/5m5E13KvR_k">▶ วิดีโอ</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep12-agent-memory/ep12-lab4-langgraph-memory.student.ipynb">✏️ Starter ใน Colab</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep12-agent-memory/ep12-lab4-langgraph-memory.ipynb">✅ เฉลยใน Colab</a> · กลับไปหน้า <a href="../../ch17/ep12-agent-memory/index.html#lab">EP12 Agent Memory</a></p>
+<p><em>model ตอบไม่เหมือนเดิมทุกครั้ง output ที่คุณรันเองจึงอาจต่างจากหน้านี้</em></p>
+</div>
+</div>
+<p>Lab 3 เราเขียนความจำเองทุกชั้น — Lab นี้สร้าง agent แบบ Mem0 ตัวเดิมด้วย <strong>LangGraph</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lab 3 (เขียนเอง)</th>
+<th>LangGraph</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>history</code> ของ session (working memory)</td>
+<td><strong>checkpointer</strong> + <code>thread_id</code></td>
+</tr>
+<tr class="even">
+<td>ชั้นอุ่น + <code>page_in(query)</code></td>
+<td><strong>Store</strong> + <code>store.search(namespace, query=…)</code></td>
+</tr>
+<tr class="odd">
+<td><code>extract()</code> ทุกข้อความ</td>
+<td>node <code>remember</code></td>
+</tr>
+<tr class="even">
+<td>ชั้นเย็น (บทสนทนาทั้งหมด)</td>
+<td>checkpointer เก็บทุกข้อความของทุก thread</td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td><strong>namespace</strong> ต่อผู้ใช้: <code>("memories", user_id)</code></td>
+</tr>
+</tbody>
+</table>
+<p>คำตอบของ model ทุกคำตอบมาจากการรันจริง</p>
+<blockquote class="blockquote">
+<p>อ้างอิง: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em>, §17.5, §17.10.3 — CC BY-SA 4.0 · LangGraph (MIT)</p>
+</blockquote>
+<section id="เตรยมเครองกอนเรม" class="level2">
+<h2 class="anchored" data-anchor-id="เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>สิ่งที่ต้องมี</th>
+<th>รายละเอียด</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 3.10 ขึ้นไป</td>
+<td>หรือใช้ Google Colab ซึ่งมีให้แล้ว</td>
+</tr>
+<tr class="even">
+<td>OpenRouter API key</td>
+<td>สมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ไม่ถึง 0.1 เซ็นต์ดอลลาร์)</td>
+</tr>
+<tr class="odd">
+<td>Packages</td>
+<td><code>langgraph==1.2.16</code> (เวอร์ชันเดียวกับ EP11), <code>openai</code>, <code>python-dotenv</code>, <code>numpy</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>ใส่ API key</strong></p>
+<ul>
+<li><strong>Colab:</strong> ไอคอน 🔑 Secrets → ชื่อ <code>OPENROUTER_API_KEY</code> → เปิด <em>Notebook access</em></li>
+<li><strong>เครื่องตัวเอง:</strong> สร้างไฟล์ <code>.env</code> ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+</ul>
+<p>⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ <code>.env</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"langgraph==1.2.16"</span> <span class="st">"openai&gt;=1.50"</span> python<span class="op">-</span>dotenv numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="model-และฟงกชนชวยจาก-lab-3" class="level2">
+<h2 class="anchored" data-anchor-id="model-และฟงกชนชวยจาก-lab-3">1. Model และฟังก์ชันช่วยจาก Lab 3</h2>
+<p>Gemma 4 26B (Makora) · Qwen3 Embedding 8B (Nebius) — เหตุผลที่เลือก model อยู่ใน Lab 1 <code>extract()</code> คือฟังก์ชันดึงข้อเท็จจริงแบบ Mem0 จาก Lab 3 ทุกตัวอักษร</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, json, operator, uuid</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Annotated, TypedDict</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:  <span class="co"># Google Colab Secrets</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userdata.get(<span class="st">"OPENROUTER_API_KEY"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    load_dotenv()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>EXTRA <span class="op">=</span> {<span class="st">"reasoning"</span>: {<span class="st">"enabled"</span>: <span class="va">False</span>},</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         <span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"makora"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>EMBED_MODEL <span class="op">=</span> <span class="st">"qwen/qwen3-embedding-8b"</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>EMBED_EXTRA <span class="op">=</span> {<span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"nebius"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>load_key(), max_retries<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>COST <span class="op">=</span> {<span class="st">"chat"</span>: <span class="fl">0.0</span>, <span class="st">"embed"</span>: <span class="fl">0.0</span>}</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chat(messages):</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> client.chat.completions.create(model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                                       messages<span class="op">=</span>messages)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r.choices[<span class="dv">0</span>].message.content</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_json(prompt, schema):</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}],</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        response_format<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"json_schema"</span>,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"json_schema"</span>: {<span class="st">"name"</span>: <span class="st">"reply"</span>, <span class="st">"strict"</span>: <span class="va">True</span>, <span class="st">"schema"</span>: schema}})</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(r.choices[<span class="dv">0</span>].message.content)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>FACTS <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"facts"</span>],</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>         <span class="st">"properties"</span>: {<span class="st">"facts"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}}</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract(message):</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="st">"You manage the long-term memory of a research assistant. From this user message, "</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"extract the facts about the user's work, deadlines and preferences worth remembering "</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"in future sessions, as short sentences that start with 'The user'. "</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Return an empty list for small talk.</span><span class="ch">\n</span><span class="st">Message: "</span> <span class="op">+</span> message, FACTS)[<span class="st">"facts"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed_texts(texts):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> client.embeddings.create(model<span class="op">=</span>EMBED_MODEL, <span class="bu">input</span><span class="op">=</span><span class="bu">list</span>(texts), extra_body<span class="op">=</span>EMBED_EXTRA)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"embed"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [d.embedding <span class="cf">for</span> d <span class="kw">in</span> r.data]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="store-ความจำขาม-thread" class="level2">
+<h2 class="anchored" data-anchor-id="store-ความจำขาม-thread">2. Store: ความจำข้าม thread</h2>
+<p><code>InMemoryStore(index=…)</code> — เก็บ <code>value</code> (dict) ไว้ใต้ <strong>namespace</strong> และ <strong>key</strong> · <code>index</code> ทำ embedding ของ field <code>text</code> ให้ค้นด้วยความหมายได้ (ระบบจริงใช้ <code>PostgresStore</code> แทน — API เดียวกัน)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.store.memory <span class="im">import</span> InMemoryStore</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>store <span class="op">=</span> InMemoryStore(index<span class="op">=</span>{<span class="st">"embed"</span>: embed_texts, <span class="st">"dims"</span>: <span class="dv">4096</span>, <span class="st">"fields"</span>: [<span class="st">"text"</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="graph-สอง-node-remember-respond" class="level2">
+<h2 class="anchored" data-anchor-id="graph-สอง-node-remember-respond">3. Graph สอง node: <code>remember</code> → <code>respond</code></h2>
+<p>node ใน LangGraph ขอ <code>config</code> (มี <code>thread_id</code>, <code>user_id</code>) และ <code>store</code> ได้ — framework ส่งให้เอง</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> State(TypedDict):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    messages: Annotated[<span class="bu">list</span>[<span class="bu">dict</span>], operator.add]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 1 (▶ วิดีโอ 1:55): เก็บข้อเท็จจริงลง Store ใต้ namespace ของผู้ใช้ ด้วย key ไม่ซ้ำ และ value {'text': fact}</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remember(state, config, <span class="op">*</span>, store):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    namespace <span class="op">=</span> (<span class="st">"memories"</span>, config[<span class="st">"configurable"</span>][<span class="st">"user_id"</span>])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> fact <span class="kw">in</span> extract(state[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">"content"</span>]):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        ___</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"   📝"</span>, fact)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {}</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>SYSTEM <span class="op">=</span> <span class="st">"""You are a research assistant with long-term memory across sessions.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">What you remember about this user:</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="sc">{memories}</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">Follow the user's preferences in your memory. If your memory has nothing about something, say you don't know."""</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 2 (▶ วิดีโอ 2:19): ค้น Store ใต้ namespace ของผู้ใช้ ด้วยข้อความล่าสุด เอา 4 ชิ้น</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> respond(state, config, <span class="op">*</span>, store):</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    namespace <span class="op">=</span> (<span class="st">"memories"</span>, config[<span class="st">"configurable"</span>][<span class="st">"user_id"</span>])</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    hits <span class="op">=</span> ___</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    memories <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"- </span><span class="sc">{</span>h<span class="sc">.</span>value[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> h <span class="kw">in</span> hits) <span class="kw">or</span> <span class="st">"(nothing)"</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> chat([{<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: SYSTEM.<span class="bu">format</span>(memories<span class="op">=</span>memories)}] <span class="op">+</span> state[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">8</span>:])</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: answer}]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> State(TypedDict):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    messages: Annotated[<span class="bu">list</span>[<span class="bu">dict</span>], operator.add]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> remember(state, config, <span class="op">*</span>, store):</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    namespace <span class="op">=</span> (<span class="st">"memories"</span>, config[<span class="st">"configurable"</span>][<span class="st">"user_id"</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> fact <span class="kw">in</span> extract(state[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">"content"</span>]):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        store.put(namespace, <span class="bu">str</span>(uuid.uuid4()), {<span class="st">"text"</span>: fact})</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"   📝"</span>, fact)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {}</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>SYSTEM <span class="op">=</span> <span class="st">"""You are a research assistant with long-term memory across sessions.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">What you remember about this user:</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="sc">{memories}</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">Follow the user's preferences in your memory. If your memory has nothing about something, say you don't know."""</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> respond(state, config, <span class="op">*</span>, store):</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    namespace <span class="op">=</span> (<span class="st">"memories"</span>, config[<span class="st">"configurable"</span>][<span class="st">"user_id"</span>])</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    hits <span class="op">=</span> store.search(namespace, query<span class="op">=</span>state[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">"content"</span>], limit<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    memories <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"- </span><span class="sc">{</span>h<span class="sc">.</span>value[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> h <span class="kw">in</span> hits) <span class="kw">or</span> <span class="st">"(nothing)"</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> chat([{<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: SYSTEM.<span class="bu">format</span>(memories<span class="op">=</span>memories)}] <span class="op">+</span> state[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">8</span>:])</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: answer}]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, START, END</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.checkpoint.memory <span class="im">import</span> InMemorySaver</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> StateGraph(State)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>graph.add_node(<span class="st">"remember"</span>, remember)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>graph.add_node(<span class="st">"respond"</span>, respond)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>graph.add_edge(START, <span class="st">"remember"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>graph.add_edge(<span class="st">"remember"</span>, <span class="st">"respond"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>graph.add_edge(<span class="st">"respond"</span>, END)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 3 (▶ วิดีโอ 2:43): compile โดยใส่ checkpointer (InMemorySaver) และ store</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> ___</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, START, END</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.checkpoint.memory <span class="im">import</span> InMemorySaver</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> StateGraph(State)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>graph.add_node(<span class="st">"remember"</span>, remember)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>graph.add_node(<span class="st">"respond"</span>, respond)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>graph.add_edge(START, <span class="st">"remember"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>graph.add_edge(<span class="st">"remember"</span>, <span class="st">"respond"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>graph.add_edge(<span class="st">"respond"</span>, END)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> graph.<span class="bu">compile</span>(checkpointer<span class="op">=</span>InMemorySaver(), store<span class="op">=</span>store)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> say(text, thread, user<span class="op">=</span><span class="st">"alice"</span>):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    config <span class="op">=</span> {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: thread, <span class="st">"user_id"</span>: user}}</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> app.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: text}]}, config)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>][<span class="st">"content"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="วนจนทร-thread-monday" class="level2">
+<h2 class="anchored" data-anchor-id="วนจนทร-thread-monday">4. วันจันทร์ — thread <code>"monday"</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>monday <span class="op">=</span> [<span class="st">"Hi! I'm writing a report on transformers for time series."</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Please keep your answers short."</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"My report deadline is next Wednesday."</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">"I already read the PatchTST paper, so don't suggest it again."</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Thanks, that's all for today!"</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> monday:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"USER:"</span>, text)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"AGENT:"</span>, say(text, <span class="st">"monday"</span>)[:<span class="dv">120</span>].replace(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">" "</span>), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>USER: Hi! I'm writing a report on transformers for time series.
+   📝 The user is writing a report on transformers for time series.
+AGENT: Hello! It's good to see you working on that report again.  Since we are picking up on your project regarding **transform 
+
+USER: Please keep your answers short.
+   📝 The user prefers short answers.
+AGENT: Understood. I will keep my responses brief. How can I help with your report? 
+
+USER: My report deadline is next Wednesday.
+   📝 The user has a report deadline next Wednesday.
+AGENT: Noted. I'll keep that in mind to help you stay on track. What's next on your agenda? 
+
+USER: I already read the PatchTST paper, so don't suggest it again.
+   📝 The user has already read the PatchTST paper.
+AGENT: Understood. I will skip PatchTST and focus on other architectures or concepts. What are we looking at next? 
+
+USER: Thanks, that's all for today!
+AGENT: You're welcome! Good luck with the writing. See you next time.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(app.get_state({<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: <span class="st">"monday"</span>}}).values[<span class="st">"messages"</span>]), <span class="st">"messages in 'monday'"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(app.get_state({<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: <span class="st">"tuesday"</span>}}).values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>10 messages in 'monday'
+{}</code></pre>
+</section>
+<section id="วนองคาร-thread-ใหม-ความจำเดม" class="level2">
+<h2 class="anchored" data-anchor-id="วนองคาร-thread-ใหม-ความจำเดม">5. วันอังคาร — thread ใหม่ ความจำเดิม</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q <span class="kw">in</span> [<span class="st">"Any papers I should read next for my report?"</span>, <span class="st">"When is my report due?"</span>, <span class="st">"What's my dog's name?"</span>]:</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> say(q, <span class="st">"tuesday"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"USER: </span><span class="sc">{</span>q<span class="sc">}</span><span class="ch">\n</span><span class="ss">AGENT: </span><span class="sc">{</span>answer[:<span class="dv">200</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">   (</span><span class="sc">{</span><span class="bu">len</span>(answer.split())<span class="sc">}</span><span class="ss"> words)</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>USER: Any papers I should read next for my report?
+AGENT: Since you've read **PatchTST**, I recommend these to show the evolution of the field:
+
+1.  **Informer** (ProbSparse Attention): A foundational paper for long-sequence forecasting.
+2.  **Autoformer** (
+   (75 words)
+
+USER: When is my report due?
+AGENT: Your report is due next Wednesday.
+   (6 words)
+
+USER: What's my dog's name?
+AGENT: I don't know.
+   (3 words)</code></pre>
+</section>
+<section id="สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy" class="level2">
+<h2 class="anchored" data-anchor-id="สงท-framework-เพมให-namespace-แยกผใช-17.5-privacy">6. สิ่งที่ framework เพิ่มให้: namespace แยกผู้ใช้ (§17.5 Privacy)</h2>
+<p>ตำรา: ระบบหลายผู้ใช้ต้อง <strong>คุมสิทธิ์</strong> — ความจำของคนหนึ่งต้องไม่รั่วไปถึงอีกคน · และผู้ใช้ต้อง <strong>ดูและลบ</strong> ความจำของตัวเองได้</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(say(<span class="st">"When is my report due?"</span>, <span class="st">"bob-1"</span>, user<span class="op">=</span><span class="st">"bob"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>I don't know when your report is due. I don't have access to your personal calendar, emails, or specific project details unless you have shared them with me in this conversation.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> store.search((<span class="st">"memories"</span>, <span class="st">"alice"</span>), limit<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> it <span class="kw">in</span> items:</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(it.key[:<span class="dv">8</span>], it.value[<span class="st">"text"</span>])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 4 (▶ วิดีโอ 4:51): ลบความจำเรื่องกำหนดส่งออกจาก Store ด้วย namespace และ key</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>deadline <span class="op">=</span> <span class="bu">next</span>(it <span class="cf">for</span> it <span class="kw">in</span> items <span class="cf">if</span> <span class="st">"deadline"</span> <span class="kw">in</span> it.value[<span class="st">"text"</span>])</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>___</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"tuesday:  "</span>, say(<span class="st">"When is my report due?"</span>, <span class="st">"tuesday"</span>))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"new thread:"</span>, say(<span class="st">"When is my report due?"</span>, <span class="st">"wednesday"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> store.search((<span class="st">"memories"</span>, <span class="st">"alice"</span>), limit<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> it <span class="kw">in</span> items:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(it.key[:<span class="dv">8</span>], it.value[<span class="st">"text"</span>])</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>deadline <span class="op">=</span> <span class="bu">next</span>(it <span class="cf">for</span> it <span class="kw">in</span> items <span class="cf">if</span> <span class="st">"deadline"</span> <span class="kw">in</span> it.value[<span class="st">"text"</span>])</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>store.delete((<span class="st">"memories"</span>, <span class="st">"alice"</span>), deadline.key)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"tuesday:  "</span>, say(<span class="st">"When is my report due?"</span>, <span class="st">"tuesday"</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"new thread:"</span>, say(<span class="st">"When is my report due?"</span>, <span class="st">"wednesday"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<pre class="text lab-output"><code>c146e5d6 The user is writing a report on transformers for time series.
+ff69f770 The user prefers short answers.
+147c4d1e The user has a report deadline next Wednesday.
+f384dbd5 The user has already read the PatchTST paper.
+tuesday:   Your report is due next Wednesday.
+new thread: I don't know.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({k: <span class="ss">f"$</span><span class="sc">{</span>v<span class="sc">:.5f}</span><span class="ss">"</span> <span class="cf">for</span> k, v <span class="kw">in</span> COST.items()})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>{'chat': '$0.00048', 'embed': '$0.00000'}</code></pre>
+</section>
+<section id="สรป" class="level2">
+<h2 class="anchored" data-anchor-id="สรป">สรุป</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lab 3 (เขียนเอง)</th>
+<th>LangGraph</th>
+<th>สิ่งที่เห็น</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>history</code></td>
+<td>checkpointer + <code>thread_id</code></td>
+<td>“monday” 10 ข้อความ · “tuesday” ว่าง</td>
+</tr>
+<tr class="even">
+<td>ชั้นอุ่น + <code>page_in</code></td>
+<td>Store + <code>store.search</code></td>
+<td>วันอังคารตอบได้ทั้งสามข้อ</td>
+</tr>
+<tr class="odd">
+<td><code>extract()</code></td>
+<td>node <code>remember</code></td>
+<td>4 ข้อเท็จจริง</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>namespace ต่อผู้ใช้</td>
+<td>บ็อบ “ไม่รู้” — ความจำของอลิซไม่รั่ว</td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td><code>store.search(ns)</code> / <code>store.delete</code></td>
+<td>ดูและลบได้ — แต่ history ใน checkpointer ต้องลบแยก</td>
+</tr>
+</tbody>
+</table>
+<p><strong>แบบฝึกหัด</strong></p>
+<ol type="1">
+<li>ใส่ tool <code>memory_search</code> แบบ Lab 3 ให้ node <code>respond</code> แล้วเพิ่ม node <code>tools</code> กับ conditional edge</li>
+<li>ใช้ <code>get_state_history</code> ของ thread “monday” (EP05 Lab 5) — checkpointer เก็บไว้กี่ checkpoint</li>
+<li>ลองลบ thread ทั้ง thread ด้วย <code>app.checkpointer.delete_thread("tuesday")</code> แล้วถามกำหนดส่งอีกครั้ง</li>
+</ol>
+<p><strong>ถัดไป — EP12 Recap:</strong> ความจำของ agent ในคลิปเดียว</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script>
+// Lab walkthrough pages are hidden in the sidebar (home.css): mark their EP's entry as the current page instead.
+(function () {
+  var cur = document.querySelector('#quarto-sidebar a.sidebar-link.active');
+  if (!cur || !/-lab\d/.test(cur.getAttribute('href') || '')) return;
+  var dir = cur.href.replace(/[^/]*$/, '');
+  document.querySelectorAll('#quarto-sidebar a.sidebar-link').forEach(function (a) {
+    if (a.href === dir + 'index.html') a.classList.add('active');
+  });
+})();
+</script>
+<!-- Diagrams on phones (both books, every page). A left-to-right mermaid flow squeezed into a 375 px screen shrank its
+     text to 3.5–9.5 px (EP04's chain, EP05's DAG plan, 2026-11-22). Below 768 px:
+     1. before Quarto draws the diagrams (it reads each pre.mermaid-js on window load), turn LR / RL flows top-to-bottom,
+        so they fit the width and read by scrolling down like the page;
+     2. after drawing, any diagram whose text is still under 11 px keeps an 11 px size and scrolls sideways in its box. -->
+<style>
+  @media (max-width: 767.98px) {
+    .phone-diagram-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .phone-diagram-scroll > svg.mermaid-js { max-width: none !important; }
+  }
+</style>
+<script>
+(function () {
+  if (!window.matchMedia('(max-width: 767.98px)').matches) return;
+  document.querySelectorAll('pre.mermaid-js').forEach(function (pre) {
+    pre.textContent = pre.textContent
+      .replace(/^(\s*(?:flowchart|graph)\s+)(LR|RL)\b/m, '$1TD')
+      .replace(/^(\s*direction\s+)(LR|RL)\b/gm, '$1TB');
+  });
+  var MIN = 11;
+  function fit() {
+    document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+      var vb = svg.viewBox && svg.viewBox.baseVal, w = svg.getBoundingClientRect().width;
+      var label = svg.querySelector('.nodeLabel');
+      if (!vb || !vb.width || !w || !label) return;
+      var size = parseFloat(getComputedStyle(label).fontSize) * w / vb.width;
+      if (size >= MIN) return;
+      svg.parentElement.classList.add('phone-diagram-scroll');
+      svg.style.width = Math.ceil(w * MIN / size) + 'px';
+    });
+  }
+  window.addEventListener('load', function () {
+    var n = 0, t = setInterval(function () {           // Quarto renders asynchronously after load
+      if (!document.querySelector('pre.mermaid-js') || ++n > 40) { clearInterval(t); fit(); }
+    }, 250);
+  });
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch17/ep12-agent-memory/ep12-lab3-memory-agent.html" class="pagination-link" aria-label="Lab 3 — Agent ที่มีความจำ">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 3 — Agent ที่มีความจำ</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
