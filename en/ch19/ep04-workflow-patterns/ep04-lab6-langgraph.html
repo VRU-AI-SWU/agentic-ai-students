@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 6 — Workflow Patterns with LangGraph (§19.1, §25.3.1) – Agentic AI: From Foundations to Systems</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch19/ep05-autonomous-agents/index.html" rel="next">
+<link href="../../ch19/ep04-workflow-patterns/ep04-lab5-evaluator.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6005b8bc16e8c2482100ba1272b9cb1c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-6b46be44c389e99b3e40a4ad8e0fc5c7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6005b8bc16e8c2482100ba1272b9cb1c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep04-workflow-patterns/ep04-lab6-langgraph.html"><span class="chapter-title">Lab 6 — Workflow Patterns with LangGraph (§19.1, §25.3.1)</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: From Foundations to Systems</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · Before you start: the LLM basics agent builders need</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 How LLMs Work — for Agent Builders</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab1-tokens.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tokens</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab2-decoding.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Decoding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab3-model-names.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Model names, providers, quantization and modality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompts, Structured Output and Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab1-prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab2-structured-output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Structured output</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab3-hallucination.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab4-langchain.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · What an agent is, and how to design one</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 From Chatbot to Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab1-agent-loop.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — From chatbot to agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — The same assistant with LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab1-chaining.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompt Chaining + Validation Gates (§19.1.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab2-routing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Routing: classify once, then hand off to a specialist (§19.1.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab3-parallel.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Parallelization: sectioning + voting (§19.1.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab4-orchestrator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Orchestrator-Workers: let the LLM split the work (§19.1.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab5-evaluator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — Evaluator-Optimizer: translating an abstract until it passes the criteria (§19.1.5)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab6-langgraph.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 6 — Workflow Patterns with LangGraph (§19.1, §25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab1-react.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — ReAct Loop (§19.2.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab2-planning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Planning Agent (§19.2.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab3-reflexion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Reflexion: learning from mistakes without training (§19.2.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab4-tool-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Tool-Use Patterns (§19.2.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab5-langgraph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — From Scratch to LangGraph (§25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab1-good-tools.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Good tools + plan for failure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab2-trace-and-test.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Trace + test with diverse inputs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab3-choose-pattern.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Choosing a pattern from Table 19.3: measure before you move down</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab4-langchain-middleware.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — The same design principles with LangChain middleware</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: the agent’s operating system</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab1-count-before-send.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Count before you send</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab2-history-window.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — When history outgrows the window</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab3-recursive-context.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Recursive context decomposition</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab4-langchain-summarization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Summarizing the old part with LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab1-trusted-tool-calls.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tool calls you can trust</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab2-checkpoint-resume.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Checkpoint &amp; resume</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab3-when-things-fail.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — When things fail</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab4-cost-and-caching.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Cost &amp; prompt caching</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab5-langgraph-durable.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — Checkpoints with LangGraph</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab1-build-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Build the whole harness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab2-test-without-llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Test the harness without a model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab3-prompts-and-replay.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Prompts are code: versions and replay</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab4-langchain-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — The same harness with LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · Knowledge: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab1-rag-from-scratch.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — RAG from scratch, end to end</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab2-sparse-dense-hybrid.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Sparse vs dense vs hybrid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab3-chunking.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Chunking strategies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab4-langchain-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — RAG with LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Query transformation + re-ranking</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: grade, route, loop</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Measuring RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — The same agentic RAG in LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">0. Setup</a></li>
+  <li><a href="#prompt-chaining-gates-conditional-edges-lab-1" id="toc-prompt-chaining-gates-conditional-edges-lab-1" class="nav-link" data-scroll-target="#prompt-chaining-gates-conditional-edges-lab-1">1. Prompt chaining + gates → conditional edges (Lab 1)</a></li>
+  <li><a href="#routing-a-conditional-edge-from-the-classifier-lab-2" id="toc-routing-a-conditional-edge-from-the-classifier-lab-2" class="nav-link" data-scroll-target="#routing-a-conditional-edge-from-the-classifier-lab-2">2. Routing → a conditional edge from the classifier (Lab 2)</a></li>
+  <li><a href="#parallelization-fan-out-reducer-lab-3" id="toc-parallelization-fan-out-reducer-lab-3" class="nav-link" data-scroll-target="#parallelization-fan-out-reducer-lab-3">3. Parallelization → fan-out + reducer (Lab 3)</a></li>
+  <li><a href="#orchestrator-workers-send-lab-4" id="toc-orchestrator-workers-send-lab-4" class="nav-link" data-scroll-target="#orchestrator-workers-send-lab-4">4. Orchestrator-workers → <code>Send</code> (Lab 4)</a></li>
+  <li><a href="#evaluator-optimizer-a-cycle-lab-5" id="toc-evaluator-optimizer-a-cycle-lab-5" class="nav-link" data-scroll-target="#evaluator-optimizer-a-cycle-lab-5">5. Evaluator-optimizer → a cycle (Lab 5)</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch15/ep03-chatbot-to-agent/index.html">M1 · What an agent is, and how to design one</a></li><li class="breadcrumb-item"><a href="../../ch19/ep04-workflow-patterns/ep04-lab6-langgraph.html"><span class="chapter-title">Lab 6 — Workflow Patterns with LangGraph (§19.1, §25.3.1)</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Lab 6 — Workflow Patterns with LangGraph (§19.1, §25.3.1)</span></h1>
+<p class="subtitle lead">Lab walkthrough · EP04 Workflow Patterns</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- generated by cogito-learn/tools/build_lab_pages.py from ep04-lab6-langgraph.beats.yaml — edit the yaml, not this page -->
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to use this page
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page is the lab’s solution notebook, cell by cell, with the outputs from the real run recorded for the video, for review before or after you do the lab. Cells with a <code>✏️ TODO</code> show the code as it is in the starter notebook; the full answer is in the <strong>Show answer</strong> box. Try it yourself before you open it.</p>
+<p><a href="https://youtu.be/yNTeLLhEHU4">▶ Video</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/ep04-lab6-langgraph.en.student.ipynb">✏️ Starter in Colab</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep04-workflow-patterns/ep04-lab6-langgraph.en.ipynb">✅ Solution in Colab</a> · Back to <a href="../../ch19/ep04-workflow-patterns/index.html#lab">EP04 Workflow Patterns</a></p>
+<p><em>Models do not answer the same way every time, so your own run may differ from this page.</em></p>
+</div>
+</div>
+<p>In Labs 1–5 we wrote all five workflow patterns ourselves, line by line. In this lab we rebuild all five with <strong>LangGraph</strong>, a framework that sees a workflow as a <strong>graph</strong> — a <em>node</em> is one step, an <em>edge</em> is the path from one step to the next</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>LangGraph</th>
+<th>What we wrote ourselves</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>State</strong> — a dict that flows through the graph</td>
+<td>the variables passed between functions</td>
+</tr>
+<tr class="even">
+<td><strong>Node</strong> — a function that takes the state and returns what changed</td>
+<td>each step’s function (<code>extract_points</code>, <code>classify</code>, …)</td>
+</tr>
+<tr class="odd">
+<td><strong>Edge</strong> — which step comes next</td>
+<td>the order of lines in the code</td>
+</tr>
+<tr class="even">
+<td><strong>Conditional edge</strong> — picks a path from the state</td>
+<td>a gate’s <code>if</code>, <code>ROUTES[label]</code>, the loop’s <code>while</code></td>
+</tr>
+<tr class="odd">
+<td><strong>Reducer</strong> — how values from several nodes are combined</td>
+<td><code>list(pool.map(...))</code></td>
+</tr>
+<tr class="even">
+<td><strong><code>Send</code></strong> — fans out to a number of tasks known only at run time</td>
+<td><code>ex.map(run_worker, tasks)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Every prompt and all the data come from Labs 1–5 (shown, not typed again); the only new thing in this lab is the graph. All data is <strong>simulated data written for teaching</strong>; every model answer comes from a real run.</p>
+<blockquote class="blockquote">
+<p>Reference: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em>, §19.1 (p.369–371), §25.3.1 (p.461–464) — CC BY-SA 4.0</p>
+</blockquote>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">0. Setup</h2>
+<p>You need Python 3.10+ (or Colab) and an <strong>OpenRouter API key</strong> — how to set up the key and why we chose this model are in Lab 1</p>
+<p>The LangGraph version is pinned, because framework APIs change quickly. With a newer version, some lines may need adjusting</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"langgraph==1.2.16"</span> <span class="st">"grandalf==0.8"</span> <span class="st">"openai&gt;=1.50"</span> python<span class="op">-</span>dotenv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, json, time, operator, subprocess, sys</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> TypedDict, Annotated</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, START, END</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.types <span class="im">import</span> Send</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 1: set up client + ask_llm ----</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userdata.get(<span class="st">"OPENROUTER_API_KEY"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        load_dotenv()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>load_key())</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>EXTRA <span class="op">=</span> {<span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"deepinfra/fp8"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}, <span class="st">"reasoning"</span>: {<span class="st">"enabled"</span>: <span class="va">False</span>}}</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_llm(prompt, temperature<span class="op">=</span><span class="fl">0.7</span>, schema<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    kw <span class="op">=</span> {<span class="st">"response_format"</span>: {<span class="st">"type"</span>: <span class="st">"json_schema"</span>, <span class="st">"json_schema"</span>: {<span class="st">"name"</span>: <span class="st">"out"</span>, <span class="st">"strict"</span>: <span class="va">True</span>, <span class="st">"schema"</span>: schema}}} <span class="cf">if</span> schema <span class="cf">else</span> {}</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> client.chat.completions.create(model<span class="op">=</span>MODEL, extra_body<span class="op">=</span>EXTRA, temperature<span class="op">=</span>temperature,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                                          messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}], <span class="op">**</span>kw)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> resp.choices[<span class="dv">0</span>].message.content</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.loads(text) <span class="cf">if</span> schema <span class="cf">else</span> text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="prompt-chaining-gates-conditional-edges-lab-1" class="level2">
+<h2 class="anchored" data-anchor-id="prompt-chaining-gates-conditional-edges-lab-1">1. Prompt chaining + gates → conditional edges (Lab 1)</h2>
+<pre><code>START → input_gate ─(pass)→ extract ─(3 points)→ write_thai → END
+            └─(fail)→ END        └─(not 3)→ END</code></pre>
+<p>In Lab 1 a gate was <code>if not gate(...): return None</code>; here a gate becomes a <strong>conditional edge</strong> that leads to <code>END</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 1: simulated data + the same prompts ----</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ABSTRACT <span class="op">=</span> <span class="st">"""We study whether a retrieval-augmented teaching assistant helps first-year students debug</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">Python assignments. In a 10-week course with 240 students, half used an assistant that first retrieves</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">the course's lecture notes, and half used the same LLM without retrieval. The retrieval group fixed 31%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">more bugs on their own and asked human TAs 40</span><span class="sc">% f</span><span class="st">ewer repeated questions, but the benefit disappeared</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">for advanced students. We release anonymised interaction logs for further research."""</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>NOTICE <span class="op">=</span> <span class="st">"""Reminder for CS101 students: the midterm exam has moved from Room 402 to the main hall.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">Please bring your student ID card and arrive 15 minutes early. Office hours this week are cancelled."""</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>IS_ABSTRACT <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"is_abstract"</span>, <span class="st">"reason"</span>],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>               <span class="st">"properties"</span>: {<span class="st">"is_abstract"</span>: {<span class="st">"type"</span>: <span class="st">"boolean"</span>}, <span class="st">"reason"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>POINTS <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"points"</span>],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>          <span class="st">"properties"</span>: {<span class="st">"points"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"minItems"</span>: <span class="dv">1</span>, <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}}</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gate_is_abstract(text):</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    check <span class="op">=</span> ask_llm(<span class="st">"Is the following text the abstract of a research paper? Give a one-sentence reason.</span><span class="ch">\n\n</span><span class="st">"</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                    <span class="op">+</span> text, temperature<span class="op">=</span><span class="dv">0</span>, schema<span class="op">=</span>IS_ABSTRACT)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> check[<span class="st">"is_abstract"</span>], check[<span class="st">"reason"</span>]</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_points(abstract):</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> (<span class="st">"Extract exactly 3 key points from this research abstract: the problem, the method "</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>              <span class="st">"and the main finding. One short English sentence each. Use only facts stated in the text: "</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>              <span class="st">"no new adjectives, judgements or claims.</span><span class="ch">\n\n</span><span class="st">"</span> <span class="op">+</span> abstract)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="fl">0.2</span>, schema<span class="op">=</span>POINTS)[<span class="st">"points"</span>]</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> write_thai(points):</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    bullets <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"- </span><span class="sc">{</span>p<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> p <span class="kw">in</span> points)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> (<span class="st">"Write a Thai summary for first-year university students using only these key points. "</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Do not add any fact, adjective or claim that is not in the points. "</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>              <span class="st">"At most 5 lines, one sentence per line, no blank lines, keep technical terms in English. "</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Return only the summary.</span><span class="ch">\n\n</span><span class="st">"</span> <span class="op">+</span> bullets)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="fl">0.7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ChainState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    text: <span class="bu">str</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    ok: <span class="bu">bool</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    why: <span class="bu">str</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    points: <span class="bu">list</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    summary: <span class="bu">str</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> input_gate(s):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    ok, why <span class="op">=</span> gate_is_abstract(s[<span class="st">"text"</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"ok"</span>: ok, <span class="st">"why"</span>: why}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract(s):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    points <span class="op">=</span> extract_points(s[<span class="st">"text"</span>])</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"points"</span>: points, <span class="st">"ok"</span>: <span class="bu">len</span>(points) <span class="op">==</span> <span class="dv">3</span>, <span class="st">"why"</span>: <span class="ss">f"key points: </span><span class="sc">{</span><span class="bu">len</span>(points)<span class="sc">}</span><span class="ss"> (need 3)"</span>}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize(s):</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"summary"</span>: write_thai(s[<span class="st">"points"</span>])}</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> passed(s):</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"next"</span> <span class="cf">if</span> s[<span class="st">"ok"</span>] <span class="cf">else</span> <span class="st">"stop"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> StateGraph(ChainState)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"input_gate"</span>, input_gate)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"extract"</span>, extract)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"write_thai"</span>, summarize)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>g.add_edge(START, <span class="st">"input_gate"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 1 (▶ video 3:35): after input_gate, pick the path with passed: next → extract, stop → </span><span class="re">END</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>g.add_conditional_edges(<span class="st">"input_gate"</span>, ___, {<span class="st">"next"</span>: ___, <span class="st">"stop"</span>: ___})</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>g.add_conditional_edges(<span class="st">"extract"</span>, passed, {<span class="st">"next"</span>: <span class="st">"write_thai"</span>, <span class="st">"stop"</span>: END})</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>g.add_edge(<span class="st">"write_thai"</span>, END)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>chain <span class="op">=</span> g.<span class="bu">compile</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Show answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> StateGraph(ChainState)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"input_gate"</span>, input_gate)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"extract"</span>, extract)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>g.add_node(<span class="st">"write_thai"</span>, summarize)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>g.add_edge(START, <span class="st">"input_gate"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>g.add_conditional_edges(<span class="st">"input_gate"</span>, passed, {<span class="st">"next"</span>: <span class="st">"extract"</span>, <span class="st">"stop"</span>: END})</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>g.add_conditional_edges(<span class="st">"extract"</span>, passed, {<span class="st">"next"</span>: <span class="st">"write_thai"</span>, <span class="st">"stop"</span>: END})</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>g.add_edge(<span class="st">"write_thai"</span>, END)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>chain <span class="op">=</span> g.<span class="bu">compile</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chain.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Output (27 lines)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre class="text lab-output"><code>                         +-----------+                    
+                         | __start__ |                    
+                         +-----------+                    
+                               *                          
+                               *                          
+                               *                          
+                        +------------+                    
+                        | input_gate |                    
+                        +------------+....                
+                        ...               ....            
+                       .                      ....        
+                     ..                           ....    
+              +---------+                             ... 
+              | extract |                               . 
+              +---------+                               . 
+            ...          ..                             . 
+           .               ..                           . 
+         ..                  ..                         . 
++------------+                 ..                     ... 
+| write_thai |                  .                 ....    
++------------+***               .             ....        
+                 *****         .          ....            
+                      ***      .      ....                
+                         ***   .   ...                    
+                          +---------+                     
+                          | __end__ |                     
+                          +---------+</code></pre>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_steps(graph, state):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="kw">in</span> graph.stream(state, stream_mode<span class="op">=</span><span class="st">"updates"</span>):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> node, update <span class="kw">in</span> step.items():</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"▶ </span><span class="sc">{</span>node<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>update<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>show_steps(chain, {<span class="st">"text"</span>: ABSTRACT})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>▶ input_gate: {'ok': True, 'why': 'The text follows the standard structure of an abstract by summarizing the research objective, methodology, key findings, and data availability.'}
+▶ extract: {'points': ['The study examines whether a retrieval-augmented teaching assistant helps first-year students debug Python assignments.', 'Researchers compared a group using an assistant that retrieves lecture notes against a group using the same LLM without retrieval in a 10-week course.', 'The retrieval group fixed 31% more bugs on their own and asked human TAs 40% fewer repeated questions, though the benefit disappeared for advanced students.'], 'ok': True, 'why': 'key points: 3 (need 3)'}
+▶ write_thai: {'summary': 'การศึกษานี้ตรวจสอบว่า retrieval-augmented teaching assistant ช่วยนักศึกษาปีหนึ่งในการ debug งาน Python ได้หรือไม่\nผู้วิจัยเปรียบเทียบกลุ่มที่ใช้ assistant ที่ทำ retrieval lecture notes กับกลุ่มที่ใช้ LLM เดียวกันที่ไม่มี retrieval ในคอร์สเรียน 10 สัปดาห์\nกลุ่ม retrieval สามารถ fix bugs ได้ด้วยตนเองมากกว่า 31% และถามคำถามซ้ำกับ human TAs น้อยลง 40%\nอย่างไรก็ตาม ประโยชน์ดังกล่าวหายไปสำหรับ advanced students'}</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>show_steps(chain, {<span class="st">"text"</span>: NOTICE})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>▶ input_gate: {'ok': False, 'why': 'The text is a logistical announcement or administrative notice intended for students rather than a summary of a research study.'}</code></pre>
+</section>
+<section id="routing-a-conditional-edge-from-the-classifier-lab-2" class="level2">
+<h2 class="anchored" data-anchor-id="routing-a-conditional-edge-from-the-classifier-lab-2">2. Routing → a conditional edge from the classifier (Lab 2)</h2>
+<p>In Lab 2 it was <code>label = classify(item)</code> then <code>ROUTES[label](item)</code>; here the route name is the <strong>name of the next node</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 2: simulated questions + the same classifier and handlers ----</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>QUESTIONS <span class="op">=</span> [</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"q"</span>: <span class="st">"How is ReAct different from prompt chaining?"</span>, <span class="st">"expect"</span>: <span class="st">"concept"</span>},</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"q"</span>: <span class="st">"When is the midterm exam, and in which room?"</span>, <span class="st">"expect"</span>: <span class="st">"admin"</span>},</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"q"</span>: <span class="st">"Why does my average function break on an empty list?"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">"code"</span>: <span class="st">"def average(xs):</span><span class="ch">\n</span><span class="st">    return sum(xs) / len(xs)</span><span class="ch">\n</span><span class="st">print(average([]))"</span>, <span class="st">"expect"</span>: <span class="st">"code_error"</span>},</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>ROUTE_SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"route"</span>],</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"properties"</span>: {<span class="st">"route"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: [<span class="st">"concept"</span>, <span class="st">"code_error"</span>, <span class="st">"admin"</span>]}}}</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>COURSE_INFO <span class="op">=</span> (<span class="st">"Midterm exam: Saturday 12 December, 09:00-12:00, room CL-301. Final exam: Saturday 6 February, room CL-301. "</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Late lab submission: -10% per day, not accepted after 3 days. Office hours: Wed 13:00-15:00."</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify(item):</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> (<span class="st">"Classify this student question for a university AI course into exactly one route:</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">"- concept: asks to explain an idea or theory (no code to debug)</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>              <span class="st">"- code_error: the student's code fails and they attached it</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>              <span class="st">"- admin: course logistics such as exam dates, rooms, deadlines, grading policy</span><span class="ch">\n\n</span><span class="st">"</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>              <span class="ss">f"Question: </span><span class="sc">{</span>item[<span class="st">'q'</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">Attached code: </span><span class="sc">{</span>item<span class="sc">.</span>get(<span class="st">'code'</span>, <span class="st">'(none)'</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="dv">0</span>, schema<span class="op">=</span>ROUTE_SCHEMA)[<span class="st">"route"</span>]</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_concept(item):</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(<span class="st">"You are a patient teaching assistant for an AI course. Explain the idea clearly, "</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"with one everyday analogy. Answer in Thai, at most 3 sentences.</span><span class="ch">\n\n</span><span class="st">"</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>                   <span class="ss">f"Question: </span><span class="sc">{</span>item[<span class="st">'q'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_snippet(code):</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> subprocess.run([sys.executable, <span class="st">"-c"</span>, code], capture_output<span class="op">=</span><span class="va">True</span>, text<span class="op">=</span><span class="va">True</span>, timeout<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>                       env<span class="op">=</span>{<span class="op">**</span>os.environ, <span class="st">"PYTHON_COLORS"</span>: <span class="st">"0"</span>})</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r.stderr.strip().splitlines()[<span class="op">-</span><span class="dv">1</span>] <span class="cf">if</span> r.returncode <span class="cf">else</span> <span class="st">"no error"</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_code(item):</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> run_snippet(item[<span class="st">"code"</span>])</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(<span class="st">"You are a Python debugging tutor. Using the REAL error below, explain the cause "</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"in Thai in at most 2 sentences, then give one fixed line of code.</span><span class="ch">\n\n</span><span class="st">"</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>                   <span class="ss">f"Code:</span><span class="ch">\n</span><span class="sc">{</span>item[<span class="st">'code'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Error when run: </span><span class="sc">{</span>error<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_admin(item):</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(<span class="st">"Answer the student's question using ONLY this course info, copying dates and rooms exactly. "</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"If it is not there, say to ask the instructor. "</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>                   <span class="ss">f"Answer in Thai, 1-2 sentences.</span><span class="ch">\n\n</span><span class="ss">Course info: </span><span class="sc">{</span>COURSE_INFO<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Question: </span><span class="sc">{</span>item[<span class="st">'q'</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>                   temperature<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RouteState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    item: <span class="bu">dict</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    route: <span class="bu">str</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> StateGraph(RouteState)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"classify"</span>, <span class="kw">lambda</span> s: {<span class="st">"route"</span>: classify(s[<span class="st">"item"</span>])})</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"concept"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_concept(s[<span class="st">"item"</span>])})</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"code_error"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_code(s[<span class="st">"item"</span>])})</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"admin"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_admin(s[<span class="st">"item"</span>])})</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 2 (▶ video 5:57): after classify, read route from the state and go to the node with that name</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>r.add_conditional_edges(<span class="st">"classify"</span>, <span class="kw">lambda</span> s: ___, [<span class="st">"concept"</span>, <span class="st">"code_error"</span>, <span class="st">"admin"</span>])</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> [<span class="st">"concept"</span>, <span class="st">"code_error"</span>, <span class="st">"admin"</span>]:</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    r.add_edge(n, END)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>router <span class="op">=</span> r.<span class="bu">compile</span>()</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(router.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Show answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RouteState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    item: <span class="bu">dict</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    route: <span class="bu">str</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> StateGraph(RouteState)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"classify"</span>, <span class="kw">lambda</span> s: {<span class="st">"route"</span>: classify(s[<span class="st">"item"</span>])})</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"concept"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_concept(s[<span class="st">"item"</span>])})</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"code_error"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_code(s[<span class="st">"item"</span>])})</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>r.add_node(<span class="st">"admin"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: answer_admin(s[<span class="st">"item"</span>])})</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>r.add_edge(START, <span class="st">"classify"</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>r.add_conditional_edges(<span class="st">"classify"</span>, <span class="kw">lambda</span> s: s[<span class="st">"route"</span>], [<span class="st">"concept"</span>, <span class="st">"code_error"</span>, <span class="st">"admin"</span>])</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> [<span class="st">"concept"</span>, <span class="st">"code_error"</span>, <span class="st">"admin"</span>]:</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    r.add_edge(n, END)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>router <span class="op">=</span> r.<span class="bu">compile</span>()</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(router.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<pre class="text lab-output"><code>                   +-----------+                      
+                   | __start__ |                      
+                   +-----------+                      
+                          *                           
+                          *                           
+                          *                           
+                    +----------+                      
+                    | classify |                      
+                 ...+----------+...                   
+              ...        .         ...                
+          ....           .            ....            
+        ..               .                ..          
++-------+         +------------+         +---------+  
+| admin |*        | code_error |         | concept |  
++-------+ ****    +------------+      ***+---------+  
+              ***        *         ***                
+                 ****    *     ****                   
+                     **  *   **                       
+                    +---------+                       
+                    | __end__ |                       
+                    +---------+</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> QUESTIONS:</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> router.invoke({<span class="st">"item"</span>: item})</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"expect </span><span class="sc">{</span>item[<span class="st">'expect'</span>]<span class="sc">:&lt;10}</span><span class="ss"> → route </span><span class="sc">{</span>out[<span class="st">'route'</span>]<span class="sc">:&lt;10}</span><span class="ss"> | </span><span class="sc">{</span>out[<span class="st">'answer'</span>][:<span class="dv">90</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>expect concept    → route concept    | ReAct คือการให้ AI คิดและลงมือทำสลับกันไปมาในขั้นตอนเดียวเพื่อแก้ปัญหาที่ซับซ้อน ในขณะที่ 
+expect admin      → route admin      | การสอบ Midterm คือวัน Saturday 12 December, 09:00-12:00 ที่ห้อง room CL-301
+expect code_error → route code_error | ข้อผิดพลาดนี้เกิดจากการพยายามหารด้วยศูนย์ เนื่องจากลิสต์ `xs` เป็นค่าว่าง ทำให้ `len(xs)`</code></pre>
+</section>
+<section id="parallelization-fan-out-reducer-lab-3" class="level2">
+<h2 class="anchored" data-anchor-id="parallelization-fan-out-reducer-lab-3">3. Parallelization → fan-out + reducer (Lab 3)</h2>
+<p>In Lab 3 we used <code>ThreadPoolExecutor</code> so the three reviewers worked at the same time. Here, nodes with edges from the same point <strong>run at the same time on their own</strong>, and a <strong>reducer</strong> says how their results are combined</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 3: the code to review + the same reviewers ----</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>CODE <span class="op">=</span> <span class="st">'''import sqlite3</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">DB_PASSWORD = "cogito123"</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="st">def find_failing(db, student_names):</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="st">    result = ""</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="st">    for n in student_names:</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="st">        q = "SELECT name, score FROM grades WHERE name = '" + n + "'"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="st">        row = db.execute(q).fetchone()</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="st">        if row and row[1] &lt; 50:</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="st">            if row[0] not in result.split(","):</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="st">                result = result + row[0] + ","</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="st">    return result</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>NUMBERED <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">:2}</span><span class="ss"> | </span><span class="sc">{</span>line<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i, line <span class="kw">in</span> <span class="bu">enumerate</span>(CODE.splitlines(), <span class="dv">1</span>))</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>REVIEWERS <span class="op">=</span> {</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"security"</span>: <span class="st">"security only: injection, secrets in code, unsafe input handling"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"performance"</span>: <span class="st">"performance only: slow loops, repeated work, wasted database calls"</span>,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"style"</span>: <span class="st">"style only: naming, readability, magic numbers, return types"</span>,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>FINDING <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"line"</span>, <span class="st">"severity"</span>, <span class="st">"issue"</span>],</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>           <span class="st">"properties"</span>: {<span class="st">"line"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>},</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"severity"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: [<span class="st">"high"</span>, <span class="st">"medium"</span>, <span class="st">"low"</span>]},</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"issue"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"findings"</span>],</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>          <span class="st">"properties"</span>: {<span class="st">"findings"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"minItems"</span>: <span class="dv">1</span>, <span class="st">"items"</span>: FINDING}}}</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> review(aspect):</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> time.perf_counter()</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> ask_llm(<span class="ss">f"You are a code reviewer. Review this Python code for </span><span class="sc">{</span>REVIEWERS[aspect]<span class="sc">}</span><span class="ss">. "</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"Ignore every other kind of problem. Give at most 3 findings, each with its line number "</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>                  <span class="ss">f"and a one-sentence issue.</span><span class="ch">\n\n</span><span class="sc">{</span>NUMBERED<span class="sc">}</span><span class="ss">"</span>, temperature<span class="op">=</span><span class="dv">0</span>, schema<span class="op">=</span>SCHEMA)</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> aspect, out[<span class="st">"findings"</span>], time.perf_counter() <span class="op">-</span> start</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 3 (▶ video 7:29): make results join the lists from every node instead of overwriting (reducer)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ReviewState(TypedDict):</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    results: Annotated[<span class="bu">list</span>, ___]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Show answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ReviewState(TypedDict):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    results: Annotated[<span class="bu">list</span>, operator.add]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reviewer(aspect):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">lambda</span> s: {<span class="st">"results"</span>: [review(aspect)]}</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> StateGraph(ReviewState)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> aspect <span class="kw">in</span> REVIEWERS:</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    p.add_node(aspect, reviewer(aspect))</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    p.add_edge(START, aspect)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    p.add_edge(aspect, END)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>reviews <span class="op">=</span> p.<span class="bu">compile</span>()</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reviews.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>                      +-----------+                     
+                      | __start__ |                     
+                    **+-----------+***                  
+                 ***         *        ***               
+             ****             *          ****           
+           **                 *              **         
++-------------+         +----------+         +-------+  
+| performance |         | security |         | style |  
++-------------+**       +----------+     ****+-------+  
+                 ***          *       ***               
+                    ****     *    ****                  
+                        **   *  **                      
+                       +---------+                      
+                       | __end__ |                      
+                       +---------+</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.perf_counter()</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> reviews.invoke({<span class="st">"results"</span>: []})</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> time.perf_counter() <span class="op">-</span> start</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> aspect, findings, sec <span class="kw">in</span> out[<span class="st">"results"</span>]:</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"   </span><span class="sc">{</span>aspect<span class="sc">:12}</span><span class="ss"> </span><span class="sc">{</span>sec<span class="sc">:5.1f}</span><span class="ss">s  </span><span class="sc">{</span><span class="bu">len</span>(findings)<span class="sc">}</span><span class="ss"> findings"</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"⏱ graph: </span><span class="sc">{</span>total<span class="sc">:.1f}</span><span class="ss">s  | sum of calls = </span><span class="sc">{</span><span class="bu">sum</span>(r[<span class="dv">2</span>] <span class="cf">for</span> r <span class="kw">in</span> out[<span class="st">'results'</span>])<span class="sc">:.1f}</span><span class="ss">s"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>   performance    2.6s  3 findings
+   security       1.7s  2 findings
+   style          2.9s  3 findings
+⏱ graph: 2.9s  | sum of calls = 7.2s</code></pre>
+</section>
+<section id="orchestrator-workers-send-lab-4" class="level2">
+<h2 class="anchored" data-anchor-id="orchestrator-workers-send-lab-4">4. Orchestrator-workers → <code>Send</code> (Lab 4)</h2>
+<p>In Lab 3 we knew in advance there were three reviewers, so we could draw three edges. In Lab 4 <strong>the orchestrator (an LLM) writes the plan at run time</strong>, so we don’t know how many subtasks there will be. <code>Send("worker", ...)</code> sends one task to the <code>worker</code> node, as many times as needed</p>
+<pre><code>START → orchestrator ─Send×N→ worker → synthesizer → END</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 4: simulated papers + the same planner, worker and synthesizer ----</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>PAPERS <span class="op">=</span> {</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"P1"</span>: (<span class="st">"TutorBot: An LLM Tutor for Introductory Programming. We deployed an LLM-based tutor in a first-year "</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Python course with 412 students for one semester. Students who used the tutor at least weekly scored "</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>           <span class="st">"11</span><span class="sc">% hi</span><span class="st">gher on the final exam than a matched control group. The tutor gave hints instead of full solutions."</span>),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"P2"</span>: (<span class="st">"Grading at Scale: Automatic Feedback on Code Assignments. We built a pipeline that runs unit tests and "</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">"asks an LLM to explain failures to students. On 3,800 submissions, teaching assistants agreed with the "</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>           <span class="st">"LLM's feedback in 87</span><span class="sc">% o</span><span class="st">f cases, and grading time per assignment dropped from 9 to 2 minutes."</span>),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"P3"</span>: (<span class="st">"The Hint Trap: Over-reliance on AI Assistants. In a controlled study with 96 students, those given "</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>           <span class="st">"unlimited AI hints solved 30% more practice problems but scored 14</span><span class="sc">% lo</span><span class="st">wer on a closed-book test two "</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>           <span class="st">"weeks later than students with no AI access. Limiting hints to three per problem removed the gap."</span>),</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>FACTS_ONLY <span class="op">=</span> (<span class="st">"Copy every number exactly, with the same meaning as in the source. "</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Add no claim, cause, advice or adjective that is not in the source."</span>)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>WORKERS <span class="op">=</span> {</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"summarize"</span>: <span class="st">"You summarize one research abstract for students in 2-3 sentences. Keep the key numbers."</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"extract"</span>:   <span class="st">"You extract facts. Return a short bullet list of only what the task asks for. No commentary."</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"compare"</span>:   <span class="st">"You compare papers. In 3-4 sentences, say where they agree and where they conflict. Name papers by id."</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>SUBTASK <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>,</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>           <span class="st">"required"</span>: [<span class="st">"id"</span>, <span class="st">"worker"</span>, <span class="st">"paper_ids"</span>, <span class="st">"instruction"</span>],</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>           <span class="st">"properties"</span>: {<span class="st">"id"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>},</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"worker"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: <span class="bu">list</span>(WORKERS)},</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"paper_ids"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"minItems"</span>: <span class="dv">1</span>, <span class="st">"items"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: <span class="bu">list</span>(PAPERS)}},</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"instruction"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>PLAN_SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>, <span class="st">"required"</span>: [<span class="st">"subtasks"</span>],</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>               <span class="st">"properties"</span>: {<span class="st">"subtasks"</span>: {<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: SUBTASK, <span class="st">"minItems"</span>: <span class="dv">1</span>}}}</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plan(goal):</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    papers <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"</span><span class="sc">{</span>pid<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> pid, text <span class="kw">in</span> PAPERS.items())</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""You are the orchestrator of a teaching assistant. Break the GOAL into subtasks for workers.</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="ss">GOAL: </span><span class="sc">{</span>goal<span class="sc">}</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="ss">AVAILABLE PAPERS:</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>papers<span class="sc">}</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="ss">WORKER TYPES:</span></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- summarize: overview of ONE paper</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- extract: pull the specific facts a question needs from ONE paper</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- compare: contrast 2+ papers</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="ss">RULES:</span></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- Return 1 to 6 subtasks. Use only the subtasks this goal really needs.</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- Only use papers that are relevant to the goal.</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- Each subtask uses one worker type and lists the paper ids the worker may read.</span></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- summarize and extract read exactly ONE paper: make a separate subtask for each paper.</span></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- Do NOT add a final merge/report subtask; a synthesizer merges the results afterwards.</span></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- ids are T1, T2, ..."""</span></span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="dv">0</span>, schema<span class="op">=</span>PLAN_SCHEMA)[<span class="st">"subtasks"</span>]</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_worker(task):</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>    papers <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"[</span><span class="sc">{</span>pid<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>PAPERS[pid]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> pid <span class="kw">in</span> task[<span class="st">"paper_ids"</span>])</span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>WORKERS[task[<span class="st">'worker'</span>]]<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>FACTS_ONLY<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">TASK: </span><span class="sc">{</span>task[<span class="st">'instruction'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">PAPERS:</span><span class="ch">\n</span><span class="sc">{</span>papers<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> synthesize(goal, tasks, results):</span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a>    parts <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"[</span><span class="sc">{</span>t[<span class="st">'worker'</span>]<span class="sc">}</span><span class="ss"> result, source papers: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(t[<span class="st">'paper_ids'</span>])<span class="sc">}</span><span class="ss">]</span><span class="ch">\n</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">for</span> t, r <span class="kw">in</span> <span class="bu">zip</span>(tasks, results))</span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> (<span class="ss">f"GOAL: </span><span class="sc">{</span>goal<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">WORKER RESULTS:</span><span class="ch">\n</span><span class="sc">{</span>parts<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Merge these results into ONE coherent answer for students, in Thai, keeping technical terms "</span></span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>              <span class="st">"in English, at most 150 words. Use only facts from the results and cite papers as [P1], [P2], [P3]. "</span></span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a>              <span class="op">+</span> FACTS_ONLY)</span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_llm(prompt, temperature<span class="op">=</span><span class="fl">0.3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> OrchState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    goal: <span class="bu">str</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    tasks: <span class="bu">list</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    done: Annotated[<span class="bu">list</span>, operator.add]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 4 (▶ video 9:55): fan out: one Send to the worker node per subtask in tasks</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign(s):</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [Send(___, {<span class="st">"task"</span>: t}) <span class="cf">for</span> t <span class="kw">in</span> ___]</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> StateGraph(OrchState)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"orchestrator"</span>, <span class="kw">lambda</span> s: {<span class="st">"tasks"</span>: plan(s[<span class="st">"goal"</span>])})</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"worker"</span>, <span class="kw">lambda</span> s: {<span class="st">"done"</span>: [(s[<span class="st">"task"</span>], run_worker(s[<span class="st">"task"</span>]))]})</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"synthesizer"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: synthesize(</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    s[<span class="st">"goal"</span>], [t <span class="cf">for</span> t, _ <span class="kw">in</span> s[<span class="st">"done"</span>]], [r <span class="cf">for</span> _, r <span class="kw">in</span> s[<span class="st">"done"</span>]])})</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>o.add_edge(START, <span class="st">"orchestrator"</span>)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>o.add_conditional_edges(<span class="st">"orchestrator"</span>, assign, [<span class="st">"worker"</span>])</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>o.add_edge(<span class="st">"worker"</span>, <span class="st">"synthesizer"</span>)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>o.add_edge(<span class="st">"synthesizer"</span>, END)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>orchestrate <span class="op">=</span> o.<span class="bu">compile</span>()</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(orchestrate.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Show answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> OrchState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    goal: <span class="bu">str</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    tasks: <span class="bu">list</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    done: Annotated[<span class="bu">list</span>, operator.add]</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign(s):</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [Send(<span class="st">"worker"</span>, {<span class="st">"task"</span>: t}) <span class="cf">for</span> t <span class="kw">in</span> s[<span class="st">"tasks"</span>]]</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>o <span class="op">=</span> StateGraph(OrchState)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"orchestrator"</span>, <span class="kw">lambda</span> s: {<span class="st">"tasks"</span>: plan(s[<span class="st">"goal"</span>])})</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"worker"</span>, <span class="kw">lambda</span> s: {<span class="st">"done"</span>: [(s[<span class="st">"task"</span>], run_worker(s[<span class="st">"task"</span>]))]})</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>o.add_node(<span class="st">"synthesizer"</span>, <span class="kw">lambda</span> s: {<span class="st">"answer"</span>: synthesize(</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    s[<span class="st">"goal"</span>], [t <span class="cf">for</span> t, _ <span class="kw">in</span> s[<span class="st">"done"</span>]], [r <span class="cf">for</span> _, r <span class="kw">in</span> s[<span class="st">"done"</span>]])})</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>o.add_edge(START, <span class="st">"orchestrator"</span>)</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>o.add_conditional_edges(<span class="st">"orchestrator"</span>, assign, [<span class="st">"worker"</span>])</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>o.add_edge(<span class="st">"worker"</span>, <span class="st">"synthesizer"</span>)</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>o.add_edge(<span class="st">"synthesizer"</span>, END)</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>orchestrate <span class="op">=</span> o.<span class="bu">compile</span>()</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(orchestrate.get_graph().draw_ascii())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Output (27 lines)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre class="text lab-output"><code>  +-----------+  
+  | __start__ |  
+  +-----------+  
+        *        
+        *        
+        *        
++--------------+ 
+| orchestrator | 
++--------------+ 
+        .        
+        .        
+        .        
+   +--------+    
+   | worker |    
+   +--------+    
+        *        
+        *        
+        *        
++-------------+  
+| synthesizer |  
++-------------+  
+        *        
+        *        
+        *        
+  +---------+    
+  | __end__ |    
+  +---------+</code></pre>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_goal(goal):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> orchestrate.invoke({<span class="st">"goal"</span>: goal})</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"🧭 PLAN: </span><span class="sc">{</span><span class="bu">len</span>(out[<span class="st">'tasks'</span>])<span class="sc">}</span><span class="ss"> subtasks → 👷 </span><span class="sc">{</span><span class="bu">len</span>(out[<span class="st">'done'</span>])<span class="sc">}</span><span class="ss"> worker runs"</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> out[<span class="st">"tasks"</span>]:</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>t[<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>t[<span class="st">'worker'</span>]<span class="sc">:&lt;9}</span><span class="ss">  </span><span class="sc">{</span><span class="st">','</span><span class="sc">.</span>join(t[<span class="st">'paper_ids'</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">📝"</span>, out[<span class="st">"answer"</span>])</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>run_goal(<span class="st">"Summarize these 3 papers into one overview for students."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>🧭 PLAN: 4 subtasks → 👷 4 worker runs
+  T1  summarize  P1
+  T2  summarize  P2
+  T3  summarize  P3
+  T4  compare    P1,P2,P3
+
+📝 การใช้ LLM ในการเรียนการสอนมีผลลัพธ์ที่หลากหลาย: ในวิชา Python สำหรับนักศึกษา 412 คน พบว่าผู้ที่ใช้ tutor อย่างน้อยสัปดาห์ละครั้งทำคะแนน final exam ได้สูงกว่ากลุ่ม control group 11% โดย tutor ให้เป็น hints แทนการให้ full solutions [P1] ขณะที่การใช้ AI hints แบบไม่จำกัดช่วยให้แก้ practice problems ได้มากขึ้น 30% แต่คะแนน closed-book test ในอีก 2 สัปดาห์ต่อมาต่ำกว่ากลุ่มที่ไม่มี AI 14% อย่างไรก็ตาม การจำกัด hints ไว้ที่ 3 ครั้งต่อปัญหาช่วยลบช่องว่างดังกล่าวได้ [P3] นอกจากนี้ การสร้าง pipeline เพื่อให้ LLM อธิบาย failure จาก unit tests พบว่า teaching assistants เห็นด้วยกับ feedback 87% และช่วยลด grading time จาก 9 นาที เหลือ 2 นาทีต่อ assignment [P2]</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>run_goal(<span class="st">"A student asks: should I use AI hints while doing practice problems? Answer with evidence."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>🧭 PLAN: 3 subtasks → 👷 3 worker runs
+  T1  extract    P1
+  T2  extract    P3
+  T3  compare    P1,P3
+
+📝 การใช้ AI hints มีผลลัพธ์ที่แตกต่างกันตามรูปแบบการใช้งาน: นักเรียนที่ใช้ tutor อย่างน้อย weekly มีคะแนน final exam สูงกว่า matched control group 11% [P1] อย่างไรก็ตาม การใช้ unlimited AI hints ทำให้นักเรียนแก้ practice problems ได้มากกว่า 30% แต่กลับมีคะแนนใน closed-book test หลังจากผ่านไป two weeks ต่ำกว่านักเรียนที่ไม่มี AI access อยู่ 14% [P3] ทั้งนี้ การจำกัด hints เป็น three per problem สามารถ remove the gap ดังกล่าวได้ [P3]</code></pre>
+</section>
+<section id="evaluator-optimizer-a-cycle-lab-5" class="level2">
+<h2 class="anchored" data-anchor-id="evaluator-optimizer-a-cycle-lab-5">5. Evaluator-optimizer → a cycle (Lab 5)</h2>
+<p>In Lab 5 it was <code>for rnd in range(1, budget + 1)</code> and <code>if score &gt;= threshold: return</code>; here it’s an <strong>edge that loops back</strong> to <code>generate</code>, and a conditional edge that decides whether to go round again or stop</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- from Lab 5: abstract + the same evaluator ----</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>ABSTRACT5 <span class="op">=</span> (</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"We study hallucination in small language models that answer students' questions about "</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"course material. We combine retrieval-augmented generation with lightweight fine-tuning on "</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"4,200 question-answer pairs from three university courses. On a new benchmark of 600 "</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"questions, our method reduces hallucination by 31% while keeping answer latency under "</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"two seconds. We release the benchmark and code for future work."</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>GLOSSARY <span class="op">=</span> [<span class="st">"hallucination"</span>, <span class="st">"small language model"</span>, <span class="st">"retrieval-augmented generation"</span>,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fine-tuning"</span>, <span class="st">"benchmark"</span>, <span class="st">"latency"</span>]</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>TASK <span class="op">=</span> (<span class="st">"Translate this research abstract into Thai for Thai university students. "</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Reply with the translation only.</span><span class="ch">\n\n</span><span class="ss">Abstract:</span><span class="ch">\n</span><span class="sc">{</span>ABSTRACT5<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> term_problems(draft):</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> draft.lower()</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [t <span class="cf">for</span> t <span class="kw">in</span> GLOSSARY</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> t <span class="kw">not</span> <span class="kw">in</span> text <span class="kw">or</span> <span class="ss">f"(</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">"</span> <span class="kw">in</span> text <span class="kw">or</span> <span class="ss">f"</span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">)"</span> <span class="kw">in</span> text]</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>CRITERIA <span class="op">=</span> <span class="st">"""1. meaning (0-4): every claim, qualifier (e.g. small, lightweight) and number of the</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="st">   source is present and correct in the Thai draft.</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="st">2. fluency (0-2): reads like natural Thai academic writing.</span></span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="st">English technical terms inside the Thai text are expected and correct; do not penalize them."""</span></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>EVAL_SCHEMA <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"additionalProperties"</span>: <span class="va">False</span>,</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>               <span class="st">"required"</span>: [<span class="st">"meaning"</span>, <span class="st">"fluency"</span>, <span class="st">"critique"</span>],</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>               <span class="st">"properties"</span>: {<span class="st">"meaning"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>}, <span class="st">"fluency"</span>: {<span class="st">"type"</span>: <span class="st">"integer"</span>},</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"critique"</span>: {<span class="st">"type"</span>: <span class="st">"string"</span>}}}</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(source, draft):</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>    review <span class="op">=</span> ask_llm(</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"You are a strict editor of English-to-Thai translations.</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Score the Thai draft against these criteria:</span><span class="ch">\n</span><span class="sc">{</span>CRITERIA<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"Source (English):</span><span class="ch">\n</span><span class="sc">{</span>source<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Thai draft:</span><span class="ch">\n</span><span class="sc">{</span>draft<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"In critique, list at most 3 concrete problems and how to fix each, one short line each "</span></span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"(in English). If nothing is wrong, say so."</span>,</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="dv">0</span>, schema<span class="op">=</span>EVAL_SCHEMA)</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>    bad <span class="op">=</span> term_problems(draft)</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bad:</span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>        review[<span class="st">"critique"</span>] <span class="op">+=</span> (<span class="st">"</span><span class="ch">\n</span><span class="st">Glossary check: write these terms in English only, with no Thai "</span></span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>                               <span class="ss">f"translation and no parentheses: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(bad)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>    review[<span class="st">"bad_terms"</span>] <span class="op">=</span> bad</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>    review[<span class="st">"terms"</span>] <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="dv">4</span> <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> <span class="bu">len</span>(bad))</span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>    review[<span class="st">"score"</span>] <span class="op">=</span> review[<span class="st">"meaning"</span>] <span class="op">+</span> review[<span class="st">"terms"</span>] <span class="op">+</span> review[<span class="st">"fluency"</span>]</span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> review</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LoopState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    context: <span class="bu">str</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    draft: <span class="bu">str</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    review: <span class="bu">dict</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">round</span>: <span class="bu">int</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate(s):</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"draft"</span>: ask_llm(s[<span class="st">"context"</span>], temperature<span class="op">=</span><span class="fl">0.7</span>), <span class="st">"round"</span>: s.get(<span class="st">"round"</span>, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>}</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check(s):</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> evaluate(ABSTRACT5, s[<span class="st">"draft"</span>])</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"--- round </span><span class="sc">{</span>s[<span class="st">'round'</span>]<span class="sc">}</span><span class="ss">: score </span><span class="sc">{</span>r[<span class="st">'score'</span>]<span class="sc">}</span><span class="ss">/10 · bad terms: </span><span class="sc">{</span>r[<span class="st">'bad_terms'</span>] <span class="kw">or</span> <span class="st">'none'</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"review"</span>: r,</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"context"</span>: s[<span class="st">"context"</span>] <span class="op">+</span> (<span class="ss">f"</span><span class="ch">\n\n</span><span class="ss">Your previous draft:</span><span class="ch">\n</span><span class="sc">{</span>s[<span class="st">'draft'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f"Editor's critique (score </span><span class="sc">{</span>r[<span class="st">'score'</span>]<span class="sc">}</span><span class="ss">/10):</span><span class="ch">\n</span><span class="sc">{</span>r[<span class="st">'critique'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Write an improved full translation. Reply with the translation only."</span>)}</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 5 (▶ video 12:53): stop once the score reaches threshold or the budget is used up</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> good_enough(s, threshold<span class="op">=</span><span class="dv">9</span>, budget<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ___ <span class="kw">or</span> ___:</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"done"</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"retry"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Show answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LoopState(TypedDict, total<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    context: <span class="bu">str</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    draft: <span class="bu">str</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    review: <span class="bu">dict</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">round</span>: <span class="bu">int</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate(s):</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"draft"</span>: ask_llm(s[<span class="st">"context"</span>], temperature<span class="op">=</span><span class="fl">0.7</span>), <span class="st">"round"</span>: s.get(<span class="st">"round"</span>, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span>}</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check(s):</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> evaluate(ABSTRACT5, s[<span class="st">"draft"</span>])</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"--- round </span><span class="sc">{</span>s[<span class="st">'round'</span>]<span class="sc">}</span><span class="ss">: score </span><span class="sc">{</span>r[<span class="st">'score'</span>]<span class="sc">}</span><span class="ss">/10 · bad terms: </span><span class="sc">{</span>r[<span class="st">'bad_terms'</span>] <span class="kw">or</span> <span class="st">'none'</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"review"</span>: r,</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"context"</span>: s[<span class="st">"context"</span>] <span class="op">+</span> (<span class="ss">f"</span><span class="ch">\n\n</span><span class="ss">Your previous draft:</span><span class="ch">\n</span><span class="sc">{</span>s[<span class="st">'draft'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f"Editor's critique (score </span><span class="sc">{</span>r[<span class="st">'score'</span>]<span class="sc">}</span><span class="ss">/10):</span><span class="ch">\n</span><span class="sc">{</span>r[<span class="st">'critique'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"Write an improved full translation. Reply with the translation only."</span>)}</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> good_enough(s, threshold<span class="op">=</span><span class="dv">9</span>, budget<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> s[<span class="st">"review"</span>][<span class="st">"score"</span>] <span class="op">&gt;=</span> threshold <span class="kw">or</span> s[<span class="st">"round"</span>] <span class="op">&gt;=</span> budget:</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"done"</span></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"retry"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> StateGraph(LoopState)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>e.add_node(<span class="st">"generate"</span>, generate)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>e.add_node(<span class="st">"evaluate"</span>, check)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>e.add_edge(START, <span class="st">"generate"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>e.add_edge(<span class="st">"generate"</span>, <span class="st">"evaluate"</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>e.add_conditional_edges(<span class="st">"evaluate"</span>, good_enough, {<span class="st">"retry"</span>: <span class="st">"generate"</span>, <span class="st">"done"</span>: END})</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>loop <span class="op">=</span> e.<span class="bu">compile</span>()</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> edge <span class="kw">in</span> loop.get_graph().edges:</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>edge<span class="sc">.</span>source<span class="sc">:&gt;9}</span><span class="ss"> → </span><span class="sc">{</span>edge<span class="sc">.</span>target<span class="sc">:&lt;9}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'(conditional)'</span> <span class="cf">if</span> edge<span class="sc">.</span>conditional <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>__start__ → generate  
+ evaluate → __end__   (conditional)
+ evaluate → generate  (conditional)
+ generate → evaluate</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> loop.invoke({<span class="st">"context"</span>: TASK})</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">✅ stopped after round </span><span class="sc">{</span>out[<span class="st">'round'</span>]<span class="sc">}</span><span class="ss"> with </span><span class="sc">{</span>out[<span class="st">'review'</span>][<span class="st">'score'</span>]<span class="sc">}</span><span class="ss">/10"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(out[<span class="st">"draft"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>--- round 1: score 6/10 · bad terms: ['hallucination', 'small language model', 'retrieval-augmented generation', 'fine-tuning', 'benchmark', 'latency']
+--- round 2: score 10/10 · bad terms: none
+
+✅ stopped after round 2 with 10/10
+บทคัดย่อ:
+
+เราทำการศึกษา hallucination ใน small language model ที่ใช้สำหรับตอบคำถามนิสิตนักศึกษาเกี่ยวกับเนื้อหาในบทเรียน โดยเราได้ใช้วิธีการรวม retrieval-augmented generation เข้ากับการทำ lightweight fine-tuning จากชุดข้อมูลคำถามและคำตอบจำนวน 4,200 คู่ จากรายวิชาในมหาวิทยาลัย 3 วิชา จากการทดสอบกับ benchmark ใหม่ซึ่งประกอบด้วยคำถาม 600 ข้อ พบว่าวิธีการของเราสามารถลด hallucination ลงได้ถึง 31% ในขณะที่ยังคงรักษา latency ในการตอบคำถามให้ต่ำกว่าสองวินาที ทั้งนี้เราได้เปิดเผย benchmark และซอร์สโค้ดเพื่อให้ผู้อื่นสามารถนำไปต่อยอดในการศึกษาต่อไปได้</code></pre>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>Written ourselves (Labs 1–5)</th>
+<th>LangGraph (Lab 6)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prompt chaining + gates</td>
+<td><code>if not gate(...): return None</code></td>
+<td>conditional edge → <code>END</code></td>
+</tr>
+<tr class="even">
+<td>Routing</td>
+<td><code>ROUTES[label](item)</code></td>
+<td>conditional edge from the route name to the node of that name</td>
+</tr>
+<tr class="odd">
+<td>Parallelization</td>
+<td><code>ThreadPoolExecutor</code> + <code>pool.map</code></td>
+<td>several edges from <code>START</code> + reducer <code>operator.add</code></td>
+</tr>
+<tr class="even">
+<td>Orchestrator-workers</td>
+<td><code>ex.map(run_worker, tasks)</code></td>
+<td>one <code>Send("worker", ...)</code> per subtask</td>
+</tr>
+<tr class="odd">
+<td>Evaluator-optimizer</td>
+<td><code>for</code> + <code>if score &gt;= threshold</code></td>
+<td>an edge looping back + conditional edge <code>good_enough</code></td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td>a <code>print</code> in every step</td>
+<td><code>draw_ascii()</code> + <code>stream()</code> show every step</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to write it yourself / when to use a framework</strong> — write it yourself to understand the mechanism and while the workflow is short; use a framework when the workflow has many branches, parallel work, or a structure the whole team needs to read</p>
+<p><strong>Try next:</strong> add gate two (at most 5 lines) after <code>write_thai</code> in the chain from part 1, or set <code>budget=1</code> in <code>good_enough</code> and see which round the loop stops at</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch19/ep04-workflow-patterns/ep04-lab5-evaluator.html" class="pagination-link" aria-label="Lab 5 — Evaluator-Optimizer: translating an abstract until it passes the criteria (§19.1.5)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 5 — Evaluator-Optimizer: translating an abstract until it passes the criteria (§19.1.5)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch19/ep05-autonomous-agents/index.html" class="pagination-link" aria-label="EP05 Autonomous Agent Patterns">
+        <span class="nav-page-text"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

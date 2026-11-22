@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 4 — สรุปของเก่าด้วย LangChain – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch18/ep08-tools-state-errors/index.html" rel="next">
+<link href="../../ch18/ep07-context-management/ep07-lab3-recursive-context.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2b2c7f1aa879808a4940211236c1a8ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: ระบบปฏิบัติการของ agent</a></li><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/ep07-lab4-langchain-summarization.html"><span class="chapter-title">Lab 4 — สรุปของเก่าด้วย LangChain</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab1-tokens.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tokens</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab2-decoding.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Decoding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/ep01-lab3-model-names.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — ชื่อ model, provider, quantization และ modality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab1-prompting.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab2-structured-output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Structured output</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab3-hallucination.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Hallucination</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/ep02-lab4-langchain.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab1-agent-loop.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — จาก chatbot เป็น agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/ep03-lab2-langchain-agent.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — ผู้ช่วยตัวเดิมด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab1-chaining.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Prompt Chaining + Validation Gates (§19.1.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab2-routing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Routing: คัดแยกครั้งเดียว แล้วส่งต่อผู้เชี่ยวชาญ (§19.1.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab3-parallel.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Parallelization: sectioning + voting (§19.1.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab4-orchestrator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Orchestrator-Workers: ให้ LLM เป็นคนแบ่งงาน (§19.1.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab5-evaluator.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — Evaluator-Optimizer: แปล abstract จนผ่านเกณฑ์ (§19.1.5)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/ep04-lab6-langgraph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 6 — Workflow Patterns ด้วย LangGraph (§19.1, §25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab1-react.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — ReAct Loop (§19.2.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab2-planning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Planning Agent (§19.2.2)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab3-reflexion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Reflexion: เรียนรู้จากความผิดพลาดโดยไม่ต้อง train (§19.2.3)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab4-tool-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — Tool-Use Patterns (§19.2.4)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/ep05-lab5-langgraph.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — จาก Scratch สู่ LangGraph (§25.3.1)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab1-good-tools.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — tool ที่ดี + รับมือความล้มเหลว</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab2-trace-and-test.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — trace + ทดสอบด้วย input หลายแบบ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab3-choose-pattern.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — เลือก pattern จากตาราง 19.3: วัดก่อน แล้วค่อยลง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/ep06-lab4-langchain-middleware.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — หลักออกแบบชุดเดิม ด้วย LangChain middleware</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: ระบบปฏิบัติการของ agent</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab1-count-before-send.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — นับก่อนส่ง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab2-history-window.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — เมื่อ history ล้นหน้าต่าง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab3-recursive-context.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — แบ่ง context แล้วเรียกซ้ำ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/ep07-lab4-langchain-summarization.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 4 — สรุปของเก่าด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab1-trusted-tool-calls.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Tool call ที่ไว้ใจได้</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab2-checkpoint-resume.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — บันทึก checkpoint แล้วทำต่อจากจุดเดิม</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab3-when-things-fail.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — เมื่อทุกอย่างพัง</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab4-cost-and-caching.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — ค่าใช้จ่ายของงาน และ prompt caching</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/ep08-lab5-langgraph-durable.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 5 — checkpoint ด้วย LangGraph</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab1-build-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — สร้าง harness ทั้งไฟล์</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab2-test-without-llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — ทดสอบ harness โดยไม่เรียก model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab3-prompts-and-replay.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Prompt คือ code: เก็บเป็นเวอร์ชัน แล้วเล่นงานเดิมซ้ำ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/ep09-lab4-langchain-harness.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — harness ตัวเดิมด้วย LangChain</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · ความรู้: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab1-rag-from-scratch.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — สร้าง RAG เองทั้งเส้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab2-sparse-dense-hybrid.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Sparse vs dense vs hybrid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab3-chunking.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — วิธีตัดชิ้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/ep10-lab4-langchain-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — RAG ด้วย LangChain</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — แปลงคำถาม + จัดลำดับใหม่</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#เตรยมเครองกอนเรม" id="toc-เตรยมเครองกอนเรม" class="nav-link active" data-scroll-target="#เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</a></li>
+  <li><a href="#model-ตวนบ-token-และบทสนทนา-จาก-lab-12" id="toc-model-ตวนบ-token-และบทสนทนา-จาก-lab-12" class="nav-link" data-scroll-target="#model-ตวนบ-token-และบทสนทนา-จาก-lab-12">1. Model, ตัวนับ token และบทสนทนา (จาก Lab 1–2)</a></li>
+  <li><a href="#agent-summarizationmiddleware" id="toc-agent-summarizationmiddleware" class="nav-link" data-scroll-target="#agent-summarizationmiddleware">2. Agent + <code>SummarizationMiddleware</code></a></li>
+  <li><a href="#ใช-prompt-ของเราจาก-lab-2" id="toc-ใช-prompt-ของเราจาก-lab-2" class="nav-link" data-scroll-target="#ใช-prompt-ของเราจาก-lab-2">3. ใช้ prompt ของเราจาก Lab 2</a></li>
+  <li><a href="#สรป" id="toc-สรป" class="nav-link" data-scroll-target="#สรป">สรุป</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/index.html">M2 · Harness: ระบบปฏิบัติการของ agent</a></li><li class="breadcrumb-item"><a href="../../ch18/ep07-context-management/ep07-lab4-langchain-summarization.html"><span class="chapter-title">Lab 4 — สรุปของเก่าด้วย LangChain</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Lab 4 — สรุปของเก่าด้วย LangChain</span></h1>
+<p class="subtitle lead">Lab walkthrough · EP07 Context Window Management</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- generated by cogito-learn/tools/build_lab_pages.py from ep07-lab4-langchain-summarization.beats.yaml — edit the yaml, not this page -->
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">หมายเหตุ</span>วิธีใช้หน้านี้
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>หน้านี้คือ notebook เฉลยของ lab นี้ทีละ cell พร้อม output จากการรันจริงตอนอัดคลิป ไว้อ่านทวนก่อนหรือหลังลงมือ cell ที่มี <code>✏️ TODO</code> แสดงโค้ดแบบใน starter notebook ส่วนเฉลยเต็มอยู่ในกล่อง <strong>ดูเฉลย</strong> ลองเขียนเองก่อนค่อยเปิด</p>
+<p><a href="https://youtu.be/3A87bbdq0D0">▶ วิดีโอ</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab4-langchain-summarization.student.ipynb">✏️ Starter ใน Colab</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep07-context-management/ep07-lab4-langchain-summarization.ipynb">✅ เฉลยใน Colab</a> · กลับไปหน้า <a href="../../ch18/ep07-context-management/index.html#lab">EP07 Context Window Management</a></p>
+<p><em>model ตอบไม่เหมือนเดิมทุกครั้ง output ที่คุณรันเองจึงอาจต่างจากหน้านี้</em></p>
+</div>
+</div>
+<p>Lab 2 เราเขียน <code>summarize_old</code> เอง: เกินงบเมื่อไร → สรุปข้อความเก่า เก็บข้อความล่าสุดไว้ครบ (สมการ 18.4) lab นี้ใช้ <strong><code>SummarizationMiddleware</code></strong> ของ LangChain ทำเรื่องเดียวกัน — middleware ที่เราเจอใน EP06 Lab 4</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ที่เราเขียนเองใน Lab 2</th>
+<th>ใน <code>SummarizationMiddleware</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>BUDGET</code> + เช็กว่าเกินไหม</td>
+<td><code>trigger=("tokens", 600)</code></td>
+</tr>
+<tr class="even">
+<td><code>keep_last=6</code></td>
+<td><code>keep=("messages", 6)</code></td>
+</tr>
+<tr class="odd">
+<td><code>SUMMARY_PROMPT</code></td>
+<td><code>summary_prompt=</code></td>
+</tr>
+<tr class="even">
+<td><code>message_tokens</code> (Lab 1)</td>
+<td><code>token_counter=</code></td>
+</tr>
+<tr class="odd">
+<td>list <code>HISTORY</code></td>
+<td>state ของ agent ใน checkpointer (thread)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>สิ่งที่ framework เพิ่มให้:</strong> ตรวจงบเอง <strong>ก่อนเรียก model ทุกครั้ง</strong> ใน agent loop — เราไม่ต้องเรียกสรุปเอง</p>
+<p>บทสนทนาเป็นชุดเดียวกับ Lab 2 (<strong>ข้อมูลจำลอง</strong>) ส่วนคำตอบและบทสรุปของ model มาจากการรันจริง</p>
+<blockquote class="blockquote">
+<p>อ้างอิง: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em>, §18.2.3 — CC BY-SA 4.0</p>
+</blockquote>
+<section id="เตรยมเครองกอนเรม" class="level2">
+<h2 class="anchored" data-anchor-id="เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>สิ่งที่ต้องมี</th>
+<th>รายละเอียด</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 3.10 ขึ้นไป</td>
+<td>หรือใช้ Google Colab ซึ่งมีให้แล้ว</td>
+</tr>
+<tr class="even">
+<td>OpenRouter API key</td>
+<td>สมัครที่ openrouter.ai → Keys → Create Key แล้วเติมเครดิต (lab นี้ใช้ไม่ถึง 1 เซ็นต์ดอลลาร์)</td>
+</tr>
+<tr class="odd">
+<td>Packages</td>
+<td><code>langchain</code>, <code>langgraph</code>, <code>langchain-openai</code>, <code>langchain-core</code> (ล็อกเวอร์ชันชุดเดียวกับ EP06 Lab 4), <code>tokenizers</code>, <code>python-dotenv</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>ใส่ API key</strong></p>
+<ul>
+<li><strong>Colab:</strong> ไอคอน 🔑 Secrets → ชื่อ <code>OPENROUTER_API_KEY</code> → เปิด <em>Notebook access</em></li>
+<li><strong>เครื่องตัวเอง:</strong> สร้างไฟล์ <code>.env</code> ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+</ul>
+<p>วิธีตั้งค่า key และเหตุผลที่เลือก model อยู่ใน Lab 1</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"langchain==1.4.7"</span> <span class="st">"langgraph==1.2.16"</span> <span class="st">"langchain-openai==1.7.2"</span> <span class="st">"langchain-core==1.7.0"</span> <span class="st">"tokenizers==0.23.3"</span> python<span class="op">-</span>dotenv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="model-ตวนบ-token-และบทสนทนา-จาก-lab-12" class="level2">
+<h2 class="anchored" data-anchor-id="model-ตวนบ-token-และบทสนทนา-จาก-lab-12">1. Model, ตัวนับ token และบทสนทนา (จาก Lab 1–2)</h2>
+<p><code>ChatOpenAI</code> ชี้ไป OpenRouter (Gemma 4 26B ล็อกที่ DeepInfra) แบบเดียวกับ EP06 Lab 4 <code>USER_TURNS</code> คือข้อความของผู้ใช้จาก Lab 2 ทั้ง 15 ข้อความ — คราวนี้ agent ตอบเองทุกข้อความ</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, re</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"HF_HUB_VERBOSITY"</span>] <span class="op">=</span> <span class="st">"error"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tokenizers <span class="im">import</span> Tokenizer</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:  <span class="co"># Google Colab Secrets</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userdata.get(<span class="st">"OPENROUTER_API_KEY"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    load_dotenv()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(model<span class="op">=</span>MODEL, base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>load_key(), max_tokens<span class="op">=</span><span class="dv">400</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                 extra_body<span class="op">=</span>{<span class="st">"reasoning"</span>: {<span class="st">"enabled"</span>: <span class="va">False</span>},</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"deepinfra/fp8"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}})</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>tok <span class="op">=</span> Tokenizer.from_pretrained(MODEL)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>PAPERS <span class="op">=</span> {<span class="st">"P01"</span>: <span class="dv">2021</span>, <span class="st">"P02"</span>: <span class="dv">2021</span>, <span class="st">"P03"</span>: <span class="dv">2022</span>, <span class="st">"P04"</span>: <span class="dv">2023</span>, <span class="st">"P05"</span>: <span class="dv">2023</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>          <span class="st">"P06"</span>: <span class="dv">2024</span>, <span class="st">"P07"</span>: <span class="dv">2024</span>, <span class="st">"P08"</span>: <span class="dv">2024</span>, <span class="st">"P09"</span>: <span class="dv">2019</span>, <span class="st">"P10"</span>: <span class="dv">2024</span>}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>USER_TURNS <span class="op">=</span> [</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Task for this whole chat: I'm writing a literature review on transformers for time series. I'll paste paper notes. Always answer in Thai."</span>,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Correction to the task: my review only covers papers published in 2023 or later. Leave older ones out."</span>,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P04: Are Transformers Effective for Time Series Forecasting? (2023). A one-layer linear model beats several transformers."</span>,</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P05: PatchTST (2023). Cuts each series into patches of 16 points and treats channels independently."</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P06: iTransformer (2024). Inverts the axes: each variable becomes a token, attention runs across variables."</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Thanks!"</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P01: Informer (2021). ProbSparse self-attention cuts the cost of long inputs; tested on electricity and weather data."</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P07: TimesFM (2024). A decoder-only foundation model pretrained on 100 billion time points; good zero-shot forecasts."</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P09: Temporal Fusion Transformer (2019). LSTM encoders with attention and variable selection for interpretable forecasts."</span>,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Nice, coffee break, back in five minutes."</span>,</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P08: Chronos (2024). Scales and quantizes values into tokens and trains a T5 language model on them."</span>,</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P02: Autoformer (2021). Replaces attention with auto-correlation and splits each series into trend and seasonal parts."</span>,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P10: Moirai (2024). A universal forecasting transformer trained on 27 billion observations across nine domains."</span>,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Haha, my cat just walked on the keyboard."</span>,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Paper note P03: FEDformer (2022). Works in the frequency domain with Fourier and wavelet blocks; linear cost in sequence length."</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>ASK <span class="op">=</span> <span class="st">"List every paper that belongs in my review, one line each: id, title, year."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ROLE <span class="op">=</span> {<span class="st">"human"</span>: <span class="st">"user"</span>, <span class="st">"ai"</span>: <span class="st">"model"</span>, <span class="st">"system"</span>: <span class="st">"system"</span>, <span class="st">"tool"</span>: <span class="st">"tool"</span>}</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gemma_counter(messages):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(<span class="bu">len</span>(tok.encode(<span class="ss">f"&lt;|turn&gt;</span><span class="sc">{</span>ROLE[m.<span class="bu">type</span>]<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span><span class="bu">str</span>(m.content)<span class="sc">.</span>strip()<span class="sc">}</span><span class="ss">&lt;turn|&gt;</span><span class="ch">\n</span><span class="ss">"</span>, add_special_tokens<span class="op">=</span><span class="va">False</span>).ids)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>               <span class="cf">for</span> m <span class="kw">in</span> messages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="agent-summarizationmiddleware" class="level2">
+<h2 class="anchored" data-anchor-id="agent-summarizationmiddleware">2. Agent + <code>SummarizationMiddleware</code></h2>
+<ul>
+<li><code>trigger=("tokens", 600)</code> — สรุปเมื่อ history เกิน 600 token</li>
+<li><code>keep=("messages", 6)</code> — เก็บ 6 ข้อความล่าสุดไว้ครบ</li>
+<li><code>checkpointer=InMemorySaver()</code> — จำบทสนทนาของแต่ละ <code>thread_id</code> ข้ามการเรียกแต่ละครั้ง (EP05 Lab 5)</li>
+</ul>
+<p>รอบแรกใช้ <strong>summary prompt ค่าเริ่มต้น</strong> ของ LangChain ดูก่อน</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> create_agent</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents.middleware <span class="im">import</span> SummarizationMiddleware</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.checkpoint.memory <span class="im">import</span> InMemorySaver</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_agent(<span class="op">**</span>prompt):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    summarize <span class="op">=</span> SummarizationMiddleware(model<span class="op">=</span>llm, trigger<span class="op">=</span>(<span class="st">"tokens"</span>, <span class="dv">600</span>), keep<span class="op">=</span>(<span class="st">"messages"</span>, <span class="dv">6</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                        token_counter<span class="op">=</span>gemma_counter, <span class="op">**</span>prompt)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> create_agent(llm, tools<span class="op">=</span>[], middleware<span class="op">=</span>[summarize], checkpointer<span class="op">=</span>InMemorySaver(),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                        system_prompt<span class="op">=</span><span class="st">"You are the Cogito Learn research assistant. When the user pastes a paper note, reply with one short sentence."</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 1 (▶ วิดีโอ 2:35): ส่งข้อความของผู้ใช้หนึ่งข้อความเข้า thread เดียวกัน แล้วเอา messages ของ state ออกมา</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chat_all(agent, thread):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: thread}}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    last, summaries <span class="op">=</span> <span class="va">None</span>, <span class="dv">0</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> USER_TURNS:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> ___</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        summary <span class="op">=</span> <span class="bu">next</span>((m.content <span class="cf">for</span> m <span class="kw">in</span> msgs <span class="cf">if</span> m.additional_kwargs.get(<span class="st">"lc_source"</span>) <span class="op">==</span> <span class="st">"summarization"</span>), <span class="va">None</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        new <span class="op">=</span> summary <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> summary <span class="op">!=</span> last</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> new:</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            summaries, last <span class="op">=</span> summaries <span class="op">+</span> <span class="dv">1</span>, summary</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>text[:<span class="dv">32</span>]<span class="sc">:32}</span><span class="ss"> → </span><span class="sc">{</span><span class="bu">len</span>(msgs)<span class="sc">:2}</span><span class="ss"> messages, </span><span class="sc">{</span>gemma_counter(msgs)<span class="sc">:3}</span><span class="ss"> tokens </span><span class="sc">{</span><span class="st">'📝 summarized'</span> <span class="cf">if</span> new <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> agent.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: ASK}]}, cfg)[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>].content</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(re.findall(<span class="vs">r"</span><span class="dv">^\W</span><span class="op">*</span><span class="kw">(</span><span class="vs">P</span><span class="dv">\d\d</span><span class="kw">)</span><span class="vs">"</span>, answer, re.M)))</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">summaries written: </span><span class="sc">{</span>summaries<span class="sc">}</span><span class="ss"> · last summary: </span><span class="sc">{</span><span class="bu">len</span>(tok.encode(last, add_special_tokens<span class="op">=</span><span class="va">False</span>).ids)<span class="sc">}</span><span class="ss"> tokens"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(answer, <span class="st">"</span><span class="ch">\n</span><span class="st">→ older than 2023:"</span>, [p <span class="cf">for</span> p <span class="kw">in</span> ids <span class="cf">if</span> PAPERS[p] <span class="op">&lt;</span> <span class="dv">2023</span>], <span class="st">"· right papers:"</span>, <span class="ss">f"</span><span class="sc">{</span><span class="bu">sum</span>(PAPERS[p] <span class="op">&gt;=</span> <span class="dv">2023</span> <span class="cf">for</span> p <span class="kw">in</span> ids)<span class="sc">}</span><span class="ss">/6"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> last</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents <span class="im">import</span> create_agent</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.agents.middleware <span class="im">import</span> SummarizationMiddleware</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.checkpoint.memory <span class="im">import</span> InMemorySaver</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_agent(<span class="op">**</span>prompt):</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    summarize <span class="op">=</span> SummarizationMiddleware(model<span class="op">=</span>llm, trigger<span class="op">=</span>(<span class="st">"tokens"</span>, <span class="dv">600</span>), keep<span class="op">=</span>(<span class="st">"messages"</span>, <span class="dv">6</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                        token_counter<span class="op">=</span>gemma_counter, <span class="op">**</span>prompt)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> create_agent(llm, tools<span class="op">=</span>[], middleware<span class="op">=</span>[summarize], checkpointer<span class="op">=</span>InMemorySaver(),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                        system_prompt<span class="op">=</span><span class="st">"You are the Cogito Learn research assistant. When the user pastes a paper note, reply with one short sentence."</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chat_all(agent, thread):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    cfg <span class="op">=</span> {<span class="st">"configurable"</span>: {<span class="st">"thread_id"</span>: thread}}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    last, summaries <span class="op">=</span> <span class="va">None</span>, <span class="dv">0</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> USER_TURNS:</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        msgs <span class="op">=</span> agent.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: text}]}, cfg)[<span class="st">"messages"</span>]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        summary <span class="op">=</span> <span class="bu">next</span>((m.content <span class="cf">for</span> m <span class="kw">in</span> msgs <span class="cf">if</span> m.additional_kwargs.get(<span class="st">"lc_source"</span>) <span class="op">==</span> <span class="st">"summarization"</span>), <span class="va">None</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        new <span class="op">=</span> summary <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> summary <span class="op">!=</span> last</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> new:</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            summaries, last <span class="op">=</span> summaries <span class="op">+</span> <span class="dv">1</span>, summary</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>text[:<span class="dv">32</span>]<span class="sc">:32}</span><span class="ss"> → </span><span class="sc">{</span><span class="bu">len</span>(msgs)<span class="sc">:2}</span><span class="ss"> messages, </span><span class="sc">{</span>gemma_counter(msgs)<span class="sc">:3}</span><span class="ss"> tokens </span><span class="sc">{</span><span class="st">'📝 summarized'</span> <span class="cf">if</span> new <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    answer <span class="op">=</span> agent.invoke({<span class="st">"messages"</span>: [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: ASK}]}, cfg)[<span class="st">"messages"</span>][<span class="op">-</span><span class="dv">1</span>].content</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(re.findall(<span class="vs">r"</span><span class="dv">^\W</span><span class="op">*</span><span class="kw">(</span><span class="vs">P</span><span class="dv">\d\d</span><span class="kw">)</span><span class="vs">"</span>, answer, re.M)))</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">summaries written: </span><span class="sc">{</span>summaries<span class="sc">}</span><span class="ss"> · last summary: </span><span class="sc">{</span><span class="bu">len</span>(tok.encode(last, add_special_tokens<span class="op">=</span><span class="va">False</span>).ids)<span class="sc">}</span><span class="ss"> tokens"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(answer, <span class="st">"</span><span class="ch">\n</span><span class="st">→ older than 2023:"</span>, [p <span class="cf">for</span> p <span class="kw">in</span> ids <span class="cf">if</span> PAPERS[p] <span class="op">&lt;</span> <span class="dv">2023</span>], <span class="st">"· right papers:"</span>, <span class="ss">f"</span><span class="sc">{</span><span class="bu">sum</span>(PAPERS[p] <span class="op">&gt;=</span> <span class="dv">2023</span> <span class="cf">for</span> p <span class="kw">in</span> ids)<span class="sc">}</span><span class="ss">/6"</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> last</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>default_summary <span class="op">=</span> chat_all(make_agent(), <span class="st">"default-prompt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>Task for this whole chat: I'm wr →  2 messages,  52 tokens 
+Correction to the task: my revie →  4 messages, 114 tokens 
+Paper note P04: Are Transformers →  6 messages, 181 tokens 
+Paper note P05: PatchTST (2023). →  8 messages, 249 tokens 
+Paper note P06: iTransformer (20 → 10 messages, 320 tokens 
+Thanks!                          → 12 messages, 347 tokens 
+Paper note P01: Informer (2021). → 14 messages, 419 tokens 
+Paper note P07: TimesFM (2024).  → 16 messages, 498 tokens 
+Paper note P09: Temporal Fusion  → 18 messages, 564 tokens 
+Nice, coffee break, back in five → 20 messages, 601 tokens 
+Paper note P08: Chronos (2024).  →  8 messages, 611 tokens 📝 summarized
+Paper note P02: Autoformer (2021 →  8 messages, 621 tokens 📝 summarized
+Paper note P10: Moirai (2024). A →  8 messages, 652 tokens 📝 summarized
+Haha, my cat just walked on the  →  8 messages, 638 tokens 📝 summarized
+Paper note P03: FEDformer (2022) →  8 messages, 644 tokens 📝 summarized
+
+summaries written: 5 · last summary: 411 tokens
+P04: Are Transformers Effective for Time Series Forecasting?, 2023
+P05: PatchTST, 2023
+P06: iTransformer, 2024
+P07: TimesFM, 2024
+P08: Chronos, 2024
+P10: Moirai, 2024 
+→ older than 2023: [] · right papers: 6/6</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(default_summary[<span class="op">-</span><span class="dv">500</span>:])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>    - P07 (2024): "TimesFM" - เป็น decoder-only foundation model ที่ผ่านการ pretrain ด้วยข้อมูล 100 billion time points มีจุดเด่นด้าน zero-shot forecasting
+    - P08 (2024): "Chronos" - ประยุกต์ใช้ T5 language model โดยการแปลงค่าอนุกรมเวลาให้เป็น tokens (Scale และ Quantize)
+- การคัดออก: 
+    - P09 (Temporal Fusion Transformer, 2019) ถูกคัดออกเนื่องจากไม่ตรงตามเงื่อนไขปีที่ตีพิมพ์
+    - P02 (Autoformer, 2021) ถูกคัดออกเนื่องจากไม่ตรงตามเงื่อนไขปีที่ตีพิมพ์
+
+## ARTIFACTS
+
+None
+
+## NEXT STEPS
+
+- รอ</code></pre>
+</section>
+<section id="ใช-prompt-ของเราจาก-lab-2" class="level2">
+<h2 class="anchored" data-anchor-id="ใช-prompt-ของเราจาก-lab-2">3. ใช้ prompt ของเราจาก Lab 2</h2>
+<p><code>summary_prompt</code> ต้องมี <code>{messages}</code> — middleware จะแทนที่ด้วยข้อความเก่าที่ต้องสรุป</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 2 (▶ วิดีโอ 4:21): ส่ง prompt ของเราเข้า make_agent ผ่าน summary_prompt</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>SUMMARY_PROMPT <span class="op">=</span> (<span class="st">"Summarize this conversation for the assistant's own memory, in English, in at most 120 words. "</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Keep every instruction and correction the user gave, and every paper id with its title and year. "</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Copy numbers exactly; add nothing.</span><span class="ch">\n\n</span><span class="sc">{messages}</span><span class="st">"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>our_summary <span class="op">=</span> chat_all(make_agent(___), <span class="st">"our-prompt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>SUMMARY_PROMPT <span class="op">=</span> (<span class="st">"Summarize this conversation for the assistant's own memory, in English, in at most 120 words. "</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Keep every instruction and correction the user gave, and every paper id with its title and year. "</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Copy numbers exactly; add nothing.</span><span class="ch">\n\n</span><span class="sc">{messages}</span><span class="st">"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>our_summary <span class="op">=</span> chat_all(make_agent(summary_prompt<span class="op">=</span>SUMMARY_PROMPT), <span class="st">"our-prompt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<pre class="text lab-output"><code>Task for this whole chat: I'm wr →  2 messages,  63 tokens 
+Correction to the task: my revie →  4 messages, 124 tokens 
+Paper note P04: Are Transformers →  6 messages, 197 tokens 
+Paper note P05: PatchTST (2023). →  8 messages, 269 tokens 
+Paper note P06: iTransformer (20 → 10 messages, 341 tokens 
+Thanks!                          → 12 messages, 358 tokens 
+Paper note P01: Informer (2021). → 14 messages, 419 tokens 
+Paper note P07: TimesFM (2024).  → 16 messages, 493 tokens 
+Paper note P09: Temporal Fusion  → 18 messages, 548 tokens 
+Nice, coffee break, back in five → 20 messages, 584 tokens 
+Paper note P08: Chronos (2024).  →  8 messages, 320 tokens 📝 summarized
+Paper note P02: Autoformer (2021 → 10 messages, 379 tokens 
+Paper note P10: Moirai (2024). A → 12 messages, 455 tokens 
+Haha, my cat just walked on the  → 14 messages, 494 tokens 
+Paper note P03: FEDformer (2022) → 16 messages, 553 tokens 
+
+summaries written: 1 · last summary: 120 tokens
+P04: Are Transformers Effective for Time Series Forecasting? (2023)
+P05: PatchTST (2023)
+P06: iTransformer (2024)
+P07: TimesFM (2024)
+P08: Chronos (2024)
+P10: Moirai (2024) 
+→ older than 2023: [] · right papers: 6/6</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(our_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>Here is a summary of the conversation to date:
+
+Task: Writing a literature review on transformers for time series. Always answer in Thai. Only include papers published in 2023 or later; leave older ones out.
+
+Papers:
+P04: Are Transformers Effective for Time Series Forecasting? (2023).
+P05: PatchTST (2023).
+P06: iTransformer (2024).
+P01: Informer (2021).
+P07: TimesFM (2024).</code></pre>
+</section>
+<section id="สรป" class="level2">
+<h2 class="anchored" data-anchor-id="สรป">สรุป</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>prompt ค่าเริ่มต้น</th>
+<th>prompt ของเรา (Lab 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>บทสรุป</td>
+<td>เป็นหัวข้อ ยาวจนชนเพดาน 400 token (ถูกตัดกลางประโยค)</td>
+<td>ไม่ถึง 200 token</td>
+</tr>
+<tr class="even">
+<td>สรุปกี่ครั้ง ใน 15 turn</td>
+<td>แทบทุก turn หลังเกินงบครั้งแรก</td>
+<td>1–2 ครั้ง</td>
+</tr>
+<tr class="odd">
+<td>คำตอบสุดท้าย</td>
+<td>6/6 เหมือนกัน — แต่เรียก model เพิ่มเพื่อสรุปหลายครั้ง</td>
+<td>6/6 ไม่มี paper เก่า</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>framework ทำงานซ้ำๆ ให้: ตรวจงบก่อนเรียก model ทุกครั้ง แบ่งข้อความเก่า/ใหม่ แทนที่ด้วยบทสรุปใน state</li>
+<li>แต่ <strong>ค่าเริ่มต้นไม่ได้ออกแบบมาสำหรับงานของเรา</strong> — ต้องรู้ว่าข้างในทำอะไร (สมการ 18.4) ถึงจะตั้งค่าได้ถูก</li>
+<li>อ่านต่อ: <code>summarizer=</code> ใช้ model อีกตัว (เล็กและถูกกว่า) เขียนบทสรุป ตามที่ตำราแนะนำ</li>
+</ul>
+<p><strong>แบบฝึกหัด</strong></p>
+<ol type="1">
+<li>ลบ <code>token_counter=gemma_counter</code> ออก (ใช้ตัวนับแบบประมาณ) แล้วรันอีกครั้ง — สรุปครั้งแรกที่ turn ไหน ต่างจากเดิมไหม</li>
+<li>ตั้ง <code>keep=("tokens", 250)</code> แทนจำนวนข้อความ — เก็บกี่ข้อความ</li>
+</ol>
+<p><strong>ถัดไป — Recap:</strong> สรุป EP07 ทั้งตอนในคลิปเดียว</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch18/ep07-context-management/ep07-lab3-recursive-context.html" class="pagination-link" aria-label="Lab 3 — แบ่ง context แล้วเรียกซ้ำ">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 3 — แบ่ง context แล้วเรียกซ้ำ</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch18/ep08-tools-state-errors/index.html" class="pagination-link" aria-label="EP08 Tools, State and Error Handling">
+        <span class="nav-page-text"><span class="chapter-title">EP08 Tools, State and Error Handling</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
