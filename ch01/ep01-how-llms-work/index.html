@@ -1230,6 +1230,44 @@ Sennrich, Rico, Barry Haddow, และ Alexandra Birch. 2016. <span>“Neural M
   });
 })();
 </script>
+<!-- Diagrams on phones (both books, every page). A left-to-right mermaid flow squeezed into a 375 px screen shrank its
+     text to 3.5–9.5 px (EP04's chain, EP05's DAG plan, 2026-11-22). Below 768 px:
+     1. before Quarto draws the diagrams (it reads each pre.mermaid-js on window load), turn LR / RL flows top-to-bottom,
+        so they fit the width and read by scrolling down like the page;
+     2. after drawing, any diagram whose text is still under 11 px keeps an 11 px size and scrolls sideways in its box. -->
+<style>
+  @media (max-width: 767.98px) {
+    .phone-diagram-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .phone-diagram-scroll > svg.mermaid-js { max-width: none !important; }
+  }
+</style>
+<script>
+(function () {
+  if (!window.matchMedia('(max-width: 767.98px)').matches) return;
+  document.querySelectorAll('pre.mermaid-js').forEach(function (pre) {
+    pre.textContent = pre.textContent
+      .replace(/^(\s*(?:flowchart|graph)\s+)(LR|RL)\b/m, '$1TD')
+      .replace(/^(\s*direction\s+)(LR|RL)\b/gm, '$1TB');
+  });
+  var MIN = 11;
+  function fit() {
+    document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+      var vb = svg.viewBox && svg.viewBox.baseVal, w = svg.getBoundingClientRect().width;
+      var label = svg.querySelector('.nodeLabel');
+      if (!vb || !vb.width || !w || !label) return;
+      var size = parseFloat(getComputedStyle(label).fontSize) * w / vb.width;
+      if (size >= MIN) return;
+      svg.parentElement.classList.add('phone-diagram-scroll');
+      svg.style.width = Math.ceil(w * MIN / size) + 'px';
+    });
+  }
+  window.addEventListener('load', function () {
+    var n = 0, t = setInterval(function () {           // Quarto renders asynchronously after load
+      if (!document.querySelector('pre.mermaid-js') || ++n > 40) { clearInterval(t); fit(); }
+    }, 250);
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
