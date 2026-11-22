@@ -110,3 +110,20 @@
   margin-left: .35rem; border-radius: 5px; background: #ff0033; color: #fff; font-size: .6rem; font-weight: 400;
   text-decoration: none; vertical-align: .1rem; }
 .course-home .ep.live a.ep-video:hover { background: #c4001f; }
+
+/* Site-wide (not just the home page): below 992px Quarto keeps the sidebar drawer on one line per item
+   (white-space: nowrap), so long EP titles such as "EP02 Prompt, Structured Output และ Hallucination" are cut
+   off at the screen edge. Let them wrap like the desktop sidebar does. */
+@media (max-width: 991.98px) {
+  #quarto-sidebar .sidebar-menu-container { white-space: normal; }
+}
+/* Site-wide: long URLs in the reference list never break, which made pages ~630px wide on a 375px phone
+   (the browser then zooms the whole page out). Let them break anywhere. */
+.csl-entry a, #refs a { overflow-wrap: anywhere; word-break: break-word; }
+/* Site-wide, phones: wide tables, long code lines and display equations scroll sideways inside their own box
+   instead of widening the page (which made the browser zoom the whole page out). */
+@media (max-width: 767.98px) {
+  main table { display: block; max-width: 100%; overflow-x: auto; }
+  main div.sourceCode, main pre { max-width: 100%; overflow-x: auto; }
+  main span.math.display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+}
