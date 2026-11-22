@@ -1098,6 +1098,17 @@ time first: 0/8 calls hit the cache · $0.00347</code></pre>
   }).catch(function () {});
 })();
 </script>
+<script>
+// Lab walkthrough pages are hidden in the sidebar (home.css): mark their EP's entry as the current page instead.
+(function () {
+  var cur = document.querySelector('#quarto-sidebar a.sidebar-link.active');
+  if (!cur || !/-lab\d/.test(cur.getAttribute('href') || '')) return;
+  var dir = cur.href.replace(/[^/]*$/, '');
+  document.querySelectorAll('#quarto-sidebar a.sidebar-link').forEach(function (a) {
+    if (a.href === dir + 'index.html') a.classList.add('active');
+  });
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

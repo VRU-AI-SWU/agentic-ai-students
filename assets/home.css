@@ -138,3 +138,17 @@ pre.lab-output { white-space: pre-wrap; overflow-wrap: anywhere; background: tra
   border-left: 3px solid var(--bs-border-color, #dee2e6); border-radius: 0; padding: .3rem 0 .3rem .9rem;
   margin: -.4rem 0 1.2rem; font-size: .85em; color: var(--bs-secondary-color, #6c757d); }
 pre.lab-output code { white-space: inherit; color: inherit; }
+
+/* Sidebar hierarchy (site-wide, both themes): a module (book part) reads as a heading — bold, full-strength colour,
+   a rule above it — and its EPs as items hung on a thin line beneath it; the current page marks that line in blue. */
+#quarto-sidebar .sidebar-item-section { margin-top: .8rem; padding-top: .7rem; border-top: 1px solid var(--bs-border-color); }
+#quarto-sidebar .sidebar-item-section .sidebar-item-toggle .menu-text {
+  font-weight: 600; font-size: .92em; color: #1f2933; }
+/* darkly's --bs-emphasis-color is black, so the dark heading colour is set here */
+body.quarto-dark #quarto-sidebar .sidebar-item-section .sidebar-item-toggle .menu-text { color: #e8edf2; }
+#quarto-sidebar .sidebar-section.depth1 { margin: .35rem 0 .2rem .15rem; padding-left: 0;
+  border-left: 2px solid var(--bs-border-color); }
+#quarto-sidebar .sidebar-section.depth1 > .sidebar-item { margin-left: -2px; padding-left: .75rem; border-left: 2px solid transparent; }
+#quarto-sidebar .sidebar-section.depth1 > .sidebar-item .sidebar-link:not(.active) { color: var(--bs-secondary-color); }
+#quarto-sidebar .sidebar-section.depth1 > .sidebar-item:has(.sidebar-link.active) { border-left-color: var(--bs-link-color); }
+#quarto-sidebar .sidebar-section.depth1 > .sidebar-item .sidebar-link.active { font-weight: 600; }
