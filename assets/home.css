@@ -1,11 +1,12 @@
 /* Course home page (index.qmd, Thai + English). Everything is scoped to body.course-home. */
 .course-home #title-block-header { display: none; }
 .course-home main { --home-accent: #2780e3; --home-ink: #1f2933; --home-muted: #5f6b7a; --home-line: #e3e8ee;
-                    --home-soft: #f5f8fc; --home-live: #1b8a5a; --home-live-bg: #e6f5ee;
-                    --home-card: #fff; --home-text: #3b4652; --home-dim: #4a5561; --home-arrow: #a0aab5;
-                    --home-live-line: #b7e2cc; --home-live-ring: #9fd3b9; --home-soon-bg: #f1f3f5; --home-soon: #7a8591;
+                    --home-soft: #f5f8fc; --home-live: #156b46; /* was #1b8a5a: 3.9:1 on the chip */ --home-live-bg: #e6f5ee;
+                    --home-card: #fff; --home-text: #3b4652; --home-dim: #4a5561; --home-arrow: #6b7682;
+                    --home-live-line: #b7e2cc; --home-live-ring: #9fd3b9; --home-soon-bg: #f1f3f5; --home-soon: #5a6672;
                     --home-hero-a: #eaf3fd; --home-hero-b: #f6f1ff; --home-yt-line: #f3c7c7; --home-yt-strong: #c4001f;
-                    --home-tag-bg: #1f2933; --home-shadow: rgba(30, 40, 60, .14); --home-cta-bg: var(--home-accent); }
+                    --home-tag-bg: #1f2933; --home-shadow: rgba(30, 40, 60, .14);
+                    --home-cta-bg: #1f6fc9; /* white text: 3.97:1 on #2780e3 → 5.0:1 */ --home-cta-fg: #1f6fc9; }
 /* Dark theme: Quarto puts .quarto-dark on <body> when the device prefers dark (or the reader flips the navbar toggle). */
 .quarto-dark.course-home main {
   --home-accent: #5aa5f0; --home-ink: #e8edf2; --home-muted: #9aa6b2; --home-line: #3a4048;
@@ -14,7 +15,7 @@
   --home-live-line: #2f6b4e; --home-live-ring: #2f6b4e; --home-soon-bg: #343a40; --home-soon: #9aa6b2;
   --home-hero-a: #1e2a3a; --home-hero-b: #2a2338; --home-yt-line: #6b2a33; --home-yt-strong: #ff6b7f;
   --home-tag-bg: #4a5561; --home-shadow: rgba(0, 0, 0, .5);
-  --home-cta-bg: #2a6fb8; /* white text needs a deeper blue than the accent: 2.6:1 → 5.2:1 */ }
+  --home-cta-bg: #2a6fb8; /* white text needs a deeper blue than the accent: 2.6:1 → 5.2:1 */ --home-cta-fg: var(--home-accent); }
 
 /* Hero */
 .course-home .hero { padding: 2.2rem 1.6rem 1.8rem; margin: .5rem 0 1.8rem; border-radius: 18px;
@@ -34,7 +35,7 @@
 .course-home .hero .cta a { display: inline-block; margin: 0 .45rem .5rem 0; padding: .5rem 1rem; border-radius: 999px;
   text-decoration: none; font-weight: 600; font-size: .95rem; border: 1px solid var(--home-accent); }
 .course-home .hero .cta a:first-child { background: var(--home-cta-bg); border-color: var(--home-cta-bg); color: #fff; }
-.course-home .hero .cta a:not(:first-child) { background: var(--home-card); color: var(--home-accent); }
+.course-home .hero .cta a:not(:first-child) { background: var(--home-card); color: var(--home-cta-fg); }
 .course-home .hero .cta a:hover { filter: brightness(.95); }
 
 /* Stats */
