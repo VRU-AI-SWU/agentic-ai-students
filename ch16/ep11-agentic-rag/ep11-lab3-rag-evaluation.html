@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 3 — วัดผล RAG – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" rel="next">
+<link href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2b2c7f1aa879808a4940211236c1a8ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · ความรู้: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: ระบบปฏิบัติการของ agent</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · ความรู้: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — แปลงคำถาม + จัดลำดับใหม่</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#เตรยมเครองกอนเรม" id="toc-เตรยมเครองกอนเรม" class="nav-link active" data-scroll-target="#เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</a></li>
+  <li><a href="#ทกอยางทเราสรางมา" id="toc-ทกอยางทเราสรางมา" class="nav-link" data-scroll-target="#ทกอยางทเราสรางมา">1. ทุกอย่างที่เราสร้างมา</a></li>
+  <li><a href="#ตววดฝงการคน-16.8.1" id="toc-ตววดฝงการคน-16.8.1" class="nav-link" data-scroll-target="#ตววดฝงการคน-16.8.1">2. ตัววัดฝั่งการค้น (§16.8.1)</a></li>
+  <li><a href="#ตววดฝงคำตอบ-16.8.2" id="toc-ตววดฝงคำตอบ-16.8.2" class="nav-link" data-scroll-target="#ตววดฝงคำตอบ-16.8.2">3. ตัววัดฝั่งคำตอบ (§16.8.2)</a></li>
+  <li><a href="#สรป" id="toc-สรป" class="nav-link" data-scroll-target="#สรป">สรุป</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · ความรู้: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Lab 3 — วัดผล RAG</span></h1>
+<p class="subtitle lead">Lab walkthrough · EP11 Advanced &amp; Agentic RAG</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- generated by cogito-learn/tools/build_lab_pages.py from ep11-lab3-rag-evaluation.beats.yaml — edit the yaml, not this page -->
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">หมายเหตุ</span>วิธีใช้หน้านี้
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>หน้านี้คือ notebook เฉลยของ lab นี้ทีละ cell พร้อม output จากการรันจริงตอนอัดคลิป ไว้อ่านทวนก่อนหรือหลังลงมือ cell ที่มี <code>✏️ TODO</code> แสดงโค้ดแบบใน starter notebook ส่วนเฉลยเต็มอยู่ในกล่อง <strong>ดูเฉลย</strong> ลองเขียนเองก่อนค่อยเปิด</p>
+<p><a href="https://youtu.be/4Q5KvxYQHpg">▶ วิดีโอ</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab3-rag-evaluation.student.ipynb">✏️ Starter ใน Colab</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab3-rag-evaluation.ipynb">✅ เฉลยใน Colab</a> · กลับไปหน้า <a href="../../ch16/ep11-agentic-rag/index.html#lab">EP11 Advanced &amp; Agentic RAG</a></p>
+<p><em>model ตอบไม่เหมือนเดิมทุกครั้ง output ที่คุณรันเองจึงอาจต่างจากหน้านี้</em></p>
+</div>
+</div>
+<p>ตั้งแต่ EP10 เราวัดด้วย <strong>hit@3</strong> อย่างเดียว: หน้าที่ถูกอยู่ในสามชิ้นแรกไหม — ตำราบอกว่าต้องวัด <strong>สามระดับ</strong> (§16.8)</p>
+<ol type="1">
+<li><strong>Retrieval:</strong> ค้นได้ชิ้นที่ถูกไหม — Recall@K · MRR · NDCG@K</li>
+<li><strong>Generation:</strong> คำตอบมีหลักฐานจากเอกสารไหม ตรงคำถามไหม ถูกไหม — faithfulness · answer relevance · correctness</li>
+<li><strong>End-to-end:</strong> ผู้ใช้ได้สิ่งที่ต้องการไหม (ต้องใช้คนหรืองานจริง — นอก lab นี้)</li>
+</ol>
+<p><strong>สิ่งที่จะได้ทำ</strong></p>
+<ol type="1">
+<li>เขียน Recall@K, MRR, NDCG@K เอง ตามสมการ 16.22, 16.24, 16.25</li>
+<li>วัด <strong>ห้าระบบ</strong> ที่เราสร้างมาตั้งแต่ EP10 บนคำถาม 20 ข้อชุดเดิม</li>
+<li>เขียน faithfulness (สมการ 16.26) และ answer relevance (สมการ 16.27) ด้วย LLM judge</li>
+<li>วัดคำตอบสามแบบของคำถามยาว แล้วดูว่าตัววัดแต่ละตัวมองเห็นอะไร และมองไม่เห็นอะไร</li>
+</ol>
+<p>คำตอบของ model ทุกคำตอบมาจากการรันจริง</p>
+<blockquote class="blockquote">
+<p>อ้างอิง: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em>, §16.8 — CC BY-SA 4.0</p>
+</blockquote>
+<section id="เตรยมเครองกอนเรม" class="level2">
+<h2 class="anchored" data-anchor-id="เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>สิ่งที่ต้องมี</th>
+<th>รายละเอียด</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 3.10 ขึ้นไป</td>
+<td>หรือใช้ Google Colab ซึ่งมีให้แล้ว</td>
+</tr>
+<tr class="even">
+<td>OpenRouter API key</td>
+<td>key เดิมจาก Lab 1 (lab นี้ใช้ราว 7 เซ็นต์ดอลลาร์ ส่วนใหญ่เป็นค่า re-ranking) — วิธีตั้งค่า key และเหตุผลที่เลือก model อยู่ใน Lab 1</td>
+</tr>
+<tr class="odd">
+<td>Packages</td>
+<td><code>openai</code>, <code>python-dotenv</code>, <code>pypdf</code>, <code>numpy</code>, <code>tokenizers</code>, <code>requests</code> (ติดตั้งใน cell ถัดไป)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ใส่ API key</strong></p>
+<ul>
+<li><strong>Colab:</strong> ไอคอน 🔑 Secrets → ชื่อ <code>OPENROUTER_API_KEY</code> → เปิด <em>Notebook access</em></li>
+<li><strong>เครื่องตัวเอง:</strong> สร้างไฟล์ <code>.env</code> ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+</ul>
+<p>⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ <code>.env</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"openai&gt;=1.50"</span> python<span class="op">-</span>dotenv <span class="st">"pypdf&gt;=6"</span> numpy <span class="st">"tokenizers==0.23.3"</span> requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ทกอยางทเราสรางมา" class="level2">
+<h2 class="anchored" data-anchor-id="ทกอยางทเราสรางมา">1. ทุกอย่างที่เราสร้างมา</h2>
+<p>สาม cell ถัดไปคือโค้ดจาก Lab ก่อนๆ: model สามตัว · คลัง 141 ชิ้น + BM25 · HyDE, RRF, re-ranking · คำถามทดสอบ 20 ข้อ</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, re, math, json, urllib.request, requests</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ThreadPoolExecutor</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pypdf <span class="im">import</span> PdfReader</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tokenizers <span class="im">import</span> Tokenizer</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:  <span class="co"># Google Colab Secrets</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userdata.get(<span class="st">"OPENROUTER_API_KEY"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    load_dotenv()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>EXTRA <span class="op">=</span> {<span class="st">"reasoning"</span>: {<span class="st">"enabled"</span>: <span class="va">False</span>},</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>         <span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"makora"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>EMBED_MODEL <span class="op">=</span> <span class="st">"qwen/qwen3-embedding-8b"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>EMBED_EXTRA <span class="op">=</span> {<span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"nebius"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>RERANK_MODEL <span class="op">=</span> <span class="st">"qwen/qwen3-reranker-8b"</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>RERANK_PROVIDER <span class="op">=</span> {<span class="st">"order"</span>: [<span class="st">"fireworks"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>KEY <span class="op">=</span> load_key()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>KEY, max_retries<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>COST <span class="op">=</span> {<span class="st">"chat"</span>: <span class="fl">0.0</span>, <span class="st">"embed"</span>: <span class="fl">0.0</span>, <span class="st">"rerank"</span>: <span class="fl">0.0</span>}</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(prompt):</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> client.chat.completions.create(model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                                       messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r.choices[<span class="dv">0</span>].message.content</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed(texts):</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    vectors <span class="op">=</span> []</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(texts), <span class="dv">64</span>):</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> client.embeddings.create(model<span class="op">=</span>EMBED_MODEL, <span class="bu">input</span><span class="op">=</span>texts[i:i <span class="op">+</span> <span class="dv">64</span>],</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                                     extra_body<span class="op">=</span>EMBED_EXTRA)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        COST[<span class="st">"embed"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        vectors <span class="op">+=</span> [d.embedding <span class="cf">for</span> d <span class="kw">in</span> r.data]</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> np.array(vectors)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V <span class="op">/</span> np.linalg.norm(V, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> obj(<span class="op">**</span>fields):</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"properties"</span>: fields,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            <span class="st">"required"</span>: <span class="bu">list</span>(fields), <span class="st">"additionalProperties"</span>: <span class="va">False</span>}</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>TEXT <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"string"</span>}</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_json(prompt, schema):</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):                            <span class="co"># one retry if the JSON comes back cut off</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>            model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA, max_tokens<span class="op">=</span><span class="dv">1500</span>,</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>            messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}],</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>            response_format<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"json_schema"</span>,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"json_schema"</span>: {<span class="st">"name"</span>: <span class="st">"reply"</span>, <span class="st">"strict"</span>: <span class="va">True</span>, <span class="st">"schema"</span>: schema}})</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> json.loads(r.choices[<span class="dv">0</span>].message.content)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> json.JSONDecodeError:</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"the model did not return valid JSON"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>urllib.request.urlretrieve(<span class="st">"https://arxiv.org/pdf/2606.24937v1"</span>, <span class="st">"hitchhikers-guide-v1.pdf"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>reader <span class="op">=</span> PdfReader(<span class="st">"hitchhikers-guide-v1.pdf"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>HEADER <span class="op">=</span> <span class="st">"H. Roitman — The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> [{<span class="st">"page"</span>: n, <span class="st">"text"</span>: reader.pages[n <span class="op">-</span> <span class="dv">1</span>].extract_text().replace(HEADER, <span class="st">""</span>)}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">292</span>, <span class="dv">375</span>)]                      <span class="co"># chapters 15–19</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>tok <span class="op">=</span> Tokenizer.from_pretrained(MODEL)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chunk_page(page, W<span class="op">=</span><span class="dv">512</span>, O<span class="op">=</span><span class="dv">64</span>):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> tok.encode(page[<span class="st">"text"</span>], add_special_tokens<span class="op">=</span><span class="va">False</span>).ids</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [{<span class="st">"source"</span>: <span class="st">"hitchhikers-guide-v1.pdf"</span>, <span class="st">"page"</span>: page[<span class="st">"page"</span>],</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>             <span class="st">"text"</span>: tok.decode(ids[s:s <span class="op">+</span> W])}</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">max</span>(<span class="bu">len</span>(ids) <span class="op">-</span> O, <span class="dv">1</span>), W <span class="op">-</span> O)]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> [c <span class="cf">for</span> p <span class="kw">in</span> pages <span class="cf">for</span> c <span class="kw">in</span> chunk_page(p)]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> embed([c[<span class="st">"text"</span>] <span class="cf">for</span> c <span class="kw">in</span> chunks])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> words(text):                                        <span class="co"># BM25 from EP10 Lab 2</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.findall(<span class="vs">r"</span><span class="dv">\w</span><span class="op">+</span><span class="vs">"</span>, text.lower())</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [words(c[<span class="st">"text"</span>]) <span class="cf">for</span> c <span class="kw">in</span> chunks]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>N, avgdl <span class="op">=</span> <span class="bu">len</span>(docs), <span class="bu">sum</span>(<span class="bu">len</span>(d) <span class="cf">for</span> d <span class="kw">in</span> docs) <span class="op">/</span> <span class="bu">len</span>(docs)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> Counter(w <span class="cf">for</span> d <span class="kw">in</span> docs <span class="cf">for</span> w <span class="kw">in</span> <span class="bu">set</span>(d))</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>tfs <span class="op">=</span> [Counter(d) <span class="cf">for</span> d <span class="kw">in</span> docs]</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idf(t):</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> df.get(t, <span class="dv">0</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> math.log((N <span class="op">-</span> n <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> (n <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bm25_rank(query, k1<span class="op">=</span><span class="fl">1.5</span>, b<span class="op">=</span><span class="fl">0.75</span>):</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> [<span class="bu">sum</span>(idf(t) <span class="op">*</span> tf[t] <span class="op">*</span> (k1 <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (tf[t] <span class="op">+</span> k1 <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> b <span class="op">+</span> b <span class="op">*</span> <span class="bu">len</span>(d) <span class="op">/</span> avgdl))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> t <span class="kw">in</span> words(query)) <span class="cf">for</span> d, tf <span class="kw">in</span> <span class="bu">zip</span>(docs, tfs)]</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(np.argsort(<span class="op">-</span>np.array(scores)))</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(chunks), <span class="st">"chunks"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+141 chunks</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dense(query):                                       <span class="co"># EP10 Lab 1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(np.argsort(<span class="op">-</span>(E <span class="op">@</span> embed([query])[<span class="dv">0</span>])))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rrf(lists, k<span class="op">=</span><span class="dv">60</span>):                                   <span class="co"># EP10 Lab 2</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> {}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> order <span class="kw">in</span> lists:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> rank, i <span class="kw">in</span> <span class="bu">enumerate</span>(order, <span class="dv">1</span>):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            score[i] <span class="op">=</span> score.get(i, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span> <span class="op">/</span> (k <span class="op">+</span> rank)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(score, key<span class="op">=</span>score.get, reverse<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hyde(query):                                        <span class="co"># Lab 1</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    draft <span class="op">=</span> ask(<span class="st">"Write a short passage (about 100 words) from a textbook that answers this question. "</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Write it as the textbook would, even if you are not sure.</span><span class="ch">\n\n</span><span class="st">Question: "</span> <span class="op">+</span> query)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dense(draft)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rerank(query, order, n<span class="op">=</span><span class="dv">20</span>):                         <span class="co"># Lab 1</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    top <span class="op">=</span> order[:n]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> requests.post(<span class="st">"https://openrouter.ai/api/v1/rerank"</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>                      headers<span class="op">=</span>{<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>KEY<span class="sc">}</span><span class="ss">"</span>},</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                      json<span class="op">=</span>{<span class="st">"model"</span>: RERANK_MODEL, <span class="st">"provider"</span>: RERANK_PROVIDER, <span class="st">"query"</span>: query,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"documents"</span>: [chunks[i][<span class="st">"text"</span>] <span class="cf">for</span> i <span class="kw">in</span> top]}, timeout<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    r.raise_for_status()</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> r.json()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"rerank"</span>] <span class="op">+=</span> data[<span class="st">"usage"</span>][<span class="st">"cost"</span>]</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [top[x[<span class="st">"index"</span>]] <span class="cf">for</span> x <span class="kw">in</span> data[<span class="st">"results"</span>]]</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>TESTS <span class="op">=</span> [  <span class="co"># (question, the pages that answer it) — from EP10 Lab 3</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"What is PLAID?"</span>, {<span class="dv">301</span>}), (<span class="st">"What is HyDE?"</span>, {<span class="dv">303</span>}), (<span class="st">"What does FAISS stand for?"</span>, {<span class="dv">298</span>}),</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How can I search millions of vectors quickly?"</span>, {<span class="dv">298</span>}),</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Which method compares every query token with every document token?"</span>, {<span class="dv">300</span>}),</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How do I make keyword search understand synonyms?"</span>, {<span class="dv">299</span>}),</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"When should I fine-tune a model instead of looking things up?"</span>, {<span class="dv">296</span>}),</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Which chunks should I give the model if small ones retrieve better but lack context?"</span>, {<span class="dv">302</span>, <span class="dv">303</span>}),</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How do I combine keyword search and embedding search?"</span>, {<span class="dv">298</span>}),</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"What analogy does the textbook use to explain RAG?"</span>, {<span class="dv">295</span>}),</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How does the textbook add randomness to retry waits?"</span>, {<span class="dv">357</span>}),</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"What does FIFO mean for conversation history?"</span>, {<span class="dv">345</span>}),</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Where should the unchanging part of a prompt go so caching works?"</span>, {<span class="dv">358</span>}),</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"When should a person approve an agent's action?"</span>, {<span class="dv">355</span>}),</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How does Graph RAG find groups of related entities?"</span>, {<span class="dv">305</span>}),</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Which chunking method splits where the topic changes?"</span>, {<span class="dv">302</span>}),</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Which frameworks are compared in Table 18.1?"</span>, {<span class="dv">359</span>}),</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"What is the difference between episodic and semantic memory?"</span>, {<span class="dv">321</span>, <span class="dv">322</span>}),</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"What does an evaluator-optimizer workflow do?"</span>, {<span class="dv">370</span>, <span class="dv">371</span>}),</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"How does the harness notice an agent repeating the same tool call?"</span>, {<span class="dv">357</span>, <span class="dv">363</span>}),</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ตววดฝงการคน-16.8.1" class="level2">
+<h2 class="anchored" data-anchor-id="ตววดฝงการคน-16.8.1">2. ตัววัดฝั่งการค้น (§16.8.1)</h2>
+<p><span class="math inline">\(R_K\)</span> = ชิ้นใน K อันดับแรก · <span class="math inline">\(R^*\)</span> = ชิ้นที่ถูกทั้งหมด</p>
+<p><span class="math display">\[\text{Recall@K}=\frac{|R_K\cap R^*|}{|R^*|}\;(16.22)\qquad \text{MRR}=\frac{1}{|Q|}\sum_i\frac{1}{\text{rank}_i}\;(16.24)\qquad \text{NDCG@K}=\frac{\text{DCG@K}}{\text{IDCG@K}},\;\text{DCG@K}=\sum_{i=1}^{K}\frac{rel_i}{\log_2(i+1)}\;(16.25)\]</span></p>
+<p><strong>ชิ้นที่ถูก</strong> ของเรา: ชิ้นที่มาจากหน้าที่ตอบคำถาม (ป้ายระดับหน้า — หน้าหนึ่งอาจมีสองชิ้น) · <code>rel</code> เป็น 0 หรือ 1</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> relevant(gold):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {i <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(chunks) <span class="cf">if</span> c[<span class="st">"page"</span>] <span class="kw">in</span> gold}</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 1 (▶ วิดีโอ 2:25): นับชิ้นใน k อันดับแรกที่อยู่ในเซต R แล้วหารด้วยขนาดของ R</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall_at_k(order, gold, k<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> relevant(gold)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ___</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 2 (▶ วิดีโอ 2:39): เมื่อเจอชิ้นที่ถูกชิ้นแรก คืนค่า 1 หารด้วยอันดับของมัน</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reciprocal_rank(order, gold):</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> rank, i <span class="kw">in</span> <span class="bu">enumerate</span>(order, <span class="dv">1</span>):</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> chunks[i][<span class="st">"page"</span>] <span class="kw">in</span> gold:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> ___</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 3 (▶ วิดีโอ 3:00): รวม 1 / log2(rank + 1) ของชิ้นที่ถูกที่อยู่ใน k อันดับแรก</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ndcg_at_k(order, gold, k<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    dcg <span class="op">=</span> <span class="bu">sum</span>(___</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> rank, i <span class="kw">in</span> <span class="bu">enumerate</span>(order[:k], <span class="dv">1</span>) <span class="cf">if</span> chunks[i][<span class="st">"page"</span>] <span class="kw">in</span> gold)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    ideal <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="op">/</span> math.log2(rank <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> rank <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">min</span>(<span class="bu">len</span>(relevant(gold)), k) <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dcg <span class="op">/</span> ideal</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> relevant(gold):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {i <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(chunks) <span class="cf">if</span> c[<span class="st">"page"</span>] <span class="kw">in</span> gold}</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recall_at_k(order, gold, k<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> relevant(gold)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">len</span>(<span class="bu">set</span>(order[:k]) <span class="op">&amp;</span> R) <span class="op">/</span> <span class="bu">len</span>(R)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> reciprocal_rank(order, gold):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> rank, i <span class="kw">in</span> <span class="bu">enumerate</span>(order, <span class="dv">1</span>):</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> chunks[i][<span class="st">"page"</span>] <span class="kw">in</span> gold:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> rank</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ndcg_at_k(order, gold, k<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    dcg <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="op">/</span> math.log2(rank <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> rank, i <span class="kw">in</span> <span class="bu">enumerate</span>(order[:k], <span class="dv">1</span>) <span class="cf">if</span> chunks[i][<span class="st">"page"</span>] <span class="kw">in</span> gold)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    ideal <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="op">/</span> math.log2(rank <span class="op">+</span> <span class="dv">1</span>) <span class="cf">for</span> rank <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">min</span>(<span class="bu">len</span>(relevant(gold)), k) <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dcg <span class="op">/</span> ideal</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>q, gold <span class="op">=</span> TESTS[<span class="dv">9</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> dense(q)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q, gold, <span class="st">"→ pages"</span>, [chunks[i][<span class="st">"page"</span>] <span class="cf">for</span> i <span class="kw">in</span> order[:<span class="dv">5</span>]])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Recall@5"</span>, recall_at_k(order, gold), <span class="st">"· RR"</span>, reciprocal_rank(order, gold),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"· NDCG@5"</span>, <span class="bu">round</span>(ndcg_at_k(order, gold), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>What analogy does the textbook use to explain RAG? {295} → pages [296, 295, 305, 310, 309]
+Recall@5 1.0 · RR 0.5 · NDCG@5 0.63</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>SYSTEMS <span class="op">=</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dense"</span>:           dense,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BM25"</span>:            bm25_rank,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hybrid (RRF)"</span>:    <span class="kw">lambda</span> q: rrf([dense(q), bm25_rank(q)]),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dense + re-rank"</span>: <span class="kw">lambda</span> q: rerank(q, dense(q)),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HyDE + re-rank"</span>:  <span class="kw">lambda</span> q: rerank(q, hyde(q)),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 4 (▶ วิดีโอ 4:13): MRR คือค่าเฉลี่ยของ reciprocal rank บนทุกคำถาม</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> measure(name, system):</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> ThreadPoolExecutor(<span class="dv">5</span>) <span class="im">as</span> pool:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        orders <span class="op">=</span> <span class="bu">list</span>(pool.<span class="bu">map</span>(system, [q <span class="cf">for</span> q, _ <span class="kw">in</span> TESTS]))</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    golds <span class="op">=</span> [g <span class="cf">for</span> _, g <span class="kw">in</span> TESTS]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> np.mean([recall_at_k(o, g) <span class="cf">for</span> o, g <span class="kw">in</span> <span class="bu">zip</span>(orders, golds)])</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    mrr <span class="op">=</span> ___</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    ndcg <span class="op">=</span> np.mean([ndcg_at_k(o, g) <span class="cf">for</span> o, g <span class="kw">in</span> <span class="bu">zip</span>(orders, golds)])</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:16}</span><span class="ss"> Recall@5 </span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">   MRR </span><span class="sc">{</span>mrr<span class="sc">:.2f}</span><span class="ss">   NDCG@5 </span><span class="sc">{</span>ndcg<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, system <span class="kw">in</span> SYSTEMS.items():</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    measure(name, system)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>SYSTEMS <span class="op">=</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dense"</span>:           dense,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BM25"</span>:            bm25_rank,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hybrid (RRF)"</span>:    <span class="kw">lambda</span> q: rrf([dense(q), bm25_rank(q)]),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dense + re-rank"</span>: <span class="kw">lambda</span> q: rerank(q, dense(q)),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HyDE + re-rank"</span>:  <span class="kw">lambda</span> q: rerank(q, hyde(q)),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> measure(name, system):</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> ThreadPoolExecutor(<span class="dv">5</span>) <span class="im">as</span> pool:</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        orders <span class="op">=</span> <span class="bu">list</span>(pool.<span class="bu">map</span>(system, [q <span class="cf">for</span> q, _ <span class="kw">in</span> TESTS]))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    golds <span class="op">=</span> [g <span class="cf">for</span> _, g <span class="kw">in</span> TESTS]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> np.mean([recall_at_k(o, g) <span class="cf">for</span> o, g <span class="kw">in</span> <span class="bu">zip</span>(orders, golds)])</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    mrr <span class="op">=</span> np.mean([reciprocal_rank(o, g) <span class="cf">for</span> o, g <span class="kw">in</span> <span class="bu">zip</span>(orders, golds)])</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    ndcg <span class="op">=</span> np.mean([ndcg_at_k(o, g) <span class="cf">for</span> o, g <span class="kw">in</span> <span class="bu">zip</span>(orders, golds)])</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:16}</span><span class="ss"> Recall@5 </span><span class="sc">{</span>recall<span class="sc">:.2f}</span><span class="ss">   MRR </span><span class="sc">{</span>mrr<span class="sc">:.2f}</span><span class="ss">   NDCG@5 </span><span class="sc">{</span>ndcg<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, system <span class="kw">in</span> SYSTEMS.items():</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    measure(name, system)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<pre class="text lab-output"><code>dense            Recall@5 0.53   MRR 0.51   NDCG@5 0.43
+BM25             Recall@5 0.33   MRR 0.44   NDCG@5 0.28
+hybrid (RRF)     Recall@5 0.51   MRR 0.65   NDCG@5 0.47
+dense + re-rank  Recall@5 0.53   MRR 0.78   NDCG@5 0.56
+HyDE + re-rank   Recall@5 0.58   MRR 0.83   NDCG@5 0.61</code></pre>
+</section>
+<section id="ตววดฝงคำตอบ-16.8.2" class="level2">
+<h2 class="anchored" data-anchor-id="ตววดฝงคำตอบ-16.8.2">3. ตัววัดฝั่งคำตอบ (§16.8.2)</h2>
+<p><span class="math display">\[\text{Faithfulness}=\frac{\#\,\text{claims supported by context}}{\#\,\text{total claims in answer}}\;(16.26)\qquad
+\text{AnswerRelevance}=\frac{1}{N}\sum_{i=1}^{N}\cos\big(E(q),E(\hat q_i)\big)\;(16.27)\]</span></p>
+<p>ทั้งสองใช้ <strong>LLM judge</strong> — ไม่ต้องมีคำตอบที่ถูก (reference-free) แบบเดียวกับ RAGAs (Listing 16.12) เราเพิ่ม <strong>correctness</strong>: เทียบกับคำตอบอ้างอิง (<code>ground_truth</code> ใน RAGAs)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>CLAIMS <span class="op">=</span> obj(claims<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: TEXT})</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> claims_of(answer):</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="st">"Break this answer into short, standalone factual claims. If the answer only says that "</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"the context lacks the information, return an empty list.</span><span class="ch">\n\n</span><span class="ss">Answer:</span><span class="ch">\n</span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>, CLAIMS)[<span class="st">"claims"</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>SUPPORT <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, supported<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"boolean"</span>})</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> supported(claim, docs):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"(page </span><span class="sc">{</span>d[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss">) </span><span class="sc">{</span>d[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> d <span class="kw">in</span> docs)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Context:</span><span class="ch">\n</span><span class="sc">{</span>context<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Claim: </span><span class="sc">{</span>claim<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Does the context support this claim?"</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                    SUPPORT)[<span class="st">"supported"</span>]</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 5 (▶ วิดีโอ 5:41): สัดส่วนของ claim ที่ได้ True (จำนวนที่มีหลักฐาน ÷ จำนวนทั้งหมด)</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> faithfulness(answer, docs):</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    claims <span class="op">=</span> claims_of(answer)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> claims:</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, []</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    marks <span class="op">=</span> [supported(c, docs) <span class="cf">for</span> c <span class="kw">in</span> claims]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ___, <span class="bu">list</span>(<span class="bu">zip</span>(claims, marks))</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>Q3 <span class="op">=</span> obj(q1<span class="op">=</span>TEXT, q2<span class="op">=</span>TEXT, q3<span class="op">=</span>TEXT)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_relevance(question, answer):</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    qs <span class="op">=</span> <span class="bu">list</span>(ask_json(<span class="ss">f"Write three different questions that this answer would answer.</span><span class="ch">\n\n</span><span class="ss">Answer:</span><span class="ch">\n</span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                       Q3).values())</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> embed([question] <span class="op">+</span> qs)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(np.mean(V[<span class="dv">1</span>:] <span class="op">@</span> V[<span class="dv">0</span>]))</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>VERDICT <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, correct<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"boolean"</span>})</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> correct(question, answer, reference):</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Question: </span><span class="sc">{</span>question<span class="sc">}</span><span class="ch">\n</span><span class="ss">Reference answer: </span><span class="sc">{</span>reference<span class="sc">}</span><span class="ch">\n</span><span class="ss">Answer: </span><span class="sc">{</span>answer<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Does the answer agree with the reference answer?"</span>, VERDICT)[<span class="st">"correct"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>CLAIMS <span class="op">=</span> obj(claims<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: TEXT})</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> claims_of(answer):</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="st">"Break this answer into short, standalone factual claims. If the answer only says that "</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"the context lacks the information, return an empty list.</span><span class="ch">\n\n</span><span class="ss">Answer:</span><span class="ch">\n</span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>, CLAIMS)[<span class="st">"claims"</span>]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>SUPPORT <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, supported<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"boolean"</span>})</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> supported(claim, docs):</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"(page </span><span class="sc">{</span>d[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss">) </span><span class="sc">{</span>d[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> d <span class="kw">in</span> docs)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Context:</span><span class="ch">\n</span><span class="sc">{</span>context<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Claim: </span><span class="sc">{</span>claim<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Does the context support this claim?"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                    SUPPORT)[<span class="st">"supported"</span>]</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> faithfulness(answer, docs):</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    claims <span class="op">=</span> claims_of(answer)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> claims:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, []</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    marks <span class="op">=</span> [supported(c, docs) <span class="cf">for</span> c <span class="kw">in</span> claims]</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(marks) <span class="op">/</span> <span class="bu">len</span>(marks), <span class="bu">list</span>(<span class="bu">zip</span>(claims, marks))</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>Q3 <span class="op">=</span> obj(q1<span class="op">=</span>TEXT, q2<span class="op">=</span>TEXT, q3<span class="op">=</span>TEXT)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> answer_relevance(question, answer):</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    qs <span class="op">=</span> <span class="bu">list</span>(ask_json(<span class="ss">f"Write three different questions that this answer would answer.</span><span class="ch">\n\n</span><span class="ss">Answer:</span><span class="ch">\n</span><span class="sc">{</span>answer<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                       Q3).values())</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> embed([question] <span class="op">+</span> qs)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(np.mean(V[<span class="dv">1</span>:] <span class="op">@</span> V[<span class="dv">0</span>]))</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>VERDICT <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, correct<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"boolean"</span>})</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> correct(question, answer, reference):</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Question: </span><span class="sc">{</span>question<span class="sc">}</span><span class="ch">\n</span><span class="ss">Reference answer: </span><span class="sc">{</span>reference<span class="sc">}</span><span class="ch">\n</span><span class="ss">Answer: </span><span class="sc">{</span>answer<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Does the answer agree with the reference answer?"</span>, VERDICT)[<span class="st">"correct"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>question <span class="op">=</span> (<span class="st">"In Roitman's book The Hitchhiker's Guide to Agentic AI, "</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"what analogy does the RAG chapter use to explain RAG?"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>REFERENCE <span class="op">=</span> <span class="st">"A library card: RAG gives a scholar who memorized a library years ago a card to look things up."</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plain3 <span class="op">=</span> [chunks[i] <span class="cf">for</span> i <span class="kw">in</span> dense(question)[:<span class="dv">3</span>]]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>reranked3 <span class="op">=</span> [chunks[i] <span class="cf">for</span> i <span class="kw">in</span> rerank(question, dense(question))[:<span class="dv">3</span>]]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>SYSTEM_PROMPT <span class="op">=</span> <span class="st">"""You are a helpful assistant. Answer the question using ONLY</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">the provided context. If the context does not contain enough information,</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">say so explicitly. Cite your sources using [Doc N] notation."""</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rag_answer(query, docs):</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"[Doc </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">] (Source: </span><span class="sc">{</span>c[<span class="st">'source'</span>]<span class="sc">}</span><span class="ss">, Page: </span><span class="sc">{</span>c[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss">)</span><span class="ch">\n</span><span class="sc">{</span>c[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(docs))</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask(<span class="ss">f"</span><span class="sc">{</span>SYSTEM_PROMPT<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Context:</span><span class="ch">\n</span><span class="sc">{</span>context<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Answer:"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>cases <span class="op">=</span> {<span class="st">"no RAG"</span>:               (ask(question),                 reranked3),</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>         <span class="st">"RAG, plain top 3"</span>:     (rag_answer(question, plain3),    plain3),</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>         <span class="st">"RAG, re-ranked top 3"</span>: (rag_answer(question, reranked3), reranked3)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>faith <span class="op">=</span> {name: faithfulness(answer, docs) <span class="cf">for</span> name, (answer, docs) <span class="kw">in</span> cases.items()}</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>f, marks <span class="op">=</span> faith[<span class="st">"no RAG"</span>]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> claim, ok <span class="kw">in</span> marks:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✓"</span> <span class="cf">if</span> ok <span class="cf">else</span> <span class="st">"✗"</span>, claim[:<span class="dv">100</span>])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"faithfulness"</span>, <span class="bu">round</span>(f, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>✗ Roitman wrote a book titled *The Hitchhiker's Guide to Agentic AI*.
+✗ The chapter on Retrieval-Augmented Generation (RAG) in Roitman's book uses the analogy of an open-bo
+✓ In the RAG analogy, the Large Language Model (LLM) is compared to a student taking an exam.
+✓ In the RAG analogy, the RAG process is compared to a student being allowed to use a textbook or refe
+✓ The LLM has internalized knowledge from its training.
+✓ An LLM may forget specific details or lack access to recent information.
+✓ Providing retrieved documents is equivalent to providing a student with a textbook.
+✓ Using retrieved documents allows the LLM to look up specific facts to ensure answers are accurate, g
+✓ Relying solely on memory can lead to hallucinations in an LLM.
+faithfulness 0.78</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, (answer, docs) <span class="kw">in</span> cases.items():</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    f, _ <span class="op">=</span> faith[name]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:21}</span><span class="ss"> faithfulness </span><span class="sc">{</span><span class="st">'—'</span> <span class="cf">if</span> f <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> <span class="ss">f'</span><span class="sc">{</span>f<span class="sc">:.2f}</span><span class="ss">'</span><span class="sc">:&gt;5}</span><span class="ss">   "</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"relevance </span><span class="sc">{</span>answer_relevance(question, answer)<span class="sc">:.2f}</span><span class="ss">   "</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"correct </span><span class="sc">{</span>correct(question, answer, REFERENCE)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>no RAG                faithfulness  0.78   relevance 0.74   correct False
+RAG, plain top 3      faithfulness  0.67   relevance 0.83   correct False
+RAG, re-ranked top 3  faithfulness  1.00   relevance 0.73   correct True</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({k: <span class="ss">f"$</span><span class="sc">{</span>v<span class="sc">:.4f}</span><span class="ss">"</span> <span class="cf">for</span> k, v <span class="kw">in</span> COST.items()})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>{'chat': '$0.0044', 'embed': '$0.0005', 'rerank': '$0.0672'}</code></pre>
+</section>
+<section id="สรป" class="level2">
+<h2 class="anchored" data-anchor-id="สรป">สรุป</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ตัววัด</th>
+<th>ตอบคำถามว่า</th>
+<th>ที่เราเห็นใน lab</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Recall@5</td>
+<td>ค้นได้ชิ้นที่ถูกครบแค่ไหน</td>
+<td>ราว 0.5 แทบทุกระบบ — re-ranking ไม่ได้หาชิ้นใหม่</td>
+</tr>
+<tr class="even">
+<td>MRR</td>
+<td>ชิ้นที่ถูกชิ้นแรกอยู่สูงแค่ไหน</td>
+<td>dense ≈ 0.5 → HyDE + re-rank ≈ 0.8</td>
+</tr>
+<tr class="odd">
+<td>NDCG@5</td>
+<td>ชิ้นที่ถูกอยู่ใกล้ด้านบนไหม</td>
+<td>ไต่ขึ้นแบบเดียวกับ MRR</td>
+</tr>
+<tr class="even">
+<td>Faithfulness</td>
+<td>คำตอบมีหลักฐานจากเอกสารไหม</td>
+<td>ไม่มี RAG ≈ 0.7–0.8 ทั้งที่ข้อหลักผิด · re-rank ≈ 1 · คำตอบปฏิเสธ: วัดไม่ได้ หรือได้ ≈ 0.7 · judge เองก็ผิดได้</td>
+</tr>
+<tr class="odd">
+<td>Answer relevance</td>
+<td>คำตอบตรงประเด็นไหม</td>
+<td>ทั้งสามแบบ 0.7–0.9 — แยกไม่ออก</td>
+</tr>
+<tr class="even">
+<td>Correctness</td>
+<td>ถูกไหม (ต้องมีคำตอบอ้างอิง)</td>
+<td>ถูกแค่แบบ re-rank</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ไม่มีตัววัดตัวเดียวที่พอ</strong> — ตรงกับที่ตำราเตือนว่าอย่า optimize ระดับเดียว</p>
+<p><strong>แบบฝึกหัด</strong></p>
+<ol type="1">
+<li>เขียน <strong>Precision@K</strong> (สมการ 16.23) แล้วเพิ่มเป็นคอลัมน์ที่สี่ — ระบบไหนได้สูงสุด</li>
+<li>วัด <strong>agent ของ Lab 2</strong> ด้วย faithfulness และ correctness บนคำถาม 5 ข้อ เทียบกับ RAG ธรรมดา — คุ้มกับจำนวนครั้งที่เรียก model ไหม</li>
+<li>ลอง <strong>RAGAs</strong> (Listing 16.12) กับคำตอบสามแบบเดียวกัน — ได้ตัวเลขใกล้กับของเราไหม</li>
+</ol>
+<p><strong>ถัดไป — Lab 4:</strong> สร้าง agent ตัวเดียวกับ Lab 2 ด้วย LangGraph</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="pagination-link" aria-label="Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="pagination-link" aria-label="Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph">
+        <span class="nav-page-text"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

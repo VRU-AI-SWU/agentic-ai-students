@@ -55,6 +55,7 @@ div.csl-indent {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
+<link href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" rel="next">
 <link href="../../ch16/ep10-rag-fundamentals/index.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -412,6 +413,26 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — Query transformation + re-ranking</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: grade, route, loop</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — Measuring RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 4 — The same agentic RAG in LangGraph</span></a>
   </div>
 </li>
       </ul>
@@ -855,6 +876,7 @@ Table&nbsp;11.5: EP11 notebooks (every lab has its own setup)
 <thead>
 <tr class="header">
 <th>Lab</th>
+<th>📖 On this site</th>
 <th>✏️ Starter</th>
 <th>✅ Solution</th>
 </tr>
@@ -862,21 +884,25 @@ Table&nbsp;11.5: EP11 notebooks (every lab has its own setup)
 <tbody>
 <tr class="odd">
 <td>Lab 1 — Query transformation + re-ranking</td>
+<td><a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html">answers + outputs</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab1-query-transform-rerank.en.student.ipynb">Colab</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab1-query-transform-rerank.en.ipynb">Colab</a></td>
 </tr>
 <tr class="even">
 <td>Lab 2 — Agentic RAG: grade, route, loop</td>
+<td><a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html">answers + outputs</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab2-agentic-rag.en.student.ipynb">Colab</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab2-agentic-rag.en.ipynb">Colab</a></td>
 </tr>
 <tr class="odd">
 <td>Lab 3 — Measuring RAG</td>
+<td><a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html">answers + outputs</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab3-rag-evaluation.en.student.ipynb">Colab</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab3-rag-evaluation.en.ipynb">Colab</a></td>
 </tr>
 <tr class="even">
 <td>Lab 4 — The same agentic RAG in LangGraph</td>
+<td><a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html">answers + outputs</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.en.student.ipynb">Colab</a></td>
 <td><a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.en.ipynb">Colab</a></td>
 </tr>
@@ -1485,6 +1511,9 @@ Sarthi, Parth, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, and Chris
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="pagination-link" aria-label="Lab 1 — Query transformation + re-ranking">
+        <span class="nav-page-text"><span class="chapter-title">Lab 1 — Query transformation + re-ranking</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="th" xml:lang="th"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph – Agentic AI: จากพื้นฐานสู่ระบบ</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-2b2c7f1aa879808a4940211236c1a8ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-c631f921fcd718962781e1529714bf6e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600&amp;display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../assets/home.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · ความรู้: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Agentic AI: จากพื้นฐานสู่ระบบ</a> 
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">หน้าแรก</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">M0 · ก่อนเริ่ม: LLM ที่คนสร้าง agent ต้องรู้</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep01-how-llms-work/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP01 LLM ทำงานอย่างไร — ฉบับคนสร้าง agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch01/ep02-prompt-structured-output/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP02 Prompt, Structured Output และ Hallucination</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">M1 · Agent คืออะไร และออกแบบอย่างไร</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch15/ep03-chatbot-to-agent/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP03 จาก Chatbot สู่ Agent</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep04-workflow-patterns/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP04 Workflow Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep05-autonomous-agents/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP05 Autonomous Agent Patterns</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch19/ep06-design-principles/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP06 Design Principles and Choosing a Pattern</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">M2 · Harness: ระบบปฏิบัติการของ agent</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep07-context-management/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP07 Context Window Management</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep08-tools-state-errors/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP08 Tools, State and Error Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch18/ep09-production-harness/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP09 Building a Production Harness</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">M3 · ความรู้: RAG</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep10-rag-fundamentals/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP10 RAG Fundamentals</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">EP11 Advanced &amp; Agentic RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab1-query-transform-rerank.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 1 — แปลงคำถาม + จัดลำดับใหม่</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab2-agentic-rag.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Lab 3 — วัดผล RAG</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">สารบัญ</h2>
+   
+  <ul>
+  <li><a href="#เตรยมเครองกอนเรม" id="toc-เตรยมเครองกอนเรม" class="nav-link active" data-scroll-target="#เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</a></li>
+  <li><a href="#เครองมอทกตวจาก-lab-2" id="toc-เครองมอทกตวจาก-lab-2" class="nav-link" data-scroll-target="#เครองมอทกตวจาก-lab-2">1. เครื่องมือทุกตัวจาก Lab 2</a></li>
+  <li><a href="#state-ทกอยางท-agent-จำระหวางทาง" id="toc-state-ทกอยางท-agent-จำระหวางทาง" class="nav-link" data-scroll-target="#state-ทกอยางท-agent-จำระหวางทาง">2. State: ทุกอย่างที่ agent จำระหว่างทาง</a></li>
+  <li><a href="#node-สตว" id="toc-node-สตว" class="nav-link" data-scroll-target="#node-สตว">3. Node สี่ตัว</a></li>
+  <li><a href="#ตอ-node-เปน-graph" id="toc-ตอ-node-เปน-graph" class="nav-link" data-scroll-target="#ตอ-node-เปน-graph">4. ต่อ node เป็น graph</a></li>
+  <li><a href="#รน-agent" id="toc-รน-agent" class="nav-link" data-scroll-target="#รน-agent">5. รัน agent</a></li>
+  <li><a href="#จดทตองระวงในโคดของตำรา" id="toc-จดทตองระวงในโคดของตำรา" class="nav-link" data-scroll-target="#จดทตองระวงในโคดของตำรา">6. จุดที่ต้องระวังในโค้ดของตำรา</a></li>
+  <li><a href="#สงท-framework-เพมให-recursion_limit" id="toc-สงท-framework-เพมให-recursion_limit" class="nav-link" data-scroll-target="#สงท-framework-เพมให-recursion_limit">7. สิ่งที่ framework เพิ่มให้: <code>recursion_limit</code></a></li>
+  <li><a href="#สรป" id="toc-สรป" class="nav-link" data-scroll-target="#สรป">สรุป</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ch16/ep10-rag-fundamentals/index.html">M3 · ความรู้: RAG</a></li><li class="breadcrumb-item"><a href="../../ch16/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.html"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Lab 4 — agentic RAG ตัวเดิมด้วย LangGraph</span></h1>
+<p class="subtitle lead">Lab walkthrough · EP11 Advanced &amp; Agentic RAG</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- generated by cogito-learn/tools/build_lab_pages.py from ep11-lab4-langgraph-agentic-rag.beats.yaml — edit the yaml, not this page -->
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">หมายเหตุ</span>วิธีใช้หน้านี้
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>หน้านี้คือ notebook เฉลยของ lab นี้ทีละ cell พร้อม output จากการรันจริงตอนอัดคลิป ไว้อ่านทวนก่อนหรือหลังลงมือ cell ที่มี <code>✏️ TODO</code> แสดงโค้ดแบบใน starter notebook ส่วนเฉลยเต็มอยู่ในกล่อง <strong>ดูเฉลย</strong> ลองเขียนเองก่อนค่อยเปิด</p>
+<p><a href="https://youtu.be/pkgeZ-U-PaM">▶ วิดีโอ</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.student.ipynb">✏️ Starter ใน Colab</a> · <a href="https://colab.research.google.com/github/VRU-AI-SWU/agentic-ai-students/blob/main/ep11-agentic-rag/ep11-lab4-langgraph-agentic-rag.ipynb">✅ เฉลยใน Colab</a> · กลับไปหน้า <a href="../../ch16/ep11-agentic-rag/index.html#lab">EP11 Advanced &amp; Agentic RAG</a></p>
+<p><em>model ตอบไม่เหมือนเดิมทุกครั้ง output ที่คุณรันเองจึงอาจต่างจากหน้านี้</em></p>
+</div>
+</div>
+<p>Lab 2 เราเขียนวงวน plan → retrieve → evaluate → generate ด้วย <code>for</code> กับ <code>if</code> เอง — ตำราเขียนวงเดียวกันด้วย <strong>LangGraph</strong> (Listing 16.10) lab นี้ใช้เครื่องมือทุกตัวจาก Lab 2 เหมือนเดิม เปลี่ยนแค่ <strong>วงวน</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lab 2 (เขียนเอง)</th>
+<th>LangGraph</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ตัวแปร <code>docs</code>, <code>tried</code>, <code>sub_queries</code></td>
+<td><code>AgentState</code> (TypedDict) + reducer <code>operator.add</code></td>
+</tr>
+<tr class="even">
+<td>ขั้น plan / retrieve / evaluate / generate</td>
+<td>node สี่ตัว — ฟังก์ชันที่รับ state แล้วคืน <strong>เฉพาะช่องที่เปลี่ยน</strong></td>
+</tr>
+<tr class="odd">
+<td><code>for iteration in range(max_iterations)</code> + <code>break</code></td>
+<td>conditional edge <code>should_retrieve</code></td>
+</tr>
+<tr class="even">
+<td><code>print</code> ในลูป</td>
+<td><code>stream(stream_mode="updates")</code></td>
+</tr>
+<tr class="odd">
+<td>—</td>
+<td><code>recursion_limit</code> ตาข่ายกันวนของ framework เอง</td>
+</tr>
+</tbody>
+</table>
+<p>คำตอบของ model ทุกคำตอบมาจากการรันจริง</p>
+<blockquote class="blockquote">
+<p>อ้างอิง: Haggai Roitman, <em>The Hitchhiker’s Guide to Agentic AI</em>, §16.7.4 Listing 16.10 — CC BY-SA 4.0</p>
+</blockquote>
+<section id="เตรยมเครองกอนเรม" class="level2">
+<h2 class="anchored" data-anchor-id="เตรยมเครองกอนเรม">0. เตรียมเครื่องก่อนเริ่ม</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>สิ่งที่ต้องมี</th>
+<th>รายละเอียด</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 3.10 ขึ้นไป</td>
+<td>หรือใช้ Google Colab ซึ่งมีให้แล้ว</td>
+</tr>
+<tr class="even">
+<td>OpenRouter API key</td>
+<td>key เดิมจาก Lab 1 (lab นี้ใช้ไม่ถึง 1 เซ็นต์ดอลลาร์) — วิธีตั้งค่า key และเหตุผลที่เลือก model อยู่ใน Lab 1</td>
+</tr>
+<tr class="odd">
+<td>Packages</td>
+<td><code>langgraph==1.2.16</code> (ตัวเดียวกับ EP04, EP05, EP08), <code>openai</code>, <code>python-dotenv</code>, <code>pypdf</code>, <code>numpy</code>, <code>tokenizers</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>ใส่ API key</strong></p>
+<ul>
+<li><strong>Colab:</strong> ไอคอน 🔑 Secrets → ชื่อ <code>OPENROUTER_API_KEY</code> → เปิด <em>Notebook access</em></li>
+<li><strong>เครื่องตัวเอง:</strong> สร้างไฟล์ <code>.env</code> ในโฟลเดอร์เดียวกับ notebook แล้วใส่บรรทัด <code>OPENROUTER_API_KEY=sk-or-...</code></li>
+</ul>
+<p>⚠️ อย่าใส่ key ลงในโค้ดโดยตรง และอย่าแชร์ไฟล์ <code>.env</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q <span class="st">"langgraph==1.2.16"</span> <span class="st">"openai&gt;=1.50"</span> python<span class="op">-</span>dotenv <span class="st">"pypdf&gt;=6"</span> numpy <span class="st">"tokenizers==0.23.3"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="เครองมอทกตวจาก-lab-2" class="level2">
+<h2 class="anchored" data-anchor-id="เครองมอทกตวจาก-lab-2">1. เครื่องมือทุกตัวจาก Lab 2</h2>
+<p>สาม cell ถัดไปคือโค้ดจาก Lab 2 ไม่มีอะไรใหม่: model + <code>ask_json</code> · คลัง 141 ชิ้น + BM25 · สามแหล่ง (keyword, vector, สารบัญ) + <code>grade</code>, <code>route</code>, <code>plan</code>, <code>evaluate</code>, <code>generate</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, re, math, json, operator, urllib.request</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> TypedDict, Annotated</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pypdf <span class="im">import</span> PdfReader</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tokenizers <span class="im">import</span> Tokenizer</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_key():</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:  <span class="co"># Google Colab Secrets</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> google.colab <span class="im">import</span> userdata</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> userdata.get(<span class="st">"OPENROUTER_API_KEY"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    load_dotenv()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> os.environ[<span class="st">"OPENROUTER_API_KEY"</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>MODEL <span class="op">=</span> <span class="st">"google/gemma-4-26b-a4b-it"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>EXTRA <span class="op">=</span> {<span class="st">"reasoning"</span>: {<span class="st">"enabled"</span>: <span class="va">False</span>},</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>         <span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"makora"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>EMBED_MODEL <span class="op">=</span> <span class="st">"qwen/qwen3-embedding-8b"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>EMBED_EXTRA <span class="op">=</span> {<span class="st">"provider"</span>: {<span class="st">"order"</span>: [<span class="st">"nebius"</span>], <span class="st">"allow_fallbacks"</span>: <span class="va">False</span>}}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI(base_url<span class="op">=</span><span class="st">"https://openrouter.ai/api/v1"</span>, api_key<span class="op">=</span>load_key(), max_retries<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>COST <span class="op">=</span> {<span class="st">"chat"</span>: <span class="fl">0.0</span>, <span class="st">"embed"</span>: <span class="fl">0.0</span>, <span class="st">"calls"</span>: <span class="dv">0</span>}</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask(prompt):</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> client.chat.completions.create(model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                                       messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}])</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    COST[<span class="st">"calls"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r.choices[<span class="dv">0</span>].message.content</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> embed(texts):</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    vectors <span class="op">=</span> []</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(texts), <span class="dv">64</span>):</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> client.embeddings.create(model<span class="op">=</span>EMBED_MODEL, <span class="bu">input</span><span class="op">=</span>texts[i:i <span class="op">+</span> <span class="dv">64</span>],</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                                     extra_body<span class="op">=</span>EMBED_EXTRA)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        COST[<span class="st">"embed"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        vectors <span class="op">+=</span> [d.embedding <span class="cf">for</span> d <span class="kw">in</span> r.data]</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    V <span class="op">=</span> np.array(vectors)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> V <span class="op">/</span> np.linalg.norm(V, axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ask_json(prompt, schema):</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):                            <span class="co"># one retry if the JSON comes back cut off (Lab 3)</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>            model<span class="op">=</span>MODEL, temperature<span class="op">=</span><span class="dv">0</span>, extra_body<span class="op">=</span>EXTRA, max_tokens<span class="op">=</span><span class="dv">1500</span>,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}],</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            response_format<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"json_schema"</span>,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"json_schema"</span>: {<span class="st">"name"</span>: <span class="st">"reply"</span>, <span class="st">"strict"</span>: <span class="va">True</span>, <span class="st">"schema"</span>: schema}})</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        COST[<span class="st">"chat"</span>] <span class="op">+=</span> r.usage.cost</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        COST[<span class="st">"calls"</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> json.loads(r.choices[<span class="dv">0</span>].message.content)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> json.JSONDecodeError:</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>            <span class="cf">pass</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"the model did not return valid JSON"</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> obj(<span class="op">**</span>fields):</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"type"</span>: <span class="st">"object"</span>, <span class="st">"properties"</span>: fields,</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>            <span class="st">"required"</span>: <span class="bu">list</span>(fields), <span class="st">"additionalProperties"</span>: <span class="va">False</span>}</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>TEXT <span class="op">=</span> {<span class="st">"type"</span>: <span class="st">"string"</span>}</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_of(<span class="op">*</span>values):</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"type"</span>: <span class="st">"string"</span>, <span class="st">"enum"</span>: <span class="bu">list</span>(values)}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>urllib.request.urlretrieve(<span class="st">"https://arxiv.org/pdf/2606.24937v1"</span>, <span class="st">"hitchhikers-guide-v1.pdf"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>reader <span class="op">=</span> PdfReader(<span class="st">"hitchhikers-guide-v1.pdf"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>HEADER <span class="op">=</span> <span class="st">"H. Roitman — The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pages <span class="op">=</span> [{<span class="st">"page"</span>: n, <span class="st">"text"</span>: reader.pages[n <span class="op">-</span> <span class="dv">1</span>].extract_text().replace(HEADER, <span class="st">""</span>)}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">292</span>, <span class="dv">375</span>)]                      <span class="co"># chapters 15–19</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>tok <span class="op">=</span> Tokenizer.from_pretrained(MODEL)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> chunk_page(page, W<span class="op">=</span><span class="dv">512</span>, O<span class="op">=</span><span class="dv">64</span>):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ids <span class="op">=</span> tok.encode(page[<span class="st">"text"</span>], add_special_tokens<span class="op">=</span><span class="va">False</span>).ids</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [{<span class="st">"page"</span>: page[<span class="st">"page"</span>], <span class="st">"text"</span>: tok.decode(ids[s:s <span class="op">+</span> W])}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">max</span>(<span class="bu">len</span>(ids) <span class="op">-</span> O, <span class="dv">1</span>), W <span class="op">-</span> O)]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> [c <span class="cf">for</span> p <span class="kw">in</span> pages <span class="cf">for</span> c <span class="kw">in</span> chunk_page(p)]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> embed([c[<span class="st">"text"</span>] <span class="cf">for</span> c <span class="kw">in</span> chunks])</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> words(text):                                        <span class="co"># BM25 from EP10 Lab 2</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> re.findall(<span class="vs">r"</span><span class="dv">\w</span><span class="op">+</span><span class="vs">"</span>, text.lower())</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [words(c[<span class="st">"text"</span>]) <span class="cf">for</span> c <span class="kw">in</span> chunks]</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>N, avgdl <span class="op">=</span> <span class="bu">len</span>(docs), <span class="bu">sum</span>(<span class="bu">len</span>(d) <span class="cf">for</span> d <span class="kw">in</span> docs) <span class="op">/</span> <span class="bu">len</span>(docs)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> Counter(w <span class="cf">for</span> d <span class="kw">in</span> docs <span class="cf">for</span> w <span class="kw">in</span> <span class="bu">set</span>(d))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>tfs <span class="op">=</span> [Counter(d) <span class="cf">for</span> d <span class="kw">in</span> docs]</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> idf(t):</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> df.get(t, <span class="dv">0</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> math.log((N <span class="op">-</span> n <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> (n <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bm25_rank(query, k1<span class="op">=</span><span class="fl">1.5</span>, b<span class="op">=</span><span class="fl">0.75</span>):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> [<span class="bu">sum</span>(idf(t) <span class="op">*</span> tf[t] <span class="op">*</span> (k1 <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> (tf[t] <span class="op">+</span> k1 <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> b <span class="op">+</span> b <span class="op">*</span> <span class="bu">len</span>(d) <span class="op">/</span> avgdl))</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> t <span class="kw">in</span> words(query)) <span class="cf">for</span> d, tf <span class="kw">in</span> <span class="bu">zip</span>(docs, tfs)]</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(np.argsort(<span class="op">-</span>np.array(scores)))</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(chunks), <span class="st">"chunks"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+141 chunks</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> as_docs(order, source, k<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [{<span class="st">"source"</span>: source, <span class="st">"pages"</span>: [chunks[i][<span class="st">"page"</span>]], <span class="st">"text"</span>: chunks[i][<span class="st">"text"</span>]}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> i <span class="kw">in</span> order[:k]]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_keyword(query):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> as_docs(bm25_rank(query), <span class="st">"keyword_search"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_vector(query):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> as_docs(<span class="bu">list</span>(np.argsort(<span class="op">-</span>(E <span class="op">@</span> embed([query])[<span class="dv">0</span>]))), <span class="st">"vector_db"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> walk(outline, depth<span class="op">=</span><span class="dv">0</span>):                             <span class="co"># the table of contents as a tree</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> outline:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(item, <span class="bu">list</span>):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">yield</span> <span class="cf">from</span> walk(item, depth <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">yield</span> depth, item.title, reader.get_destination_page_number(item) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> [x <span class="cf">for</span> x <span class="kw">in</span> walk(reader.outline) <span class="cf">if</span> x[<span class="dv">0</span>] <span class="op">&gt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">292</span> <span class="op">&lt;=</span> x[<span class="dv">2</span>] <span class="op">&lt;=</span> <span class="dv">374</span>]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>root <span class="op">=</span> {<span class="st">"title"</span>: <span class="st">"The book, pages 292-374"</span>, <span class="st">"depth"</span>: <span class="dv">0</span>, <span class="st">"start"</span>: <span class="dv">292</span>, <span class="st">"end"</span>: <span class="dv">374</span>, <span class="st">"children"</span>: []}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>stack <span class="op">=</span> [root]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, (depth, title, start) <span class="kw">in</span> <span class="bu">enumerate</span>(items):</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> <span class="bu">next</span>((s <span class="cf">for</span> d, _, s <span class="kw">in</span> items[n <span class="op">+</span> <span class="dv">1</span>:] <span class="cf">if</span> d <span class="op">&lt;=</span> depth), <span class="dv">374</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> {<span class="st">"title"</span>: title, <span class="st">"depth"</span>: depth, <span class="st">"start"</span>: start, <span class="st">"end"</span>: <span class="bu">max</span>(start, end), <span class="st">"children"</span>: []}</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> stack[<span class="op">-</span><span class="dv">1</span>][<span class="st">"depth"</span>] <span class="op">&gt;=</span> depth:</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        stack.pop()</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    stack[<span class="op">-</span><span class="dv">1</span>][<span class="st">"children"</span>].append(node)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    stack.append(node)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>PAGE <span class="op">=</span> {p[<span class="st">"page"</span>]: p[<span class="st">"text"</span>] <span class="cf">for</span> p <span class="kw">in</span> pages}</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>MENU <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, action<span class="op">=</span>TEXT)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>LEAF <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, action<span class="op">=</span>one_of(<span class="st">"use"</span>, <span class="st">"back"</span>))</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> label(n):</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span>n[<span class="st">"title"</span>]<span class="sc">}</span><span class="ss"> (pp. </span><span class="sc">{</span>n[<span class="st">"start"</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>n[<span class="st">"end"</span>]<span class="sc">}</span><span class="ss">)'</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_toc(query, max_steps<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    node, path, read <span class="op">=</span> root, [root], []</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, max_steps <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node[<span class="st">"children"</span>]:</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>            menu <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(<span class="ss">f"[</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>label(c)<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i, c <span class="kw">in</span> <span class="bu">enumerate</span>(node[<span class="st">"children"</span>]))</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>            out <span class="op">=</span> ask_json(<span class="ss">f"You are finding the part of a book that answers a question, using its table of contents.</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                           <span class="ss">f"Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n</span><span class="ss">You are at: </span><span class="sc">{</span><span class="st">' &gt; '</span><span class="sc">.</span>join(n[<span class="st">'title'</span>] <span class="cf">for</span> n <span class="kw">in</span> path)<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>                           <span class="ss">f"Already read, did not help: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(read) <span class="kw">or</span> <span class="st">'nothing'</span><span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Sections:</span><span class="ch">\n</span><span class="sc">{</span>menu<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'Set "action" to the number of the section to open, or to "back" if none fits.'</span>, MENU)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(PAGE[p] <span class="cf">for</span> p <span class="kw">in</span> <span class="bu">range</span>(node[<span class="st">"start"</span>], node[<span class="st">"end"</span>] <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>            out <span class="op">=</span> ask_json(<span class="ss">f"Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n</span><span class="ss">You opened: </span><span class="sc">{</span>label(node)<span class="sc">}</span><span class="ch">\n\n</span><span class="sc">{</span>text<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>                           <span class="st">'Set "action" to "use" if this text helps answer the question, or "back" if it does not.'</span>, LEAF)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        action <span class="op">=</span> out[<span class="st">"action"</span>].strip(<span class="st">"[] "</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="op">==</span> <span class="st">"use"</span>:</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> [{<span class="st">"source"</span>: <span class="st">"table_of_contents"</span>, <span class="st">"text"</span>: text,</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"pages"</span>: <span class="bu">list</span>(<span class="bu">range</span>(node[<span class="st">"start"</span>], node[<span class="st">"end"</span>] <span class="op">+</span> <span class="dv">1</span>))}]</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action.isdigit() <span class="kw">and</span> <span class="bu">int</span>(action) <span class="op">&lt;</span> <span class="bu">len</span>(node[<span class="st">"children"</span>]):</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node[<span class="st">"children"</span>][<span class="bu">int</span>(action)]</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>            path.append(node)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> node[<span class="st">"children"</span>]:</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>                read.append(node[<span class="st">"title"</span>])</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(path) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>                path.pop()</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>                node <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> []</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>SOURCES <span class="op">=</span> {<span class="st">"keyword_search"</span>: search_keyword, <span class="st">"vector_db"</span>: search_vector, <span class="st">"table_of_contents"</span>: search_toc}</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>GRADE <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, grade<span class="op">=</span>one_of(<span class="st">"correct"</span>, <span class="st">"ambiguous"</span>, <span class="st">"incorrect"</span>))</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grade(query, doc):</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Document (pages </span><span class="sc">{</span>doc[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss">):</span><span class="ch">\n</span><span class="sc">{</span>doc[<span class="st">'text'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Grade the document. correct: it contains the answer. "</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ambiguous: it is related but does not answer. "</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"incorrect: it is not about the question."</span>, GRADE)[<span class="st">"grade"</span>]</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>ROUTE <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, source<span class="op">=</span>one_of(<span class="op">*</span>SOURCES), refined_query<span class="op">=</span>TEXT)</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> route(query, tried<span class="op">=</span>()):</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">set</span>(tried) <span class="op">&gt;=</span> <span class="bu">set</span>(SOURCES):                      <span class="co"># every source already tried: start over</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        tried <span class="op">=</span> ()</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    note <span class="op">=</span> (<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Already tried, found nothing useful: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(tried)<span class="sc">}</span><span class="ss">. Pick another source."</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> tried <span class="cf">else</span> <span class="st">""</span>)</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f'Given the query: "</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">"</span><span class="ch">\n</span><span class="ss">Decide which knowledge source to use:</span><span class="ch">\n</span><span class="ss">'</span></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"- keyword_search: BM25 over the book's text; best for rare exact terms, acronyms and names</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"- vector_db: embedding search over the book's text; best for questions phrased in different words from the book</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"- table_of_contents: walk the book's table of contents; best when the question asks where in the book a topic is covered</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"Return the source, a refined query for that source, and your reasoning.</span><span class="sc">{</span>note<span class="sc">}</span><span class="ss">"</span>, ROUTE)</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>BOOK <span class="op">=</span> <span class="st">"Roitman, The Hitchhiker's Guide to Agentic AI"</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>LIBRARY <span class="op">=</span> <span class="ss">f"Our library is one book: </span><span class="sc">{</span>BOOK<span class="sc">}</span><span class="ss">, pages 292-374."</span></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>PLAN <span class="op">=</span> obj(sub_queries<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: TEXT})</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plan(query):</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"</span><span class="sc">{</span>LIBRARY<span class="sc">}</span><span class="ch">\n</span><span class="ss">Split this question into the separate things we must look up in the book: "</span></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"one sub-query per information need, and only one if it asks for one thing."</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>                    <span class="ss">f"</span><span class="ch">\n\n</span><span class="ss">Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">"</span>, PLAN)[<span class="st">"sub_queries"</span>]</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>EVAL <span class="op">=</span> obj(reasoning<span class="op">=</span>TEXT, sufficient<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"boolean"</span>}, missing<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"array"</span>, <span class="st">"items"</span>: TEXT})</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate(query, docs):</span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"[pages </span><span class="sc">{</span>d[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss">]</span><span class="ch">\n</span><span class="sc">{</span>d[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> d <span class="kw">in</span> docs) <span class="kw">or</span> <span class="st">"(nothing yet)"</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask_json(<span class="ss">f"Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Retrieved context:</span><span class="ch">\n</span><span class="sc">{</span>context<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">"</span></span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"Does this context answer every part of the question? If a part is not answered yet, "</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"list one sub-query per missing part; do not ask for extra detail."</span>, EVAL)</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>SYSTEM_PROMPT <span class="op">=</span> <span class="st">"""You are a helpful assistant. Answer the question using ONLY</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a><span class="st">the provided context. If the context does not contain enough information,</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a><span class="st">say so explicitly. Cite your sources using [Doc N] notation."""</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate(query, docs):</span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>    context <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(<span class="ss">f"[Doc </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">] (Source: </span><span class="sc">{</span>BOOK<span class="sc">}</span><span class="ss">, Pages: </span><span class="sc">{</span>d[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss">)</span><span class="ch">\n</span><span class="sc">{</span>d[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>                          <span class="cf">for</span> i, d <span class="kw">in</span> <span class="bu">enumerate</span>(docs))</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ask(<span class="ss">f"</span><span class="sc">{</span>SYSTEM_PROMPT<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Context:</span><span class="ch">\n</span><span class="sc">{</span>context<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Question: </span><span class="sc">{</span>query<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">Answer:"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="state-ทกอยางท-agent-จำระหวางทาง" class="level2">
+<h2 class="anchored" data-anchor-id="state-ทกอยางท-agent-จำระหวางทาง">2. State: ทุกอย่างที่ agent จำระหว่างทาง</h2>
+<p>ใน Lab 2 เป็นตัวแปรใน <code>agent()</code> — ใน LangGraph รวมเป็น <code>AgentState</code> เดียว ทุก node อ่านและเขียนช่องของมัน ช่องที่มี <strong>reducer</strong> <code>operator.add</code> จะ <strong>ต่อท้าย</strong> ค่าที่ node คืนมา แทนการเขียนทับ</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 1 (▶ วิดีโอ 2:17): ทำให้ retrieved_docs ต่อท้ายเอกสารใหม่ แทนการเขียนทับ (reducer operator.add)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentState(TypedDict):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    query: <span class="bu">str</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    sub_queries: <span class="bu">list</span>[<span class="bu">str</span>]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    retrieved_docs: ___</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    tried: Annotated[<span class="bu">list</span>[<span class="bu">str</span>], operator.add]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    context_sufficient: <span class="bu">bool</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    iterations: <span class="bu">int</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    max_iterations: <span class="bu">int</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AgentState(TypedDict):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    query: <span class="bu">str</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    sub_queries: <span class="bu">list</span>[<span class="bu">str</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    retrieved_docs: Annotated[<span class="bu">list</span>[<span class="bu">dict</span>], operator.add]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    tried: Annotated[<span class="bu">list</span>[<span class="bu">str</span>], operator.add]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    context_sufficient: <span class="bu">bool</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    answer: <span class="bu">str</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    iterations: <span class="bu">int</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    max_iterations: <span class="bu">int</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="node-สตว" class="level2">
+<h2 class="anchored" data-anchor-id="node-สตว">3. Node สี่ตัว</h2>
+<p>แต่ละ node รับ state แล้วคืน <strong>dict ของช่องที่เปลี่ยน</strong> — LangGraph รวมเข้ากับ state ให้เอง</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plan_node(state):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"sub_queries"</span>: plan(state[<span class="st">"query"</span>]), <span class="st">"iterations"</span>: <span class="dv">0</span>}</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retrieve_node(state):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    new_docs, failed <span class="op">=</span> [], []</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sq <span class="kw">in</span> state[<span class="st">"sub_queries"</span>]:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> route(sq, state[<span class="st">"tried"</span>])</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> SOURCES[r[<span class="st">"source"</span>]](r[<span class="st">"refined_query"</span>])</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        good <span class="op">=</span> [d <span class="cf">for</span> d <span class="kw">in</span> found <span class="cf">if</span> grade(sq, d) <span class="op">==</span> <span class="st">"correct"</span>]</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  retrieve: </span><span class="sc">{</span>r[<span class="st">'source'</span>]<span class="sc">:17}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">len</span>(good)<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(found)<span class="sc">}</span><span class="ss"> correct  </span><span class="sc">{</span>sq[:<span class="dv">45</span>]<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> good:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            failed.append(r[<span class="st">"source"</span>])</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        new_docs <span class="op">+=</span> good</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 2 (▶ วิดีโอ 3:21): คืนเฉพาะเอกสารใหม่ แหล่งที่พลาด และตัวนับรอบที่เพิ่มขึ้นหนึ่ง</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"retrieved_docs"</span>: ___, <span class="st">"tried"</span>: failed,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"iterations"</span>: ___}</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_node(state):</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    check <span class="op">=</span> evaluate(state[<span class="st">"query"</span>], state[<span class="st">"retrieved_docs"</span>])</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  evaluate: sufficient = </span><span class="sc">{</span>check[<span class="st">'sufficient'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"context_sufficient"</span>: check[<span class="st">"sufficient"</span>],</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sub_queries"</span>: check[<span class="st">"missing"</span>] <span class="kw">or</span> state[<span class="st">"sub_queries"</span>]}</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_node(state):</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"answer"</span>: generate(state[<span class="st">"query"</span>], state[<span class="st">"retrieved_docs"</span>])}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plan_node(state):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"sub_queries"</span>: plan(state[<span class="st">"query"</span>]), <span class="st">"iterations"</span>: <span class="dv">0</span>}</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retrieve_node(state):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    new_docs, failed <span class="op">=</span> [], []</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sq <span class="kw">in</span> state[<span class="st">"sub_queries"</span>]:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> route(sq, state[<span class="st">"tried"</span>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> SOURCES[r[<span class="st">"source"</span>]](r[<span class="st">"refined_query"</span>])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        good <span class="op">=</span> [d <span class="cf">for</span> d <span class="kw">in</span> found <span class="cf">if</span> grade(sq, d) <span class="op">==</span> <span class="st">"correct"</span>]</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  retrieve: </span><span class="sc">{</span>r[<span class="st">'source'</span>]<span class="sc">:17}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">len</span>(good)<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span><span class="bu">len</span>(found)<span class="sc">}</span><span class="ss"> correct  </span><span class="sc">{</span>sq[:<span class="dv">45</span>]<span class="sc">!r}</span><span class="ss">"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> good:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            failed.append(r[<span class="st">"source"</span>])</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        new_docs <span class="op">+=</span> good</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"retrieved_docs"</span>: new_docs, <span class="st">"tried"</span>: failed,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"iterations"</span>: state[<span class="st">"iterations"</span>] <span class="op">+</span> <span class="dv">1</span>}</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_node(state):</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    check <span class="op">=</span> evaluate(state[<span class="st">"query"</span>], state[<span class="st">"retrieved_docs"</span>])</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  evaluate: sufficient = </span><span class="sc">{</span>check[<span class="st">'sufficient'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"context_sufficient"</span>: check[<span class="st">"sufficient"</span>],</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sub_queries"</span>: check[<span class="st">"missing"</span>] <span class="kw">or</span> state[<span class="st">"sub_queries"</span>]}</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_node(state):</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"answer"</span>: generate(state[<span class="st">"query"</span>], state[<span class="st">"retrieved_docs"</span>])}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✏️ </span><span class="al">TODO</span><span class="co"> 3 (▶ วิดีโอ 3:53): เมื่อ context พอแล้ว หรือครบ max_iterations ให้ไป generate ไม่อย่างนั้นกลับไป retrieve</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> should_retrieve(state):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ___:</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"generate"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ___:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"generate"</span>        <span class="co"># give up and generate with what we have</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"retrieve"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">เคล็ดลับ</span>ดูเฉลย
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> should_retrieve(state):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state[<span class="st">"context_sufficient"</span>]:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"generate"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> state[<span class="st">"iterations"</span>] <span class="op">&gt;=</span> state[<span class="st">"max_iterations"</span>]:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"generate"</span>        <span class="co"># give up and generate with what we have</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"retrieve"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ตอ-node-เปน-graph" class="level2">
+<h2 class="anchored" data-anchor-id="ตอ-node-เปน-graph">4. ต่อ node เป็น graph</h2>
+<p><code>plan → retrieve → evaluate → (generate หรือกลับ retrieve) → END</code> — ตรงกับ Listing 16.10</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.graph <span class="im">import</span> StateGraph, END</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>workflow <span class="op">=</span> StateGraph(AgentState)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, fn <span class="kw">in</span> [(<span class="st">"plan"</span>, plan_node), (<span class="st">"retrieve"</span>, retrieve_node),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                 (<span class="st">"evaluate"</span>, evaluate_node), (<span class="st">"generate"</span>, generate_node)]:</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    workflow.add_node(name, fn)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>workflow.set_entry_point(<span class="st">"plan"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">"plan"</span>, <span class="st">"retrieve"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">"retrieve"</span>, <span class="st">"evaluate"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>workflow.add_conditional_edges(<span class="st">"evaluate"</span>, should_retrieve,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                               {<span class="st">"retrieve"</span>: <span class="st">"retrieve"</span>, <span class="st">"generate"</span>: <span class="st">"generate"</span>})</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>workflow.add_edge(<span class="st">"generate"</span>, END)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> workflow.<span class="bu">compile</span>()</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> agent.get_graph().edges:</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>e<span class="sc">.</span>source<span class="sc">:9}</span><span class="ss"> -&gt; </span><span class="sc">{</span>e<span class="sc">.</span>target<span class="sc">:9}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'(conditional)'</span> <span class="cf">if</span> e<span class="sc">.</span>conditional <span class="cf">else</span> <span class="st">''</span><span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>__start__ -&gt; plan      
+evaluate  -&gt; generate  (conditional)
+evaluate  -&gt; retrieve  (conditional)
+plan      -&gt; retrieve  
+retrieve  -&gt; evaluate  
+generate  -&gt; __end__</code></pre>
+</section>
+<section id="รน-agent" class="level2">
+<h2 class="anchored" data-anchor-id="รน-agent">5. รัน agent</h2>
+<p><code>stream(..., stream_mode="updates")</code> ส่งผลของแต่ละ node ออกมาทีละขั้น — เห็นว่า graph เดินผ่าน node ไหนบ้าง</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> start(query, max_iterations<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"query"</span>: query, <span class="st">"max_iterations"</span>: max_iterations,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"retrieved_docs"</span>: [], <span class="st">"tried"</span>: [], <span class="st">"iterations"</span>: <span class="dv">0</span>}</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> update <span class="kw">in</span> agent.stream(start(<span class="st">"What is PLAID, and how does the textbook add randomness to retry waits?"</span>),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                           stream_mode<span class="op">=</span><span class="st">"updates"</span>):</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"node:"</span>, <span class="bu">list</span>(update))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>node: ['plan']
+  retrieve: keyword_search    1/3 correct  'What is PLAID?'
+  retrieve: vector_db         1/3 correct  'How does the textbook add randomness to retry'
+node: ['retrieve']
+  evaluate: sufficient = True
+node: ['evaluate']
+node: ['generate']</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> agent.invoke(start(<span class="st">"What does the acronym PLAID stand for?"</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">"iterations"</span>], <span class="st">"rounds ·"</span>, <span class="bu">len</span>(result[<span class="st">"retrieved_docs"</span>]), <span class="st">"documents"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">"answer"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>  retrieve: keyword_search    0/3 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: vector_db         0/3 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: table_of_contents 0/0 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+3 rounds · 0 documents
+The provided context does not contain information regarding what the acronym PLAID stands for.</code></pre>
+</section>
+<section id="จดทตองระวงในโคดของตำรา" class="level2">
+<h2 class="anchored" data-anchor-id="จดทตองระวงในโคดของตำรา">6. จุดที่ต้องระวังในโค้ดของตำรา</h2>
+<p>node ใน Listing 16.10 คืน <code>{**state, ...}</code> — <strong>state ทั้งก้อน</strong> รวมถึง <code>retrieved_docs</code> เดิม แต่ <code>retrieved_docs</code> มี reducer <code>operator.add</code> → LangGraph <strong>ต่อท้ายเอกสารเดิมซ้ำอีกรอบ</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> book_evaluate_node(state):                         <span class="co"># written the way Listing 16.10 writes its nodes</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    check <span class="op">=</span> evaluate(state[<span class="st">"query"</span>], state[<span class="st">"retrieved_docs"</span>])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="op">**</span>state, <span class="st">"context_sufficient"</span>: check[<span class="st">"sufficient"</span>]}</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>book <span class="op">=</span> StateGraph(AgentState)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, fn <span class="kw">in</span> [(<span class="st">"plan"</span>, plan_node), (<span class="st">"retrieve"</span>, retrieve_node),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                 (<span class="st">"evaluate"</span>, book_evaluate_node), (<span class="st">"generate"</span>, generate_node)]:</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    book.add_node(name, fn)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>book.set_entry_point(<span class="st">"plan"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>book.add_edge(<span class="st">"plan"</span>, <span class="st">"retrieve"</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>book.add_edge(<span class="st">"retrieve"</span>, <span class="st">"evaluate"</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>book.add_conditional_edges(<span class="st">"evaluate"</span>, should_retrieve, {<span class="st">"retrieve"</span>: <span class="st">"retrieve"</span>, <span class="st">"generate"</span>: <span class="st">"generate"</span>})</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>book.add_edge(<span class="st">"generate"</span>, END)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, g <span class="kw">in</span> [(<span class="st">"ours"</span>, agent), (<span class="st">"book style"</span>, book.<span class="bu">compile</span>())]:</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> g.invoke(start(<span class="st">"What is PLAID, and how does the textbook add randomness to retry waits?"</span>))</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:10}</span><span class="ss">"</span>, <span class="bu">len</span>(s[<span class="st">"retrieved_docs"</span>]), <span class="st">"documents, pages"</span>, [d[<span class="st">"pages"</span>][<span class="dv">0</span>] <span class="cf">for</span> d <span class="kw">in</span> s[<span class="st">"retrieved_docs"</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>  retrieve: keyword_search    1/3 correct  'What is PLAID?'
+  retrieve: vector_db         1/3 correct  'How does the textbook add randomness to retry'
+  evaluate: sufficient = True
+ours       2 documents, pages [301, 357]
+  retrieve: keyword_search    1/3 correct  'What is PLAID?'
+  retrieve: vector_db         1/3 correct  'How does the textbook add randomness to retry'
+book style 4 documents, pages [301, 357, 301, 357]</code></pre>
+</section>
+<section id="สงท-framework-เพมให-recursion_limit" class="level2">
+<h2 class="anchored" data-anchor-id="สงท-framework-เพมให-recursion_limit">7. สิ่งที่ framework เพิ่มให้: <code>recursion_limit</code></h2>
+<p>ถ้าลืมตั้งเพดาน หรือตั้งสูงเกินไป LangGraph มีตาข่ายของตัวเอง: เดินได้ไม่เกิน <code>recursion_limit</code> ก้าว (ค่าเริ่มต้น 25) แล้วหยุดด้วย <code>GraphRecursionError</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langgraph.errors <span class="im">import</span> GraphRecursionError</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    agent.invoke(start(<span class="st">"What does the acronym PLAID stand for?"</span>, max_iterations<span class="op">=</span><span class="dv">100</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                 {<span class="st">"recursion_limit"</span>: <span class="dv">10</span>})</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> GraphRecursionError <span class="im">as</span> e:</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"stopped:"</span>, <span class="bu">str</span>(e)[:<span class="dv">80</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>  retrieve: keyword_search    0/3 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: vector_db         0/3 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: table_of_contents 0/0 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: keyword_search    0/3 correct  'What does the acronym PLAID stand for?'
+  evaluate: sufficient = False
+  retrieve: keyword_search    0/3 correct  'What does the acronym PLAID stand for?'
+stopped: Recursion limit of 10 reached without hitting a stop condition. You can increase</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(COST[<span class="st">"calls"</span>], <span class="st">"model calls ·"</span>, <span class="ss">f"chat $</span><span class="sc">{</span>COST[<span class="st">'chat'</span>]<span class="sc">:.4f}</span><span class="ss"> · embed $</span><span class="sc">{</span>COST[<span class="st">'embed'</span>]<span class="sc">:.5f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text lab-output"><code>89 model calls · chat $0.0049 · embed $0.00045</code></pre>
+</section>
+<section id="สรป" class="level2">
+<h2 class="anchored" data-anchor-id="สรป">สรุป</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lab 2 (เขียนเอง)</th>
+<th>LangGraph</th>
+<th>ที่เราเห็นใน lab</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>docs += good</code></td>
+<td>reducer <code>operator.add</code></td>
+<td>node คืนแค่เอกสารใหม่ LangGraph ต่อท้ายให้</td>
+</tr>
+<tr class="even">
+<td>ลูป <code>for</code> + <code>break</code></td>
+<td><code>should_retrieve</code> + conditional edge</td>
+<td>คำถามสองเรื่องจบรอบเดียว · คำถามที่ไม่มีคำตอบ ครบ 3 รอบแล้วตอบว่าไม่มีข้อมูล</td>
+</tr>
+<tr class="odd">
+<td><code>print</code></td>
+<td><code>stream(stream_mode="updates")</code></td>
+<td>เห็น plan → retrieve → evaluate → generate</td>
+</tr>
+<tr class="even">
+<td>—</td>
+<td><code>recursion_limit</code></td>
+<td>หยุดที่ 10 ก้าวด้วย <code>GraphRecursionError</code> — ไม่มีคำตอบให้ผู้ใช้</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>โค้ดของตำรา:</strong> node ที่คืน <code>{**state, ...}</code> ทำให้ <code>retrieved_docs</code> ซ้ำ (2 → 4 เอกสาร) — คืนเฉพาะช่องที่เปลี่ยน</p>
+<p><strong>แบบฝึกหัด</strong></p>
+<ol type="1">
+<li>แก้ <code>plan_node</code> และ <code>retrieve_node</code> ให้คืน <code>{**state, ...}</code> แบบตำราด้วย — เอกสารซ้ำกี่เท่า</li>
+<li>เพิ่ม checkpoint ด้วย <code>InMemorySaver</code> (EP05 Lab 5) แล้วดู <code>get_state_history</code> ของคำถามที่วนสามรอบ</li>
+<li>แยก <code>retrieve_node</code> เป็นสอง node: <code>route</code> และ <code>search</code> — graph ยาวขึ้น แต่ stream บอกอะไรเราเพิ่มขึ้น</li>
+</ol>
+<p><strong>ถัดไป — สรุป EP11</strong></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Language switch: the Thai book is at the site root, the English book at /en/ with the same page paths. -->
+<style>
+  .lang-switch { display: inline-block; margin: .4rem 0 .2rem; padding: .15rem .6rem; border: 1px solid var(--bs-border-color, #dee2e6);
+                 border-radius: 999px; font-size: .85rem; text-decoration: none; }
+  .lang-switch:hover { background: var(--bs-tertiary-bg, #f1f3f5); }
+</style>
+<script>
+(function () {
+  var lib = document.querySelector('script[src*="site_libs/"], link[href*="site_libs/"]');
+  if (!lib) return;
+  var root = (lib.src || lib.href).split('site_libs/')[0];          // …/agentic-ai-students/  or  …/en/
+  var isEn = /\/en\/$/.test(root);
+  var page = location.href.split('#')[0].slice(root.length);        // ch19/19-1-workflow-patterns/index.html
+  var other = isEn ? root.replace(/en\/$/, '') + page : root + 'en/' + page;
+  var a = document.createElement('a');
+  a.className = 'lang-switch';
+  a.href = other;
+  a.lang = isEn ? 'th' : 'en';
+  a.textContent = isEn ? '🇹🇭 ภาษาไทย' : '🇬🇧 English';
+  var spot = document.querySelector('.sidebar-header') || document.querySelector('#title-block-header') || document.body;
+  spot.appendChild(a);
+  // A page that exists in one language only (e.g. the Thai coding demo) → link to the other book's home.
+  fetch(other, { method: 'HEAD' }).then(function (r) {
+    if (!r.ok) a.href = isEn ? root.replace(/en\/$/, '') : root + 'en/';
+  }).catch(function () {});
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ch16/ep11-agentic-rag/ep11-lab3-rag-evaluation.html" class="pagination-link" aria-label="Lab 3 — วัดผล RAG">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Lab 3 — วัดผล RAG</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
