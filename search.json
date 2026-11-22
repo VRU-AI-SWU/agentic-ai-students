@@ -64,7 +64,7 @@
     "href": "index.html#เอกสารอางอง",
     "title": "Agentic AI: จากพื้นฐานสู่ระบบ",
     "section": "เอกสารอ้างอิง",
-    "text": "เอกสารอ้างอิง\n\n\nAnthropic. 2025. Writing Effective Tools for AI\nAgents—with Agents. Anthropic Engineering. https://www.anthropic.com/engineering/writing-tools-for-agents.\n\n\nBrown, Tom B., Benjamin Mann, Nick Ryder, et\nal. 2020. “Language Models Are Few-Shot Learners.”\nAdvances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2005.14165.\n\n\nDettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022.\n“LLM.int8(): 8-Bit Matrix\nMultiplication for Transformers at Scale.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2208.07339.\n\n\nFedus, William, Barret Zoph, and Noam Shazeer. 2022. “Switch\nTransformers: Scaling to Trillion Parameter Models with Simple and\nEfficient Sparsity.” Journal of Machine Learning\nResearch. https://arxiv.org/abs/2101.03961.\n\n\nGreshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,\nThorsten Holz, and Mario Fritz. 2023. “Not What You’ve Signed up\nfor: Compromising Real-World LLM-Integrated Applications with Indirect\nPrompt Injection.” ACM Workshop on Artificial Intelligence\nand Security (AISec). https://arxiv.org/abs/2302.12173.\n\n\nHoltzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020.\n“The Curious Case of Neural Text Degeneration.”\nInternational Conference on Learning Representations (ICLR). https://arxiv.org/abs/1904.09751.\n\n\nHugging Face. 2023. Mixture of Experts Explained. Hugging Face\nblog. https://huggingface.co/blog/moe.\n\n\nHugging Face. 2025a. Chat Templates. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/chat_templating.\n\n\nHugging Face. 2025b. Quantization Overview. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/quantization/overview.\n\n\nJi, Ziwei, Nayeon Lee, Rita Frieske, et al.\n2023. “Survey of Hallucination in Natural Language\nGeneration.” ACM Computing Surveys 55 (12). https://arxiv.org/abs/2202.03629.\n\n\nJiang, Albert Q., Alexandre Sablayrolles, Antoine\nRoux, et al. 2024. Mixtral of Experts. https://arxiv.org/abs/2401.04088.\n\n\nKadavath, Saurav, Tom Conerly, Amanda Askell, et\nal. 2022. Language Models (Mostly) Know What They Know.\narXiv:2207.05221. https://arxiv.org/abs/2207.05221.\n\n\nKarpathy, Andrej. 2024. Let’s Build the GPT Tokenizer. YouTube\nvideo. https://www.youtube.com/watch?v=zduSFxRajkE.\n\n\nKim, Sehoon, Suhong Moon, Ryan Tabrizi, et\nal. 2024. “An LLM Compiler for Parallel\nFunction Calling.” International Conference on Machine\nLearning (ICML). https://arxiv.org/abs/2312.04511.\n\n\nKojima, Takeshi, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and\nYusuke Iwasawa. 2022. “Large Language Models Are Zero-Shot\nReasoners.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2205.11916.\n\n\nLangChain. 2025. Workflows and Agents. LangGraph documentation.\nhttps://langchain-ai.github.io/langgraph/tutorials/workflows/.\n\n\nLewis, Patrick, Ethan Perez, Aleksandra Piktus, et\nal. 2020. “Retrieval-Augmented Generation for\nKnowledge-Intensive NLP Tasks.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2005.11401.\n\n\nMadaan, Aman, Niket Tandon, Prakhar Gupta, et\nal. 2023. “Self-Refine: Iterative Refinement with\nSelf-Feedback.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2303.17651.\n\n\nManakul, Potsawee, Adian Liusie, and Mark J. F. Gales. 2023.\n“SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for\nGenerative Large Language Models.” Conference on Empirical\nMethods in Natural Language Processing (EMNLP). https://arxiv.org/abs/2303.08896.\n\n\nNguyen, Minh Nhat, Andrew Baker, Clement Neo, et\nal. 2025. “Turning up the Heat: Min-p Sampling for Creative\nand Coherent LLM Outputs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2407.01082.\n\n\nOuyang, Long, Jeff Wu, Xu Jiang, et al.\n2022. “Training Language Models to Follow Instructions with Human\nFeedback.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2203.02155.\n\n\nPatil, Shishir G., Tianjun Zhang, Xin Wang, and Joseph E. Gonzalez.\n2024. “Gorilla: Large Language Model Connected with Massive\nAPIs.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2305.15334.\n\n\nPlaten, Patrick von. 2020. How to Generate Text: Using Different\nDecoding Methods for Language Generation with Transformers. Hugging\nFace blog. https://huggingface.co/blog/how-to-generate.\n\n\nPydantic. 2026. Pydantic Documentation: Models and Validators.\nhttps://docs.pydantic.dev/latest/.\n\n\nQin, Yujia, Shihao Liang, Yining Ye, et al.\n2024. “ToolLLM: Facilitating Large Language Models to\nMaster 16000+ Real-World APIs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2307.16789.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSchick, Timo, Jane Dwivedi-Yu, Roberto Dessì, et\nal. 2023. “Toolformer: Language Models Can Teach Themselves\nto Use Tools.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2302.04761.\n\n\nSchluntz, Erik, and Barry Zhang. 2024. Building Effective\nAgents. Anthropic. https://www.anthropic.com/research/building-effective-agents.\n\n\nSennrich, Rico, Barry Haddow, and Alexandra Birch. 2016. “Neural\nMachine Translation of Rare Words with Subword Units.”\nProceedings of the 54th Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/1508.07909.\n\n\nShinn, Noah, Federico Cassano, Edward Berman, et\nal. 2023. “Reflexion: Language Agents with Verbal\nReinforcement Learning.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2303.11366.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et\nal. 2017. “Attention Is All You Need.” Advances\nin Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762.\n\n\nWang, Lei, Chen Ma, Xueyang Feng, et al.\n2024. “A Survey on Large Language Model Based Autonomous\nAgents.” Frontiers of Computer Science. https://arxiv.org/abs/2308.11432.\n\n\nWang, Lei, Wanyu Xu, Yihuai Lan, et al.\n2023. “Plan-and-Solve Prompting: Improving Zero-Shot\nChain-of-Thought Reasoning by Large Language Models.”\nProceedings of the 61st Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/2305.04091.\n\n\nWang, Xuezhi, Jason Wei, Dale Schuurmans, et\nal. 2023. “Self-Consistency Improves Chain of Thought\nReasoning in Language Models.” International Conference on\nLearning Representations (ICLR). https://arxiv.org/abs/2203.11171.\n\n\nWei, Jason, Xuezhi Wang, Dale Schuurmans, et\nal. 2022. “Chain-of-Thought Prompting Elicits Reasoning in\nLarge Language Models.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2201.11903.\n\n\nWeng, Lilian. 2023. LLM Powered Autonomous Agents.\nLil’Log. https://lilianweng.github.io/posts/2023-06-23-agent/.\n\n\nWillard, Brandon T., and Rémi Louf. 2023. Efficient Guided\nGeneration for Large Language Models. arXiv:2307.09702. https://arxiv.org/abs/2307.09702.\n\n\nXu, Binfeng, Zhiyuan Peng, Bowen Lei, et al.\n2023. ReWOO: Decoupling Reasoning from Observations for\nEfficient Augmented Language Models. https://arxiv.org/abs/2305.18323.\n\n\nYao, Shunyu, Jeffrey Zhao, Dian Yu, et al.\n2023. “ReAct: Synergizing Reasoning and Acting in\nLanguage Models.” International Conference on Learning\nRepresentations (ICLR). https://arxiv.org/abs/2210.03629.",
+    "text": "เอกสารอ้างอิง\n\n\nAnthropic. 2025. Writing Effective Tools for AI\nAgents—with Agents. Anthropic Engineering. https://www.anthropic.com/engineering/writing-tools-for-agents.\n\n\nBrown, Tom B., Benjamin Mann, Nick Ryder, et\nal. 2020. “Language Models Are Few-Shot Learners.”\nAdvances in Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/2005.14165.\n\n\nChen, Howard, Ramakanth Pasunuru, Jason Weston, and Asli Celikyilmaz.\n2023. Walking down the Memory Maze: Beyond Context Limit Through\nInteractive Reading. https://arxiv.org/abs/2310.05029.\n\n\nDettmers, Tim, Mike Lewis, Younes Belkada, and Luke Zettlemoyer. 2022.\n“LLM.int8(): 8-Bit Matrix\nMultiplication for Transformers at Scale.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2208.07339.\n\n\nFedus, William, Barret Zoph, and Noam Shazeer. 2022. “Switch\nTransformers: Scaling to Trillion Parameter Models with Simple and\nEfficient Sparsity.” Journal of Machine Learning\nResearch. https://arxiv.org/abs/2101.03961.\n\n\nGreshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,\nThorsten Holz, and Mario Fritz. 2023. “Not What You’ve Signed up\nfor: Compromising Real-World LLM-Integrated Applications with Indirect\nPrompt Injection.” ACM Workshop on Artificial Intelligence\nand Security (AISec). https://arxiv.org/abs/2302.12173.\n\n\nHoltzman, Ari, Jan Buys, Li Du, Maxwell Forbes, and Yejin Choi. 2020.\n“The Curious Case of Neural Text Degeneration.”\nInternational Conference on Learning Representations (ICLR). https://arxiv.org/abs/1904.09751.\n\n\nHugging Face. 2023. Mixture of Experts Explained. Hugging Face\nblog. https://huggingface.co/blog/moe.\n\n\nHugging Face. 2025a. Chat Templates. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/chat_templating.\n\n\nHugging Face. 2025b. Quantization Overview. Transformers\ndocumentation. https://huggingface.co/docs/transformers/main/en/quantization/overview.\n\n\nJi, Ziwei, Nayeon Lee, Rita Frieske, et al.\n2023. “Survey of Hallucination in Natural Language\nGeneration.” ACM Computing Surveys 55 (12). https://arxiv.org/abs/2202.03629.\n\n\nJiang, Albert Q., Alexandre Sablayrolles, Antoine\nRoux, et al. 2024. Mixtral of Experts. https://arxiv.org/abs/2401.04088.\n\n\nKadavath, Saurav, Tom Conerly, Amanda Askell, et\nal. 2022. Language Models (Mostly) Know What They Know.\narXiv:2207.05221. https://arxiv.org/abs/2207.05221.\n\n\nKarpathy, Andrej. 2024. Let’s Build the GPT Tokenizer. YouTube\nvideo. https://www.youtube.com/watch?v=zduSFxRajkE.\n\n\nKim, Sehoon, Suhong Moon, Ryan Tabrizi, et\nal. 2024. “An LLM Compiler for Parallel\nFunction Calling.” International Conference on Machine\nLearning (ICML). https://arxiv.org/abs/2312.04511.\n\n\nKojima, Takeshi, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and\nYusuke Iwasawa. 2022. “Large Language Models Are Zero-Shot\nReasoners.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2205.11916.\n\n\nLangChain. 2025. Workflows and Agents. LangGraph documentation.\nhttps://langchain-ai.github.io/langgraph/tutorials/workflows/.\n\n\nLewis, Patrick, Ethan Perez, Aleksandra Piktus, et\nal. 2020. “Retrieval-Augmented Generation for\nKnowledge-Intensive NLP Tasks.” Advances in Neural\nInformation Processing Systems (NeurIPS). https://arxiv.org/abs/2005.11401.\n\n\nMadaan, Aman, Niket Tandon, Prakhar Gupta, et\nal. 2023. “Self-Refine: Iterative Refinement with\nSelf-Feedback.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2303.17651.\n\n\nManakul, Potsawee, Adian Liusie, and Mark J. F. Gales. 2023.\n“SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for\nGenerative Large Language Models.” Conference on Empirical\nMethods in Natural Language Processing (EMNLP). https://arxiv.org/abs/2303.08896.\n\n\nNguyen, Minh Nhat, Andrew Baker, Clement Neo, et\nal. 2025. “Turning up the Heat: Min-p Sampling for Creative\nand Coherent LLM Outputs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2407.01082.\n\n\nOuyang, Long, Jeff Wu, Xu Jiang, et al.\n2022. “Training Language Models to Follow Instructions with Human\nFeedback.” Advances in Neural Information Processing Systems\n(NeurIPS). https://arxiv.org/abs/2203.02155.\n\n\nPatil, Shishir G., Tianjun Zhang, Xin Wang, and Joseph E. Gonzalez.\n2024. “Gorilla: Large Language Model Connected with Massive\nAPIs.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2305.15334.\n\n\nPlaten, Patrick von. 2020. How to Generate Text: Using Different\nDecoding Methods for Language Generation with Transformers. Hugging\nFace blog. https://huggingface.co/blog/how-to-generate.\n\n\nPydantic. 2026. Pydantic Documentation: Models and Validators.\nhttps://docs.pydantic.dev/latest/.\n\n\nQin, Yujia, Shihao Liang, Yining Ye, et al.\n2024. “ToolLLM: Facilitating Large Language Models to\nMaster 16000+ Real-World APIs.” International\nConference on Learning Representations (ICLR). https://arxiv.org/abs/2307.16789.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From\nFoundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSarthi, Parth, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie,\nand Christopher D. Manning. 2024. “RAPTOR: Recursive\nAbstractive Processing for Tree-Organized Retrieval.”\nInternational Conference on Learning Representations (ICLR). https://arxiv.org/abs/2401.18059.\n\n\nSchick, Timo, Jane Dwivedi-Yu, Roberto Dessì, et\nal. 2023. “Toolformer: Language Models Can Teach Themselves\nto Use Tools.” Advances in Neural Information Processing\nSystems (NeurIPS). https://arxiv.org/abs/2302.04761.\n\n\nSchluntz, Erik, and Barry Zhang. 2024. Building Effective\nAgents. Anthropic. https://www.anthropic.com/research/building-effective-agents.\n\n\nSennrich, Rico, Barry Haddow, and Alexandra Birch. 2016. “Neural\nMachine Translation of Rare Words with Subword Units.”\nProceedings of the 54th Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/1508.07909.\n\n\nShinn, Noah, Federico Cassano, Edward Berman, et\nal. 2023. “Reflexion: Language Agents with Verbal\nReinforcement Learning.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2303.11366.\n\n\nVaswani, Ashish, Noam Shazeer, Niki Parmar, et\nal. 2017. “Attention Is All You Need.” Advances\nin Neural Information Processing Systems (NeurIPS). https://arxiv.org/abs/1706.03762.\n\n\nWang, Lei, Chen Ma, Xueyang Feng, et al.\n2024. “A Survey on Large Language Model Based Autonomous\nAgents.” Frontiers of Computer Science. https://arxiv.org/abs/2308.11432.\n\n\nWang, Lei, Wanyu Xu, Yihuai Lan, et al.\n2023. “Plan-and-Solve Prompting: Improving Zero-Shot\nChain-of-Thought Reasoning by Large Language Models.”\nProceedings of the 61st Annual Meeting of the Association for\nComputational Linguistics (ACL). https://arxiv.org/abs/2305.04091.\n\n\nWang, Xuezhi, Jason Wei, Dale Schuurmans, et\nal. 2023. “Self-Consistency Improves Chain of Thought\nReasoning in Language Models.” International Conference on\nLearning Representations (ICLR). https://arxiv.org/abs/2203.11171.\n\n\nWei, Jason, Xuezhi Wang, Dale Schuurmans, et\nal. 2022. “Chain-of-Thought Prompting Elicits Reasoning in\nLarge Language Models.” Advances in Neural Information\nProcessing Systems (NeurIPS). https://arxiv.org/abs/2201.11903.\n\n\nWeng, Lilian. 2023. LLM Powered Autonomous Agents.\nLil’Log. https://lilianweng.github.io/posts/2023-06-23-agent/.\n\n\nWillard, Brandon T., and Rémi Louf. 2023. Efficient Guided\nGeneration for Large Language Models. arXiv:2307.09702. https://arxiv.org/abs/2307.09702.\n\n\nXu, Binfeng, Zhiyuan Peng, Bowen Lei, et al.\n2023. ReWOO: Decoupling Reasoning from Observations for\nEfficient Augmented Language Models. https://arxiv.org/abs/2305.18323.\n\n\nYao, Shunyu, Jeffrey Zhao, Dian Yu, et al.\n2023. “ReAct: Synergizing Reasoning and Acting in\nLanguage Models.” International Conference on Learning\nRepresentations (ICLR). https://arxiv.org/abs/2210.03629.",
     "crumbs": [
       "หน้าแรก"
     ]
@@ -1794,6 +1794,160 @@
     "crumbs": [
       "M3 · ความรู้: RAG",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>EP10 RAG Fundamentals</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html",
+    "href": "ch16/ep11-agentic-rag/index.html",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "",
+    "text": "วัตถุประสงค์การเรียนรู้\nเมื่อจบตอนนี้ ผู้เรียนจะสามารถ",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#วตถประสงคการเรยนร",
+    "href": "ch16/ep11-agentic-rag/index.html#วตถประสงคการเรยนร",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "",
+    "text": "แปลงคำถามก่อนค้น (HyDE, step-back, multi-query, RAG-Fusion) และอธิบายได้ว่าทำไมจึงช่วย\nอธิบายว่าทำไม cross-encoder ใช้จัดลำดับชิ้นที่ค้นมาแล้วได้ แต่ใช้ค้นรอบแรกไม่ได้\nอธิบายว่า Self-RAG, CRAG, Adaptive RAG และ Graph RAG เปลี่ยนสายงาน RAG ตรงไหน\nบอกได้ว่าคำถามแบบไหนที่ RAG แบบตายตัวตอบไม่ได้ และอธิบาย agentic RAG ในฐานะลำดับของการตัดสินใจ\nสร้าง router และวงวน plan → retrieve → evaluate → generate ที่มีเพดานรอบ ทั้งเขียนเองและด้วย LangGraph\nวัดการค้นด้วย Recall@K, MRR และ NDCG วัดคำตอบด้วย faithfulness และ answer relevance และบอกได้ว่าแต่ละตัววัดมองไม่เห็นอะไร\nบอกความล้มเหลวหกแบบของ RAG ตามตำรา",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#คำถามทยงคนไมเจอ",
+    "href": "ch16/ep11-agentic-rag/index.html#คำถามทยงคนไมเจอ",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "คำถามที่ยังค้นไม่เจอ",
+    "text": "คำถามที่ยังค้นไม่เจอ\nใน EP10 มีคำถามข้อหนึ่งที่พลาดทุกวิธี: บท RAG ในตำรา The Hitchhiker’s Guide to Agentic AI ของ Roitman ใช้อุปมาอะไรอธิบาย RAG พอมีชื่อผู้เขียนและชื่อตำราอยู่ในคำถาม ชิ้นบัตรห้องสมุดก็ไปอยู่อันดับ 8 ด้วย dense, อันดับ 5 ด้วย hybrid และอันดับ 17 ด้วย parent-child ตอนนี้เราลองสองทาง คือแปลงคำถามก่อนค้น และให้ agent ตัดสินใจเองว่าจะค้นอะไร ค้นที่ไหน และพอหรือยัง แล้วปิดด้วยคำถามสำคัญ: จะวัดอย่างไรว่า RAG ดีขึ้นจริง",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#กอนคน-แปลงคำถาม",
+    "href": "ch16/ep11-agentic-rag/index.html#กอนคน-แปลงคำถาม",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "ก่อนค้น: แปลงคำถาม",
+    "text": "ก่อนค้น: แปลงคำถาม\nคำถามของผู้ใช้มักกำกวม สั้นเกินไป หรือใช้คำต่างจากในเอกสาร (Roitman 2026, หมวด 16.5.1)\n\nHyDE: ให้ model ร่างคำตอบสมมุติขึ้นมา แล้วเอาร่างนั้นไปทำ embedding แทนคำถาม ร่างอาจผิดได้ เพราะเราใช้มันแค่ค้น ไม่ได้ใช้ตอบ ร่างเขียนด้วยภาษาแบบเดียวกับเอกสาร จึงอยู่ใกล้ชิ้นที่ถูกกว่า (สมการ 16.20)\nStep-back: ถามคำถามที่กว้างกว่าก่อน เช่น ถามจุดเดือดของเอทานอลที่ 2 บรรยากาศ ก็ค้นเพิ่มว่าอะไรมีผลต่อจุดเดือดของของเหลว\nMulti-query: เขียนคำถามใหม่หลายแบบ ค้นทุกแบบ แล้วรวมผล\nRAG-Fusion: multi-query รวมคำถามเดิมด้วย แล้วรวมรายการอันดับทั้งหมดด้วย RRF (Listing 16.8) สูตรเดียวกับ EP10 Lab 2 ชิ้นที่ติดอันดับดีในหลายคำถามจะขึ้นมาบนสุด\n\n\nใน Lab 1 ร่างของ HyDE บอกว่าตำราใช้ “การสอบแบบเปิดตำรา” ซึ่งผิด แต่ค้นด้วยร่างนั้นกลับได้ชิ้นบัตรห้องสมุดที่อันดับ 1 ส่วน multi-query แบบธรรมดายังคงชื่อตำราไว้ในทุกคำถามย่อย (อันดับ 12, 13 และ 9 รวมแล้ว 9) พอสั่งให้ตัดชื่อตำราและชื่อผู้เขียนออก ผลรวมได้อันดับ 1",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#หลงคน-re-rank-และบบ-context",
+    "href": "ch16/ep11-agentic-rag/index.html#หลงคน-re-rank-และบบ-context",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "หลังค้น: re-rank และบีบ context",
+    "text": "หลังค้น: re-rank และบีบ context\nretriever ใน EP10 แปลงคำถามและเอกสารแยกกัน embedding ของเอกสารจึงคำนวณไว้ล่วงหน้าได้ และค้นได้เร็ว ส่วน cross-encoder อ่านคำถามกับเอกสารพร้อมกันในรอบเดียว แม่นกว่ามากแต่ช้า และใช้ค้นรอบแรกไม่ได้ เพราะไม่มีอะไรให้เก็บไว้ล่วงหน้า จึงใช้จัดลำดับใหม่เฉพาะชิ้นที่ค้นมาแล้ว ปกติ 20 ถึง 100 ชิ้น (Roitman 2026, หมวด 16.5.2) เหมือนรับสมัครงาน คัดเรซูเม่จากคำสำคัญก่อน แล้วค่อยเรียกห้าคนมาสัมภาษณ์จริง จากนั้น contextual compression ตัดแต่ละชิ้นให้เหลือเฉพาะส่วนที่ตอบคำถาม\n\nใน Lab 1 cross-encoder ให้ชิ้นบัตรห้องสมุดอยู่อันดับ 1 คะแนน 0.996 ชิ้นถัดไปได้ 0.50 วัด hit@3 บนคำถามทดสอบ 20 ข้อ: dense 12 · HyDE 16 · RAG-Fusion 14 · re-rank 18 · HyDE + re-rank 19",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#rag-ทตรวจตวเอง-และอกสองแบบ",
+    "href": "ch16/ep11-agentic-rag/index.html#rag-ทตรวจตวเอง-และอกสองแบบ",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "RAG ที่ตรวจตัวเอง และอีกสองแบบ",
+    "text": "RAG ที่ตรวจตัวเอง และอีกสองแบบ\n\nSelf-RAG ฝึก model ตัวเดียวให้ตัดสินใจเองว่าจะค้นไหม ค้นมาแล้วเกี่ยวไหม คำตอบมีหลักฐานไหม และมีประโยชน์ไหม ผ่าน token พิเศษสี่ตัวที่เรียนรู้ระหว่างการฝึก\nCRAG ไม่ฝึก model ใหม่ แต่เพิ่มตัวประเมินที่ให้คะแนนเอกสารแต่ละชิ้นว่า correct, ambiguous หรือ incorrect ถ้ามีบางชิ้นถูก ก็ตัดประโยคที่ไม่เกี่ยวออกแล้วตอบจากที่เหลือ ถ้าทุกชิ้นผิดหรือกำกวม ก็ไปค้นจากเว็บแทน\nAdaptive RAG แยกคำถามตามความยากด้วยตัวจำแนกขนาดเล็ก: ไม่ต้องค้น ค้นครั้งเดียว หรือค้นหลายรอบ\nGraph RAG ดึง entity และความสัมพันธ์ออกมาเป็น graph หากลุ่มในนั้น แล้วสรุปแต่ละกลุ่ม เก่งกับคำถามภาพรวม (ธีมหลักของคลัง) แต่สร้างแพง คำถามเฉพาะจุดยังใช้ RAG ปกติดีกว่า",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#agentic-rag",
+    "href": "ch16/ep11-agentic-rag/index.html#agentic-rag",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "Agentic RAG",
+    "text": "Agentic RAG\nRAG แบบตายตัวค้นครั้งเดียวแล้วตอบ ตำรายกจุดที่มันพังไว้ ได้แก่ คำถาม multi-hop (“ใครก่อตั้งบริษัทที่ซื้อคู่แข่งหลักของ OpenAI ในปี 2023”), คำถามกำกวม, คำถามย่อยที่ต้องใช้คลังความรู้ต่างกัน และการค้นครั้งแรกที่เผยว่าต้องค้นด้วยคำถามอื่น (Roitman 2026, หมวด 16.7) Agentic RAG มองการค้นเป็นลำดับของการตัดสินใจ: state คือคำถามกับเอกสารที่ค้นได้แล้ว action คือค้น คิด ตอบ หรือหยุด และรางวัลคือคำตอบที่ถูก เหมือน ReAct ใน EP05 แต่เครื่องมือหลักคือการค้น\n\nเลือกแหล่งความรู้\n\n\n\nตารางที่ 11.1: สามวิธีส่งคำถามไปยังแหล่งความรู้ (Listing 16.9 ใช้ LLM)\n\n\n\n\n\nวิธีเลือก\nจุดแข็ง\nต้องแลกกับ\n\n\n\n\nกฎ (คำสำคัญ)\nเร็ว\nเปราะ\n\n\nตัวจำแนกที่ฝึกแล้ว\nเร็วมาก\nต้องมีข้อมูลติดป้าย\n\n\nLLM ผ่าน structured output\nยืดหยุ่นที่สุด\nเรียก model เพิ่มหนึ่งครั้ง\n\n\n\n\n\n\nตำรายังแนะนำให้มีแหล่งสำรอง ค้นหลายแหล่งพร้อมกันแล้วรวมด้วย RRF และบันทึกทุกการเลือกพร้อมเหตุผล\n\n\nวงวน\n\n\n\n\n\n\nflowchart TD\n  P[plan: แตกเป็นคำถามย่อย] --&gt; R[retrieve: ค้นจากแหล่งที่เหมาะ]\n  R --&gt; E{evaluate: พอหรือยัง}\n  E -- \"ยัง และยังมีรอบเหลือ\" --&gt; R\n  E -- \"พอ หรือครบ max_iterations\" --&gt; G[generate: ตอบพร้อมอ้างอิง]\n\n\n\n\n\n\nตัวนับรอบกันไม่ให้ agent ค้นวนไม่รู้จบ เหมือน LoopGuard ใน EP08 ตำราเขียนวงวนนี้ด้วย LangGraph (Listing 16.10)\n\nใน Lab 2 เราเขียนวงวนนี้ด้วย Python ล้วน มีแหล่งความรู้สามแบบ คือ BM25, embedding และสารบัญของตำรา คำถามสองส่วนใช้ 11 call คำถาม “PLAID ย่อมาจากอะไร” ซึ่งตำราไม่เคยบอก วน 3 รอบแล้วตอบว่าเอกสารไม่มีข้อมูล ส่วนคำถามยาว: สารบัญพลาด grader ไม่ให้ผ่าน รอบ 2 ลอง vector แล้วเจอบัตรห้องสมุด grader แบบ CRAG ของเราให้ชิ้น top-3 จาก embedding ของคำถามนี้เป็น incorrect ทั้งสามชิ้น\n\n\nใน Lab 4 agent ตัวเดิมด้วย LangGraph เดินเส้นทางเดียวกัน ถ้าเขียนแบบในตำรา node ที่คืน {**state, ...} ทำให้ reducer operator.add เพิ่มเอกสารซ้ำ ได้ 4 เอกสาร [301, 357, 301, 357] แทน 2 ให้คืนเฉพาะ key ที่เปลี่ยน และเมื่อตั้งเพดานรอบสูงเกินไป recursion_limit หยุด graph ด้วย GraphRecursionError\n\n\n\nSearch-R1\nทุกอย่างข้างบนควบคุมด้วย prompt Search-R1 ฝึก model ด้วย reinforcement learning ให้ตัดสินใจเองว่าเมื่อไรควรค้น ค้นอะไร และกี่ครั้ง รางวัลคือความถูกของคำตอบสุดท้าย (Table 16.4) ตำรารายงานว่า model ขนาด 7B แม่นกว่า RAG ที่ค้นครั้งเดียวราว 15–20% ซีรีส์นี้ไม่ได้ฝึก model เราจึงใช้ agentic RAG ที่สั่งด้วย prompt\n\n\nนอกตำรา: ให้ agent ไล่สารบัญ\n\n\n\n\n\n\nส่วนนี้ไม่อยู่ในตำรา\nเวลาหาเรื่องบัตรห้องสมุดในหนังสือหกร้อยหน้า เราไม่ได้เทียบทุกหน้า เราเปิดสารบัญ เลือกบท เลือกหัวข้อ ถ้าไม่ใช่ก็ย้อนกลับ MemWalker (Chen และคณะ 2023) สร้าง tree ของบทสรุป แล้วให้ model เดินจากบนลงล่าง ที่แต่ละ node เลือกเปิดลูก ย้อนขึ้น หรือตอบ RAPTOR (Sarthi และคณะ 2024) สร้าง tree ของบทสรุปเหมือนกัน แต่ค้นด้วย embedding ส่วนโปรเจกต์ open source PageIndex ไล่ tree แบบสารบัญโดยไม่ใช้ embedding เลย MemWalker รายงานว่าวิธีนี้ต้องใช้ model ใหญ่ (ราว 70B)\n\nใน Lab 2 Gemma 4 26B ไล่สารบัญ 157 หัวข้อของตำรา จากรากไปถึง Framework Comparison (หน้า 359–360) ใน 3 ก้าว โดยไม่ใช้ embedding",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#วดผล-rag",
+    "href": "ch16/ep11-agentic-rag/index.html#วดผล-rag",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "วัดผล RAG",
+    "text": "วัดผล RAG\nความผิดพลาดเริ่มได้ทุกขั้นและสะสมต่อกัน ตำราจึงวัดสามระดับ คือการค้น คำตอบ และทั้งระบบ และเตือนว่าอย่าปรับแค่ระดับเดียว เช่น K ใหญ่ทำให้ recall สูง แต่ใส่ชิ้นที่แทบไม่เกี่ยวเต็ม context (Roitman 2026, หมวด 16.8)\n\nRecall@K: สัดส่วนของชิ้นที่ถูกที่อยู่ใน K อันดับแรก (สมการ 16.22)\nMRR: ค่าเฉลี่ยของ 1 / อันดับของชิ้นที่ถูกชิ้นแรก (สมการ 16.24) อันดับ 1, อันดับ 3 และไม่เจอ: (1 + 1/3 + 0) / 3 ≈ 0.44\nNDCG@K: ชิ้นที่ถูกยิ่งอยู่สูงยิ่งได้คะแนนมาก (สมการ 16.25)\nFaithfulness: claim ที่มีหลักฐาน ÷ claim ทั้งหมด ให้ LLM เป็นผู้ตัดสิน (สมการ 16.26) สาม claim มีหลักฐานสอง: 2/3\nAnswer relevance: สร้างคำถามย้อนกลับจากคำตอบ แล้วเทียบกับคำถามเดิม (สมการ 16.27)\n\n\n\n\nตารางที่ 11.2: ตัววัดฝั่งการค้นใน Lab 3 ป้ายระดับหน้า\n\n\n\n\n\nระบบ (20 คำถาม)\nRecall@5\nMRR\nNDCG@5\n\n\n\n\ndense\n0.53\n0.51\n0.43\n\n\nBM25\n0.33\n0.44\n0.28\n\n\nhybrid (RRF)\n0.51\n0.65\n0.47\n\n\ndense + re-rank\n0.53\n0.78\n0.56\n\n\nHyDE + re-rank\n0.58\n0.83\n0.61\n\n\n\n\n\n\nre-rank ดัน MRR จากราว 0.5 เป็นราว 0.8 แต่ recall แทบไม่ขยับ เพราะมันจัดลำดับยี่สิบชิ้นเดิม ไม่ได้หาชิ้นใหม่\n\n\n\nตารางที่ 11.3: ตัววัดฝั่งคำตอบใน Lab 3\n\n\n\n\n\nคำตอบของคำถามยาว\nFaithfulness\nAnswer relevance\nถูกไหม\n\n\n\n\nไม่มี RAG (“การสอบแบบเปิดตำรา”)\n0.78\n0.74\nไม่\n\n\nRAG, top 3 เดิม\n0.67\n0.83\nไม่\n\n\nRAG, top 3 ที่ re-rank แล้ว\n1.00\n0.73\nถูก\n\n\n\n\n\n\n\nใน Lab 3 คำตอบที่ไม่มี RAG ผิด แต่ยังได้ 0.78 claim ที่เป็นแกนของคำตอบไม่มีหลักฐาน แต่มีน้ำหนักเท่ากับ claim ทั่วไปข้ออื่น answer relevance แยกสามคำตอบไม่ออก มีแค่ correctness เทียบกับคำตอบอ้างอิงที่คนเขียนไว้ที่แยกได้ และให้คำตอบแบบ re-rank เป็นคำตอบที่ถูก",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#ความลมเหลวหกแบบ-และระบบจรง",
+    "href": "ch16/ep11-agentic-rag/index.html#ความลมเหลวหกแบบ-และระบบจรง",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "ความล้มเหลวหกแบบ และระบบจริง",
+    "text": "ความล้มเหลวหกแบบ และระบบจริง\n\nRetrieval miss: เอกสารอยู่ในคลัง แต่ค้นไม่เจอ (คำถามยาวของเรา)\nContext poisoning: เอกสารที่ค้นมาผิดหรือขัดกันเอง คำตอบเลยผิดตาม\nLost in the middle: model สนใจต้นและท้ายของ context ยาวมากกว่าตรงกลาง\nOver-retrieval: ชิ้นเยอะเกินไป สิ่งที่เกี่ยวจริงถูกกลบ และแพงขึ้น\nHallucination ทั้งที่มีเอกสาร: model ไม่สนเอกสาร ตอบจากความจำ\nCitation fabrication: อ้างเอกสารที่ไม่ได้พูดแบบนั้น\n\nสำหรับระบบจริง ตำราบอกว่า embedding model คือตัวเลือกที่มีผลมากที่สุด เพราะกำหนดเพดานคุณภาพของการค้น และยังเปรียบเทียบ vector database บอกวิธีลด latency (กรองด้วย metadata ก่อน ค้นหลายแหล่งพร้อมกัน) และแนะนำให้อัปเดตชิ้นของเอกสารที่เปลี่ยนพร้อมเลขเวอร์ชัน แทนการสร้าง index ใหม่ทั้งหมด (Roitman 2026, หมวด 16.9)",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#ศพทในตอนน",
+    "href": "ch16/ep11-agentic-rag/index.html#ศพทในตอนน",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "ศัพท์ในตอนนี้",
+    "text": "ศัพท์ในตอนนี้\n\n\n\nตารางที่ 11.4: ศัพท์ที่ใช้ใน EP11\n\n\n\n\n\n\n\n\n\n\nศัพท์\nคืออะไร\nตัวอย่าง\n\n\n\n\nHyDE\nค้นด้วย embedding ของคำตอบสมมุติ\nร่างผิด แต่ได้ชิ้นที่ถูกอันดับ 1\n\n\nmulti-query / RAG-Fusion\nเขียนคำถามใหม่หลายแบบ แล้วรวมด้วย RRF\nตัดชื่อออก รวมแล้วอันดับ 1\n\n\ncross-encoder\nอ่านคำถามกับเอกสารพร้อมกันเพื่อให้คะแนน\n0.996 เทียบกับ 0.50\n\n\ncontextual compression\nตัดชิ้นที่ค้นมาให้เหลือส่วนที่ตอบคำถาม\nเก็บย่อหน้าเดียวจากหนึ่งหน้า\n\n\nCRAG\nให้คะแนนเอกสารว่า correct / ambiguous / incorrect\ntop-3 ทั้งสามชิ้นได้ incorrect\n\n\nrouter\nเลือกแหล่งความรู้ให้แต่ละคำถาม\n“PLAID” → keyword search\n\n\nmulti-hop\nคำถามที่ต้องค้นต่อกันหลายครั้ง\nผู้ก่อตั้งบริษัทที่ซื้อคู่แข่ง\n\n\nmax_iterations\nเพดานจำนวนรอบการค้น\nครบ 3 รอบ แล้วตอบ\n\n\ntree navigation\nไล่สารบัญแทนการเทียบ embedding\n3 ก้าวถึงหน้า 359–360\n\n\nRecall@K\nสัดส่วนชิ้นที่ถูกใน K อันดับแรก\ndense 0.53\n\n\nMRR\nค่าเฉลี่ย 1 / อันดับของชิ้นที่ถูกชิ้นแรก\n0.51 → 0.83\n\n\nNDCG\nคะแนนที่ถ่วงตามอันดับ ยิ่งสูงยิ่งได้มาก\nอันดับ 2 → 0.63\n\n\nfaithfulness\nสัดส่วน claim ในคำตอบที่เอกสารรองรับ\nคำตอบผิด ได้ 0.78",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#lab",
+    "href": "ch16/ep11-agentic-rag/index.html#lab",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "Lab",
+    "text": "Lab\n\n\n\nตารางที่ 11.5: Notebook ของ EP11 (ทุก lab มีขั้นตั้งค่าของตัวเอง)\n\n\n\n\n\nLab\n✏️ Starter\n✅ เฉลย\n\n\n\n\nLab 1 — แปลงคำถาม + จัดลำดับใหม่\nColab\nColab\n\n\nLab 2 — Agentic RAG: ให้คะแนน เลือกแหล่ง วนค้น\nColab\nColab\n\n\nLab 3 — วัดผล RAG\nColab\nColab\n\n\nLab 4 — agentic RAG ตัวเดิมด้วย LangGraph\nColab\nColab\n\n\n\n\n\n\noutput ของ model ทุกอันในคลิปมาจากการรันจริง ผลที่ผู้เรียนรันเองอาจต่างไป agent ใน Lab 2 อาจเดินคนละเส้นทางในแต่ละรอบ (ทุกรอบที่เรารันจบที่บัตรห้องสมุด) และ judge ใน Lab 3 ก็เป็น model claim ที่อยู่ตรงเส้นพอดีจึงพลิกได้",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#คำถามทบทวน",
+    "href": "ch16/ep11-agentic-rag/index.html#คำถามทบทวน",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "คำถามทบทวน",
+    "text": "คำถามทบทวน\n\nร่างคำตอบของ HyDE ผิด แต่ยังค้นเจอชิ้นที่ถูก ทำไมจึงไม่ขัดกัน\nทำไม cross-encoder ใช้แทน retriever รอบแรกไม่ได้\nCRAG ทำอะไรเมื่อเอกสารทุกชิ้นได้ incorrect\nยกตัวอย่างคำถาม multi-hop เกี่ยวกับมหาวิทยาลัยของคุณ และการค้นที่ต้องทำ\nทำไมวงวน agentic RAG ยังต้องมี max_iterations แม้ตัวประเมินทำงานได้ดี\nใน Lab 4 ทำไม {**state, ...} แบบในตำราทำให้เอกสารซ้ำเป็นสองเท่า\nre-rank เพิ่ม MRR แต่ไม่เพิ่ม Recall@5 อธิบายว่าเพราะอะไร\nคำตอบที่ผิดได้ faithfulness 0.78 คุณจะวัดอะไรแทน และต้องมีอะไรก่อน",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#อานเพมเตม",
+    "href": "ch16/ep11-agentic-rag/index.html#อานเพมเตม",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "อ่านเพิ่มเติม",
+    "text": "อ่านเพิ่มเติม\n\nตำรา: §16.5, §16.7–16.9 (Roitman 2026)\nที่มาของคำถามยาว: EP10\nReAct และ LangGraph: EP05\nLoopGuard: EP08",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
+    ]
+  },
+  {
+    "objectID": "ch16/ep11-agentic-rag/index.html#เอกสารอางอง",
+    "href": "ch16/ep11-agentic-rag/index.html#เอกสารอางอง",
+    "title": "EP11 Advanced & Agentic RAG",
+    "section": "เอกสารอ้างอิง",
+    "text": "เอกสารอ้างอิง\n\n\nChen, Howard, Ramakanth Pasunuru, Jason Weston, และ Asli Celikyilmaz. 2023. Walking Down the Memory Maze: Beyond Context Limit through Interactive Reading. https://arxiv.org/abs/2310.05029.\n\n\nRoitman, Haggai. 2026. The Hitchhiker’s Guide to Agentic AI: From Foundations to Systems. https://doi.org/10.48550/arXiv.2606.24937.\n\n\nSarthi, Parth, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, และ Christopher D. Manning. 2024. “RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval”. International Conference on Learning Representations (ICLR). https://arxiv.org/abs/2401.18059.",
+    "crumbs": [
+      "M3 · ความรู้: RAG",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>EP11 Advanced & Agentic RAG</span>"
     ]
   }
 ]
